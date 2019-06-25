@@ -4,8 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bfaac1883cb2296593da30d89559bec1",
+    "content-hash": "ed437afb80b21c2b62670bd2218e569d",
     "packages": [
+        {
+            "name": "crayner/doctrine-bundle",
+            "version": "1.0.02",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crayner/doctrine-bundle.git",
+                "reference": "a3f0ec2fc7e056de235f36b29bfc6eaa027c1e9c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/crayner/doctrine-bundle/zipball/a3f0ec2fc7e056de235f36b29bfc6eaa027c1e9c",
+                "reference": "a3f0ec2fc7e056de235f36b29bfc6eaa027c1e9c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "symfony/orm-pack": "^1.0"
+            },
+            "require-dev": {
+                "symfony/flex": "^1.2"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Crayner\\Doctrine\\": "/src/"
+                },
+                "exclude-from-classmap": [
+                    "/tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Rayner",
+                    "email": "craig@craigrayner.com"
+                }
+            ],
+            "description": "Doctrine Bundle for Symfony 4+",
+            "keywords": [
+                "doctrine"
+            ],
+            "time": "2019-03-29T23:37:38+00:00"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.6.1",
