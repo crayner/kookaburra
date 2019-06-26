@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../Gibbon/functions.php';
+
 return [
     Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
     Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],

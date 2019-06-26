@@ -17,6 +17,10 @@ services:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
 
+    Gibbon\:
+        resource: '../Gibbon/src/*'
+        exclude: '../src/{Tests}'
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
@@ -25,3 +29,20 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    config:
+        class: 'Gibbon\Core'
+        arguments:
+            $directory: '%kernel.project_dir%/Gibbon'
+            $installed: '%installed%'
+        public: true
+
+    locale:
+        class: 'Gibbon\Locale'
+        arguments:
+            $absolutePath: '%kernel.project_dir%/Gibbon'
+        public: true
+
+    session:
+        class: App\Manager\SessionManager
+        public: true

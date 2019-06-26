@@ -1,0 +1,9 @@
+parameters:
+    guid: '%env(APP_SECRET)%'
+    installed: true
+    databaseServer: 'localhost'
+    databaseUsername: 'craigray'
+    databasePassword: 'tiGGer44'
+    databaseName: 'craigray_gibbon_v18'
+    databasePort: 3306
+    caching: 1
