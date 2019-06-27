@@ -14,6 +14,7 @@ namespace App\Manager;
 
 
 use Gibbon\View\Page;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -75,6 +76,21 @@ class LegacyManager
 
             if (!$session->has('systemSettingsSet')) {
                 return GibbonManager::returnErrorResponse('System Settings are not set: the system cannot be displayed.');
+            }
+        }
+
+        /**
+         * USER REDIRECTS
+         *
+         * TODO: When we implement routing, these can become part of the HTTP middleware.
+         */
+
+        // Check for force password reset flag
+        if ($session->has('passwordForceReset')) {
+            if ($session->get('passwordForceReset') == 'Y' && $session->get('address') != 'preferences.php') {
+                $URL = $session->get('absoluteURL').'/index.php?q=preferences.php';
+                $URL = $URL.'&forceReset=Y';
+                return new RedirectResponse($URL);
             }
         }
     }

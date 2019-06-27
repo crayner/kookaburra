@@ -7,3 +7,4 @@ parameters:
     databaseName: 'craigray_gibbon_v18'
     databasePort: 3306
     caching: 1
+    absoluteURL: 'http://bilby.craigrayner.com'

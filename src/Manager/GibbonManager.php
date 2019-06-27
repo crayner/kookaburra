@@ -49,7 +49,7 @@ class GibbonManager implements ContainerAwareInterface
         self::$instance = $this;
         $gibbon =     $this->container->get('config');
         self::setGibbon($gibbon);
-        $gibbon->session = $this->container->get('session');
+        $gibbon->session = $this->prepareSession($gibbon->getConfig('guid'));
         $gibbon->locale = $this->container->get('locale');
         self::setGuid($gibbon->getConfig('guid'));
 
@@ -138,5 +138,19 @@ class GibbonManager implements ContainerAwareInterface
             ]
         );
         return new Response($content);
+    }
+
+    /**
+     * prepareSession
+     * @return SessionManager
+     */
+    private function prepareSession($guid): SessionManager
+    {
+        $session = $this->container->get('session');
+        $session->setGuid($guid);
+        if (!$session->has('absoluteURL')) {
+            $session->set('absoluteURL', $this->container->getParameter('absoluteURL'));
+        }
+        return $session;
     }
 }

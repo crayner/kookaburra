@@ -45,6 +45,7 @@ class SessionManager extends Session
                 $_SESSION[$this->guid()] = [];
             }
             return array_merge($this->guidData, $_SESSION[$this->guid()]);
+
         }
         return $this->guidData = parent::has('guid') ? parent::get('guid') : [];
     }
@@ -62,8 +63,9 @@ class SessionManager extends Session
         }
 
         $this->guidData = array_merge($data, $_SESSION[$this->guid()]);
-
         parent::set($this->guid(), $this->guidData);
+
+        $_SESSION[$this->guid()] = $this->guidData;
 
         return $this;
     }
