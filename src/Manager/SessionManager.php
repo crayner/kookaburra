@@ -27,9 +27,45 @@ class SessionManager extends Session
      */
     private	$pdo ;
 
-    private function getSessionGuidData()
+    /**
+     * @var array
+     */
+    private $guidData;
+
+    /**
+     * getSessionGuidData
+     * @return array
+     */
+    private function getSessionGuidData(): array
     {
-        return parent::has('guid') ? parent::get('guid') : [];
+        if (null !== $this->guidData && is_array($this->guidData))
+        {
+            if (!isset($_SESSION[$this->guid()]))
+            {
+                $_SESSION[$this->guid()] = [];
+            }
+            return array_merge($this->guidData, $_SESSION[$this->guid()]);
+        }
+        return $this->guidData = parent::has('guid') ? parent::get('guid') : [];
+    }
+
+    /**
+     * setSessionGuidData
+     * @param array $data
+     * @return SessionManager
+     */
+    private function setSessionGuidData(array $data = []): self
+    {
+        if (!isset($_SESSION[$this->guid()]))
+        {
+            $_SESSION[$this->guid()] = [];
+        }
+
+        $this->guidData = array_merge($data, $_SESSION[$this->guid()]);
+
+        parent::set($this->guid(), $this->guidData);
+
+        return $this;
     }
 
     public function setGuid(string $guid)
@@ -139,5 +175,36 @@ class SessionManager extends Session
         }
 
         return $exists;
+    }
+
+    /**
+     * Set a key / value pair or array of key / value pairs in the session.
+     *
+     * @param	string	$key
+     * @param	mixed	$value
+     */
+    public function set($key, $value = null): void
+    {
+        $keyValuePairs = is_array($key)? $key : [$key => $value];
+
+        $data = $this->getSessionGuidData();
+
+        foreach ($keyValuePairs as $key => $value) {
+            $data[$key] = $value;
+            if (isset($_SESSION[$this->guid()][$key]))
+            {
+                unset($_SESSION[$this->guid()][$key]);
+            }
+        }
+
+        $this->setSessionGuidData($data);
+    }
+
+    /**
+     * mergeLegacySession
+     */
+    public function mergeLegacySession(): void
+    {
+        $this->setSessionGuidData($this->getSessionGuidData());
     }
 }

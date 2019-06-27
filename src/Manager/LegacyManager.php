@@ -30,9 +30,10 @@ class LegacyManager
     {
         $session = $request->getSession();
         $gibbon = GibbonManager::getGibbon();
+        $guid = GibbonManager::getGuid();
+        $connection2 = GibbonManager::getConnection();
 
         $isLoggedIn = $session->has('username') && $session->has('gibbonRoleIDCurrent');
-
 
         /**
          * MODULE BREADCRUMBS
@@ -41,7 +42,6 @@ class LegacyManager
             $page->breadcrumbs->setBaseURL('index.php?q=/modules/'.$module->name.'/');
             $page->breadcrumbs->add(__($module->name), $module->entryURL);
         }
-
 
         /**
          * CACHE & INITIAL PAGE LOAD
@@ -59,8 +59,23 @@ class LegacyManager
             $cacheLoad = $session->get('pageLoads') % intval($caching) == 0;
         }
 
+        $_SESSION[$guid]['a_test'] = 'Craig';
 
+        /**
+         * SYSTEM SETTINGS
+         *
+         * Checks to see if system settings are set from database. If not, tries to
+         * load them in. If this fails, something horrible has gone wrong ...
+         *
+         * TODO: Move this to the Session creation logic.
+         * TODO: Handle the exit() case with a pre-defined error template.
+         */
+        if (!$session->has('systemSettingsSet')) {
+            getSystemSettings($guid, $connection2);
 
-        dump($gibbon);
+            if (!$session->has('systemSettingsSet')) {
+                return GibbonManager::returnErrorResponse('System Settings are not set: the system cannot be displayed.');
+            }
+        }
     }
 }
