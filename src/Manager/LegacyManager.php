@@ -363,7 +363,5 @@ class LegacyManager
 
         $page->stylesheets->add('theme-dev', 'build/core/theme.min.css');
         $page->stylesheets->add('core', 'build/core/core.min.css', ['weight' => 10]);
-
-        dump($page);
     }
 }
