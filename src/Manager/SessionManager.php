@@ -222,4 +222,35 @@ if ($key === 'absolutePath')
     {
         $this->setSessionGuidData($this->getSessionGuidData());
     }
+
+    /**
+     * Remove one or many items from the session.
+     *
+     * @param  string|array  $keys
+     */
+    public function forget($keys)
+    {
+        $keys = is_array($keys)? $keys : [$keys];
+
+        foreach ($keys as $key) {
+            $this->remove($key);
+        }
+    }
+
+    /**
+     * Remove an item from the session, returning its value.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function remove($key)
+    {
+        $value = $this->get($key);
+        unset($_SESSION[$this->guid][$key]);
+        $data = $this->getSessionGuidData();
+        unset($data[$key]);
+        $this->setSessionGuidData($data);
+
+        return $value;
+    }
 }

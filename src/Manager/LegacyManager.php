@@ -12,6 +12,8 @@
 
 namespace App\Manager;
 
+use Gibbon\Domain\Students\StudentGateway;
+use Gibbon\Domain\System\ModuleGateway;
 use Gibbon\Domain\User\UserGateway;
 use Gibbon\View\Page;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -423,6 +425,66 @@ class LegacyManager
 
             if ($alert = returnProcessGetAlert($this->request->query->get('return'), '', $customReturns)) {
                 $page->addAlert($alert['context'], $alert['text']);
+            }
+        }
+
+        /**
+         * MENU ITEMS & FAST FINDER
+         *
+         * TODO: Move this somewhere more sensible.
+         */
+        if ($isLoggedIn) {
+            if ($cacheLoad || !$session->has('fastFinder')) {
+                $templateData = getFastFinder($connection2, $guid);
+                $templateData['enrolmentCount'] = $this->container->get(StudentGateway::class)->getStudentEnrolmentCount($session->get('gibbonSchoolYearID'));
+
+                $fastFinder = $page->fetchFromTemplate('finder.twig.html', $templateData);
+                $session->set('fastFinder', $fastFinder);
+            }
+
+            $moduleGateway = $this->container->get(ModuleGateway::class);
+
+            if ($cacheLoad || !$session->has('menuMainItems')) {
+                $menuMainItems = $moduleGateway->selectModulesByRole($session->get('gibbonRoleIDCurrent'))->fetchGrouped();
+
+                foreach ($menuMainItems as $category => &$items) {
+                    foreach ($items as &$item) {
+                        $modulePath = '/modules/'.$item['name'];
+                        $entryURL = isActionAccessible($guid, $connection2, $modulePath.'/'.$item['entryURL'])
+                            ? $item['entryURL']
+                            : $item['alternateEntryURL'];
+
+                        $item['url'] = $session->get('absoluteURL').'/index.php?q='.$modulePath.'/'.$entryURL;
+                    }
+                }
+
+                $session->set('menuMainItems', $menuMainItems);
+            }
+
+            if ($page->getModule()) {
+                $currentModule = $page->getModule()->getName();
+                $menuModule = $session->get('menuModuleName');
+
+                if ($cacheLoad || !$session->has('menuModuleItems') || $currentModule != $menuModule) {
+                    $menuModuleItems = $moduleGateway->selectModuleActionsByRole($page->getModule()->getID(), $session->get('gibbonRoleIDCurrent'))->fetchGrouped();
+                } else {
+                    $menuModuleItems = $session->get('menuModuleItems');
+                }
+
+                // Update the menu items to indicate the current active action
+                foreach ($menuModuleItems as $category => &$items) {
+                    foreach ($items as &$item) {
+                        $urlList = array_map('trim', explode(',', $item['URLList']));
+                        $item['active'] = in_array($session->get('action'), $urlList);
+                        $item['url'] = $session->get('absoluteURL').'/index.php?q=/modules/'
+                            .$item['moduleName'].'/'.$item['entryURL'];
+                    }
+                }
+
+                $session->set('menuModuleItems', $menuModuleItems);
+                $session->set('menuModuleName', $currentModule);
+            } else {
+                $session->forget(['menuModuleItems', 'menuModuleName']);
             }
         }
         dump($session,$page);
