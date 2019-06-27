@@ -236,7 +236,7 @@ class LegacyManager
          */
         $localeCode = str_replace('_', '-', $session->get('i18n')['code']);
         $localeCodeShort = substr($session->get('i18n')['code'], 0, 2);
-        $localePath = $session->get('absolutePath').'/lib/jquery-ui/i18n/jquery.ui.datepicker-%1$s.js';
+        $localePath = $session->get('absolutePath').'/build/jquery-ui/i18n/jquery.ui.datepicker-%1$s.js';
 
         $datepickerLocale = 'en-GB';
         if ($localeCode === 'en-US' || is_file(sprintf($localePath, $localeCode))) {
@@ -257,5 +257,78 @@ class LegacyManager
                 $cacheLoad = true;
             }
         }
+
+        /**
+         * JAVASCRIPT
+         *
+         * The config array defines a set of PHP values that are encoded and passed to
+         * the setup.js file, which handles initialization of js libraries.
+         */
+        $javascriptConfig = [
+            'config' => [
+                'datepicker' => [
+                    'locale' => $datepickerLocale,
+                ],
+                'thickbox' => [
+                    'pathToImage' => $session->get('absoluteURL').'/build/thickbox/loadingAnimation.gif',
+                ],
+                'tinymce' => [
+                    'valid_elements' => getSettingByScope($connection2, 'System', 'allowableHTML'),
+                ],
+                'sessionTimeout' => [
+                    'sessionDuration' => $sessionDuration,
+                    'message' => __('Your session is about to expire: you will be logged out shortly.'),
+                ]
+            ],
+        ];
+
+        /**
+         * There are currently a handful of scripts that must be in the page <HEAD>.
+         * Otherwise, the preference is to add javascript to the 'foot' at the bottom
+         * of the page, which speeds up rendering by deferring their execution until
+         * after all content has loaded.
+         */
+
+        // Set page scripts: head
+        $page->scripts->addMultiple([
+            'lv'             => 'build/LiveValidation/livevalidation_standalone.compressed.js',
+            'jquery'         => 'build/jquery/jquery.js',
+            'jquery-migrate' => 'build/jquery/jquery-migrate.min.js',
+            'jquery-ui'      => 'build/jquery-ui/js/jquery-ui.min.js',
+            'jquery-time'    => 'build/jquery-timepicker/jquery.timepicker.min.js',
+            'jquery-chained' => 'build/chained/jquery.chained.min.js',
+            'core'           => 'build/core/core.min.js',
+        ], ['context' => 'head']);
+
+        // Set page scripts: foot - jquery
+        $page->scripts->addMultiple([
+            'jquery-latex'    => 'build/jquery-jslatex/jquery.jslatex.js',
+            'jquery-form'     => 'build/jquery-form/jquery.form.js',
+            //This sets the default for en-US, or changes for none en-US
+            'jquery-date'     => $datepickerLocale === 'en-US' ? '' : 'build/jquery-ui/i18n/jquery.ui.datepicker-'.$datepickerLocale.'.js',
+            'jquery-autosize' => 'build/jquery-autosize/jquery.autosize.min.js',
+            'jquery-timeout'  => 'build/jquery-sessionTimeout/jquery.sessionTimeout.min.js',
+            'jquery-token'    => 'build/jquery-tokeninput/src/jquery.tokeninput.js',
+        ], ['context' => 'foot']);
+
+        // Set page scripts: foot - misc
+        $thickboxInline = 'var tb_pathToImage="'.$session->get('absoluteURL').'/build/thickbox/loadingAnimation.gif";';
+        $page->scripts->add('thickboxi', $thickboxInline, ['type' => 'inline']);
+        $page->scripts->addMultiple([
+            'thickbox' => 'build/thickbox/thickbox-compressed.js',
+            'tinymce'  => 'build/tinymce/tinymce.min.js',
+        ], ['context' => 'foot']);
+
+        // Set page scripts: foot - core
+        $page->scripts->add('core-config', 'window.Gibbon = '.json_encode($javascriptConfig).';', ['type' => 'inline']);
+        $page->scripts->add('core-setup', 'build/core/setup.js');
+
+        // Register scripts available to the core, but not included by default
+        $page->scripts->register('chart', 'build/Chart.js/2.0/Chart.bundle.min.js', ['context' => 'head']);
+
+        // Set system analytics code from session cache
+        $page->addHeadExtra($session->get('analytics'));
+
+        dump($page);
     }
 }

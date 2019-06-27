@@ -183,7 +183,7 @@ class GibbonManager implements ContainerAwareInterface
         $session->set('action', $address ? getActionName($address) : '');
         $session->setGuid($this->guid);
 
-        if (!$session->has('absoluteURL')) {
+        if (!$session->has('absoluteURL') || $session->get('absoluteURL') !== $this->container->getParameter('absoluteURL')) {
             $session->set('absoluteURL', $this->container->getParameter('absoluteURL'));
         }
         if (!$session->has('absolutePath')) {
