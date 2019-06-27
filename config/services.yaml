@@ -44,11 +44,21 @@ services:
         public: true
 
     session:
-        class: App\Manager\SessionManager
+        class: Gibbon\Contracts\Services\Session
+        public: true
+
+    db:
+        class: Gibbon\Database\MySqlConnector
         public: true
 
     page:
         class: Gibbon\View\Page
         arguments:
             $templateEngine: '@twig'
+        public: true
+
+    Gibbon\UI\Components\Header:
+        arguments:
+            $session: '@session'
+            $db: '@db'
         public: true

@@ -20,7 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon\Database;
 
 use Gibbon\Contracts\Database\Connection as ConnectionInterface;
-use PDO;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -58,7 +57,7 @@ class Connection implements ConnectionInterface
      * @param \PDO $pdo
      * @param array $config
      */
-    public function __construct(PDO $pdo, array $config = [])
+    public function __construct(\PDO $pdo, array $config = [])
     {
         $this->pdo = $pdo;
         $this->config = $config;

@@ -15,7 +15,10 @@ namespace App\Manager;
 use Gibbon\Domain\Students\StudentGateway;
 use Gibbon\Domain\System\ModuleGateway;
 use Gibbon\Domain\User\UserGateway;
+use Gibbon\UI\Components\Header;
 use Gibbon\View\Page;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -24,8 +27,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * Class LegacyManager
  * @package App\Manager
  */
-class LegacyManager
+class LegacyManager implements ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var Request
      */
@@ -487,6 +492,36 @@ class LegacyManager
                 $session->forget(['menuModuleItems', 'menuModuleName']);
             }
         }
-        dump($session,$page);
+
+        /**
+         * TEMPLATE DATA
+         *
+         * These values are merged with the Page class settings & content, then passed
+         * into the template engine for rendering. They're a work in progress, but once
+         * they're more finalized we can document them for theme developers.
+         */
+        $header = $this->container->get(Header::class);
+
+        $page->addData([
+            'isLoggedIn'        => $isLoggedIn,
+            'gibbonThemeName'   => $session->get('gibbonThemeName'),
+            'gibbonHouseIDLogo' => $session->get('gibbonHouseIDLogo'),
+            'organisationLogo'  => $session->get('organisationLogo'),
+            'minorLinks'        => $header->getMinorLinks($cacheLoad),
+            'notificationTray'  => $header->getNotificationTray($cacheLoad),
+            'sidebar'           => $showSidebar,
+            'version'           => $gibbon->getVersion(),
+            'versionName'       => 'v'.$gibbon->getVersion().($session->get('cuttingEdgeCode') == 'Y'? 'dev' : ''),
+            'rightToLeft'       => $session->get('i18n')['rtl'] == 'Y',
+        ]);
+
+        if ($isLoggedIn) {
+            $page->addData([
+                'menuMain'   => $session->get('menuMainItems', []),
+                'menuModule' => $session->get('menuModuleItems', []),
+                'fastFinder' => $session->get('fastFinder'),
+            ]);
+        }
+        dump($session,$page,$header);
     }
 }

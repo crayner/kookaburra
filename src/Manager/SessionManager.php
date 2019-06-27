@@ -136,6 +136,11 @@ class SessionManager extends Session
      */
     public function get($key, $default = null)
     {
+        if ($key === 'guid')
+        {
+            return $this->guid();
+        }
+
         if (is_array($key)) {
             // Fetch a value from multi-dimensional array with an array of keys
             $retrieve = function($array, $keys, $default) {

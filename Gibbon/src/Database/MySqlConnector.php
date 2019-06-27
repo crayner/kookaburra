@@ -19,10 +19,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Database;
 
-use PDO;
-use Gibbon\Database\Result;
-use Gibbon\Database\Connection;
-
 /**
  * Establish a Database Connection.
  *
@@ -35,14 +31,14 @@ class MySqlConnector
      * Establish a database connection.
      *
      * @param  array  $config
-     * @return PDO
+     * @return \PDO
      */
     public function connect(array $config)
     {
         $dsn = $this->getDsn($config);
 
         try {
-            $connection = new PDO($dsn, $config['databaseUsername'], $config['databasePassword']);
+            $connection = new \PDO($dsn, $config['databaseUsername'], $config['databasePassword']);
 
             $this->configureEncoding($connection);
             $this->setModes($connection);
@@ -82,7 +78,7 @@ class MySqlConnector
         return $dsn;
     }
 
-    protected function configureEncoding(PDO $connection)
+    protected function configureEncoding(\PDO $connection)
     {
         $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $connection->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
@@ -93,9 +89,9 @@ class MySqlConnector
      * Set the modes for the connection.
      * @param PDO $connection
      */
-    protected function setModes(PDO $connection)
+    protected function setModes(\PDO $connection)
     {
-        $version = $connection->getAttribute(PDO::ATTR_SERVER_VERSION);
+        $version = $connection->getAttribute(\PDO::ATTR_SERVER_VERSION);
 
         if (version_compare($version, '5.7') >= 0) {
             $mode ="SET SESSION `sql_mode` = ''"; // Default for 5.7.x is STRICT_ALL_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_DATE,NO_ZERO_IN_DATE,NO_AUTO_CREATE_USER

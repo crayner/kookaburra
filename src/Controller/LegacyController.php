@@ -18,6 +18,7 @@ class LegacyController extends AbstractController
     public function index(Request $request, LegacyManager $manager, ContainerInterface $container, GibbonManager $gibbonManager)
     {
         $gibbonManager->setContainer($container);
+        $manager->setContainer($container);
         $error = $gibbonManager->execute();
         if ($error instanceof Response){
             return $error;
