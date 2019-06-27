@@ -329,6 +329,41 @@ class LegacyManager
         // Set system analytics code from session cache
         $page->addHeadExtra($session->get('analytics'));
 
+        /**
+         * STYLESHEETS & CSS
+         */
+        $page->stylesheets->addMultiple([
+            'jquery-ui'    => 'build/jquery-ui/css/blitzer/jquery-ui.css',
+            'jquery-time'  => 'build/jquery-timepicker/jquery.timepicker.css',
+            'thickbox'     => 'build/thickbox/thickbox.css',
+        ], ['weight' => -1]);
+
+        // Add right-to-left stylesheet
+        if ($session->get('i18n')['rtl'] == 'Y') {
+            $page->theme->stylesheets->add('theme-rtl', '/build/themes/'.$session->get('gibbonThemeName').'/css/main_rtl.css', ['weight' => 1]);
+        }
+
+        // Set personal, organisational or theme background     
+        if (getSettingByScope($connection2, 'User Admin', 'personalBackground') == 'Y' && $session->has('personalBackground')) {
+            $backgroundImage = htmlPrep($session->get('personalBackground'));
+            $backgroundScroll = 'repeat scroll center top';
+        } else if ($session->has('organisationBackground')) {
+            $backgroundImage = $session->get('absoluteURL').'/'.$session->get('organisationBackground');
+            $backgroundScroll = 'repeat fixed center top';
+        } else {
+            $backgroundImage = $session->get('absoluteURL').'/build/themes/'.$session->get('gibbonThemeName').'/img/backgroundPage.jpg';
+            $backgroundScroll = 'repeat fixed center top';
+        }
+
+        $page->stylesheets->add(
+            'personal-background',
+            'body { background: url('.$backgroundImage.') '.$backgroundScroll.' #626cd3!important; }',
+            ['type' => 'inline']
+        );
+
+        $page->stylesheets->add('theme-dev', 'build/core/theme.min.css');
+        $page->stylesheets->add('core', 'build/core/core.min.css', ['weight' => 10]);
+
         dump($page);
     }
 }
