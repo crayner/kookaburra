@@ -216,5 +216,16 @@ class LegacyManager
             $showSidebar = strtolower($this->request->query->get('sidebar')) !== 'false';
         }
 
+        /**
+         * SESSION TIMEOUT
+         *
+         * Set session duration, which will be passed via JS config to setup the
+         * session timeout. Ensures a minimum session duration of 1200.
+         */
+        $sessionDuration = -1;
+        if ($isLoggedIn) {
+            $sessionDuration = $session->get('sessionDuration');
+            $sessionDuration = max(intval($sessionDuration), 1200);
+        }
     }
 }
