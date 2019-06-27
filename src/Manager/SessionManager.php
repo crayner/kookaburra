@@ -57,15 +57,18 @@ class SessionManager extends Session
      */
     private function setSessionGuidData(array $data = []): self
     {
-        if (!isset($_SESSION[$this->guid()]))
-        {
-            $_SESSION[$this->guid()] = [];
+        if (null !== $this->guid) {
+            if (!isset($_SESSION[$this->guid()]))
+            {
+                $_SESSION[$this->guid()] = [];
+            }
+
+            $this->guidData = array_merge($data, $_SESSION[$this->guid()]);
+
+            parent::set($this->guid(), $this->guidData);
+
+            $_SESSION[$this->guid()] = $this->guidData;
         }
-
-        $this->guidData = array_merge($data, $_SESSION[$this->guid()]);
-        parent::set($this->guid(), $this->guidData);
-
-        $_SESSION[$this->guid()] = $this->guidData;
 
         return $this;
     }

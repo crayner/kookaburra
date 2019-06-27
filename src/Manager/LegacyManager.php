@@ -49,7 +49,7 @@ class LegacyManager
         $session = $request->getSession();
         $gibbon = GibbonManager::getGibbon();
         $guid = GibbonManager::getGuid();
-        $connection2 = GibbonManager::getConnection();
+        $pdo = $connection2 = GibbonManager::getConnection();
 
         $isLoggedIn = $session->has('username') && $session->has('gibbonRoleIDCurrent');
 
@@ -226,6 +226,36 @@ class LegacyManager
         if ($isLoggedIn) {
             $sessionDuration = $session->get('sessionDuration');
             $sessionDuration = max(intval($sessionDuration), 1200);
+        }
+
+        /**
+         * LOCALE
+         *
+         * Sets the i18n locale for jQuery UI DatePicker (if the file exists, otherwise
+         * falls back to en-GB)
+         */
+        $localeCode = str_replace('_', '-', $session->get('i18n')['code']);
+        $localeCodeShort = substr($session->get('i18n')['code'], 0, 2);
+        $localePath = $session->get('absolutePath').'/lib/jquery-ui/i18n/jquery.ui.datepicker-%1$s.js';
+
+        $datepickerLocale = 'en-GB';
+        if ($localeCode === 'en-US' || is_file(sprintf($localePath, $localeCode))) {
+            $datepickerLocale = $localeCode;
+        } elseif (is_file(sprintf($localePath, $localeCodeShort))) {
+            $datepickerLocale = $localeCodeShort;
+        }
+
+        // Allow the URL to override system default from the i18l param
+        if ($this->request->query->has('i18n') && $gibbon->locale->getLocale() != $this->request->query->get('i18n')) {
+            $data = ['code' => $this->request->query->get('i18n')];
+            $sql = "SELECT * FROM gibboni18n WHERE code=:code LIMIT 1";
+
+            if ($result = $pdo->selectOne($sql, $data)) {
+                setLanguageSession($guid, $result, false);
+                $gibbon->locale->setLocale($this->request->query->get('i18n'));
+                $gibbon->locale->setTextDomain($pdo);
+                $cacheLoad = true;
+            }
         }
     }
 }

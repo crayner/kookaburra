@@ -170,6 +170,8 @@ class GibbonManager implements ContainerAwareInterface
         // Backwards compatibility for external modules
         $this->guid = $this->container->has('config')? $this->container->get('config')->guid() : $guid;
 
+        $session->setGuid($this->guid);
+
         // Detect the current module from the GET 'q' param. Fallback to the POST 'address',
         // which is currently used in many Process pages.
         // TODO: replace this logic when switching to routing.
@@ -183,6 +185,9 @@ class GibbonManager implements ContainerAwareInterface
 
         if (!$session->has('absoluteURL')) {
             $session->set('absoluteURL', $this->container->getParameter('absoluteURL'));
+        }
+        if (!$session->has('absolutePath')) {
+            $session->set('absolutePath', $this->container->getParameter('kernel.project_dir') . '/public');
         }
 
         return $session;
