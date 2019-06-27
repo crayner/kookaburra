@@ -46,3 +46,9 @@ services:
     session:
         class: App\Manager\SessionManager
         public: true
+
+    page:
+        class: Gibbon\View\Page
+        arguments:
+            $templateEngine: '@twig'
+        public: true

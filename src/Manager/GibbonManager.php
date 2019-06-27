@@ -13,6 +13,7 @@
 namespace App\Manager;
 
 use Gibbon\Contracts\Database\Connection;
+use Gibbon\Core;
 use Gibbon\Database\MySqlConnector;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -22,12 +23,23 @@ class GibbonManager implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
+    /**
+     * @var Core
+     */
+    private static $gibbon;
+
+    /**
+     * @var string
+     */
+    private static $guid;
+
     public function execute()
     {
         $gibbon =     $this->container->get('config');
+        self::setGibbon($gibbon);
         $gibbon->session = $this->container->get('session');
         $gibbon->locale = $this->container->get('locale');
-        $gibbon->getConfig('guid');
+        self::setGuid($gibbon->getConfig('guid'));
 
         //todo  Installation Testing will return installation Response if necessary
 
@@ -50,6 +62,38 @@ class GibbonManager implements ContainerAwareInterface
                 }
             }
         }
+    }
 
+    /**
+     * @return Core
+     */
+    public static function getGibbon(): Core
+    {
+        return self::$gibbon;
+    }
+
+    /**
+     * @param Core $gibbon
+     */
+    public static function setGibbon(Core $gibbon): void
+    {
+        self::$gibbon = $gibbon;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getGuid(): string
+    {
+        return self::$guid;
+    }
+
+    /**
+     * @param string $guid
+     */
+    public static function setGuid(string $guid): void
+    {
+        self::$guid = $guid;
+        self::$gibbon->session->setGuid($guid);
     }
 }

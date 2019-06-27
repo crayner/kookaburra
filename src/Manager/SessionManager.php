@@ -27,10 +27,14 @@ class SessionManager extends Session
      */
     private	$pdo ;
 
-
-    public function setGuid(string $_guid)
+    private function getSessionGuidData()
     {
-        $this->guid = $_guid;
+        return parent::has('guid') ? parent::get('guid') : [];
+    }
+
+    public function setGuid(string $guid)
+    {
+        $this->guid = $guid;
     }
 
     /**
@@ -95,10 +99,45 @@ class SessionManager extends Session
                 return $array;
             };
 
-            return $retrieve(parent::get('guid'), $key, $default);
+            return $retrieve($this->getSessionGuidData(), $key, $default);
         }
 
-        return (isset(parent::get('guid')[$key])) ? parent::get('guid')[$key] : $default;
+        return (isset($this->getSessionGuidData()[$key])) ? $this->getSessionGuidData()[$key] : $default;
     }
 
+    /**
+     * Checks if one or more keys are present and not null.
+     *
+     * @param  string|array  $key
+     * @return bool
+     */
+    public function has($keys)
+    {
+        $keys = is_array($keys)? $keys : [$keys];
+        $has = !empty($keys);
+
+        foreach ($keys as $key) {
+            $has &= !empty($this->getSessionGuidData()[$key]);
+        }
+
+        return $has;
+    }
+
+    /**
+     * Checks if one or more keys exist.
+     *
+     * @param  string|array  $keys
+     * @return bool
+     */
+    public function exists($keys)
+    {
+        $keys = is_array($keys)? $keys : [$keys];
+        $exists = !empty($keys);
+
+        foreach ($keys as $key) {
+            $exists &= array_key_exists($key, $this->getSessionGuidData());
+        }
+
+        return $exists;
+    }
 }

@@ -22,7 +22,9 @@ class LegacyController extends AbstractController
         if ($error instanceof Response){
             return $error;
         }
-        $manager->execute($request);
+        $manager->execute($request, $container->get('page'));
+
+        dump($container);
         return $this->render('legacy/index.html.twig', [
             'controller_name' => 'LegacyController',
         ]);

@@ -1,5 +1,5 @@
 parameters:
-    guid: '%env(APP_SECRET)%'
+    guid: 'ec7cf8c20a8e02c8e0fa5f4919dfb233'
     installed: true
     databaseServer: 'localhost'
     databaseUsername: 'craigray'

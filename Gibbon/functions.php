@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+use App\Manager\GibbonManager;
 use Gibbon\Forms\Form;
 use Gibbon\Services\Format;
 use Gibbon\Contracts\Comms\Mailer;
@@ -68,8 +69,6 @@ function emailBodyConvert($body)
  */
 function __($text, $params=[], $options=[])
 {
-    global $gibbon, $guid; // For backwards compatibilty
-
     $args = func_get_args();
 
     // Note: should remove the compatibility code in next
@@ -77,7 +76,7 @@ function __($text, $params=[], $options=[])
 
     // Compatibility with __($guid, $text) and __($guid, $text, $domain) calls.
     // Deprecated.
-    if ($args[0] === $guid) {
+    if ($args[0] === GibbonManager::getGuid()) {
         array_shift($args); // discard $guid
     }
     if (empty($args)) {
@@ -108,7 +107,7 @@ function __($text, $params=[], $options=[])
         return $text;
     }
 
-    return $gibbon->locale->translate($text, $params, $options);
+    return GibbonManager::getGibbon()->locale->translate($text, $params, $options);
 }
 
 /**
