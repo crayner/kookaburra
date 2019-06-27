@@ -14,6 +14,7 @@ namespace App\Manager;
 
 
 use Gibbon\Domain\DataUpdater\DataUpdaterGateway;
+use Gibbon\Domain\User\UserGateway;
 use Gibbon\View\Page;
 use PDOException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -363,5 +364,50 @@ class LegacyManager
 
         $page->stylesheets->add('theme-dev', 'build/core/theme.min.css');
         $page->stylesheets->add('core', 'build/core/core.min.css', ['weight' => 10]);
+
+        /**
+         * USER CONFIGURATION
+         *
+         * This should be moved to a one-time process to run after login, which can be
+         * handled by HTTP middleware.
+         */
+
+        // Try to auto-set user's calendar feed if not set already
+        if ($session->exists('calendarFeedPersonal') && $session->exists('googleAPIAccessToken')) {
+            if (!$session->has('calendarFeedPersonal') && $session->has('googleAPIAccessToken')) {
+                $service = $this->container->get('Google_Service_Calendar');
+                try {
+                    $calendar = $service->calendars->get('primary');
+                } catch (\Google_Service_Exception $e) {}
+
+                if (!empty($calendar['id'])) {
+                    $session->set('calendarFeedPersonal', $calendar['id']);
+                    $this->container->get(UserGateway::class)->update($session->get('gibbonPersonID'), [
+                        'calendarFeedPersonal' => $calendar['id'],
+                    ]);
+                }
+            }
+        }
+
+        // Get house logo and set session variable, only on first load after login (for performance)
+        if ($session->get('pageLoads') == 0 and $session->has('username') and !$session->has('gibbonHouseIDLogo')) {
+            $dataHouse = array('gibbonHouseID' => $session->get('gibbonHouseID'));
+            $sqlHouse = 'SELECT logo, name FROM gibbonHouse
+        WHERE gibbonHouseID=:gibbonHouseID';
+            $house = $pdo->selectOne($sqlHouse, $dataHouse);
+
+            if (!empty($house)) {
+                $session->set('gibbonHouseIDLogo', $house['logo']);
+                $session->set('gibbonHouseIDName', $house['name']);
+            }
+        }
+
+        // Show warning if not in the current school year
+        // TODO: When we implement routing, these can become part of the HTTP middleware.
+        if ($isLoggedIn) {
+            if ($session->get('gibbonSchoolYearID') != $session->get('gibbonSchoolYearIDCurrent')) {
+                $page->addWarning('<b><u>'.sprintf(__('Warning: you are logged into the system in school year %1$s, which is not the current year.'), $session->get('gibbonSchoolYearName')).'</b></u>'.__('Your data may not look quite right (for example, students who have left the school will not appear in previous years), but you should be able to edit information from other years which is not available in the current year.'));
+            }
+        }
     }
 }
