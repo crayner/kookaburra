@@ -15,9 +15,10 @@ namespace App\Manager;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Core;
 use Gibbon\Database\MySqlConnector;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 class GibbonManager implements ContainerAwareInterface
@@ -40,11 +41,29 @@ class GibbonManager implements ContainerAwareInterface
     private $connection;
 
     /**
+     * @var Request
+     */
+    private $request;
+
+    /**
      * @var GibbonManager
      */
     private static $instance;
 
-    public function execute()
+    /**
+     * GibbonManager constructor.
+     * @param RequestStack $stack
+     */
+    public function __construct(RequestStack $stack)
+    {
+        $this->request = $stack->getCurrentRequest();
+    }
+
+    /**
+     * execute
+     * @return Response|null
+     */
+    public function execute(): ?Response
     {
         self::$instance = $this;
         $gibbon =     $this->container->get('config');
@@ -73,6 +92,7 @@ class GibbonManager implements ContainerAwareInterface
                 }
             }
         }
+        return null;
     }
 
     /**
@@ -147,10 +167,24 @@ class GibbonManager implements ContainerAwareInterface
     private function prepareSession($guid): SessionManager
     {
         $session = $this->container->get('session');
-        $session->setGuid($guid);
+        // Backwards compatibility for external modules
+        $this->guid = $this->container->has('config')? $this->container->get('config')->guid() : $guid;
+
+        // Detect the current module from the GET 'q' param. Fallback to the POST 'address',
+        // which is currently used in many Process pages.
+        // TODO: replace this logic when switching to routing.
+
+        $address = $this->request->query->get['q'] ?? $this->request->request->get['address'] ?? '';
+
+        $session->set('address', $address);
+        $session->set('module', $address ? getModuleName($address) : '');
+        $session->set('action', $address ? getActionName($address) : '');
+        $session->setGuid($this->guid);
+
         if (!$session->has('absoluteURL')) {
             $session->set('absoluteURL', $this->container->getParameter('absoluteURL'));
         }
+
         return $session;
     }
 }

@@ -13,9 +13,12 @@
 namespace App\Manager;
 
 
+use Gibbon\Domain\DataUpdater\DataUpdaterGateway;
 use Gibbon\View\Page;
+use PDOException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class LegacyManager
@@ -23,6 +26,20 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class LegacyManager
 {
+    /**
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * LegacyManager constructor.
+     * @param RequestStack $stack
+     */
+    public function __construct(RequestStack $stack)
+    {
+        $this->request = $stack->getCurrentRequest();
+    }
+
     /**
      * execute
      * @param Request $request
@@ -93,5 +110,111 @@ class LegacyManager
                 return new RedirectResponse($URL);
             }
         }
+/*
+        // Redirects after login
+        if ($session->get('pageLoads') === 0 && !$session->has('address')) { // First page load, so proceed
+
+            if ($session->has('username')) { // Are we logged in?
+                $roleCategory = getRoleCategory($session->get('gibbonRoleIDCurrent'), $connection2);
+
+                // Deal with attendance self-registration redirect
+                // Are we a student?
+                if ($roleCategory == 'Student') {
+                    // Can we self register?
+                    if (isActionAccessible($guid, $connection2, '/modules/Attendance/attendance_studentSelfRegister.php')) {
+                        // Check to see if student is on site
+                        $studentSelfRegistrationIPAddresses = getSettingByScope(
+                            $connection2,
+                            'Attendance',
+                            'studentSelfRegistrationIPAddresses'
+                        );
+                        $realIP = getIPAddress();
+                        if ($studentSelfRegistrationIPAddresses != '' && !is_null($studentSelfRegistrationIPAddresses)) {
+                            $inRange = false ;
+                            foreach (explode(',', $studentSelfRegistrationIPAddresses) as $ipAddress) {
+                                if (trim($ipAddress) == $realIP) {
+                                    $inRange = true ;
+                                }
+                            }
+                            if ($inRange) {
+                                $currentDate = date('Y-m-d');
+                                if (isSchoolOpen($guid, $currentDate, $connection2, true)) { // Is school open today
+                                    // Check for existence of records today
+                                    try {
+                                        $data = array('gibbonPersonID' => $session->get('gibbonPersonID'), 'date' => $currentDate);
+                                        $sql = "SELECT type FROM gibbonAttendanceLogPerson WHERE gibbonPersonID=:gibbonPersonID AND date=:date ORDER BY timestampTaken DESC";
+                                        $result = $connection2->prepare($sql);
+                                        $result->execute($data);
+                                    } catch (PDOException $e) {
+                                        $page->addError($e->getMessage());
+                                    }
+
+                                    if ($result->rowCount() == 0) {
+                                        // No registration yet
+                                        // Redirect!
+                                        $URL = $session->get('absoluteURL').
+                                            '/index.php?q=/modules/Attendance'.
+                                            '/attendance_studentSelfRegister.php'.
+                                            '&redirect=true';
+                                        $session->set('pageLoads', null);
+                                        header("Location: {$URL}");
+                                        exit;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+// Deal with Data Updater redirect (if required updates are enabled)
+                $requiredUpdates = getSettingByScope($connection2, 'Data Updater', 'requiredUpdates');
+                if ($requiredUpdates == 'Y') {
+                    if (isActionAccessible($guid, $connection2, '/modules/Data Updater/data_updates.php')) { // Can we update data?
+                        $redirectByRoleCategory = getSettingByScope(
+                            $connection2,
+                            'Data Updater',
+                            'redirectByRoleCategory'
+                        );
+                        $redirectByRoleCategory = explode(',', $redirectByRoleCategory);
+
+                        // Are we the right role category?
+                        if (in_array($roleCategory, $redirectByRoleCategory)) {
+                            $gateway = new DataUpdaterGateway($pdo);
+
+                            $updatesRequiredCount = $gateway->countAllRequiredUpdatesByPerson($session->get('gibbonPersonID'));
+
+                            if ($updatesRequiredCount > 0) {
+                                $URL = $session->get('absoluteURL').'/index.php?q=/modules/Data Updater/data_updates.php&redirect=true';
+                                $session->set('pageLoads', null);
+                                header("Location: {$URL}");
+                                exit;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+*/
+
+        /**
+         * SIDEBAR SETUP
+         *
+         * TODO: move all of the sidebar session variables to the $page->addSidebarExtra() method.
+         */
+
+        // Set sidebar extra content values via Session.
+        $session->set('sidebarExtra', '');
+        $session->set('sidebarExtraPosition', 'top');
+
+        // Check the current Action 'entrySidebar' to see if we should display a sidebar
+        $showSidebar = $page->getAction()
+            ? $page->getAction()['entrySidebar'] != 'N'
+            : true;
+
+        // Override showSidebar if the URL 'sidebar' param is explicitly set
+        if ($this->request->query->has('sidebar')) {
+            $showSidebar = strtolower($this->request->query->get('sidebar')) !== 'false';
+        }
+
     }
 }
