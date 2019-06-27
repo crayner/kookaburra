@@ -12,11 +12,8 @@
 
 namespace App\Manager;
 
-
-use Gibbon\Domain\DataUpdater\DataUpdaterGateway;
 use Gibbon\Domain\User\UserGateway;
 use Gibbon\View\Page;
-use PDOException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -146,7 +143,7 @@ class LegacyManager
                                         $sql = "SELECT type FROM gibbonAttendanceLogPerson WHERE gibbonPersonID=:gibbonPersonID AND date=:date ORDER BY timestampTaken DESC";
                                         $result = $connection2->prepare($sql);
                                         $result->execute($data);
-                                    } catch (PDOException $e) {
+                                    } catch (\PDOException $e) {
                                         $page->addError($e->getMessage());
                                     }
 
@@ -409,5 +406,25 @@ class LegacyManager
                 $page->addWarning('<b><u>'.sprintf(__('Warning: you are logged into the system in school year %1$s, which is not the current year.'), $session->get('gibbonSchoolYearName')).'</b></u>'.__('Your data may not look quite right (for example, students who have left the school will not appear in previous years), but you should be able to edit information from other years which is not available in the current year.'));
             }
         }
+
+        /**
+         * RETURN PROCESS
+         *
+         * Adds an alert to the index based on the URL 'return' parameter.
+         *
+         * TODO: Remove all returnProcess() from pages. We could add a method to the
+         * Page class to allow them to register custom messages, or use Session flash
+         * to add the message directly from the Process pages.
+         */
+        if (!$session->has('address') && !empty($this->request->query->get('return'))) {
+            $customReturns = [
+                'success1' => __('Password reset was successful: you may now log in.')
+            ];
+
+            if ($alert = returnProcessGetAlert($this->request->query->get('return'), '', $customReturns)) {
+                $page->addAlert($alert['context'], $alert['text']);
+            }
+        }
+        dump($session,$page);
     }
 }

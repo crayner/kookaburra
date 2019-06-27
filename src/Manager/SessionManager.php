@@ -98,6 +98,10 @@ class SessionManager extends Session
         return $this->guid;
     }
 
+    /**
+     * loadSystemSettings
+     * @param Connection $pdo
+     */
     public function loadSystemSettings(Connection $pdo)
     {
         // System settings from gibbonSetting
@@ -105,7 +109,9 @@ class SessionManager extends Session
         $result = $pdo->executeQuery(array(), $sql);
 
         while ($row = $result->fetch()) {
-            $this->set($row['name'], $row['value']);
+            if (!empty($row['value'])) {
+                $this->set($row['name'], $row['value']);
+            }
         }
     }
 
@@ -190,6 +196,10 @@ class SessionManager extends Session
      */
     public function set($key, $value = null): void
     {
+if ($key === 'absolutePath')
+{
+    dump($key,$value,debug_backtrace());
+}
         $keyValuePairs = is_array($key)? $key : [$key => $value];
 
         $data = $this->getSessionGuidData();
