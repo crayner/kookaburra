@@ -62,3 +62,15 @@ services:
             $session: '@session'
             $db: '@db'
         public: true
+
+    Gibbon\UI\Components\Sidebar:
+        arguments:
+            $session: '@session'
+            $db: '@db'
+        public: true
+
+    Gibbon\Forms\Form:
+        arguments:
+            $renderer: '@Gibbon\Forms\FormRenderer'
+            $factory: '@Gibbon\Forms\FormFactory'
+        public: true

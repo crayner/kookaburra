@@ -15,6 +15,7 @@ namespace App\Manager;
 use Gibbon\Core;
 use Gibbon\Database\Connection;
 use Gibbon\Database\MySqlConnector;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +72,7 @@ class GibbonManager implements ContainerAwareInterface
     public function execute(): ?Response
     {
         self::$instance = $this;
-        $gibbon =     $this->container->get('config');
+        $gibbon = $this->container->get('config');
         self::setGibbon($gibbon);
 
         $gibbon->session = $this->prepareSession($gibbon->getConfig('guid'));
@@ -214,5 +215,23 @@ class GibbonManager implements ContainerAwareInterface
     public static function setPDO(\PDO $pdo): void
     {
         self::$instance->pdo = $pdo;
+    }
+
+    /**
+     * getContainer
+     * @return Container
+     */
+    public static function getContainer(): Container
+    {
+        return self::$instance->container;
+    }
+
+    /**
+     * getRequest
+     * @return Request
+     */
+    public static function getRequest(): Request
+    {
+        return self::$instance->request;
     }
 }

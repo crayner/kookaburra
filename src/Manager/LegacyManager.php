@@ -16,6 +16,7 @@ use Gibbon\Domain\Students\StudentGateway;
 use Gibbon\Domain\System\ModuleGateway;
 use Gibbon\Domain\User\UserGateway;
 use Gibbon\UI\Components\Header;
+use Gibbon\UI\Components\Sidebar;
 use Gibbon\UI\Dashboard\ParentDashboard;
 use Gibbon\UI\Dashboard\StaffDashboard;
 use Gibbon\UI\Dashboard\StudentDashboard;
@@ -25,6 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+
 
 /**
  * Class LegacyManager
@@ -350,7 +352,7 @@ class LegacyManager implements ContainerAwareInterface
 
         // Add right-to-left stylesheet
         if ($session->get('i18n')['rtl'] == 'Y') {
-            $page->theme->stylesheets->add('theme-rtl', '/build/themes/'.$session->get('gibbonThemeName').'/css/main_rtl.css', ['weight' => 1]);
+            $page->theme->stylesheets->add('theme-rtl', '/themes/'.$session->get('gibbonThemeName').'/css/main_rtl.css', ['weight' => 1]);
         }
 
         // Set personal, organisational or theme background     
@@ -361,7 +363,7 @@ class LegacyManager implements ContainerAwareInterface
             $backgroundImage = $session->get('absoluteURL').'/'.$session->get('organisationBackground');
             $backgroundScroll = 'repeat fixed center top';
         } else {
-            $backgroundImage = $session->get('absoluteURL').'/build/themes/'.$session->get('gibbonThemeName').'/img/backgroundPage.jpg';
+            $backgroundImage = $session->get('absoluteURL').'/themes/'.$session->get('gibbonThemeName').'/img/backgroundPage.jpg';
             $backgroundScroll = 'repeat fixed center top';
         }
 
@@ -586,13 +588,13 @@ class LegacyManager implements ContainerAwareInterface
 
                 switch ($category) {
                     case 'Parent':
-                        $page->write($this->container->get(Gibbon\UI\Dashboard\ParentDashboard::class)->getOutput());
+                        $page->write($this->container->get(ParentDashboard::class)->getOutput());
                         break;
                     case 'Student':
-                        $page->write($this->container->get(Gibbon\UI\Dashboard\StudentDashboard::class)->getOutput());
+                        $page->write($this->container->get(StudentDashboard::class)->getOutput());
                         break;
                     case 'Staff':
-                        $page->write($this->container->get(Gibbon\UI\Dashboard\StaffDashboard::class)->getOutput());
+                        $page->write($this->container->get(StaffDashboard::class)->getOutput());
                         break;
                     default:
                         $page->write('<div class="error">'.__('Your current role type cannot be determined.').'</div>');
@@ -623,6 +625,22 @@ class LegacyManager implements ContainerAwareInterface
                     $page->writeFromFile('./error.php', $globals);
                 }
             }
+        }
+
+        /**
+         * GET SIDEBAR CONTENT
+         *
+         * TODO: rewrite the Sidebar class as a template file.
+         */
+        $sidebarContents = '';
+        if ($showSidebar) {
+            $page->addSidebarExtra($session->get('sidebarExtra'));
+            $session->set('sidebarExtra', '');
+
+            $page->addData([
+                'sidebarContents' => $this->container->get(Sidebar::class)->getOutput(),
+                'sidebarPosition' => $session->get('sidebarExtraPosition'),
+            ]);
         }
         dump($session,$page,$header, $gibbon);
     }
