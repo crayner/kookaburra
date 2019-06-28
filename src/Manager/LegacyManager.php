@@ -16,6 +16,9 @@ use Gibbon\Domain\Students\StudentGateway;
 use Gibbon\Domain\System\ModuleGateway;
 use Gibbon\Domain\User\UserGateway;
 use Gibbon\UI\Components\Header;
+use Gibbon\UI\Dashboard\ParentDashboard;
+use Gibbon\UI\Dashboard\StaffDashboard;
+use Gibbon\UI\Dashboard\StudentDashboard;
 use Gibbon\View\Page;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -54,7 +57,9 @@ class LegacyManager implements ContainerAwareInterface
         $session = $request->getSession();
         $gibbon = GibbonManager::getGibbon();
         $guid = GibbonManager::getGuid();
-        $pdo = $connection2 = GibbonManager::getConnection();
+        $pdo = GibbonManager::getConnection();
+        $connection2= GibbonManager::getPDO();
+        $version = $gibbon->getVersion();
 
         $isLoggedIn = $session->has('username') && $session->has('gibbonRoleIDCurrent');
 
@@ -396,8 +401,7 @@ class LegacyManager implements ContainerAwareInterface
         // Get house logo and set session variable, only on first load after login (for performance)
         if ($session->get('pageLoads') == 0 and $session->has('username') and !$session->has('gibbonHouseIDLogo')) {
             $dataHouse = array('gibbonHouseID' => $session->get('gibbonHouseID'));
-            $sqlHouse = 'SELECT logo, name FROM gibbonHouse
-        WHERE gibbonHouseID=:gibbonHouseID';
+            $sqlHouse = "SELECT `logo`, `name` FROM `gibbonHouse` WHERE `gibbonHouseID`=:gibbonHouseID";
             $house = $pdo->selectOne($sqlHouse, $dataHouse);
 
             if (!empty($house)) {
@@ -522,6 +526,104 @@ class LegacyManager implements ContainerAwareInterface
                 'fastFinder' => $session->get('fastFinder'),
             ]);
         }
-        dump($session,$page,$header);
+
+        /**
+         * GET PAGE CONTENT
+         *
+         * TODO: move queries into Gateway classes.
+         * TODO: rewrite dashboards as template files.
+         */
+        if (!$session->has('address')) {
+            // Welcome message
+            if (!$isLoggedIn) {
+                // Create auto timeout message
+                if ($this->request->query->has('timeout') && $this->request->query->get('timeout') == 'true') {
+                    $page->addWarning(__('Your session expired, so you were automatically logged out of the system.'));
+                }
+
+                $templateData = [
+                    'indexText'                 => $session->get('indexText'),
+                    'organisationName'          => $session->get('organisationName'),
+                    'publicStudentApplications' => getSettingByScope($connection2, 'Application Form', 'publicApplications') == 'Y',
+                    'publicStaffApplications'   => getSettingByScope($connection2, 'Staff Application Form', 'staffApplicationFormPublicApplications') == 'Y',
+                    'makeDepartmentsPublic'     => getSettingByScope($connection2, 'Departments', 'makeDepartmentsPublic') == 'Y',
+                    'makeUnitsPublic'           => getSettingByScope($connection2, 'Planner', 'makeUnitsPublic') == 'Y',
+                ];
+
+                // Get any elements hooked into public home page, checking if they are turned on
+                $sql = "SELECT * FROM gibbonHook WHERE type='Public Home Page' ORDER BY name";
+                $hooks = $pdo->select($sql)->fetchAll();
+                $templateData['indexHooks'] = [];
+
+                foreach ($hooks as $hook) {
+                    $options = unserialize(str_replace("'", "\'", $hook['options']));
+                    $check = getSettingByScope($connection2, $options['toggleSettingScope'], $options['toggleSettingName']);
+                    if ($check == $options['toggleSettingValue']) { // If its turned on, display it
+                        $options['text'] = stripslashes($options['text']);
+                        $templateData['indexHooks'][] = $options;
+                    }
+                }
+
+                $page->writeFromTemplate('welcome.html.twig', $templateData);
+
+            } else {
+                // Custom content loader
+                if (!$session->exists('index_custom.php')) {
+                    $globals = [
+                        'guid'        => $guid,
+                        'connection2' => $connection2,
+                    ];
+
+                    $session->set('index_custom.php', $page->fetchFromFile('./index_custom.php', $globals));
+                }
+
+                if ($session->has('index_custom.php')) {
+                    $page->write($session->get('index_custom.php'));
+                }
+
+                // DASHBOARDS!
+                $category = getRoleCategory($session->get('gibbonRoleIDCurrent'), $connection2);
+
+                switch ($category) {
+                    case 'Parent':
+                        $page->write($this->container->get(Gibbon\UI\Dashboard\ParentDashboard::class)->getOutput());
+                        break;
+                    case 'Student':
+                        $page->write($this->container->get(Gibbon\UI\Dashboard\StudentDashboard::class)->getOutput());
+                        break;
+                    case 'Staff':
+                        $page->write($this->container->get(Gibbon\UI\Dashboard\StaffDashboard::class)->getOutput());
+                        break;
+                    default:
+                        $page->write('<div class="error">'.__('Your current role type cannot be determined.').'</div>');
+                }
+            }
+        } else {
+            $address = trim($page->getAddress(), ' /');
+
+            if ($page->isAddressValid($address) == false) {
+                $page->addError(__('Illegal address detected: access denied.'));
+            } else {
+                // Pass these globals into the script of the included file, for backwards compatibility.
+                // These will be removed when we begin the process of ooifying action pages.
+                $globals = [
+                    'guid'        => $guid,
+                    'gibbon'      => $gibbon,
+                    'version'     => $gibbon->getVersion(),
+                    'pdo'         => $pdo,
+                    'connection2' => $connection2,
+//                    'autoloader'  => $autoloader,
+                    'container'   => $this->container,
+                    'page'        => $page,
+                ];
+
+                if (is_file('./'.$address)) {
+                    $page->writeFromFile('./'.$address, $globals);
+                } else {
+                    $page->writeFromFile('./error.php', $globals);
+                }
+            }
+        }
+        dump($session,$page,$header, $gibbon);
     }
 }

@@ -12,8 +12,8 @@
 
 namespace App\Manager;
 
-use Gibbon\Contracts\Database\Connection;
 use Gibbon\Core;
+use Gibbon\Database\Connection;
 use Gibbon\Database\MySqlConnector;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -36,9 +36,14 @@ class GibbonManager implements ContainerAwareInterface
     private $guid;
 
     /**
-     * @var \PDO
+     * @var Connection
      */
     private $connection;
+
+    /**
+     * @var \PDO
+     */
+    private $pdo;
 
     /**
      * @var Request
@@ -68,6 +73,7 @@ class GibbonManager implements ContainerAwareInterface
         self::$instance = $this;
         $gibbon =     $this->container->get('config');
         self::setGibbon($gibbon);
+
         $gibbon->session = $this->prepareSession($gibbon->getConfig('guid'));
         $gibbon->locale = $this->container->get('locale');
         self::setGuid($gibbon->getConfig('guid'));
@@ -80,8 +86,9 @@ class GibbonManager implements ContainerAwareInterface
             $mysqlConnector = new MySqlConnector();
             if ($pdo = $mysqlConnector->connect($gibbon->getConfig())) {
                 $this->container->set('db', $pdo);
-                $this->container->set(Connection::class, $pdo);
-                self::setConnection($pdo->getConnection());
+//                $this->container->set(Connection::class, $pdo);
+                self::setConnection($pdo);
+                self::setPDO($pdo->getConnection());
 
                 $gibbon->initializeCore($this->container);
             } else {
@@ -129,17 +136,17 @@ class GibbonManager implements ContainerAwareInterface
     }
 
     /**
-     * @return \PDO
+     * @return Connection
      */
-    public static function getConnection(): \PDO
+    public static function getConnection(): Connection
     {
         return self::$instance->connection;
     }
 
     /**
-     * @param \PDO $connection
+     * @param Connection $connection
      */
-    public static function setConnection(\PDO $connection): void
+    public static function setConnection(Connection $connection): void
     {
         self::$instance->connection = $connection;
     }
@@ -191,5 +198,21 @@ class GibbonManager implements ContainerAwareInterface
         }
 
         return $session;
+    }
+
+    /**
+     * @return \PDO
+     */
+    public static function getPDO(): \PDO
+    {
+        return self::$instance->pdo;
+    }
+
+    /**
+     * @param \PDO $pdo
+     */
+    public static function setPDO(\PDO $pdo): void
+    {
+        self::$instance->pdo = $pdo;
     }
 }
