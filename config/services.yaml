@@ -74,3 +74,19 @@ services:
             $renderer: '@Gibbon\Forms\FormRenderer'
             $factory: '@Gibbon\Forms\FormFactory'
         public: true
+
+    theme:
+        class: Gibbon\Domain\System\Theme
+        public: true
+
+    action:
+        class: App\Entity\Action
+        public: true
+
+    module:
+        class: Gibbon\Domain\System\Module
+        public: true
+
+    App\Manager\GibbonManager:
+        arguments:
+            $version: '%version%'

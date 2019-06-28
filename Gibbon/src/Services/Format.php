@@ -60,7 +60,7 @@ class Format
         
         $settings['absolutePath'] = $session->get('absolutePath');
         $settings['absoluteURL'] = $session->get('absoluteURL');
-        $settings['gibbonThemeName'] = $session->get('gibbonThemeName');
+        $settings['gibbonThemeName'] = $session->get('gibbonThemeName', 'Default');
         $settings['currency'] = $session->get('currency');
         $settings['currencySymbol'] = !empty(substr($settings['currency'], 4)) ? substr($settings['currency'], 4) : '';
         $settings['currencyName'] = substr($settings['currency'], 0, 3);

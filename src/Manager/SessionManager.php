@@ -160,19 +160,30 @@ class SessionManager extends Session
     /**
      * Checks if one or more keys are present and not null.
      *
-     * @param  string|array  $key
+     * @param  string|array  $keys
      * @return bool
      */
-    public function has($keys)
+    public function has($keys): bool
     {
         $keys = is_array($keys)? $keys : [$keys];
-        $has = !empty($keys);
-
-        foreach ($keys as $key) {
-            $has &= !empty($this->getSessionGuidData()[$key]);
+        if ($keys === [])
+        {
+            return false;
+        }
+        if (!$this->exists($keys))
+        {
+            return false;
         }
 
-        return $has;
+        $data = $this->getSessionGuidData();
+        foreach ($keys as $key) {
+            if (empty($data[$key]) && $data[$key] !== false)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -186,8 +197,9 @@ class SessionManager extends Session
         $keys = is_array($keys)? $keys : [$keys];
         $exists = !empty($keys);
 
+        $data = $this->getSessionGuidData();
         foreach ($keys as $key) {
-            $exists &= array_key_exists($key, $this->getSessionGuidData());
+            $exists &= isset($data[$key]);
         }
 
         return $exists;
@@ -201,10 +213,6 @@ class SessionManager extends Session
      */
     public function set($key, $value = null): void
     {
-if ($key === 'absolutePath')
-{
-    dump($key,$value,debug_backtrace());
-}
         $keyValuePairs = is_array($key)? $key : [$key => $value];
 
         $data = $this->getSessionGuidData();

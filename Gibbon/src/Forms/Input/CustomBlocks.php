@@ -122,7 +122,7 @@ class CustomBlocks implements OutputableInterface
      */
     public function addBlockButton($name, $title, $icon, $class = '')
     {
-        $iconPath = './themes/'.$this->session->get("gibbonThemeName").'/img/';
+        $iconPath = './themes/'.$this->session->get('gibbonThemeName', 'Default').'/img/';
         $iconSrc = stripos($icon, '/') === false? $iconPath.$icon : $icon;
         
         $button = $this->factory->createWebLink(sprintf('<img title=%1$s src="%2$s" style="margin-right:4px;" />', $title, $iconSrc))

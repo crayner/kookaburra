@@ -12,9 +12,14 @@
 
 namespace App\Manager;
 
+use App\Entity\Action;
+use App\Provider\ThemeProvider;
 use Gibbon\Core;
 use Gibbon\Database\Connection;
 use Gibbon\Database\MySqlConnector;
+use Gibbon\Domain\System\Module;
+use Gibbon\Domain\System\Theme;
+use Gibbon\Services\ErrorHandler;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -57,12 +62,24 @@ class GibbonManager implements ContainerAwareInterface
     private static $instance;
 
     /**
+     * @var ThemeProvider
+     */
+    private $themeProvider;
+
+    /**
+     * @var string
+     */
+    private $version;
+
+    /**
      * GibbonManager constructor.
      * @param RequestStack $stack
      */
-    public function __construct(RequestStack $stack)
+    public function __construct(RequestStack $stack, ThemeProvider $themeProvider, string $version)
     {
         $this->request = $stack->getCurrentRequest();
+        $this->themeProvider = $themeProvider;
+        $this->version = $version;
     }
 
     /**
@@ -73,6 +90,7 @@ class GibbonManager implements ContainerAwareInterface
     {
         self::$instance = $this;
         $gibbon = $this->container->get('config');
+        $gibbon->wrapVersion = $this->version;
         self::setGibbon($gibbon);
 
         $gibbon->session = $this->prepareSession($gibbon->getConfig('guid'));
@@ -100,6 +118,12 @@ class GibbonManager implements ContainerAwareInterface
                 }
             }
         }
+
+        $this->prepareAction()
+            ->prepareModule()
+            ->prepareTheme()
+            ->preparePage();
+
         return null;
     }
 
@@ -233,5 +257,99 @@ class GibbonManager implements ContainerAwareInterface
     public static function getRequest(): Request
     {
         return self::$instance->request;
+    }
+
+    /**
+     * prepareTheme
+     * @return GibbonManager
+     * @throws \Exception
+     */
+    private function prepareTheme(): self
+    {
+        $session = $this->request->getSession();
+        $repository = $this->themeProvider->getRepository();
+
+        if ($session->has('gibbonThemeIDPersonal')) {
+            $data = ['gibbonThemeID' => $session->get('gibbonThemeIDPersonal')];
+        } else {
+            $data = ['active' => 'Y'];
+        }
+
+        $themeData = $repository->findOneBy($data);
+
+        $session->set('gibbonThemeID', $themeData->getID() ?? 001);
+        $session->set('gibbonThemeName', $themeData->getName() ?? 'Default');
+
+        $theme = $themeData ? new Theme($themeData->toArray()) : null;
+
+        $this->container->set('theme', $theme);
+        return $this;
+    }
+
+    /**
+     * preparePage
+     * @return GibbonManager
+     */
+    private function preparePage(): self
+    {
+        $session = $this->request->getSession();
+
+        $pageTitle = $session->get('organisationNameShort').' - '.$session->get('systemName');
+        if ($session->has('module')) {
+            $pageTitle .= ' - '.__($session->get('module'));
+        }
+        $page = $this->container->get('page');
+
+        $page->setParams([
+            'title'   => $pageTitle,
+            'address' => $session->get('address'),
+            'action'  => $this->container->get('action'),
+            'module'  => $this->container->get('module'),
+            'theme'   => $this->container->get('theme'),
+        ]);
+
+        $this->container->set('errorHandler', new ErrorHandler($session->get('installType'), $page));
+        return $this;
+    }
+
+    /**
+     * prepareAction
+     * @return GibbonManager
+     * @throws \Exception
+     */
+    private function prepareAction(): self
+    {
+        $repository = $this->themeProvider->getRepository(Action::class);
+        $session = $this->request->getSession();
+
+        $actionData = $repository->findOneByURLListModuleNameRoleID(
+            '%'.$session->get('action').'%',
+            $session->get('module'),
+            $session->get('gibbonRoleIDCurrent')
+        );
+        $actionData = $actionData ? $actionData->toArray() : [];
+
+        $this->container->set('action', $actionData);
+        return $this;
+    }
+
+    /**
+     * prepareModule
+     * @return GibbonManager
+     * @throws \Exception
+     */
+    private function prepareModule(): self
+    {
+        $repository = $this->themeProvider->getRepository(\App\Entity\Module::class);
+        $session = $this->request->getSession();
+
+        if (null !== $moduleData = $repository->findOneBy(['name' => $session->get('module')]))
+        {
+            $this->container->set('module', new Module($moduleData->toArray()));
+        } else {
+            $this->container->set('module', null);
+        }
+
+        return $this;
     }
 }

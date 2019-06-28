@@ -30,4 +30,17 @@ class ActionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Action::class);
     }
+
+    public function findOneByURLListModuleNameRoleID(string $URLList, string $moduleName, string $roleID = null)
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.module', 'm')
+            ->leftJoin('a.permissions', 'p')
+            ->where('a.URLList = :urlList')
+            ->andWhere('p.role = :roleID')
+            ->andWhere('m.name = :moduleName')
+            ->setParameters(['urlList' => $URLList, 'moduleName' => $moduleName, 'roleID' => $roleID])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

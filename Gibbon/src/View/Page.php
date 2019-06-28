@@ -64,12 +64,7 @@ class Page extends View
         $this->stylesheets = new AssetBundle();
         $this->scripts = new AssetBundle();
 
-        // Merge constructor params into class properties
-        foreach ($params as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->$key = $value;
-            }
-        }
+        $this->setParams($params);
     }
 
     /**
@@ -379,5 +374,20 @@ class Page extends View
         $data['content'] = $this->content;
 
         return parent::render($template, $data);
+    }
+
+    /**
+     * setParams
+     * @param array $params
+     */
+    public function setParams(array $params)
+    {
+        // Merge constructor params into class properties
+        foreach ($params as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->$key = $value;
+            }
+        }
+
     }
 }

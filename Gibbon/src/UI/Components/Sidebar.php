@@ -643,7 +643,7 @@ class Sidebar implements OutputableInterface
                 $output .= '<p>';
                 $output .= getUserPhoto($guid, $this->session->get('image_240'), 240);
                 $output .= "<div style='margin-left: 220px; margin-top: -50px'>";
-                $output .= "<a href='".$this->session->get('absoluteURL').'/index_parentPhotoDeleteProcess.php?gibbonPersonID='.$this->session->get('gibbonPersonID')."' onclick='return confirm(\"Are you sure you want to delete this record? Unsaved changes will be lost.\")'><img style='margin-bottom: -8px' id='image_240_delete' title='".__('Delete')."' src='./themes/".$this->session->get('gibbonThemeName')."/img/garbage.png'/></a><br/><br/>";
+                $output .= "<a href='".$this->session->get('absoluteURL').'/index_parentPhotoDeleteProcess.php?gibbonPersonID='.$this->session->get('gibbonPersonID')."' onclick='return confirm(\"Are you sure you want to delete this record? Unsaved changes will be lost.\")'><img style='margin-bottom: -8px' id='image_240_delete' title='".__('Delete')."' src='./themes/".$this->session->get('gibbonThemeName', 'Default')."/img/garbage.png'/></a><br/><br/>";
                 $output .= '</div>';
                 $output .= '</p>';
             }

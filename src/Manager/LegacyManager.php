@@ -26,6 +26,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -63,7 +64,7 @@ class LegacyManager implements ContainerAwareInterface
         $connection2= GibbonManager::getPDO();
         $version = $gibbon->getVersion();
 
-        $isLoggedIn = $session->has('username') && $session->has('gibbonRoleIDCurrent');
+        $isLoggedIn = $session->has('username') && $session->has('gibbonRoleIDCurrent') ? true : false;
 
         /**
          * MODULE BREADCRUMBS
@@ -350,9 +351,10 @@ class LegacyManager implements ContainerAwareInterface
             'thickbox'     => 'build/thickbox/thickbox.css',
         ], ['weight' => -1]);
 
+//        $page->theme->stylesheets->add('theme', '/themes/'.$session->get('gibbonThemeName', 'Default').'/css/main.css', ['weight' => 1]);
         // Add right-to-left stylesheet
         if ($session->get('i18n')['rtl'] == 'Y') {
-            $page->theme->stylesheets->add('theme-rtl', '/themes/'.$session->get('gibbonThemeName').'/css/main_rtl.css', ['weight' => 1]);
+            $page->theme->stylesheets->add('theme-rtl', '/themes/'.$session->get('gibbonThemeName', 'Default').'/css/main_rtl.css', ['weight' => 1]);
         }
 
         // Set personal, organisational or theme background     
@@ -363,7 +365,7 @@ class LegacyManager implements ContainerAwareInterface
             $backgroundImage = $session->get('absoluteURL').'/'.$session->get('organisationBackground');
             $backgroundScroll = 'repeat fixed center top';
         } else {
-            $backgroundImage = $session->get('absoluteURL').'/themes/'.$session->get('gibbonThemeName').'/img/backgroundPage.jpg';
+            $backgroundImage = $session->get('absoluteURL').'/themes/'.$session->get('gibbonThemeName', 'Default').'/img/backgroundPage.jpg';
             $backgroundScroll = 'repeat fixed center top';
         }
 
@@ -510,7 +512,7 @@ class LegacyManager implements ContainerAwareInterface
 
         $page->addData([
             'isLoggedIn'        => $isLoggedIn,
-            'gibbonThemeName'   => $session->get('gibbonThemeName'),
+            'gibbonThemeName'   => $session->get('gibbonThemeName', 'Default'),
             'gibbonHouseIDLogo' => $session->get('gibbonHouseIDLogo'),
             'organisationLogo'  => $session->get('organisationLogo'),
             'minorLinks'        => $header->getMinorLinks($cacheLoad),
@@ -519,6 +521,8 @@ class LegacyManager implements ContainerAwareInterface
             'version'           => $gibbon->getVersion(),
             'versionName'       => 'v'.$gibbon->getVersion().($session->get('cuttingEdgeCode') == 'Y'? 'dev' : ''),
             'rightToLeft'       => $session->get('i18n')['rtl'] == 'Y',
+            'locale'            => $session->get('i18n')['code'],
+            'wrapVersion'       => $gibbon->wrapVersion,
         ]);
 
         if ($isLoggedIn) {
@@ -566,7 +570,7 @@ class LegacyManager implements ContainerAwareInterface
                     }
                 }
 
-                $page->writeFromTemplate('welcome.html.twig', $templateData);
+                $page->writeFromTemplate('legacy\welcome.html.twig', $templateData);
 
             } else {
                 // Custom content loader
@@ -642,6 +646,12 @@ class LegacyManager implements ContainerAwareInterface
                 'sidebarPosition' => $session->get('sidebarExtraPosition'),
             ]);
         }
-        dump($session,$page,$header, $gibbon);
+
+        /**
+         * DONE!!
+         */
+        $content = $page->render('legacy\index.html.twig');
+
+        return new Response($content);
     }
 }

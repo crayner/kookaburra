@@ -520,4 +520,28 @@ class Action implements EntityInterface
         $this->permissions = $permissions;
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'gibbonActionID' => $this->id,
+            'name' => $this->name,
+            'precedence' => $this->precedence,
+            'category' => $this->category,
+            'URLList' => $this->URLList,
+            'entryURL' => $this->entryURL,
+            'entrySidebar' => $this->entrySidebar,
+            'menuShow' => $this->menuShow,
+            'defaultPermissionAdmin' => $this->defaultPermissionAdmin,
+            'defaultPermissionTeacher' => $this->defaultPermissionTeacher,
+            'defaultPermissionStudent' => $this->defaultPermissionStudent,
+            'defaultPermissionParent' => $this->defaultPermissionParent,
+            'defaultPermissionSupport' => $this->defaultPermissionSupport,
+            'categoryPermissionStaff' => $this->categoryPermissionStaff,
+            'categoryPermissionStudent' => $this->categoryPermissionStudent,
+            'categoryPermissionParent' => $this->categoryPermissionParent,
+            'categoryPermissionOther' => $this->categoryPermissionOther,
+            'gibbonModuleID' => $this->getModule() ? $this->getModule()->getId() : null,
+        ];
+    }
 }

@@ -195,4 +195,17 @@ class Theme implements EntityInterface
         $this->url = $url;
         return $this;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'gibbonThemeID' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'active' => $this->active,
+            'version' => $this->version,
+            'author' => $this->author,
+            'url' => $this->url,
+        ];
+    }
 }

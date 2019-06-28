@@ -51,7 +51,7 @@ class Locale implements LocaleInterface
      */
     public function __construct(string $absolutePath, SessionInterface $session)
     {
-        $this->absolutePath = $absolutePath;
+        $this->absolutePath = realpath($absolutePath.'/..');
         $this->session = $session;
         $this->supportsGetText = function_exists('gettext');
     }
