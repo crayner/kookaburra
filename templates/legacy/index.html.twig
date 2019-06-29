@@ -8,6 +8,8 @@ For info about editing, see: https://twig.symfony.com/doc/2.x/
 TODO: add template variable details.
 -->#}
 
+{% trans_default_domain "gibbon" %}
+
 <!DOCTYPE html>
 <html {{ rightToLeft ? 'dir="rtl"' : '' }}>
     <head>
@@ -99,7 +101,7 @@ TODO: add template variable details.
 
                     <span class="text-xs">
                         {{ 'Created under the'|trans }} <a class="link-white" target='_blank' href='https://opensource.org/licenses/MIT'>MIT</a> {{ 'licence' }},
-                        {{ 'from a fork of ' }} <a class="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon</a>
+                        {{ 'from a fork of '|trans([],'bilby') }} <a class="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon</a>
                         <br/>
                         {{ footerThemeAuthor|default('') }}<br/>
                     </span>

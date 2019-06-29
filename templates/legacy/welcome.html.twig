@@ -5,6 +5,8 @@ Copyright (C) 2010, Ross Parker
 This is a Gibbon template file, written in HTML and Twig syntax.
 For info about editing, see: https://twig.symfony.com/doc/2.x/
 -->#}
+{% trans_default_domain "gibbon" %}
+
 <h2>{{ 'Welcome'|trans }}</h2>
 <p>
     {{ indexText | raw }}
@@ -19,7 +21,7 @@ For info about editing, see: https://twig.symfony.com/doc/2.x/
 {% endif %}
 
 {% if publicStaffApplications %}
-    <h2 style='margin-top: 30px'>{{ 'Staff Applications'|trans}}</h2>
+    <h2 style='margin-top: 30px'>{{ 'Staff Applications'|trans }}</h2>
     <p>
         {% set url = absoluteURL ~ "/?q=/modules/Staff/applicationForm_jobOpenings_view.php" %}
         {{ 'Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.'|trans|format(organisationName, '<a href="' ~ url ~ '">', '</a>')|raw }}
