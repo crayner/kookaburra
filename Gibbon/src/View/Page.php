@@ -347,7 +347,13 @@ class Page extends View
      */
     public function writeFromFile(string $filepath, array $data = [])
     {
+        $was = getcwd();
+        if (isset($data['container'])) {
+            $dir = realpath($data['container']->getParameter('kernel.project_dir') . '/Gibbon');
+            chdir($dir);
+        }
         $this->write($this->fetchFromFile($filepath, $data));
+        chdir($was);
     }
 
     /**

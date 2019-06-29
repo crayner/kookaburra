@@ -90,8 +90,6 @@ class LegacyManager implements ContainerAwareInterface
             $cacheLoad = $session->get('pageLoads') % intval($caching) == 0;
         }
 
-        $_SESSION[$guid]['a_test'] = 'Craig';
-
         /**
          * SYSTEM SETTINGS
          *
@@ -123,7 +121,7 @@ class LegacyManager implements ContainerAwareInterface
                 return new RedirectResponse($URL);
             }
         }
-/*
+
         // Redirects after login
         if ($session->get('pageLoads') === 0 && !$session->has('address')) { // First page load, so proceed
 
@@ -207,7 +205,6 @@ class LegacyManager implements ContainerAwareInterface
                 }
             }
         }
-*/
 
         /**
          * SIDEBAR SETUP
@@ -573,6 +570,7 @@ class LegacyManager implements ContainerAwareInterface
                 $page->writeFromTemplate('legacy\welcome.html.twig', $templateData);
 
             } else {
+                dd($session);
                 // Custom content loader
                 if (!$session->exists('index_custom.php')) {
                     $globals = [
@@ -623,10 +621,19 @@ class LegacyManager implements ContainerAwareInterface
                     'page'        => $page,
                 ];
 
-                if (is_file('./'.$address)) {
-                    $page->writeFromFile('./'.$address, $globals);
+                $fullAddress = realpath(__DIR__.'/../../Gibbon/'.$address);
+
+                if (false !== $fullAddress) {
+                    $page->writeFromFile($fullAddress, $globals);
                 } else {
-                    $page->writeFromFile('./error.php', $globals);
+                    $content = GibbonManager::getContainer()->get('twig')->render('legacy/error.html.twig',
+                        [
+                            'extendedError' => 'The page at address %address% was not found.',
+                            'extendedParams' => ['%address%' => $address],
+                            'manager' => $globals,
+                        ]
+                    );
+                    return new Response($content);
                 }
             }
         }
@@ -636,7 +643,6 @@ class LegacyManager implements ContainerAwareInterface
          *
          * TODO: rewrite the Sidebar class as a template file.
          */
-        $sidebarContents = '';
         if ($showSidebar) {
             $page->addSidebarExtra($session->get('sidebarExtra'));
             $session->set('sidebarExtra', '');
@@ -651,7 +657,6 @@ class LegacyManager implements ContainerAwareInterface
          * DONE!!
          */
         $content = $page->render('legacy\index.html.twig');
-
         return new Response($content);
     }
 }

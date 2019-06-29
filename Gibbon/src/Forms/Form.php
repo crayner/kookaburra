@@ -22,6 +22,8 @@ namespace Gibbon\Forms;
 use App\Manager\GibbonManager;
 use Gibbon\Forms\Traits\BasicAttributesTrait;
 use Gibbon\Forms\View\FormRendererInterface;
+use Gibbon\Forms\View\FormView;
+use Twig\Environment;
 
 /**
  * Form
@@ -36,6 +38,8 @@ class Form implements OutputableInterface
     protected $title;
     protected $factory;
     protected $renderer;
+    protected static $staticFactory;
+    protected static $staticRenderer;
 
     protected $rows = array();
     protected $triggers = array();
@@ -50,12 +54,13 @@ class Form implements OutputableInterface
      */
     public function __construct(FormFactoryInterface $factory, FormRendererInterface $renderer, $action = '', $method = 'post')
     {
-        $this->factory = $factory;
-        $this->renderer = $renderer;
+        self::$staticFactory = $this->factory = $factory;
+        self::$staticRenderer = $this->renderer = $renderer;
         $this->setAttribute('action', ltrim($action, '/'));
         $this->setAttribute('method', $method);
         $this->setAttribute('autocomplete', 'on');
         $this->setAttribute('enctype', 'multipart/form-data');
+        $this->setAttribute('renderStyle', 'flex');
     }
 
     /**
@@ -70,8 +75,8 @@ class Form implements OutputableInterface
     {
         $container = GibbonManager::getContainer();
 
-        $form = $container->get(Form::class)
-            ->setID($id)
+        $form = new Form(self::$staticFactory ?: $container->get(FormFactory::class) , self::$staticRenderer ?: $container->get(FormView::class));
+        $form->setID($id)
             ->setClass($class)
             ->setAction($action)
             ->setMethod($method);
@@ -114,7 +119,7 @@ class Form implements OutputableInterface
      */
     public function setFactory(FormFactoryInterface $factory)
     {
-        $this->factory = $factory;
+        self::$staticFactory = $this->factory = $factory;
 
         return $this;
     }
@@ -134,7 +139,7 @@ class Form implements OutputableInterface
      */
     public function setRenderer(FormRendererInterface $renderer)
     {
-        $this->renderer = $renderer;
+        self::$staticRenderer = $this->renderer = $renderer;
 
         return $this;
     }

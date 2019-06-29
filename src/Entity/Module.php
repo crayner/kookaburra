@@ -280,4 +280,24 @@ class Module implements EntityInterface
     {
         return self::$typeList;
     }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'gibbonModuleID' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'entryURL' => $this->entryURL,
+            'type' => $this->type,
+            'active' => $this->active,
+            'category' => $this->category,
+            'version' => $this->version,
+            'author' => $this->author,
+            'url' => $this->url,
+        ];
+    }
 }

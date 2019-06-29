@@ -43,7 +43,7 @@ class FormView extends View implements FormRendererInterface
         $this->addData('javascript', $this->getInlineJavascript($form));
         $this->addData('totalColumns', $this->getColumnCount($form));
 
-        return $this->render('components/form.twig.html');
+        return $this->render('legacy/components/form.html.twig');
     }
 
     protected function getInlineJavascript(Form $form)

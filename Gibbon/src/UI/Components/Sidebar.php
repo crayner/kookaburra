@@ -83,11 +83,12 @@ class Sidebar implements OutputableInterface
             echo '</div>';
         }
 
-        if ($this->session->get('sidebarExtra') != '' and $this->session->get('sidebarExtraPosition') != 'bottom') {
+        if ($this->session->has('sidebarExtra') && $this->session->get('sidebarExtraPosition') !== 'bottom') {
             echo "<div class='sidebarExtra'>";
             echo $this->session->get('sidebarExtra');
             echo '</div>';
         }
+
 
         // Add Google Login Button
         if (!$this->session->has('username') && !$this->session->has('email')) {
@@ -108,22 +109,22 @@ class Sidebar implements OutputableInterface
                 echo '</div>';
 
             } //End Check for Google Auth
-            if (!$this->session->has('username')) { // If Google Auth set to No make sure login screen not visible when logged in
+            if (!$this->session->has('username')) {
                 echo '<div class="column-no-break">';
                 echo '<h2>';
                     echo __('Login');
                 echo '</h2>';
 
-                if ($this->session->has('gibbonSchoolYearID')) setCurrentSchoolYear($guid, $connection2);
+                if (!$this->session->has('gibbonSchoolYearID')) setCurrentSchoolYear($guid, $connection2);
 
-                $form = Form::create('loginForm', $this->session->get('absoluteURL').'/login.php?'.($request->query->has('q') ? 'q='.$request->query->get('q') : '') );
+                $form = Form::create('loginForm', $this->session->get('absoluteURL').'/login.php?'.($request->query->has('q') ? 'q='.$request->query->get('q') : ''));
 
                 $form->setFactory(DatabaseFormFactory::create($pdo));
                 $form->setAutocomplete(false);
                 $form->setClass('noIntBorder fullWidth');
                 $form->addHiddenValue('address', $this->session->get('address'));
 
-                $loginIcon = '<img src="'.$this->session->get('absoluteURL').'/themes/'.$this->session->get('gibbonThemeName', 'default').'/img/%1$s.png" style="width:20px;height:20px;margin:-2px 0 0 2px;" title="%2$s">';
+                $loginIcon = '<img src="'.$this->session->get('absoluteURL').'/themes/'.$this->session->get('gibbonThemeName', 'Default').'/img/%1$s.png" style="width:20px;height:20px;margin:-2px 0 0 2px;" title="%2$s">';
 
                 $row = $form->addRow();
                     $row->addContent(sprintf($loginIcon, 'attendance', __('Username or email')));
@@ -194,7 +195,7 @@ class Sidebar implements OutputableInterface
         }
 
         //Show custom sidebar content on homepage for logged in users
-        if ($this->session->get('address') == '' && $this->session->has('username')) {
+        if (!$this->session->has('address') && $this->session->has('username')) {
             if (!$this->session->has('index_customSidebar.php')) {
                 if (is_file('./index_customSidebar.php')) {
                     $this->session->set('index_customSidebar.php', include './index_customSidebar.php');
@@ -208,7 +209,7 @@ class Sidebar implements OutputableInterface
         }
 
         //Show parent photo uploader
-        if ($this->session->get('address') == '' && $this->session->has('username')) {
+        if (!$this->session->has('address') && $this->session->has('username')) {
             $sidebar = $this->getParentPhotoUploader();
             if ($sidebar != false) {
                 echo $sidebar;
@@ -216,7 +217,7 @@ class Sidebar implements OutputableInterface
         }
 
         //Show homescreen widget for message wall
-        if ($this->session->get('address') == '') {
+        if (!$this->session->has('address')) {
             if ($this->session->get('messageWallOutput')) {
                 if (isActionAccessible($guid, $connection2, '/modules/Messenger/messageWall_view.php')) {
                     $attainmentAlternativeName = getSettingByScope($connection2, 'Messenger', 'enableHomeScreenWidget');
@@ -351,7 +352,7 @@ class Sidebar implements OutputableInterface
         }
 
         //Show upcoming deadlines
-        if ($this->session->get('address') == '' and isActionAccessible($guid, $connection2, '/modules/Planner/planner.php')) {
+        if (!$this->session->has('address') and isActionAccessible($guid, $connection2, '/modules/Planner/planner.php')) {
             $highestAction = getHighestGroupedAction($guid, '/modules/Planner/planner.php', $connection2);
             if ($highestAction == 'Lesson Planner_viewMyClasses' or $highestAction == 'Lesson Planner_viewAllEditMyClasses' or $highestAction == 'Lesson Planner_viewEditAllClasses') {
                 echo '<div class="column-no-break">';
@@ -446,7 +447,7 @@ class Sidebar implements OutputableInterface
         }
 
         //Show recent results
-        if ($this->session->get('address') == '' && isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_view.php')) {
+        if (!$this->session->has('address') && isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_view.php')) {
             $highestAction = getHighestGroupedAction($guid, '/modules/Markbook/markbook_view.php', $connection2);
             if ($highestAction == 'View Markbook_myMarks') {
                 try {
@@ -478,7 +479,7 @@ class Sidebar implements OutputableInterface
         }
 
         //Show My Classes
-        if ($this->session->get('address') == '' && $this->session->has('username')) {
+        if (!$this->session->has('address') && $this->session->has('username')) {
             try {
                 $data = array('gibbonSchoolYearID' => $this->session->get('gibbonSchoolYearID'), 'gibbonPersonID' => $this->session->get('gibbonPersonID'));
                 $sql = "SELECT gibbonCourse.nameShort AS course, gibbonCourseClass.nameShort AS class, gibbonCourseClass.gibbonCourseClassID, gibbonCourseClass.attendance FROM gibbonCourse, gibbonCourseClass, gibbonCourseClassPerson WHERE gibbonSchoolYearID=:gibbonSchoolYearID AND gibbonCourse.gibbonCourseID=gibbonCourseClass.gibbonCourseID AND gibbonCourseClass.gibbonCourseClassID=gibbonCourseClassPerson.gibbonCourseClassID AND gibbonCourseClassPerson.gibbonPersonID=:gibbonPersonID AND NOT role LIKE '% - Left%' ORDER BY course, class";
@@ -563,7 +564,7 @@ class Sidebar implements OutputableInterface
         }
 
         //Show tag cloud
-        if ($this->session->get('address') == '' and isActionAccessible($guid, $connection2, '/modules/Planner/resources_view.php')) {
+        if (!$this->session->has('address') and isActionAccessible($guid, $connection2, '/modules/Planner/resources_view.php')) {
             include_once './modules/Planner/moduleFunctions.php';
             echo '<div class="column-no-break">';
             echo "<h2 class='sidebar'>";
@@ -578,7 +579,7 @@ class Sidebar implements OutputableInterface
 
         //Show role switcher if user has more than one role
         if ($this->session->has('username')) {
-            if (count($this->session->get('gibbonRoleIDAll')) > 1 and $this->session->get('address') == '') {
+            if (count($this->session->get('gibbonRoleIDAll')) > 1 && !$this->session->has('address')) {
                 echo '<div class="column-no-break">';
                 echo "<h2 style='margin-bottom: 10px' class='sidebar'>";
                 echo __('Role Switcher');

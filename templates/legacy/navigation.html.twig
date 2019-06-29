@@ -29,9 +29,9 @@ collapsed drop-down list in 'mini' view-mode.
     {% endfor %}
     
 
-    {% if sidebar and sidebarContents %}
+    {% if sidebar is defined and sidebarContents is defined %}
     <div class="md:column-2 lg:column-1 {{ page.breadcrumbs ? 'pt-10 lg:pt-0' }} ">
-        {{ sidebarContents|raw }}
+        {{ sidebarContents|default('')|raw }}
     </div>
     {% endif %}
     

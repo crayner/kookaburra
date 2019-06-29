@@ -208,7 +208,7 @@ class GibbonManager implements ContainerAwareInterface
         // which is currently used in many Process pages.
         // TODO: replace this logic when switching to routing.
 
-        $address = $this->request->query->get['q'] ?? $this->request->request->get['address'] ?? '';
+        $address = $this->request->query->get('q') ?? $this->request->request->get('address') ?? '';
 
         $session->set('address', $address);
         $session->set('module', $address ? getModuleName($address) : '');

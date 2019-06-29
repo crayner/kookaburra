@@ -19,7 +19,10 @@ services:
 
     Gibbon\:
         resource: '../Gibbon/src/*'
-        exclude: '../src/{Tests}'
+        exclude: '../Gibbon/src/{Tests}'
+
+    Gibbon\Module\Staff\:
+        resource: '../Gibbon/modules/Staff/src/*'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -69,12 +72,6 @@ services:
             $db: '@db'
         public: true
 
-    Gibbon\Forms\Form:
-        arguments:
-            $renderer: '@Gibbon\Forms\FormRenderer'
-            $factory: '@Gibbon\Forms\FormFactory'
-        public: true
-
     theme:
         class: Gibbon\Domain\System\Theme
         public: true
@@ -90,3 +87,14 @@ services:
     App\Manager\GibbonManager:
         arguments:
             $version: '%version%'
+
+    Gibbon\Forms\Form:
+        factory: ['Gibbon\Forms\Form', 'create']
+
+    Gibbon\Forms\FormFactory:
+        public: true
+
+    Gibbon\Forms\View\FormView:
+        public: true
+        arguments:
+            - '@twig'

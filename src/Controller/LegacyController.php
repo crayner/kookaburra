@@ -30,9 +30,11 @@ class LegacyController extends AbstractController
             return $result;
         }
 
-
-        return $this->render('index.html.twig', [
-            'controller_name' => 'LegacyController',
-        ]);
+        return $this->render('index.html.twig',
+            [
+                'controller_name' => 'LegacyController',
+                'manager' => $result,
+            ]
+        );
     }
 }
