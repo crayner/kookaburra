@@ -52,4 +52,13 @@ class SecurityController extends AbstractController
             ]
         );
     }
+
+    /**
+     * logout
+     * @Route("/logout/", name="logout")
+     */
+    public function logout()
+    {
+        throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
+    }
 }

@@ -277,7 +277,7 @@ class Header
             }
 
             $return .= $name.' . ';
-            $return .= "<a class='link-white' href='./logout.php'>".__('Logout')."</a> . <a class='link-white' href='./index.php?q=preferences.php'>".__('Preferences').'</a>';
+            $return .= "<a class='link-white' href='./logout/'>".__('Logout')."</a> . <a class='link-white' href='./index.php?q=preferences.php'>".__('Preferences').'</a>';
             if ($_SESSION[$guid]['emailLink'] != '') {
                 $return .= "<span class='hidden sm:inline'> . <a class='link-white' target='_blank' href='".$_SESSION[$guid]['emailLink']."'>".__('Email').'</a></span>';
             }
