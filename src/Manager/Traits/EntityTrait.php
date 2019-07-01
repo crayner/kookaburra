@@ -17,6 +17,7 @@ namespace App\Manager\Traits;
 
 use App\Manager\EntityInterface;
 use App\Manager\MessageManager;
+use App\Provider\EntityProviderInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;

@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Class PersonRepository
  * @package App\Repository
  */
-class PersonRepository extends ServiceEntityRepository implements UserLoaderInterface
+class PersonRepository extends ServiceEntityRepository
 {
     /**
      * PersonRepository constructor.
@@ -45,7 +45,7 @@ class PersonRepository extends ServiceEntityRepository implements UserLoaderInte
      *
      * @return UserInterface|null
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsernameOrEmail($username)
     {
         return $this->createQueryBuilder('p')
             ->where('p.email = :email OR p.username = :username')

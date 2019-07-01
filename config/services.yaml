@@ -21,9 +21,6 @@ services:
         resource: '../Gibbon/src/*'
         exclude: '../Gibbon/src/{Tests}'
 
-    Gibbon\Module\Staff\:
-        resource: '../Gibbon/modules/Staff/src/*'
-
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:

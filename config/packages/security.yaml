@@ -1,22 +1,56 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        #        argon2i:
+        #            algorithm: argon2i
+        #            memory_cost:          16384     # Amount in KiB. 16 MiB
+        #            time_cost:            2         # Number of iterations
+        #            threads:              4         # Number of parallel threads
+        #        bcrypt:
+        #            algorithm: bcrypt
+        #            cost: 15
+        sha256:
+            id: App\Security\SHA256PasswordEncoder
+        md5:
+            id: App\Security\MD5PasswordEncoder
     providers:
-        in_memory: { memory: ~ }
+        security_user_provider:
+            id: App\Security\SecurityUserProvider
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt|home)|css|images|build|js)/
             security: false
         main:
-            anonymous: true
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
-    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+            anonymous: ~
+            form_login:
+                login_path:             login
+                check_path:             login
+                csrf_parameter:         'authenticate[_token]'
+                csrf_token_id:          authenticate
+                default_target_path:    home
+                use_referer:            true
+                csrf_token_generator:   security.csrf.token_manager
+                username_parameter:     'authenticate[_username]'
+                password_parameter:     'authenticate[_password]'
+                failure_path_parameter: login
+                provider:               security_user_provider
+            provider:                   security_user_provider
+            access_denied_handler:      App\Security\AccessDeniedHandler
+            logout:
+                path:                   logout
+                target:                 home
+                success_handler:        App\Security\LogoutSuccessHandler
+            remember_me:                false
+#                secret:               '%env(APP_SECRET)%'
+#                name:                 '%session_name%_remember_me'
+#                lifetime:             43200 # 12 hours in seconds
+#                path:                 /
+#                secure:               false
+#                remember_me_parameter: 'login[_remember_me]'
+            switch_user:                true
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+#                    - App\Security\GoogleAuthenticator
+                entry_point: App\Security\LoginFormAuthenticator
+            context: main
+    role_hierarchy: '%security.hierarchy.roles%'

@@ -15,7 +15,7 @@ namespace App\Provider;
 use App\Entity\Theme;
 use App\Manager\Traits\EntityTrait;
 
-class ThemeProvider
+class ThemeProvider implements EntityProviderInterface
 {
     use EntityTrait;
 

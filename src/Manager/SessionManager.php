@@ -14,6 +14,7 @@ namespace App\Manager;
 
 use Gibbon\Contracts\Database\Connection;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Yaml\Yaml;
 
 class SessionManager extends Session
 {
@@ -38,6 +39,10 @@ class SessionManager extends Session
      */
     private function getSessionGuidData(): array
     {
+        if (null === $this->guid)
+        {
+            $this->guid();
+        }
         if (null !== $this->guidData && is_array($this->guidData))
         {
             if (!isset($_SESSION[$this->guid()]))
@@ -95,6 +100,18 @@ class SessionManager extends Session
      * @return	string
      */
     public function guid() {
+
+        if (null === $this->guid) {
+            $file = realpath(__dir__ . '/../../config/packages/gibbon.yaml');
+            $data = Yaml::parse(file_get_contents($file));
+            if (isset($data['parameters']['guid']))
+            {
+                $this->guid = $data['parameters']['guid'];
+            } else {
+                throw new \RuntimeException('This SessionManager must not used until the guid is correctly set.');
+            }
+        }
+
         return $this->guid;
     }
 
@@ -213,7 +230,7 @@ class SessionManager extends Session
      */
     public function set($key, $value = null): void
     {
-        $keyValuePairs = is_array($key)? $key : [$key => $value];
+        $name = $key;        $keyValuePairs = is_array($key)? $key : [$key => $value];
 
         $data = $this->getSessionGuidData();
 
