@@ -31,7 +31,7 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
      */
     public function __construct(string $storageKey = '_gibbon_attributes')
     {
-        $this->storageKey = $storageKey;
+        $this->setGuid($storageKey);
     }
 
     /**
@@ -78,6 +78,7 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
         {
             return true;
         }
+
         return !empty($data);
     }
 
@@ -90,7 +91,8 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
         {
             return $this->getSubKey($name);
         }
-        return \array_key_exists($name, $this->attributes) ? $this->attributes[$name] : (\array_key_exists($name, $_SESSION[$this->getGuid()]) ? $_SESSION[$this->getGuid()][$name] : $default);
+
+        return \array_key_exists($name, $this->attributes) ? $this->attributes[$name] : $default;
     }
 
     /**
@@ -102,10 +104,9 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
             $this->setGuid($value);
         } else {
             if (is_array($name)) {
-                trigger_error('Never and array');
+                trigger_error('Never an array');
             } else {
                 $this->attributes[$name] = $value;
-                $_SESSION[$this->getGuid()][$name] = $value;
             }
         }
     }
@@ -124,7 +125,6 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
     public function replace(array $attributes)
     {
         $this->attributes = [];
-        $_SESSION[$this->getGuid()] = [];
         foreach ($attributes as $key => $value) {
             $this->set($key, $value);
         }
@@ -196,6 +196,7 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
     public function setGuid(string $guid): GibbonAttributeBag
     {
         $this->guid = $guid;
+        $this->storageKey = $guid;
         return $this;
     }
 
@@ -232,7 +233,7 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
         if (is_array($name)) {
             return $this->subKeyExists($name);
         }
-        return \array_key_exists($name, $this->attributes) || \array_key_exists($name, $_SESSION[$this->getGuid()]);
+        return \array_key_exists($name, $this->attributes);
     }
 
     /**
@@ -270,5 +271,14 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
         foreach ($keys as $key) {
             $this->remove($key);
         }
+    }
+
+    /**
+     * guid
+     * @return string
+     */
+    private function guid()
+    {
+        return $this->getGuid();
     }
 }

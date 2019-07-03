@@ -50,13 +50,19 @@ class LegacyManager implements ContainerAwareInterface
     private $staffDashboard;
 
     /**
+     * @var Header
+     */
+    private $header;
+
+    /**
      * LegacyManager constructor.
      * @param RequestStack $stack
      */
-    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard)
+    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard, Header $header)
     {
         $this->providerFactory = $providerFactory;
         $this->staffDashboard = $staffDashboard;
+        $this->header = $header;
     }
 
     /**
@@ -99,6 +105,7 @@ class LegacyManager implements ContainerAwareInterface
         if (!empty($caching) && is_numeric($caching)) {
             $cacheLoad = $session->get('pageLoads') % intval($caching) == 0;
         }
+        $cacheLoad = false;
 
         /**
          * SYSTEM SETTINGS
@@ -514,15 +521,14 @@ class LegacyManager implements ContainerAwareInterface
          * into the template engine for rendering. They're a work in progress, but once
          * they're more finalized we can document them for theme developers.
          */
-        $header = $this->container->get(Header::class);
 
         $page->addData([
             'isLoggedIn'        => $isLoggedIn,
             'gibbonThemeName'   => $session->get('gibbonThemeName', 'Default'),
             'gibbonHouseIDLogo' => $session->get('gibbonHouseIDLogo'),
             'organisationLogo'  => $session->get('organisationLogo'),
-            'minorLinks'        => $header->getMinorLinks($cacheLoad),
-            'notificationTray'  => $header->getNotificationTray($cacheLoad),
+            'minorLinks'        => $this->header->getMinorLinks($cacheLoad),
+            'notificationTray'  => $this->header->getNotificationTray($cacheLoad),
             'sidebar'           => $showSidebar,
             'version'           => $gibbon->getVersion(),
             'versionName'       => 'v'.$gibbon->getVersion().($session->get('cuttingEdgeCode') == 'Y'? 'dev' : ''),
@@ -530,7 +536,6 @@ class LegacyManager implements ContainerAwareInterface
             'locale'            => $session->get('i18n')['code'],
             'wrapVersion'       => $gibbon->wrapVersion,
         ]);
-
         if ($isLoggedIn) {
             $page->addData([
                 'menuMain'   => $session->get('menuMainItems', []),

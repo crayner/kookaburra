@@ -42,7 +42,7 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
     {
         $this->storage = $storage ?: new NativeSessionStorage();
 
-        $attributes = $attributes ?: new GibbonAttributeBag();
+        $attributes = $attributes ?: new GibbonAttributeBag($this->guid());
         $flashes = $flashes ?: new FlashBag();
 
         $this->attributeName = $attributes->getName();
@@ -52,6 +52,7 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
         $this->registerBag($flashes);
 
         $this->guid();
+        $this->mergeLegacySession();
     }
 
     /**
@@ -75,6 +76,10 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
      */
     public function get($name, $default = null)
     {
+        if ($name === 'guid')
+        {
+            return $this->guid();
+        }
         return $this->getAttributeBag()->get($name, $default);
     }
 
@@ -285,10 +290,16 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
         return $this->getBag($this->attributeName);
     }
 
+    /**
+     * setGuid
+     * @param string $guid
+     */
     public function setGuid(string $guid)
     {
         $this->guid = $guid;
-        $this->getAttributeBag()->setGuid($guid);
+        if ($this->attributeName) {
+            $this->getAttributeBag()->setGuid($guid);
+        }
     }
 
     /**
@@ -319,7 +330,7 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
             } else {
                 throw new \RuntimeException('This SessionManager must not used until the guid is correctly set.');
             }
-            if (!\array_key_exists($this->guid, $_SESSION)) {
+            if ($this->isStarted() && !\array_key_exists($this->guid, $_SESSION)) {
                 $_SESSION[$this->guid()] = [];
             }
         }
@@ -360,17 +371,10 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
      */
     public function mergeLegacySession(): void
     {
-        $attributes = $this->getAttributeBag()->all();
+        if (isset($_SESSION) && \array_key_exists('',$_SESSION))
+        {
 
-        if (!\array_key_exists($this->guid(), $_SESSION)) {
-            $_SESSION[$this->guid()] = [];
         }
-
-        $attributes = array_merge($attributes, $_SESSION[$this->guid()]);
-
-        $_SESSION[$this->guid()] = $attributes;
-
-        $this->getAttributeBag()->replace($attributes);
     }
 
     /**

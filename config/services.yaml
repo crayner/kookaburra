@@ -50,10 +50,6 @@ services:
             $absolutePath: '%kernel.project_dir%/Gibbon'
         public: true
 
-    db:
-        class: Gibbon\Database\MySqlConnector
-        public: true
-
     page:
         class: Gibbon\View\Page
         arguments:
@@ -61,19 +57,9 @@ services:
         public: true
 
     Gibbon\UI\Components\Header:
-        arguments:
-            $session: '@session'
-            $db: '@db'
         public: true
 
     Gibbon\UI\Components\Sidebar:
-        arguments:
-            $session: '@session'
-            $db: '@db'
-        public: true
-
-    theme:
-        class: Gibbon\Domain\System\Theme
         public: true
 
     action:

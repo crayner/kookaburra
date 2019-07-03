@@ -244,12 +244,10 @@ class Header
 
     public function getMinorLinks($cacheLoad)
     {
-        
         $guid = $this->session->get('guid');
         $connection2 = $this->db->getConnection();
 
         $return = '';
-
         // Add a link to go back to the system/personal default language, if we're not using it
         if (isset($_SESSION[$guid]['i18n']['default']['code']) && isset($_SESSION[$guid]['i18n']['code'])) {
             if ($_SESSION[$guid]['i18n']['code'] != $_SESSION[$guid]['i18n']['default']['code']) {
