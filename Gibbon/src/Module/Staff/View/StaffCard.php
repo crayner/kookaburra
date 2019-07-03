@@ -21,7 +21,7 @@ namespace Gibbon\Module\Staff\View;
 
 use Gibbon\Domain\Staff\StaffGateway;
 use Gibbon\Domain\RollGroups\RollGroupGateway;
-use Gibbon\Contracts\Services\Session;
+use Gibbon\Contracts\Services\GibbonSession;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\View\Page;
 
@@ -43,7 +43,7 @@ class StaffCard
     protected $status;
     protected $tag;
 
-    public function __construct(Session $session, Connection $db, StaffGateway $staffGateway, RollGroupGateway $rollGroupGateway)
+    public function __construct(GibbonSession $session, Connection $db, StaffGateway $staffGateway, RollGroupGateway $rollGroupGateway)
     {
         $this->session = $session;
         $this->db = $db;

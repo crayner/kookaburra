@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\View;
 
+use Gibbon\Domain\System\Module;
 use Gibbon\View\View;
 use Gibbon\View\AssetBundle;
 use Gibbon\View\Components\Breadcrumbs;
@@ -124,8 +125,11 @@ class Page extends View
      *
      * @return Module|null
      */
-    public function getModule()
+    public function getModule(): ?Module
     {
+        if ($this->module && null === $this->module->getID()) {
+            $this->module = null;
+        }
         return $this->module;
     }
 

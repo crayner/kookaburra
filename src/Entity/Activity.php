@@ -125,7 +125,7 @@ class Activity implements EntityInterface
     /**
      * @var array
      */
-    private static $paymentTypeList = ['Entire Programme','Per Session','Per Week','Per Term'];
+    private static $paymentTypeList = ['Entire Programme','Per GibbonSession','Per Week','Per Term'];
 
     /**
      * @var string

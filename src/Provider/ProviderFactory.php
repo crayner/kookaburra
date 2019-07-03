@@ -46,6 +46,11 @@ class ProviderFactory
     private static $instances;
 
     /**
+     * @var ProviderFactory
+     */
+    private static $factory;
+
+    /**
      * EntityTrait constructor.
      * @param EntityManagerInterface $entityManager
      * @param MessageManager $messageManager
@@ -61,6 +66,7 @@ class ProviderFactory
         self::$messageManager = $messageManager;
         self::$authorizationChecker = $authorizationChecker;
         self::$router = $router;
+        self::$factory = $this;
     }
 
     /**
@@ -71,21 +77,7 @@ class ProviderFactory
      */
     public function getProvider(string $entityName): EntityProviderInterface
     {
-        //The $entityName could be the plain name or the namespace name of the entity.
-
-        $entityName = basename($entityName);
-
-        if (isset(self::$instances[$entityName])) {
-            return self::$instances[$entityName];
-        }
-
-        $providerName = 'App\Provider\\' . $entityName . 'Provider';
-        if (class_exists($providerName)) {
-            self::$instances[$entityName] = new $providerName(self::$entityManager, self::$messageManager, self::$authorizationChecker, self::$router);
-            return self::$instances[$entityName];
-        }
-
-        throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available.', $entityName));
+        return self::create($entityName);
     }
 
     /**
@@ -96,5 +88,62 @@ class ProviderFactory
     public static function getRepository(string $entityName): ObjectRepository
     {
         return self::$entityManager->getRepository($entityName);
+    }
+
+    /**
+     * create
+     * @param string $entityName
+     * @return ObjectRepository
+     * @throws ProviderException
+     */
+    public static function create(string $entityName): EntityProviderInterface
+    {
+        //The $entityName could be the plain name or the namespace name of the entity.
+        // App\Entity\Module or Module
+        $entityName = basename($entityName);
+
+        if (isset(self::$instances[$entityName])) {
+            return self::$instances[$entityName];
+        }
+
+        $providerName = 'App\Provider\\' . $entityName . 'Provider';
+        if (class_exists($providerName)) {
+            self::$instances[$entityName] = new $providerName(self::$factory);
+            return self::$instances[$entityName];
+        }
+
+        throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available.', $entityName));
+    }
+
+    /**
+     * @return EntityManagerInterface
+     */
+    public static function getEntityManager(): EntityManagerInterface
+    {
+        return self::$entityManager;
+    }
+
+    /**
+     * @return MessageManager
+     */
+    public static function getMessageManager(): MessageManager
+    {
+        return self::$messageManager;
+    }
+
+    /**
+     * @return AuthorizationCheckerInterface
+     */
+    public static function getAuthorizationChecker(): AuthorizationCheckerInterface
+    {
+        return self::$authorizationChecker;
+    }
+
+    /**
+     * @return RouterInterface
+     */
+    public static function getRouter(): RouterInterface
+    {
+        return self::$router;
     }
 }

@@ -14,6 +14,7 @@ namespace App\Repository;
 
 use App\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -29,5 +30,29 @@ class ModuleRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Module::class);
+    }
+
+    /**
+     * findModuleByRole
+     * @param int $roleID
+     * @return mixed
+     */
+    public function findModuleByRole(int $roleID)
+    {
+        return $this->createQueryBuilder('m')
+            ->select(['m.category', 'm.name', 'm.type', 'm.entryURL', 'a.entryURL'])
+            ->join('m.actions', 'a')
+            ->join('a.permissions', 'p')
+            ->join('p.role', 'r')
+            ->where('m.active = :active')
+            ->andWhere('a.menuShow = :active')
+            ->andWhere('r.id = :role_id')
+            ->groupBy('m.name')
+            ->orderBy('m.name')
+            ->addOrderBy('a.name')
+            ->setParameter('active', 'Y')
+            ->setParameter('role_id', intval($roleID))
+            ->getQuery()
+            ->getResult();
     }
 }

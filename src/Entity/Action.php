@@ -40,7 +40,7 @@ class Action implements EntityInterface
 
     /**
      * @var Module|null
-     * @ORM\ManyToOne(targetEntity="Module")
+     * @ORM\ManyToOne(targetEntity="Module", inversedBy="actions")
      * @ORM\JoinColumn(name="gibbonModuleID",referencedColumnName="gibbonModuleID", nullable=false)
      */
     private $module;

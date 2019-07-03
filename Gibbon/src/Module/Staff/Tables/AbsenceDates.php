@@ -24,7 +24,7 @@ use Gibbon\Tables\DataTable;
 use Gibbon\Domain\Staff\StaffAbsenceGateway;
 use Gibbon\Domain\Staff\StaffAbsenceDateGateway;
 use Gibbon\Module\Staff\Tables\AbsenceFormats;
-use Gibbon\Contracts\Services\Session;
+use Gibbon\Contracts\Services\GibbonSession;
 use Gibbon\Contracts\Database\Connection;
 
 /**
@@ -42,7 +42,7 @@ class AbsenceDates
     protected $staffAbsenceGateway;
     protected $staffAbsenceDateGateway;
 
-    public function __construct(Session $session, Connection $db, StaffAbsenceGateway $staffAbsenceGateway, StaffAbsenceDateGateway $staffAbsenceDateGateway)
+    public function __construct(GibbonSession $session, Connection $db, StaffAbsenceGateway $staffAbsenceGateway, StaffAbsenceDateGateway $staffAbsenceDateGateway)
     {
         $this->session = $session;
         $this->db = $db;

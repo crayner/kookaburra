@@ -6,15 +6,13 @@
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * User: craig
- * Date: 28/06/2019
- * Time: 09:07
+ * Date: 3/07/2019
+ * Time: 11:31
  */
 
 namespace Gibbon\Contracts\Services;
 
-use App\Manager\SessionManager;
-
-class Session extends SessionManager
+interface Session
 {
 
 }

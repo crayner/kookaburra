@@ -12,9 +12,11 @@
 
 namespace App\Manager;
 
-use Gibbon\Domain\Students\StudentGateway;
-use Gibbon\Domain\System\ModuleGateway;
-use Gibbon\Domain\User\UserGateway;
+use App\Entity\Hook;
+use App\Entity\Module;
+use App\Entity\Setting;
+use App\Entity\StudentEnrolment;
+use App\Provider\ProviderFactory;
 use Gibbon\UI\Components\Header;
 use Gibbon\UI\Components\Sidebar;
 use Gibbon\UI\Dashboard\ParentDashboard;
@@ -38,17 +40,23 @@ class LegacyManager implements ContainerAwareInterface
     use ContainerAwareTrait;
 
     /**
-     * @var Request
+     * @var ProviderFactory
      */
-    private $request;
+    private $providerFactory;
+
+    /**
+     * @var StaffDashboard
+     */
+    private $staffDashboard;
 
     /**
      * LegacyManager constructor.
      * @param RequestStack $stack
      */
-    public function __construct(RequestStack $stack)
+    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard)
     {
-        $this->request = $stack->getCurrentRequest();
+        $this->providerFactory = $providerFactory;
+        $this->staffDashboard = $staffDashboard;
     }
 
     /**
@@ -57,12 +65,15 @@ class LegacyManager implements ContainerAwareInterface
      */
     public function execute(Request $request, Page $page)
     {
+        $cwd = getcwd();
+        chdir(realpath(__DIR__.'/../../Gibbon'));
         $session = $request->getSession();
         $gibbon = GibbonManager::getGibbon();
         $guid = GibbonManager::getGuid();
         $pdo = GibbonManager::getConnection();
         $connection2= GibbonManager::getPDO();
         $version = $gibbon->getVersion();
+        $settingProvider = $this->providerFactory->getProvider(Setting::class);
 
         $isLoggedIn = $session->has('username') && $session->has('gibbonRoleIDCurrent') ? true : false;
 
@@ -96,14 +107,14 @@ class LegacyManager implements ContainerAwareInterface
          * Checks to see if system settings are set from database. If not, tries to
          * load them in. If this fails, something horrible has gone wrong ...
          *
-         * TODO: Move this to the Session creation logic.
+         * TODO: Move this to the GibbonSession creation logic.
          * TODO: Handle the exit() case with a pre-defined error template.
          */
         if (!$session->has('systemSettingsSet')) {
-            getSystemSettings($guid, $connection2);
+            $settingProvider->getSystemSettings($session);
 
             if (!$session->has('systemSettingsSet')) {
-                return GibbonManager::returnErrorResponse('System Settings are not set: the system cannot be displayed.');
+                return GibbonManager::returnErrorResponse('System Settings are not set: The system cannot be displayed.');
             }
         }
 
@@ -134,8 +145,7 @@ class LegacyManager implements ContainerAwareInterface
                     // Can we self register?
                     if (isActionAccessible($guid, $connection2, '/modules/Attendance/attendance_studentSelfRegister.php')) {
                         // Check to see if student is on site
-                        $studentSelfRegistrationIPAddresses = getSettingByScope(
-                            $connection2,
+                        $studentSelfRegistrationIPAddresses = $settingProvider->getSettingByScope(
                             'Attendance',
                             'studentSelfRegistrationIPAddresses'
                         );
@@ -212,7 +222,7 @@ class LegacyManager implements ContainerAwareInterface
          * TODO: move all of the sidebar session variables to the $page->addSidebarExtra() method.
          */
 
-        // Set sidebar extra content values via Session.
+        // Set sidebar extra content values via GibbonSession.
         $session->set('sidebarExtra', '');
         $session->set('sidebarExtraPosition', 'top');
 
@@ -222,8 +232,8 @@ class LegacyManager implements ContainerAwareInterface
             : true;
 
         // Override showSidebar if the URL 'sidebar' param is explicitly set
-        if ($this->request->query->has('sidebar')) {
-            $showSidebar = strtolower($this->request->query->get('sidebar')) !== 'false';
+        if ($request->query->has('sidebar')) {
+            $showSidebar = strtolower($request->query->get('sidebar')) !== 'false';
         }
 
         /**
@@ -256,13 +266,13 @@ class LegacyManager implements ContainerAwareInterface
         }
 
         // Allow the URL to override system default from the i18l param
-        if ($this->request->query->has('i18n') && $gibbon->locale->getLocale() != $this->request->query->get('i18n')) {
-            $data = ['code' => $this->request->query->get('i18n')];
+        if ($request->query->has('i18n') && $gibbon->locale->getLocale() != $request->query->get('i18n')) {
+            $data = ['code' => $request->query->get('i18n')];
             $sql = "SELECT * FROM gibboni18n WHERE code=:code LIMIT 1";
 
             if ($result = $pdo->selectOne($sql, $data)) {
                 setLanguageSession($guid, $result, false);
-                $gibbon->locale->setLocale($this->request->query->get('i18n'));
+                $gibbon->locale->setLocale($request->query->get('i18n'));
                 $gibbon->locale->setTextDomain($pdo);
                 $cacheLoad = true;
             }
@@ -425,15 +435,15 @@ class LegacyManager implements ContainerAwareInterface
          * Adds an alert to the index based on the URL 'return' parameter.
          *
          * TODO: Remove all returnProcess() from pages. We could add a method to the
-         * Page class to allow them to register custom messages, or use Session flash
+         * Page class to allow them to register custom messages, or use GibbonSession flash
          * to add the message directly from the Process pages.
          */
-        if (!$session->has('address') && !empty($this->request->query->get('return'))) {
+        if (!$session->has('address') && !empty($request->query->get('return'))) {
             $customReturns = [
                 'success1' => __('Password reset was successful: you may now log in.')
             ];
 
-            if ($alert = returnProcessGetAlert($this->request->query->get('return'), '', $customReturns)) {
+            if ($alert = returnProcessGetAlert($request->query->get('return'), '', $customReturns)) {
                 $page->addAlert($alert['context'], $alert['text']);
             }
         }
@@ -446,16 +456,16 @@ class LegacyManager implements ContainerAwareInterface
         if ($isLoggedIn) {
             if ($cacheLoad || !$session->has('fastFinder')) {
                 $templateData = getFastFinder($connection2, $guid);
-                $templateData['enrolmentCount'] = $this->container->get(StudentGateway::class)->getStudentEnrolmentCount($session->get('gibbonSchoolYearID'));
+                $templateData['enrolmentCount'] = $this->providerFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($session->get('gibbonSchoolYearID'));
 
-                $fastFinder = $page->fetchFromTemplate('finder.twig.html', $templateData);
+                $fastFinder = $page->fetchFromTemplate('legacy/finder.html.twig', $templateData);
                 $session->set('fastFinder', $fastFinder);
             }
 
-            $moduleGateway = $this->container->get(ModuleGateway::class);
+            $moduleGateway = $this->providerFactory->getProvider(Module::class);
 
             if ($cacheLoad || !$session->has('menuMainItems')) {
-                $menuMainItems = $moduleGateway->selectModulesByRole($session->get('gibbonRoleIDCurrent'))->fetchGrouped();
+                $menuMainItems = $moduleGateway->selectModulesByRole($session->get('gibbonRoleIDCurrent'));
 
                 foreach ($menuMainItems as $category => &$items) {
                     foreach ($items as &$item) {
@@ -537,10 +547,11 @@ class LegacyManager implements ContainerAwareInterface
          * TODO: rewrite dashboards as template files.
          */
         if (!$session->has('address')) {
+
             // Welcome message
             if (!$isLoggedIn) {
                 // Create auto timeout message
-                if ($this->request->query->has('timeout') && $this->request->query->get('timeout') == 'true') {
+                if ($request->query->has('timeout') && $request->query->get('timeout') == 'true') {
                     $page->addWarning(__('Your session expired, so you were automatically logged out of the system.'));
                 }
 
@@ -554,13 +565,12 @@ class LegacyManager implements ContainerAwareInterface
                 ];
 
                 // Get any elements hooked into public home page, checking if they are turned on
-                $sql = "SELECT * FROM gibbonHook WHERE type='Public Home Page' ORDER BY name";
-                $hooks = $pdo->select($sql)->fetchAll();
+                $hooks = $this->providerFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']);
                 $templateData['indexHooks'] = [];
 
                 foreach ($hooks as $hook) {
-                    $options = unserialize(str_replace("'", "\'", $hook['options']));
-                    $check = getSettingByScope($connection2, $options['toggleSettingScope'], $options['toggleSettingName']);
+                    $options = unserialize(str_replace("'", "\'", $hook->getOptions()));
+                    $check = $this->providerFactory->getProvider(Setting::class)->getSettingByScope($options['toggleSettingScope'], $options['toggleSettingName']);
                     if ($check == $options['toggleSettingValue']) { // If its turned on, display it
                         $options['text'] = stripslashes($options['text']);
                         $templateData['indexHooks'][] = $options;
@@ -568,9 +578,7 @@ class LegacyManager implements ContainerAwareInterface
                 }
 
                 $page->writeFromTemplate('legacy\welcome.html.twig', $templateData);
-
             } else {
-                dd($session);
                 // Custom content loader
                 if (!$session->exists('index_custom.php')) {
                     $globals = [
@@ -657,6 +665,7 @@ class LegacyManager implements ContainerAwareInterface
          * DONE!!
          */
         $content = $page->render('legacy\index.html.twig');
+        chdir($cwd);
         return new Response($content);
     }
 }

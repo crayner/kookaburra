@@ -18,6 +18,7 @@ namespace App\Manager\Traits;
 use App\Manager\EntityInterface;
 use App\Manager\MessageManager;
 use App\Provider\EntityProviderInterface;
+use App\Provider\ProviderFactory;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -69,22 +70,17 @@ trait EntityTrait
 
     /**
      * EntityTrait constructor.
-     * @param EntityManagerInterface $entityManager
-     * @param MessageManager $messageManager
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TranslatorInterface $translator
-     * @param RouterInterface $router
+     * @param ProviderFactory $providerFactory
      * @throws \Exception
      */
-    public function __construct(EntityManagerInterface $entityManager, MessageManager $messageManager,
-                                AuthorizationCheckerInterface $authorizationChecker,
-                                RouterInterface $router)
+    public function __construct(ProviderFactory $providerFactory)
     {
-        $this->entityManager = $entityManager;
-        $this->messageManager = $messageManager;
+        $this->entityManager = $providerFactory::getEntityManager();
+        $this->messageManager = $providerFactory::getMessageManager();
         self::$entityRepository = $this->getRepository();
-        $this->authorizationChecker = $authorizationChecker;
-        $this->router = $router;
+        $this->authorizationChecker = $providerFactory::getAuthorizationChecker();
+        $this->router = $providerFactory::getRouter();
+        $this->providerFactory = $providerFactory;
         if (method_exists($this, 'additionalConstruct'))
             $this->additionalConstruct();
     }
@@ -400,5 +396,18 @@ trait EntityTrait
             ->getQuery()
             ->getArrayResult();
         return reset($result);
+    }
+
+    /**
+     * @var ProviderFactory
+     */
+    private $providerFactory;
+
+    /**
+     * @return ProviderFactory
+     */
+    public function getProviderFactory(): ProviderFactory
+    {
+        return $this->providerFactory;
     }
 }

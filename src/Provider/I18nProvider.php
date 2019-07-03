@@ -14,6 +14,7 @@ namespace App\Provider;
 
 use App\Entity\I18n;
 use App\Manager\Traits\EntityTrait;
+use Gibbon\Contracts\Services\Session;
 
 class I18nProvider implements EntityProviderInterface
 {
@@ -23,4 +24,32 @@ class I18nProvider implements EntityProviderInterface
      * @var string
      */
     private $entityName = I18n::class;
+
+    /**
+     * setLanguageSession
+     * @param Session $session
+     * @param bool $defaultLanguage
+     * @throws \Exception
+     */
+    function setLanguageSession(Session $session, $defaultLanguage = true)
+    {
+        $result = $this->getRepository()->findOneBy(['systemDefault' => 'Y']);
+        
+        $data = [];
+        $data['gibboni18nID'] = $result->getId();
+        $data['code'] = $result->getCode();
+        $data['name'] = $result->getName();
+        $data['dateFormat'] = $result->getDateFormat();
+        $data['dateFormatRegEx'] = $result->getDateFormatRegEx();
+        $data['dateFormatPHP'] = $result->getDateFormatPHP();
+        $data['rtl'] = $result->getRtl();
+
+        if ($defaultLanguage) {
+            $data['default']['code'] = $result->getCode();
+            $data['default']['name'] = $result->getName();
+        }
+        
+        $session->set('i18n', $data);
+    }
+
 }

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\UI\Dashboard;
 
-use Gibbon\Contracts\Services\Session;
+use Gibbon\Contracts\Services\GibbonSession;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Forms\OutputableInterface;
 
@@ -34,7 +34,7 @@ class ParentDashboard implements OutputableInterface
     protected $db;
     protected $session;
 
-    public function __construct(Connection $db, Session $session)
+    public function __construct(Connection $db, GibbonSession $session)
     {
         $this->db = $db;
         $this->session = $session;

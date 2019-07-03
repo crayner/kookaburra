@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Comms;
 
-use Gibbon\Contracts\Services\Session;
+use Gibbon\Contracts\Services\GibbonSession;
 use Gibbon\Contracts\Comms\Mailer as MailerInterface;
 use Gibbon\View\View;
 
@@ -34,7 +34,7 @@ class Mailer extends \PHPMailer implements MailerInterface
     protected $session;
     protected $view;
 
-    public function __construct(Session $session)
+    public function __construct(GibbonSession $session)
     {
         $this->session = $session;
         $this->CharSet = 'UTF-8';

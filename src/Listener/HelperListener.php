@@ -12,6 +12,7 @@
  */
 namespace App\Listener;
 
+use App\Manager\LegacyConnectionFactory;
 use App\Manager\MessageManager;
 use App\Manager\SchoolYearManager;
 use App\Provider\ActionProvider;
@@ -76,8 +77,8 @@ class HelperListener implements EventSubscriberInterface
         ContainerInterface $container,
         LoggerInterface $logger)
     {
-        $providerFactory = new ProviderFactory($entityManager,$messageManager, $authorizationChecker, $router);
-        new EntityHelper($providerFactory);
+        new EntityHelper(new ProviderFactory($entityManager,$messageManager,$authorizationChecker,$router));
+        new LegacyConnectionFactory();
     }
 
     /**

@@ -30,6 +30,13 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    session:
+        class: App\Session\GibbonSession
+        public: true
+
+    Gibbon\Contracts\Services\Session:
+        alias: 'session'
+
     config:
         class: 'Gibbon\Core'
         arguments:
@@ -38,13 +45,9 @@ services:
         public: true
 
     locale:
-        class: 'Gibbon\Locale'
+        class: Gibbon\Locale
         arguments:
             $absolutePath: '%kernel.project_dir%/Gibbon'
-        public: true
-
-    session:
-        class: Gibbon\Contracts\Services\Session
         public: true
 
     db:
@@ -95,3 +98,6 @@ services:
         public: true
         arguments:
             - '@twig'
+
+    Gibbon\Contracts\Database\Connection:
+        factory: ['@App\Manager\LegacyConnectionFactory', 'createConnection']

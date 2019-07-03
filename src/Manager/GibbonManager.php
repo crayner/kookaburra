@@ -14,6 +14,7 @@ namespace App\Manager;
 
 use App\Entity\Action;
 use App\Provider\ThemeProvider;
+use App\Session\GibbonSession;
 use Gibbon\Core;
 use Gibbon\Database\Connection;
 use Gibbon\Database\MySqlConnector;
@@ -194,9 +195,10 @@ class GibbonManager implements ContainerAwareInterface
 
     /**
      * prepareSession
-     * @return SessionManager
+     * @param $guid
+     * @return GibbonSession
      */
-    private function prepareSession($guid): SessionManager
+    private function prepareSession($guid): GibbonSession
     {
         $session = $this->container->get('session');
         // Backwards compatibility for external modules

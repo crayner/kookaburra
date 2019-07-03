@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon\Services;
 
 use Gibbon\Domain\System\LogGateway;
-use Gibbon\Contracts\Services\Session;
+use Gibbon\Contracts\Services\GibbonSession;
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
 
@@ -53,10 +53,10 @@ class BackgroundProcessor implements ContainerAwareInterface
     /**
      * Create a background processor, tracking processes using the gibbonLog table (for now?)
      *
-     * @param  Session     $session
+     * @param  GibbonSession     $session
      * @param  LogGateway  $logGateway
      */
-    public function __construct(Session $session, LogGateway $logGateway)
+    public function __construct(GibbonSession $session, LogGateway $logGateway)
     {
         $this->session = $session;
         $this->logGateway = $logGateway;

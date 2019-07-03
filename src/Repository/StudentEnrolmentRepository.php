@@ -77,4 +77,24 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
 
         return array_unique($results);
     }
+
+    /**
+     * getStudentEnrolmentCount
+     * @param integer|null $gibbonSchoolYearID
+     * @return int
+     */
+    public function getStudentEnrolmentCount(?int $schoolYearID = null): int
+    {
+        $x = $this->createQueryBuilder('se')
+            ->select('COUNT(p.id)')
+            ->join('se.person', 'p')
+            ->join('se.rollGroup', 'rg')
+            ->join('rg.schoolYear', 'sy')
+            ->where('sy.id = :sy_id')
+            ->setParameter('sy_id', intval($schoolYearID))
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return intval($x);
+    }
 }

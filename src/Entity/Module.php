@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -92,6 +93,12 @@ class Module implements EntityInterface
      * @ORM\Column()
      */
     private $url;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Action", mappedBy="module")
+     */
+    private $actions;
 
     /**
      * @return int|null
@@ -299,5 +306,25 @@ class Module implements EntityInterface
             'author' => $this->author,
             'url' => $this->url,
         ];
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getActions(): Collection
+    {
+        return $this->actions;
+    }
+
+    /**
+     * Actions.
+     *
+     * @param Collection $actions
+     * @return Module
+     */
+    public function setActions(Collection $actions): Module
+    {
+        $this->actions = $actions;
+        return $this;
     }
 }

@@ -19,8 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\UI\Dashboard;
 
-use Gibbon\Forms\OutputableInterface;
 use Gibbon\Contracts\Services\Session;
+use Gibbon\Forms\OutputableInterface;
 use Gibbon\Tables\Prefab\RollGroupTable;
 use Gibbon\Contracts\Database\Connection;
 

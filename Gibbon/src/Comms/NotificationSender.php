@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon\Comms;
 
 use Gibbon\Contracts\Comms\Mailer;
-use Gibbon\Contracts\Services\Session;
+use Gibbon\Contracts\Services\GibbonSession;
 use Gibbon\Domain\System\NotificationGateway;
 
 /**
@@ -45,9 +45,9 @@ class NotificationSender
      * Injects a gateway and session dependency, used for database inserts and email formatting.
      *
      * @param  NotificationGateway  $gateway
-     * @param  session              $session
+     * @param  GibbonSession              $session
      */
-    public function __construct(NotificationGateway $gateway, Session $session)
+    public function __construct(NotificationGateway $gateway, GibbonSession $session)
     {
         $this->gateway = $gateway;
         $this->session = $session;

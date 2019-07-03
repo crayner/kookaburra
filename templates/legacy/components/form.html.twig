@@ -27,7 +27,7 @@ For info about editing, see: https://twig.symfony.com/doc/2.x/
             {% set rowClass = 'flex flex-col sm:flex-row justify-between content-center p-0' %}
         {% endif %}
 
-        <tr id="{{ row.getID }}" class="{{ row.getClass|replace({'standardWidth': ''}) }} {{ rowClass }}">
+        <tr id="{{ row.getID }}" class="{{ row.getClass|replace({'standardWidth': ''}) }} {{ rowClass|default('') }}">
 
         {% for element in row.getElements %}
             {% set colspan = loop.last and loop.length < totalColumns ? (totalColumns + 1 - loop.length) : 0  %}
