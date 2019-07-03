@@ -163,7 +163,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         //store the token blah blah blah
         $session = $request->getSession();
-        $session->set('username', $token->getUsername());
+        $this->createUserSession($token->getUsername(), $session);
 
         $session->save();
         if ($targetPath = $this->getTargetPath($request, $providerKey))
@@ -179,5 +179,51 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     protected function getLoginUrl()
     {
         return $this->router->generate('login');
+    }
+
+    public function createUserSession($username, $session) {
+
+        $userData = $this->providerFactory::getRepository(Person::class)->findOneByUsername($username);
+        if (null === $userData) {
+            $userData = $this->providerFactory::getRepository(Person::class)->findOneByEmail($username);
+        }
+        $session->set('username', $username);
+        $session->set('passwordStrong', $userData->getPasswordStrong());
+        $session->set('passwordStrongSalt', $userData->getPasswordStrongSalt());
+        $session->set('passwordForceReset', $userData->getPasswordForceReset());
+        $session->set('gibbonPersonID', $userData->getId());
+        $session->set('surname', $userData->getSurname());
+        $session->set('firstName', $userData->getFirstName());
+        $session->set('preferredName', $userData->getPreferredName());
+        $session->set('officialName', $userData->getOfficialName());
+        $session->set('email', $userData->getEmail());
+        $session->set('emailAlternate', $userData->getEmailAlternate());
+        $session->set('website', $userData->getWebsite());
+        $session->set('gender', $userData->getGender());
+        $session->set('status', $userData->getstatus());
+        $primaryRole = $userData->getPrimaryRole();
+        $session->set('gibbonRoleIDPrimary', $primaryRole ? $primaryRole->getId() : null);
+        $session->set('gibbonRoleIDCurrent', $primaryRole ? $primaryRole->getId() : null);
+        $session->set('gibbonRoleIDCurrentCategory', $primaryRole ? $primaryRole->getCategory() : null);
+        $session->set('gibbonRoleIDAll', $this->providerFactory->getProvider(Role::class)->getRoleList($userData->getAllRoles()) );
+        $session->set('image_240', $userData->getImage240());
+        $session->set('lastTimestamp', $userData->getLastTimestamp());
+        $session->set('calendarFeedPersonal', $userData->getcalendarFeedPersonal());
+        $session->set('viewCalendarSchool', $userData->getviewCalendarSchool());
+        $session->set('viewCalendarPersonal', $userData->getviewCalendarPersonal());
+        $session->set('viewCalendarSpaceBooking', $userData->getviewCalendarSpaceBooking());
+        $session->set('dateStart', $userData->getdateStart());
+        $session->set('personalBackground', $userData->getpersonalBackground());
+        $session->set('messengerLastBubble', $userData->getmessengerLastBubble());
+        $session->set('gibboni18nIDPersonal', $userData->getI18nPersonal() ? $userData->getI18nPersonal()->getId() : null);
+        $session->set('googleAPIRefreshToken', $userData->getgoogleAPIRefreshToken());
+        $session->set('receiveNotificationEmails', $userData->getreceiveNotificationEmails());
+        $session->set('gibbonHouseID', $userData->getHouse() ? $userData->getHouse()->getId() : null);
+
+        //Deal with themes
+        $session->set('gibbonThemeIDPersonal', $userData->getTheme() ? $userData->getTheme()->getId() : null);
+
+        // Cache FF actions on login
+    //    $session->cacheFastFinderActions($userData->getgibbonRoleIDPrimary']);
     }
 }

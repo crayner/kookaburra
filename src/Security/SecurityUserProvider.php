@@ -51,7 +51,7 @@ class SecurityUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username): UserInterface
     {
-        if (null === ($user = $this->userRepository->loadUserByUsername($username))) {
+        if (null === ($user = $this->userRepository->loadUserByUsernameOrEmail($username))) {
             throw new BadCredentialsException(sprintf('No user found for "%s"', $username));
         }
 

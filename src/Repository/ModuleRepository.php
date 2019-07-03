@@ -40,7 +40,7 @@ class ModuleRepository extends ServiceEntityRepository
     public function findModuleByRole(int $roleID)
     {
         return $this->createQueryBuilder('m')
-            ->select(['m.category', 'm.name', 'm.type', 'm.entryURL', 'a.entryURL'])
+            ->select(['m.category', 'm.name', 'm.type', 'm.entryURL', 'a.entryURL AS alternateEntryURL'])
             ->join('m.actions', 'a')
             ->join('a.permissions', 'p')
             ->join('p.role', 'r')

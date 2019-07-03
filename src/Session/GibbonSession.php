@@ -382,4 +382,14 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
     {
         return $this->getAttributeBag()->exists($name);
     }
+
+    /**
+     * Remove one or many items from the session.
+     *
+     * @param  string|array  $keys
+     */
+    public function forget($keys)
+    {
+        $this->getAttributeBag()->forget($keys);
+    }
 }

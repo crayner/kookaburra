@@ -257,4 +257,18 @@ class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \
 
         return true;
     }
+
+    /**
+     * Remove one or many items from the session.
+     *
+     * @param  string|array  $keys
+     */
+    public function forget($keys)
+    {
+        $keys = is_array($keys)? $keys : [$keys];
+
+        foreach ($keys as $key) {
+            $this->remove($key);
+        }
+    }
 }

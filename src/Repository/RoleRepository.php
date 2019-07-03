@@ -19,6 +19,7 @@ use App\Entity\Person;
 use App\Entity\Role;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
+use PDOException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -52,5 +53,22 @@ class RoleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
         return $result ?: [];
+    }
+
+    /**
+     * getRoleList
+     * @param $gibbonRoleIDAll
+     * @param $connection2
+     * @return array
+     */
+    public function getRoleList($roleList)
+    {
+        $roles = explode(',',$roleList);
+        return $this->createQueryBuilder('r')
+            ->where('r.id IN (:roles)')
+            ->setParameter('roles', $roles, Connection::PARAM_INT_ARRAY)
+            ->select(['r.id AS gibbonRoleID', 'r.name'])
+            ->getQuery()
+            ->getResult();
     }
 }

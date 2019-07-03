@@ -44,6 +44,7 @@ class ModuleProvider implements EntityProviderInterface
             }
             foreach($result as $module)
             {
+                $module['textDomain'] = $module['type'] === 'Core' ? null : $module['name'];
                 if ($module['category'] === $category)
                 {
                     $sorted[$category][] = $module;

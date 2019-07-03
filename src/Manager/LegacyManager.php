@@ -72,7 +72,6 @@ class LegacyManager implements ContainerAwareInterface
         $guid = GibbonManager::getGuid();
         $pdo = GibbonManager::getConnection();
         $connection2= GibbonManager::getPDO();
-        $version = $gibbon->getVersion();
         $settingProvider = $this->providerFactory->getProvider(Setting::class);
 
         $isLoggedIn = $session->has('username') && $session->has('gibbonRoleIDCurrent') ? true : false;
@@ -604,7 +603,7 @@ class LegacyManager implements ContainerAwareInterface
                         $page->write($this->container->get(StudentDashboard::class)->getOutput());
                         break;
                     case 'Staff':
-                        $page->write($this->container->get(StaffDashboard::class)->getOutput());
+                        $page->write($this->staffDashboard->getOutput());
                         break;
                     default:
                         $page->write('<div class="error">'.__('Your current role type cannot be determined.').'</div>');
