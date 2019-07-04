@@ -63,12 +63,12 @@ services:
         public: true
 
     action:
-        class: App\Entity\Action
-        public: true
+        class: App\Manager\ViewFactory
+        factory: ['App\Manager\ViewFactory','getAction']
 
     module:
-        class: Gibbon\Domain\System\Module
-        public: true
+        class: App\Manager\ViewFactory
+        factory: ['App\Manager\ViewFactory','getModule']
 
     App\Manager\GibbonManager:
         arguments:

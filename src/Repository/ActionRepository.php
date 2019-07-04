@@ -41,6 +41,6 @@ class ActionRepository extends ServiceEntityRepository
             ->andWhere('m.name = :moduleName')
             ->setParameters(['urlList' => $URLList, 'moduleName' => $moduleName, 'roleID' => $roleID])
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getArrayResult();
     }
 }

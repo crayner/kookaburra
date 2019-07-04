@@ -71,8 +71,8 @@ $(document).ready(function(){
         $.sessionTimeout({
             message: Gibbon.config.sessionTimeout.message,
             keepAliveUrl: 'keepAlive.php' ,
-            redirUrl: 'logout.php?timeout=true',
-            logoutUrl: 'logout.php' ,
+            redirUrl: 'logout/?timeout=true',
+            logoutUrl: 'logout/' ,
             warnAfter: sessionDuration * 1000,
             redirAfter: (sessionDuration * 1000) + 600000
         });

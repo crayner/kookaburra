@@ -320,16 +320,9 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
      */
     public function guid()
     {
-
         if (null === $this->guid) {
-            $file = realpath(__dir__ . '/../../config/packages/gibbon.yaml');
-            $data = Yaml::parse(file_get_contents($file));
-            if (isset($data['parameters']['guid'])) {
-                $this->setGuid($data['parameters']['guid']);
-            } else {
-                throw new \RuntimeException('This SessionManager must not used until the guid is correctly set.');
-            }
-            if ($this->isStarted() && !\array_key_exists($this->guid, $_SESSION)) {
+            $this->guid = guid();
+;            if ($this->isStarted() && !\array_key_exists($this->guid, $_SESSION)) {
                 $_SESSION[$this->guid()] = [];
             }
         }

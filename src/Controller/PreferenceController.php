@@ -14,7 +14,6 @@ namespace App\Controller;
 
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
-use Gibbon\View\Page;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +39,7 @@ class PreferenceController extends AbstractController
         }
 
         $gibbonManager->injectAddress('preferences.php');
-        $result = $manager->execute($request, new Page($this->container->get('twig')));
+        $result = $manager->execute($request, $gibbonManager->getPage());
 
         if ($result instanceof Response){
             return $result;

@@ -21,6 +21,7 @@ use App\Manager\GibbonManager;
 use Gibbon\Forms\Form;
 use Gibbon\Services\Format;
 use Gibbon\Contracts\Comms\Mailer;
+use Symfony\Component\Yaml\Yaml;
 
 function getIPAddress() {
     $return = false;
@@ -1480,7 +1481,7 @@ function getModuleName($address)
 //Get the action name from the address
 function getActionName($address)
 {
-    return substr($address, (10 + strlen(getModuleName($address))));
+    return strlen(getModuleName($address)) > 0 ? substr($address, (10 + strlen(getModuleName($address)))) : '';
 }
 
 //Using the current address, checks to see that a module exists and is ready to use, returning the ID if it is
@@ -2009,4 +2010,23 @@ function returnProcessGetAlert($return, $editLink = null, $customReturns = null)
         return ['context' => $class, 'text' => $returnMessage];
     }
     return null;
+}
+
+/**
+ * Return the guid string
+ * TODO: Remove this
+ *
+ * @return    string
+ */
+function guid()
+{
+    $file = realpath(__dir__ . '/../config/packages/gibbon.yaml');
+    $data = Yaml::parse(file_get_contents($file));
+    if (isset($data['parameters']['guid'])) {
+        $guid = $data['parameters']['guid'];
+    } else {
+        throw new \RuntimeException(sprintf('The "guid" must be set in the %s file', $file));
+    }
+
+    return $guid;
 }

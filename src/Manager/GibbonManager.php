@@ -13,6 +13,8 @@
 namespace App\Manager;
 
 use App\Entity\Action;
+use App\Entity\SchoolYear;
+use App\Provider\ProviderFactory;
 use App\Provider\ThemeProvider;
 use App\Session\GibbonSession;
 use Gibbon\Core;
@@ -22,6 +24,7 @@ use Gibbon\Domain\System\Module;
 use Gibbon\Domain\System\Theme;
 use Gibbon\Services\ErrorHandler;
 use Gibbon\Services\Format;
+use Gibbon\View\Page;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -64,9 +67,9 @@ class GibbonManager implements ContainerAwareInterface
     private static $instance;
 
     /**
-     * @var ThemeProvider
+     * @var ProviderFactory
      */
-    private $themeProvider;
+    private $providerFactory;
 
     /**
      * @var string
@@ -74,13 +77,18 @@ class GibbonManager implements ContainerAwareInterface
     private $version;
 
     /**
+     * @var Page|null
+     */
+    private $page;
+
+    /**
      * GibbonManager constructor.
      * @param RequestStack $stack
      */
-    public function __construct(RequestStack $stack, ThemeProvider $themeProvider, string $version)
+    public function __construct(RequestStack $stack, ProviderFactory $providerFactory, string $version)
     {
         $this->request = $stack->getCurrentRequest();
-        $this->themeProvider = $themeProvider;
+        $this->providerFactory = $providerFactory;
         $this->version = $version;
         self::$instance = $this;
     }
@@ -126,6 +134,7 @@ class GibbonManager implements ContainerAwareInterface
             ->prepareModule()
             ->prepareTheme()
             ->preparePage()
+            ->prepareSchoolYear()
         ;
 
         return null;
@@ -152,7 +161,11 @@ class GibbonManager implements ContainerAwareInterface
      */
     public static function getGuid(): string
     {
-        return self::$instance->guid ?: self::$instance->request->getSession()->guid();
+        if (!isset(self::$instance))
+        {
+            return guid();
+        }
+        return isset(self::$instance->guid) ? self::$instance->guid : self::$instance->request->getSession()->guid();
     }
 
     /**
@@ -273,7 +286,7 @@ class GibbonManager implements ContainerAwareInterface
     private function prepareTheme(): self
     {
         $session = $this->request->getSession();
-        $repository = $this->themeProvider->getRepository();
+        $repository = $this->providerFactory::getRepository(\App\Entity\Theme::class);
 
         if ($session->has('gibbonThemeIDPersonal')) {
             $data = ['gibbonThemeID' => $session->get('gibbonThemeIDPersonal')];
@@ -289,6 +302,7 @@ class GibbonManager implements ContainerAwareInterface
         $theme = $themeData ? new Theme($themeData->toArray()) : null;
 
         $this->container->set('theme', $theme);
+
         return $this;
     }
 
@@ -305,16 +319,17 @@ class GibbonManager implements ContainerAwareInterface
             $pageTitle .= ' - '.__($session->get('module'));
         }
         $page = $this->container->get('page');
-
         $page->setParams([
             'title'   => $pageTitle,
             'address' => $session->get('address'),
-            'action'  => $this->container->get('action'),
-            'module'  => $this->container->get('module'),
+            'action'  => ViewFactory::getAction(),
+            'module'  => ViewFactory::getModule(),
             'theme'   => $this->container->get('theme'),
         ]);
 
         $this->container->set('errorHandler', new ErrorHandler($session->get('installType'), $page));
+        $this->page = $page;
+
         return $this;
     }
 
@@ -325,7 +340,7 @@ class GibbonManager implements ContainerAwareInterface
      */
     private function prepareAction(): self
     {
-        $repository = $this->themeProvider->getRepository(Action::class);
+        $repository = $this->providerFactory::getRepository(Action::class);
         $session = $this->request->getSession();
 
         $actionData = $repository->findOneByURLListModuleNameRoleID(
@@ -333,9 +348,10 @@ class GibbonManager implements ContainerAwareInterface
             $session->get('module'),
             $session->get('gibbonRoleIDCurrent')
         );
-        $actionData = $actionData ? $actionData->toArray() : [];
+        $actionData = $actionData ? $actionData->toArray() : null;
 
-        $this->container->set('action', $actionData);
+        ViewFactory::setAction($actionData);
+
         return $this;
     }
 
@@ -346,14 +362,14 @@ class GibbonManager implements ContainerAwareInterface
      */
     private function prepareModule(): self
     {
-        $repository = $this->themeProvider->getRepository(\App\Entity\Module::class);
+        $repository = $this->providerFactory::getRepository(\App\Entity\Module::class);
         $session = $this->request->getSession();
 
         if (null !== $moduleData = $repository->findOneBy(['name' => $session->get('module')]))
         {
-            $this->container->set('module', new Module($moduleData->toArray()));
+            ViewFactory::setModule(new Module($moduleData->toArray()));
         } else {
-            $this->container->set('module', null);
+            ViewFactory::setModule(null);
         }
 
         return $this;
@@ -372,6 +388,31 @@ class GibbonManager implements ContainerAwareInterface
         $session->set('module', $address ? getModuleName($address) : '');
         $session->set('action', $address ? getActionName($address) : '');
 
+        return $this->prepareAction()
+            ->prepareModule()
+            ->preparePage();
+    }
+
+    /**
+     * @return Page|null
+     */
+    public function getPage(): ?Page
+    {
+        return $this->page;
+    }
+
+    private function prepareSchoolYear(): self
+    {
+        $session = $this->request->getSession();
+        if (!$session->has('gibbonSchoolYearIDCurrent')) {
+            $repository = $this->providerFactory::getRepository(SchoolYear::class);
+            $schoolYear = $repository->findOneByStatus('Current');
+            if ($schoolYear) {
+                $session->set('gibbonSchoolYearIDCurrent', $schoolYear->getId());
+                $session->set('gibbonSchoolYearNameCurrent', $schoolYear->getName());
+                $session->set('gibbonSchoolYearSequenceNumberCurrent', $schoolYear->getSequenceNumber());
+            }
+        }
         return $this;
     }
 }

@@ -23,8 +23,6 @@ use Gibbon\UI\Dashboard\ParentDashboard;
 use Gibbon\UI\Dashboard\StaffDashboard;
 use Gibbon\UI\Dashboard\StudentDashboard;
 use Gibbon\View\Page;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -35,10 +33,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Class LegacyManager
  * @package App\Manager
  */
-class LegacyManager implements ContainerAwareInterface
+class LegacyManager
 {
-    use ContainerAwareTrait;
-
     /**
      * @var ProviderFactory
      */
@@ -199,7 +195,7 @@ class LegacyManager implements ContainerAwareInterface
                     }
                 }
 
-// Deal with Data Updater redirect (if required updates are enabled)
+                // Deal with Data Updater redirect (if required updates are enabled)
                 $requiredUpdates = getSettingByScope($connection2, 'Data Updater', 'requiredUpdates');
                 if ($requiredUpdates == 'Y') {
                     if (isActionAccessible($guid, $connection2, '/modules/Data Updater/data_updates.php')) { // Can we update data?
@@ -370,7 +366,8 @@ class LegacyManager implements ContainerAwareInterface
             'thickbox'     => 'build/thickbox/thickbox.css',
         ], ['weight' => -1]);
 
-//        $page->theme->stylesheets->add('theme', '/themes/'.$session->get('gibbonThemeName', 'Default').'/css/main.css', ['weight' => 1]);
+        $page->theme->stylesheets->add('theme', '/themes/'.$session->get('gibbonThemeName', 'Default').'/css/main.css', ['weight' => 1]);
+
         // Add right-to-left stylesheet
         if ($session->get('i18n')['rtl'] == 'Y') {
             $page->theme->stylesheets->add('theme-rtl', '/themes/'.$session->get('gibbonThemeName', 'Default').'/css/main_rtl.css', ['weight' => 1]);
@@ -561,7 +558,7 @@ class LegacyManager implements ContainerAwareInterface
             // Welcome message
             if (!$isLoggedIn) {
                 // Create auto timeout message
-                if ($request->query->has('timeout') && $request->query->get('timeout') == 'true') {
+                if ($request->query->has('timeout') && $request->query->get('timeout') === 'true') {
                     $page->addWarning(__('Your session expired, so you were automatically logged out of the system.'));
                 }
 
@@ -622,8 +619,16 @@ class LegacyManager implements ContainerAwareInterface
             }
         } else {
             $address = trim($page->getAddress(), ' /');
-
             if ($page->isAddressValid($address) == false) {
+                $content = GibbonManager::getContainer()->get('twig')->render('legacy/error.html.twig',
+                    [
+                        'extendedError' => GibbonManager::getContainer()->get('translator')->trans('Illegal address detected: access denied.', [], 'gibbon'),
+                        'extendedParams' => ['%address%' => $address],
+                        'manager' => $this,
+                    ]
+                );
+                return new Response($content);
+
                 $page->addError(__('Illegal address detected: access denied.'));
             } else {
                 // Pass these globals into the script of the included file, for backwards compatibility.
@@ -635,7 +640,7 @@ class LegacyManager implements ContainerAwareInterface
                     'pdo'         => $pdo,
                     'connection2' => $connection2,
 //                    'autoloader'  => $autoloader,
-                    'container'   => $this->container,
+                    'container'   => GibbonManager::getContainer(),
                     'page'        => $page,
                 ];
 

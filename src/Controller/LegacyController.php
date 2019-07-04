@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
-use Psr\Container\ContainerInterface;
+use Gibbon\View\Page;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,15 +16,14 @@ class LegacyController extends AbstractController
      * @Route("/", name="legacy")
      * @Route("/", name="home")
      */
-    public function index(Request $request, LegacyManager $manager, GibbonManager $gibbonManager, ContainerInterface $container)
+    public function index(Request $request, LegacyManager $manager, GibbonManager $gibbonManager)
     {
-        $manager->setContainer($container);
         $error = $gibbonManager->execute();
         if ($error instanceof Response){
             return $error;
         }
 
-        $result = $manager->execute($request, $container->get('page'));
+        $result = $manager->execute($request, $gibbonManager->getPage());
 
         if ($result instanceof Response){
             return $result;

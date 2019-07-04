@@ -65,6 +65,12 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
 
         $this->logger->info(sprintf('A user logged out from machine %s', $request->server->get('REMOTE_ADDRESS')));
 
-		return new RedirectResponse($this->router->generate('home'));
+        $query = [];
+        if ($request->query->has('timeout') && $request->query->get('timeout') === 'true')
+        {
+            $query['timeout'] = 'true';
+        }
+
+		return new RedirectResponse($this->router->generate('home', $query));
 	}
 }
