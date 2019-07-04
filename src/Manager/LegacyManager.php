@@ -55,14 +55,20 @@ class LegacyManager implements ContainerAwareInterface
     private $header;
 
     /**
+     * @var
+     */
+    private $sidebar;
+
+    /**
      * LegacyManager constructor.
      * @param RequestStack $stack
      */
-    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard, Header $header)
+    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard, Header $header, Sidebar $sidebar)
     {
         $this->providerFactory = $providerFactory;
         $this->staffDashboard = $staffDashboard;
         $this->header = $header;
+        $this->sidebar = $sidebar;
     }
 
     /**
@@ -133,7 +139,7 @@ class LegacyManager implements ContainerAwareInterface
         // Check for force password reset flag
         if ($session->has('passwordForceReset')) {
             if ($session->get('passwordForceReset') == 'Y' && $session->get('address') != 'preferences.php') {
-                $URL = $session->get('absoluteURL').'/index.php?q=preferences.php';
+                $URL = $session->get('absoluteURL').'/preferences/';
                 $URL = $URL.'&forceReset=Y';
                 return new RedirectResponse($URL);
             }
@@ -660,7 +666,7 @@ class LegacyManager implements ContainerAwareInterface
             $session->set('sidebarExtra', '');
 
             $page->addData([
-                'sidebarContents' => $this->container->get(Sidebar::class)->getOutput(),
+                'sidebarContents' => $this->sidebar->getOutput(),
                 'sidebarPosition' => $session->get('sidebarExtraPosition'),
             ]);
         }

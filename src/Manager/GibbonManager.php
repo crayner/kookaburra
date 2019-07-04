@@ -21,6 +21,7 @@ use Gibbon\Database\MySqlConnector;
 use Gibbon\Domain\System\Module;
 use Gibbon\Domain\System\Theme;
 use Gibbon\Services\ErrorHandler;
+use Gibbon\Services\Format;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -81,6 +82,7 @@ class GibbonManager implements ContainerAwareInterface
         $this->request = $stack->getCurrentRequest();
         $this->themeProvider = $themeProvider;
         $this->version = $version;
+        self::$instance = $this;
     }
 
     /**
@@ -123,7 +125,8 @@ class GibbonManager implements ContainerAwareInterface
         $this->prepareAction()
             ->prepareModule()
             ->prepareTheme()
-            ->preparePage();
+            ->preparePage()
+        ;
 
         return null;
     }
@@ -149,7 +152,7 @@ class GibbonManager implements ContainerAwareInterface
      */
     public static function getGuid(): string
     {
-        return self::$instance->guid;
+        return self::$instance->guid ?: self::$instance->request->getSession()->guid();
     }
 
     /**
@@ -200,7 +203,7 @@ class GibbonManager implements ContainerAwareInterface
      */
     private function prepareSession($guid): GibbonSession
     {
-        $session = $this->container->get('session');
+        $session = $this->request->getSession();
         // Backwards compatibility for external modules
         $this->guid = $this->container->has('config')? $this->container->get('config')->guid() : $guid;
 
@@ -224,6 +227,7 @@ class GibbonManager implements ContainerAwareInterface
             $session->set('absolutePath', $this->container->getParameter('kernel.project_dir') . '/public');
         }
 
+        Format::setupFromSession($session);
         return $session;
     }
 
@@ -354,4 +358,22 @@ class GibbonManager implements ContainerAwareInterface
 
         return $this;
     }
+
+    /**
+     * injectAddress
+     * @param string $address
+     * @return GibbonManager
+     */
+    public function injectAddress(string $address): self
+    {
+        $session = $this->request->getSession();
+
+        $session->set('address', $address);
+        $session->set('module', $address ? getModuleName($address) : '');
+        $session->set('action', $address ? getActionName($address) : '');
+
+        return $this;
+    }
 }
+
+require_once __DIR__.'/../../Gibbon/functions.php';

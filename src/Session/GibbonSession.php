@@ -52,7 +52,6 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
         $this->registerBag($flashes);
 
         $this->guid();
-        $this->mergeLegacySession();
     }
 
     /**
@@ -363,17 +362,6 @@ class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable,
 
         while ($row = $result->fetch()) {
             $this->set('i18n', $row);
-        }
-    }
-
-    /**
-     * mergeLegacySession
-     */
-    public function mergeLegacySession(): void
-    {
-        if (isset($_SESSION) && \array_key_exists('',$_SESSION))
-        {
-
         }
     }
 

@@ -16,9 +16,8 @@ class LegacyController extends AbstractController
      * @Route("/", name="legacy")
      * @Route("/", name="home")
      */
-    public function index(Request $request, LegacyManager $manager, ContainerInterface $container, GibbonManager $gibbonManager)
+    public function index(Request $request, LegacyManager $manager, GibbonManager $gibbonManager, ContainerInterface $container)
     {
-        $gibbonManager->setContainer($container);
         $manager->setContainer($container);
         $error = $gibbonManager->execute();
         if ($error instanceof Response){

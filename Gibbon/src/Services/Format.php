@@ -20,7 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon\Services;
 
 use DateTime;
-use Gibbon\Session;
+use Gibbon\Contracts\Services\Session;
 use DateTimeImmutable;
 
 /**

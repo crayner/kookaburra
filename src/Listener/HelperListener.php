@@ -12,6 +12,7 @@
  */
 namespace App\Listener;
 
+use App\Manager\GibbonManager;
 use App\Manager\LegacyConnectionFactory;
 use App\Manager\MessageManager;
 use App\Manager\SchoolYearManager;
@@ -38,6 +39,8 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -53,6 +56,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class HelperListener implements EventSubscriberInterface
 {
+    /**
+     * @var GibbonManager
+     */
+    private $gibbonManager;
+
     /**
      * HelperListener constructor.
      * @param EntityManagerInterface $entityManager
@@ -71,14 +79,17 @@ class HelperListener implements EventSubscriberInterface
         MessageManager $messageManager,
         AuthorizationCheckerInterface $authorizationChecker,
         RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        RequestStack $stack,
-        TranslatorInterface $translator,
+//        TokenStorageInterface $tokenStorage,
+//        RequestStack $stack,
+//        TranslatorInterface $translator,
         ContainerInterface $container,
-        LoggerInterface $logger)
-    {
+//        LoggerInterface $logger,
+        GibbonManager $gibbonManager
+    ) {
         new EntityHelper(new ProviderFactory($entityManager,$messageManager,$authorizationChecker,$router));
         new LegacyConnectionFactory();
+        $gibbonManager->setContainer($container);
+        $this->gibbonManager = $gibbonManager;
     }
 
     /**
@@ -87,15 +98,14 @@ class HelperListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        $listeners = [
-            KernelEvents::REQUEST => 'doNothing',
+        return [
+            KernelEvents::REQUEST => 'gibbonInitiate',
         ];
-
-        return $listeners;
     }
 
     /**
-     * doNothing
+     * gibbonInitiate
+     * @param RequestEvent $event
      */
-    public function doNothing(){}
+    public function gibbonInitiate(){}
 }
