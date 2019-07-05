@@ -33,11 +33,11 @@ class ModuleRepository extends ServiceEntityRepository
     }
 
     /**
-     * findModuleByRole
+     * findModulesByRole
      * @param int $roleID
-     * @return mixed
+     * @return array|null
      */
-    public function findModuleByRole(int $roleID)
+    public function findModulesByRole(int $roleID)
     {
         return $this->createQueryBuilder('m')
             ->select(['m.category', 'm.name', 'm.type', 'm.entryURL', 'a.entryURL AS alternateEntryURL'])
@@ -52,6 +52,35 @@ class ModuleRepository extends ServiceEntityRepository
             ->addOrderBy('a.name')
             ->setParameter('active', 'Y')
             ->setParameter('role_id', intval($roleID))
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findModuleActionsByRole
+     * @param int $moduleID
+     * @param int $roleID
+     * @return array
+     */
+    public function findModuleActionsByRole(int $moduleID, int $roleID)
+    {
+        return $this->createQueryBuilder('m')
+            ->select(['a.category', 'm.name AS moduleName', 'a.name AS actionName', 'm.type', 'a.precedence', 'm.entryURL AS moduleEntry', 'a.entryURL', 'a.URLList'])
+            ->join('m.actions', 'a')
+            ->join('a.permissions', 'p')
+            ->join('p.role', 'r')
+            ->where('m.id = :module_id')
+            ->setParameter('module_id', intval($moduleID))
+            ->andWhere('r.id = :role_id')
+            ->setParameter('role_id', intval($roleID))
+            ->andWhere('a.entryURL != :empty')
+            ->setParameter('empty', '')
+            ->andWhere('a.menuShow = :yes')
+            ->setParameter('yes', 'Y')
+            ->groupBy('a.name')
+            ->orderBy('a.category')
+            ->addOrderBy('a.name')
+            ->addOrderBy('a.precedence', 'DESC')
             ->getQuery()
             ->getResult();
     }

@@ -495,7 +495,7 @@ class LegacyManager
                 $menuModule = $session->get('menuModuleName');
 
                 if ($cacheLoad || !$session->has('menuModuleItems') || $currentModule != $menuModule) {
-                    $menuModuleItems = $moduleGateway->selectModuleActionsByRole($page->getModule()->getID(), $session->get('gibbonRoleIDCurrent'))->fetchGrouped();
+                    $menuModuleItems = $moduleGateway->selectModuleActionsByRole($page->getModule()->getID(), $session->get('gibbonRoleIDCurrent'));
                 } else {
                     $menuModuleItems = $session->get('menuModuleItems');
                 }
@@ -648,6 +648,7 @@ class LegacyManager
 
                 if (false !== $fullAddress) {
                     $page->writeFromFile($fullAddress, $globals);
+                    dump($page);
                 } else {
                     $content = GibbonManager::getContainer()->get('twig')->render('legacy/error.html.twig',
                         [

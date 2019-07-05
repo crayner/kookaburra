@@ -35,7 +35,7 @@ class ModuleProvider implements EntityProviderInterface
         $settingProvider = ProviderFactory::create(Setting::class);
         $mainMenuCategoryOrder = $settingProvider->getSettingByScope('System', 'mainMenuCategoryOrder');
 
-        $result = $this->getRepository()->findModuleByRole($roleID);
+        $result = $this->getRepository()->findModulesByRole($roleID);
         $sorted = [];
         foreach(explode(',', $mainMenuCategoryOrder) as $category)
         {
@@ -53,5 +53,27 @@ class ModuleProvider implements EntityProviderInterface
         }
 
         return $sorted;
+    }
+
+    /**
+     * selectModuleActionsByRole
+     * @param int $moduleID
+     * @param int $roleID
+     * @return array
+     * @throws \Exception
+     */
+    public function selectModuleActionsByRole(int $moduleID, int $roleID)
+    {
+        $result = $this->getRepository()->findModuleActionsByRole($moduleID, $roleID);
+        $sorted = [];
+        foreach($result as $q=>$module)
+        {
+            $module['textDomain'] = $module['type'] === 'Core' ? null : $module['moduleName'];
+            $name = explode(' ',$module['actionName']);
+            $module['name'] = $name[0];
+            $result[$q] = $module;
+        }
+
+        return $result;
     }
 }

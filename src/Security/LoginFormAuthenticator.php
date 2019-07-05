@@ -39,11 +39,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     use TargetPathTrait;
 
     /**
-     * @var ProviderFactory
-     */
-    private $providerFactory;
-
-    /**
      * @var RouterInterface
      */
     private $router;
@@ -65,9 +60,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param UserPasswordEncoderInterface $passwordEncoder
      */
-    public function __construct(ProviderFactory $providerFactory, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->providerFactory = $providerFactory;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
@@ -130,7 +124,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->providerFactory->getProvider(Person::class)->loadUserByUsername($credentials['email']);
+        $user = ProviderFactory::create(Person::class)->loadUserByUsername($credentials['email']);
 
         if (!$user) {
             // fail authentication with a custom error
@@ -163,7 +157,19 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         //store the token blah blah blah
         $session = $request->getSession();
-        $this->createUserSession($token->getUsername(), $session);
+        $person = $this->createUserSession($token->getUsername(), $session);
+        if ($token->getUser()->getEncoderName() === 'md5')
+        {
+            $salt = $token->getUser()->createSalt();
+            $person->setPasswordStrongSalt($salt);
+            $token->getUser()->setSalt($salt);
+            $person->setMD5Password('');
+            $token->getUser()->setEncoderName('sha256');
+            $password = $this->passwordEncoder->encodePassword($token->getUser(), $this->getCredentials($request)['password']);
+            $person->setPasswordStrong($password);
+            $token->getUser()->setPassword($password);
+            ProviderFactory::create(Person::class)->setEntity($person)->saveEntity();
+        }
 
         $session->save();
         if ($targetPath = $this->getTargetPath($request, $providerKey))
@@ -183,7 +189,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function createUserSession($username, $session) {
 
-        $userData = $this->providerFactory::getRepository(Person::class)->findOneByUsername($username);
+        $userData = ProviderFactory::getRepository(Person::class)->findOneByUsername($username);
         if (null === $userData) {
             $userData = $this->providerFactory::getRepository(Person::class)->findOneByEmail($username);
         }
@@ -205,7 +211,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $session->set('gibbonRoleIDPrimary', $primaryRole ? $primaryRole->getId() : null);
         $session->set('gibbonRoleIDCurrent', $primaryRole ? $primaryRole->getId() : null);
         $session->set('gibbonRoleIDCurrentCategory', $primaryRole ? $primaryRole->getCategory() : null);
-        $session->set('gibbonRoleIDAll', $this->providerFactory->getProvider(Role::class)->getRoleList($userData->getAllRoles()) );
+        $session->set('gibbonRoleIDAll', ProviderFactory::create(Role::class)->getRoleList($userData->getAllRoles()) );
         $session->set('image_240', $userData->getImage240());
         $session->set('lastTimestamp', $userData->getLastTimestamp());
         $session->set('calendarFeedPersonal', $userData->getcalendarFeedPersonal());
@@ -225,5 +231,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         // Cache FF actions on login
     //    $session->cacheFastFinderActions($userData->getgibbonRoleIDPrimary']);
+
+        return $userData;
     }
 }

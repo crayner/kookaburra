@@ -57,17 +57,17 @@ class RoleRepository extends ServiceEntityRepository
 
     /**
      * getRoleList
-     * @param $gibbonRoleIDAll
+     * @param $roleList
      * @param $connection2
      * @return array
      */
-    public function getRoleList($roleList)
+    public function getRoleList($roleList): array
     {
         $roles = explode(',',$roleList);
         return $this->createQueryBuilder('r')
             ->where('r.id IN (:roles)')
             ->setParameter('roles', $roles, Connection::PARAM_INT_ARRAY)
-            ->select(['r.id AS gibbonRoleID', 'r.name'])
+            ->select(['r.id', 'r.name'])
             ->getQuery()
             ->getResult();
     }

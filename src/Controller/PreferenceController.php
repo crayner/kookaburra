@@ -12,13 +12,20 @@
 
 namespace App\Controller;
 
+use App\Entity\Person;
+use App\Entity\SchoolYear;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
+use App\Manager\PreferencesManager;
+use App\Provider\ProviderFactory;
+use App\Security\PasswordManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class PreferenceController
@@ -31,7 +38,7 @@ class PreferenceController extends AbstractController
      * @Route("/preferences/", name="preferences")
      * @IsGranted("ROLE_USER")
      */
-    public function preference(Request $request, GibbonManager $gibbonManager, LegacyManager $manager)
+    public function preferences(Request $request, GibbonManager $gibbonManager, LegacyManager $manager)
     {
         $error = $gibbonManager->execute();
         if ($error instanceof Response) {
@@ -46,5 +53,25 @@ class PreferenceController extends AbstractController
         }
 
         return $this->render('legacy/index.html.twig');
+    }
+
+    /**
+     * process
+     * @Route("/preferences/process/", name="preferences_process", methods={"POST"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function process(Request $request, PreferencesManager $manager)
+    {
+        return new RedirectResponse($manager->processPreferences($request, $this->getUser()));
+    }
+
+    /**
+     * passwordProcess
+     * @Route("/preferences/password/process/", name="preferences_password_process", methods={"POST"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function passwordProcess(Request $request, PasswordManager $manager)
+    {
+        return new RedirectResponse($manager->changePassword($request, $this->getUser()));
     }
 }

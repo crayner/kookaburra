@@ -403,6 +403,13 @@ function getSmartWorkflowHelp($connection2, $guid, $step = '')
     return $output;
 }
 
+/**
+ * doesPasswordMatchPolicy
+ * @param $connection2
+ * @param $passwordNew
+ * @return bool
+ * @deprecated Use App\Security\SecurityUser::doesPasswordMatchPolicy()
+ */
 function doesPasswordMatchPolicy($connection2, $passwordNew)
 {
     $output = true;
@@ -530,6 +537,11 @@ function getAlert($guid, $connection2, $gibbonAlertLevelID)
     return $output;
 }
 
+/**
+ * getSalt
+ * @return string
+ * @deprecated Use App\Security\SecurityUser::createSalt()
+ */
 function getSalt()
 {
     $c = explode(' ', '. / a A b B c C d D e E f F g G h H i I j J k K l L m M n N o O p P q Q r R s S t T u U v V w W x X y Y z Z 0 1 2 3 4 5 6 7 8 9');
@@ -1259,8 +1271,10 @@ function getSystemSettings($guid, $connection2)
 
     $_SESSION[$guid]['systemSettingsSet'] = true;
 }
-
-//Set language session variables
+/**
+ * Set language session variables
+ * @deprcated Use I18nProvider::setLanguageSession
+ */
 function setLanguageSession($guid, $row, $defaultLanguage = true)
 {
     $_SESSION[$guid]['i18n']['gibboni18nID'] = $row['gibboni18nID'];
@@ -1529,7 +1543,10 @@ function getModuleCategory($address, $connection2)
     return $output;
 }
 
-//GET THE CURRENT YEAR AND SET IT AS A GLOBAL VARIABLE
+/**
+ * GET THE CURRENT YEAR AND SET IT AS A GLOBAL VARIABLE
+ * @deprecated Use SchoolYearProvider::setCurrentSchoolYear($session)
+ */
 function setCurrentSchoolYear($guid,  $connection2)
 {
     //Run query

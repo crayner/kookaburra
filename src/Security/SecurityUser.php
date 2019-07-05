@@ -15,6 +15,8 @@ namespace App\Security;
 
 use App\Entity\Person;
 use App\Entity\Role;
+use App\Entity\Setting;
+use App\Provider\ProviderFactory;
 use App\Util\EntityHelper;
 use App\Util\UserHelper;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
@@ -473,4 +475,66 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
         $this->locale = $locale ?: 'en_GB';
         return $this;
     }
+
+    /**
+     * doesPasswordMatchPolicy
+     * @param $passwordNew
+     * @return bool
+     */
+    function doesPasswordMatchPolicy($passwordNew)
+    {
+        $output = true;
+        $settingProvider = ProviderFactory::create(Setting::class);
+        
+        $alpha = $settingProvider->getSettingByScope('System', 'passwordPolicyAlpha');
+        $numeric = $settingProvider->getSettingByScope('System', 'passwordPolicyNumeric');
+        $punctuation = $settingProvider->getSettingByScope('System', 'passwordPolicyNonAlphaNumeric');
+        $minLength = $settingProvider->getSettingByScope('System', 'passwordPolicyMinLength');
+
+        if ($alpha === false || $numeric === false || $punctuation === false || $minLength === false) {
+            $output = false;
+        } else {
+            if ($alpha !== 'N' || $numeric !== 'N' || $punctuation !== 'N' || $minLength >= 0) {
+                if ($alpha == 'Y') {
+                    if (preg_match('`[A-Z]`', $passwordNew) === false || preg_match('`[a-z]`', $passwordNew) === false) {
+                        $output = false;
+                    }
+                }
+                if ($numeric === 'Y') {
+                    if (preg_match('`[0-9]`', $passwordNew) === false) {
+                        $output = false;
+                    }
+                }
+                if ($punctuation === 'Y') {
+                    if (preg_match('/[^a-zA-Z0-9]/', $passwordNew) === false && strpos($passwordNew, ' ') === false) {
+                        $output = false;
+                    }
+                }
+                if ($minLength > 0) {
+                    if (strlen($passwordNew) < $minLength) {
+                        $output = false;
+                    }
+                }
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * createSalt
+     * @return string
+     */
+    function createSalt()
+    {
+        $c = explode(' ', '. / a A b B c C d D e E f F g G h H i I j J k K l L m M n N o O p P q Q r R s S t T u U v V w W x X y Y z Z 0 1 2 3 4 5 6 7 8 9');
+        $ks = array_rand($c, 22);
+        $s = '';
+        foreach ($ks as $k) {
+            $s .= $c[$k];
+        }
+
+        return $s;
+    }
+
 }

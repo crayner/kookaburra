@@ -87,3 +87,6 @@ services:
 
     Gibbon\Contracts\Database\Connection:
         factory: ['@App\Manager\LegacyConnectionFactory', 'createConnection']
+
+    Gibbon\Domain\User\UserGateway:
+        public: true

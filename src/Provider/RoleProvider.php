@@ -14,7 +14,6 @@ namespace App\Provider;
 
 use App\Entity\Role;
 use App\Manager\Traits\EntityTrait;
-use PDOException;
 
 /**
  * Class RoleProvider
@@ -32,8 +31,16 @@ class RoleProvider implements EntityProviderInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getRoleList($roleList)
+    public function getRoleList($roleList): array
     {
-        return $this->getRepository()->getRoleList($roleList);
+        $result = $this->getRepository()->getRoleList($roleList);
+
+        foreach($result as $q=>$role)
+        {
+            $result[$q][0] = $role['id'];
+            $result[$q][1] = $role['name'];
+        }
+
+        return $result;
     }
 }

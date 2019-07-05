@@ -15,7 +15,6 @@ namespace App\Manager;
 use App\Entity\Action;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
-use App\Provider\ThemeProvider;
 use App\Session\GibbonSession;
 use Gibbon\Core;
 use Gibbon\Database\Connection;
@@ -31,6 +30,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GibbonManager implements ContainerAwareInterface
 {
@@ -414,6 +414,15 @@ class GibbonManager implements ContainerAwareInterface
             }
         }
         return $this;
+    }
+
+    /**
+     * getSession
+     * @return SessionInterface
+     */
+    public static function getSession(): SessionInterface
+    {
+        return self::getRequest()->getSession();
     }
 }
 
