@@ -19,7 +19,12 @@ services:
 
     Gibbon\:
         resource: '../Gibbon/src/*'
-        exclude: '../Gibbon/src/{Tests}'
+        exclude: '../Gibbon/src/{Tests,Domain}'
+
+    Gibbon\Domain\:
+        resource: '../Gibbon/src/Domain/*'
+        exclude: '../Gibbon/src/Domain/{Tests}'
+        public: true
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -88,5 +93,3 @@ services:
     Gibbon\Contracts\Database\Connection:
         factory: ['@App\Manager\LegacyConnectionFactory', 'createConnection']
 
-    Gibbon\Domain\User\UserGateway:
-        public: true

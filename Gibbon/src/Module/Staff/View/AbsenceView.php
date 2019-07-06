@@ -66,7 +66,7 @@ class AbsenceView
         $canViewConfidential = $absence['gibbonPersonIDApproval'] == $this->gibbonPersonIDViewing || $absence['gibbonPersonID'] == $this->gibbonPersonIDViewing;
         
         // Absence Details
-        $page->writeFromTemplate('statusComment.twig.html', [
+        $page->writeFromTemplate('statusComment.html.twig', [
             'name'    => Format::name($person['title'], $person['preferredName'], $person['surname'], 'Staff', false, true),
             'action'   => !empty($absence['gibbonPersonIDApproval'])? __('Requested Leave') : __('Submitted Leave'),
             'photo'   => $person['image_240'],
@@ -78,7 +78,7 @@ class AbsenceView
         // Approval Details
         if (!empty($absence['gibbonPersonIDApproval'])) {
             $approver = $this->userGateway->getByID($absence['gibbonPersonIDApproval']);
-            $page->writeFromTemplate('statusComment.twig.html', [
+            $page->writeFromTemplate('statusComment.html.twig', [
                 'name'    => Format::name($approver['title'], $approver['preferredName'], $approver['surname'], 'Staff', false, true),
                 'action'  => $absence['status'] != 'Pending Approval' ? __($absence['status']) : '',
                 'photo'   => $approver['image_240'],

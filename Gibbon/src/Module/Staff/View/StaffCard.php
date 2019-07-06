@@ -71,7 +71,7 @@ class StaffCard
         $guid = $this->session->get('guid');
         $connection2 = $this->db->getConnection();
 
-        $page->writeFromTemplate('staffCard.twig.html', [
+        $page->writeFromTemplate('staffCard.html.twig', [
             'staff'             => $this->staffGateway->selectStaffByID($this->gibbonPersonID ?? '')->fetch(),
             'rollGroup'         => $this->rollGroupGateway->selectRollGroupsByTutor($this->gibbonPersonID ?? '')->fetch(),
             'canViewProfile'    => isActionAccessible($guid, $connection2, '/modules/Staff/staff_view_details.php'),

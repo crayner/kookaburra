@@ -20,6 +20,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon ;
 
 use Gibbon\Contracts\Database\Connection as ConnectionInterface;
+use Gibbon\Database\Result;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @deprecated v16
@@ -74,16 +76,17 @@ class sqlConnection implements ConnectionInterface
      */
     public function __construct( $message = null )
     {
-        // Test for Config file.
-        if (file_exists(dirname(__FILE__). '/../../config.php') && filesize(dirname(__FILE__). '/../../config.php') > 0) {
-            include dirname(__FILE__). '/../../config.php';
-        } else {
-            return NULL;
-        }
+        if (realpath(__DIR__ . '/../../config/packages/gibbon.yaml') === false) return null;
 
-        $databasePort = (isset($databasePort))? $databasePort : null;
+        $data = Yaml::parse(file_get_contents(__DIR__ . '/../../config/packages/gibbon.yaml'));
 
-        return $this->generateConnection($databaseServer, $databaseName, $databaseUsername, $databasePassword, $databasePort, $message);
+        $data = $data['parameters'];
+        $data['databasePort'] = isset($data['databasePort']) ? $data['databasePort'] : null;
+
+        $this->config = $data;
+
+        return $this->generateConnection($data['databaseServer'], $data['databaseName'], $data['databaseUsername'], $data['databasePassword'], $data['databasePort'], $message);
+
     }
 
     /**
@@ -110,6 +113,7 @@ class sqlConnection implements ConnectionInterface
             $this->pdo = new \PDO($dns, $databaseUsername, $databasePassword );
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+            $this->pdo->setAttribute(\PDO::ATTR_STATEMENT_CLASS, [Result::class]);
             $this->setSQLMode();
             $this->success = true;
         } catch(\PDOException $e) {
@@ -296,6 +300,16 @@ class sqlConnection implements ConnectionInterface
             $result = $this->pdo->prepare("SET SESSION `sql_mode` = ''");
         $result->execute(array());
     }
-}
 
-?>
+    /**
+     * Pdo.
+     *
+     * @param mixed $pdo
+     * @return sqlConnection
+     */
+    public function setPdo($pdo)
+    {
+        $this->pdo = $pdo;
+        return $this;
+    }
+}

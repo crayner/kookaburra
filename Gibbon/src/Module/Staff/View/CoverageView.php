@@ -82,7 +82,7 @@ class CoverageView
         }
 
         // Coverage Request
-        $page->writeFromTemplate('statusComment.twig.html', [
+        $page->writeFromTemplate('statusComment.html.twig', [
             'name'    => Format::name($requester['title'], $requester['preferredName'], $requester['surname'], 'Staff', false, true),
             'action'   => __('Requested Coverage'),
             'photo'   => $requester['image_240'],
@@ -95,7 +95,7 @@ class CoverageView
 
         // Coverage Reply
         if ($substitute && ($coverage['status'] == 'Accepted' || $coverage['status'] == 'Declined')) {
-            $page->writeFromTemplate('statusComment.twig.html', [
+            $page->writeFromTemplate('statusComment.html.twig', [
                 'name'    => Format::name($substitute['title'], $substitute['preferredName'], $substitute['surname'], 'Staff', false, true),
                 'action'  => __($coverage['status']),
                 'photo'   => $substitute['image_240'],

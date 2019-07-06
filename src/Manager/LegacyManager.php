@@ -648,7 +648,6 @@ class LegacyManager
 
                 if (false !== $fullAddress) {
                     $page->writeFromFile($fullAddress, $globals);
-                    dump($page);
                 } else {
                     $content = GibbonManager::getContainer()->get('twig')->render('legacy/error.html.twig',
                         [

@@ -50,7 +50,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Staff/coverage_view_detail
 
     // Attachment
     if (!empty($coverage['attachmentType'])) {
-        $page->writeFromTemplate('statusComment.twig.html', [
+        $page->writeFromTemplate('statusComment.html.twig', [
             'name'       => __('Attachment'),
             'icon'       => 'internalAssessment',
             'tag'        => 'dull',

@@ -45,7 +45,6 @@ collapsed drop-down list in 'mini' view-mode.
             {% for categoryName, items in menuModule %}
                 <li class="w-full column-no-break p-0 ">
                     <h5 class="m-0 mb-1 text-xs pb-0 ">{{ __(categoryName, (items|first).textDomain) }}</h5>
-{% dump(items) %}
                     <ul class="list-none m-0 mb-6">
                     {% for item in items %}
                         <li class="p-0 leading-normal lg:leading-tight">

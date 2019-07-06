@@ -62,7 +62,7 @@ class CoverageTodayView
 
         // Coverage Request
         $requester = $this->userGateway->getByID($coverage['gibbonPersonIDStatus']);
-        $page->writeFromTemplate('statusComment.twig.html', [
+        $page->writeFromTemplate('statusComment.html.twig', [
             'name'    => Format::name($requester['title'], $requester['preferredName'], $requester['surname'], 'Staff', false, true),
             'action'   => __('Requested Coverage'),
             'photo'   => $requester['image_240'],
@@ -72,7 +72,7 @@ class CoverageTodayView
 
         // Attachment
         if (!empty($coverage['attachmentType'])) {
-            $page->writeFromTemplate('statusComment.twig.html', [
+            $page->writeFromTemplate('statusComment.html.twig', [
                 'name'       => __('Attachment'),
                 'icon'       => 'internalAssessment',
                 'tag'        => 'dull',

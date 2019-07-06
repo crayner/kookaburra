@@ -23,6 +23,7 @@ use Gibbon\Domain\System\Module;
 use Gibbon\Domain\System\Theme;
 use Gibbon\Services\ErrorHandler;
 use Gibbon\Services\Format;
+use Gibbon\sqlConnection;
 use Gibbon\View\Page;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -55,6 +56,11 @@ class GibbonManager implements ContainerAwareInterface
      * @var \PDO
      */
     private $pdo;
+
+    /**
+     * @var sqlConnection
+     */
+    private $connection2;
 
     /**
      * @var Request
@@ -114,11 +120,14 @@ class GibbonManager implements ContainerAwareInterface
         if ($gibbon->isInstalled()) {
 
             $mysqlConnector = new MySqlConnector();
-            if ($pdo = $mysqlConnector->connect($gibbon->getConfig())) {
-                $this->container->set('db', $pdo);
+            if ($connection = $mysqlConnector->connect($gibbon->getConfig())) {
+                $this->container->set('db', $connection);
 //                $this->container->set(Connection::class, $pdo);
-                self::setConnection($pdo);
-                self::setPDO($pdo->getConnection());
+                self::setConnection2($connection);
+                self::setPDO($connection->getConnection());
+                $sqlConnector = new sqlConnection();
+                $sqlConnector->setPdo($connection->getConnection());
+                self::setConnection($sqlConnector);
 
                 $gibbon->initializeCore($this->container);
             } else {
@@ -180,7 +189,23 @@ class GibbonManager implements ContainerAwareInterface
     /**
      * @return Connection
      */
-    public static function getConnection(): Connection
+    public static function getConnection2(): Connection
+    {
+        return self::$instance->connection2;
+    }
+
+    /**
+     * @param Connection $connection
+     */
+    public static function setConnection2(Connection $connection): void
+    {
+        self::$instance->connection2 = $connection;
+    }
+
+    /**
+     * @return sqlConnection
+     */
+    public static function getConnection(): sqlConnection
     {
         return self::$instance->connection;
     }
@@ -188,7 +213,7 @@ class GibbonManager implements ContainerAwareInterface
     /**
      * @param Connection $connection
      */
-    public static function setConnection(Connection $connection): void
+    public static function setConnection(sqlConnection $connection): void
     {
         self::$instance->connection = $connection;
     }
