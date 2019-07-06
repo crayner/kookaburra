@@ -50,16 +50,21 @@ class DataTable implements OutputableInterface
     protected $meta = array();
 
     protected $rowModifiers = [];
+    private static $paginatedView;
+    private static $dataTableView;
 
     /**
+     * DataTable constructor.
      * Create a data table with optional renderer.
      *
-     * @param string $id
-     * @param RendererInterface $renderer
+     * @param RendererInterface|null $renderer
+     * @param PaginatedView $paginatedView
      */
-    public function __construct(RendererInterface $renderer = null)
+    public function __construct(PaginatedView $paginatedView, DataTableView $dataTableView, RendererInterface $renderer = null)
     {
         $this->renderer = $renderer;
+        self::$paginatedView = $paginatedView;
+        self::$dataTableView = $dataTableView;
     }
 
     /**
@@ -71,11 +76,9 @@ class DataTable implements OutputableInterface
      */
     public static function create($id, RendererInterface $renderer = null)
     {
-        global $container;
+        $renderer = !empty($renderer) ? $renderer : self::$dataTableView;
 
-        $renderer = !empty($renderer) ? $renderer : $container->get(DataTableView::class);
-        
-        return (new static($renderer))->setID($id);
+        return (new static(self::$paginatedView, self::$dataTableView, $renderer))->setID($id);
     }
 
     /**
@@ -87,11 +90,9 @@ class DataTable implements OutputableInterface
      */
     public static function createPaginated($id, QueryCriteria $criteria)
     {
-        global $container;
+        $renderer = self::$paginatedView->setCriteria($criteria);
 
-        $renderer = $container->get(PaginatedView::class)->setCriteria($criteria);
-
-        return (new static($renderer))->setID($id)->setRenderer($renderer);
+        return (new static(self::$paginatedView, self::$dataTableView, $renderer))->setID($id)->setRenderer($renderer);
     }
 
     /**

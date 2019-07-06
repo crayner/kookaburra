@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Tables;
 
+use App\Manager\GibbonManager;
 use Gibbon\Forms\Layout\WebLink;
 
 /**
@@ -208,10 +209,10 @@ class Action extends WebLink
      */
     public function getOutput(&$data = array(), $params = array())
     {
-        global $guid; // :(
+        $guid = GibbonManager::getGuid();
 
         if ($icon = $this->getIcon()) {
-            $this->setContent(sprintf('%1$s<img title="%2$s" src="'.$_SESSION[$guid]['absoluteURL'].'/themes/'.$_SESSION[$guid]['gibbonThemeName'].'/img/%3$s.png" width="25" height="25" class="ml-1">', 
+            $this->setContent(sprintf('%1$s<img title="%2$s" src="'.$_SESSION[$guid]['absoluteURL'].'/themes/'.$_SESSION[$guid]['gibbonThemeName'].'/img/%3$s.png" width="25" height="25" class="ml-1">',
                 ($this->displayLabel? $this->getLabel() : ''),
                 $this->getLabel(), 
                 $this->getIcon()

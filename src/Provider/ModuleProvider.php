@@ -65,15 +65,18 @@ class ModuleProvider implements EntityProviderInterface
     public function selectModuleActionsByRole(int $moduleID, int $roleID)
     {
         $result = $this->getRepository()->findModuleActionsByRole($moduleID, $roleID);
-        $sorted = [];
+
+        $categories = [];
+
         foreach($result as $q=>$module)
         {
             $module['textDomain'] = $module['type'] === 'Core' ? null : $module['moduleName'];
-            $name = explode(' ',$module['actionName']);
+            $name = explode('_',$module['name']);
             $module['name'] = $name[0];
             $result[$q] = $module;
+            $categories[$module['category']][] = $module;
         }
 
-        return $result;
+        return $categories;
     }
 }

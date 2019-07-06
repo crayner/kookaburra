@@ -57,7 +57,7 @@ class DataTableView extends View implements RendererInterface
             ]);
         }
 
-        return $this->render('components/dataTable.twig.html');
+        return $this->render('legacycomponents/dataTable.html.twig');
     }
 
     /**

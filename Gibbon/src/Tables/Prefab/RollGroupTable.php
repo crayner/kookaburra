@@ -21,11 +21,13 @@ namespace Gibbon\Tables\Prefab;
 
 use Gibbon\Services\Format;
 use Gibbon\Tables\DataTable;
+use Gibbon\Tables\View\DataTableView;
 use Gibbon\Tables\View\GridView;
 use Gibbon\Forms\Input\Checkbox;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Domain\Students\StudentGateway;
+use Gibbon\Tables\View\PaginatedView;
 
 /**
  * RollGroupTable
@@ -39,9 +41,9 @@ class RollGroupTable extends DataTable
     protected $session;
     protected $studentGateway;
 
-    public function __construct(GridView $renderer, StudentGateway $studentGateway, Connection $db, Session $session)
+    public function __construct(GridView $renderer, StudentGateway $studentGateway, Connection $db, Session $session, PaginatedView $paginatedView, DataTableView $dataTableView)
     {
-        parent::__construct($renderer);
+        parent::__construct($paginatedView, $dataTableView, $renderer);
 
         $this->db = $db;
         $this->session = $session;

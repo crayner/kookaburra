@@ -79,7 +79,7 @@ class LegacyManager
         $gibbon = GibbonManager::getGibbon();
         $guid = GibbonManager::getGuid();
         $pdo = GibbonManager::getConnection();
-        $connection2= GibbonManager::getPDO();
+        $connection2 = GibbonManager::getPDO();
         $settingProvider = $this->providerFactory->getProvider(Setting::class);
 
         $isLoggedIn = $session->has('username') && $session->has('gibbonRoleIDCurrent') ? true : false;

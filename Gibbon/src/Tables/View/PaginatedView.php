@@ -22,7 +22,6 @@ namespace Gibbon\Tables\View;
 use Gibbon\Domain\DataSet;
 use Gibbon\Tables\DataTable;
 use Gibbon\Tables\Renderer\RendererInterface;
-use Gibbon\Tables\View\DataTableView;
 use Gibbon\Forms\FormFactory;
 use Gibbon\Domain\QueryCriteria;
 use Gibbon\Tables\Columns\Column;
@@ -84,7 +83,7 @@ class PaginatedView extends DataTableView implements RendererInterface
             ? json_encode(array_replace($postData, $this->criteria->toArray()))
             : $this->criteria->toJson());
 
-        return $this->render('components/paginatedTable.twig.html');
+        return $this->render('legacy/components/paginatedTable.html.twig');
     }
 
     /**

@@ -21,11 +21,13 @@ namespace Gibbon\Tables\Prefab;
 
 use Gibbon\Services\Format;
 use Gibbon\Tables\DataTable;
+use Gibbon\Tables\View\DataTableView;
 use Gibbon\Tables\View\GridView;
 use Gibbon\Forms\Input\Checkbox;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Domain\Timetable\CourseEnrolmentGateway;
+use Gibbon\Tables\View\PaginatedView;
 
 /**
  * ClassGroupTable
@@ -39,9 +41,9 @@ class ClassGroupTable extends DataTable
     protected $session;
     protected $enrolmentGateway;
 
-    public function __construct(GridView $renderer, CourseEnrolmentGateway $enrolmentGateway, Connection $db, Session $session)
+    public function __construct(GridView $renderer, CourseEnrolmentGateway $enrolmentGateway, Connection $db, Session $session, PaginatedView $paginatedView, DataTableView $dataTableView)
     {
-        parent::__construct($renderer);
+        parent::__construct($paginatedView, $dataTableView, $renderer);
 
         $this->db = $db;
         $this->session = $session;

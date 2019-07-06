@@ -13,6 +13,7 @@
 namespace App\Manager;
 
 use Gibbon\Database\Connection;
+use Gibbon\Database\Result;
 use Symfony\Component\Yaml\Yaml;
 
 class LegacyConnectionFactory
@@ -78,6 +79,7 @@ class LegacyConnectionFactory
             $this->pdo = new \PDO($dns, $databaseUsername, $databasePassword );
             $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+            $this->pdo->setAttribute(\PDO::ATTR_STATEMENT_CLASS, [Result::class]);
             $this->setSQLMode();
             $this->success = true;
         } catch(\PDOException $e) {

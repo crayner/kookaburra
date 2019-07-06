@@ -82,7 +82,7 @@ class MySqlConnector
     {
         $connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $connection->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-        $connection->setAttribute(\PDO::ATTR_STATEMENT_CLASS, array(Result::class));
+        $connection->setAttribute(\PDO::ATTR_STATEMENT_CLASS, [Result::class]);
     }
 
     /**
