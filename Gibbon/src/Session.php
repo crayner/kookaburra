@@ -12,9 +12,7 @@
 
 namespace Gibbon;
 
-use App\Manager\SessionManager;
-
-class Session extends SessionManager
+class Session
 {
 
 }

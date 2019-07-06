@@ -664,7 +664,7 @@ function formatName($title, $preferredName, $surname, $roleCategory, $reverse = 
  */
 function getEditor($guid, $tinymceInit = true, $id = '', $value = '', $rows = 10, $showMedia = false, $required = false, $initiallyHidden = false, $allowUpload = true, $initialFilter = '', $resourceAlphaSort = false)
 {
-    global $page;
+    $page = \App\Util\GlobalHelper::getPage();
 
     $templateData = compact('tinymceInit', 'id', 'value', 'rows', 'showMedia', 'required', 'initiallyHidden', 'allowUpload', 'initialFilter', 'resourceAlphaSort');
 

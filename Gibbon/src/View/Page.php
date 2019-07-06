@@ -19,10 +19,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\View;
 
+use App\Util\GlobalHelper;
 use Gibbon\Domain\System\Module;
 use Gibbon\Domain\System\Theme;
-use Gibbon\View\View;
-use Gibbon\View\AssetBundle;
 use Gibbon\View\Components\Breadcrumbs;
 
 /**
@@ -67,6 +66,7 @@ class Page extends View
         $this->scripts = new AssetBundle();
 
         $this->setParams($params);
+        GlobalHelper::setPage($this);
     }
 
     /**

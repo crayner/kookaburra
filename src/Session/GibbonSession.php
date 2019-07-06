@@ -21,9 +21,8 @@ use Symfony\Component\HttpFoundation\Session\SessionBagProxy;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
-use Symfony\Component\Yaml\Yaml;
 
-class GibbonSession implements SessionInterface, \IteratorAggregate, \Countable, Session
+class GibbonSession extends \Gibbon\Session implements SessionInterface, \IteratorAggregate, \Countable, Session
 {
     protected $storage;
 
