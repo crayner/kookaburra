@@ -115,3 +115,6 @@ services:
         public: true
         arguments:
             $absoluteURL: '%absoluteURL%'
+
+    Gibbon\Tables\DataTable:
+        public: true

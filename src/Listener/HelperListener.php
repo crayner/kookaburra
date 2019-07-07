@@ -57,11 +57,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class HelperListener implements EventSubscriberInterface
 {
     /**
-     * @var GibbonManager
-     */
-    private $gibbonManager;
-
-    /**
      * HelperListener constructor.
      * @param EntityManagerInterface $entityManager
      * @param MessageManager $messageManager
@@ -86,10 +81,9 @@ class HelperListener implements EventSubscriberInterface
 //        LoggerInterface $logger,
         GibbonManager $gibbonManager
     ) {
-        new EntityHelper(new ProviderFactory($entityManager,$messageManager,$authorizationChecker,$router));
-        new LegacyConnectionFactory();
+        $eh = new EntityHelper(new ProviderFactory($entityManager,$messageManager,$authorizationChecker,$router));
+        $lcf = new LegacyConnectionFactory();
         $gibbonManager->setContainer($container);
-        $this->gibbonManager = $gibbonManager;
     }
 
     /**
@@ -99,7 +93,7 @@ class HelperListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => 'gibbonInitiate',
+            KernelEvents::REQUEST => ['gibbonInitiate', 128],
         ];
     }
 

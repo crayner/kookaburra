@@ -29,7 +29,6 @@ For info about editing, see: https://twig.symfony.com/doc/2.x/
             
         {% endblock header %}
     </header>
-{% dump %}
     {% if rows is not defined and isFiltered is not defined and (dataSet is not defined or dataSet.getResultCount == 0) %}
         <div class="h-48 rounded-sm border bg-gray-100 shadow-inner overflow-hidden">
         {% block blankslate %}
