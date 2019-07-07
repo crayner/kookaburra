@@ -128,7 +128,7 @@ function __($text, $params=[], $options=[])
  */
 function __n(string $singular, string $plural, int $n, array $params = [], array $options = [])
 {
-    global $gibbon;
+    $gibbon = GibbonManager::getGibbon();
     return $gibbon->locale->translateN($singular, $plural, $n, $params, $options);
 }
 
@@ -143,7 +143,7 @@ function __n(string $singular, string $plural, int $n, array $params = [], array
  */
 function __m(string $text, array $params = [], array $options = [])
 {
-    global $gibbon;
+    $gibbon = GibbonManager::getGibbon();
 
     if ($gibbon->session->has('module')) {
         $options['domain'] = $gibbon->session->get('module');
@@ -239,7 +239,8 @@ function archiveNotification($connection2, $guid, $gibbonPersonID, $actionLink)
  */
 function setNotification($connection2, $guid, $gibbonPersonID, $text, $moduleName, $actionLink)
 {
-    global $pdo, $gibbon;
+    $pdo = GibbonManager::getConnection();
+    $gibbon = GibbonManager::getGibbon();
 
     $notificationGateway = new \Gibbon\Domain\System\NotificationGateway($pdo);
     $notificationSender = new \Gibbon\Comms\NotificationSender($notificationGateway, $gibbon->session);
@@ -1880,14 +1881,13 @@ function getModuleIDFromName($connection2, $name)
  */
 function getGibbonMailer($guid) {
 
-    global $container;
     $displayErrors = ini_get('display_errors');
 
     ini_set('display_errors', 'Off');
     trigger_error('getGibbonMailer method is deprecated and replaced by Gibbon\Comms\Mailer class', E_USER_DEPRECATED);
     ini_set('display_errors', $displayErrors);
 
-    $mail = $container->get(Mailer::class);
+    $mail = GibbonManager::getService(Mailer::class);
 
     return $mail;
 }

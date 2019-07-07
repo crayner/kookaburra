@@ -19,6 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Forms\Input;
 
+use App\Manager\GibbonManager;
+
 /**
  * Date
  *
@@ -36,7 +38,7 @@ class Currency extends Number
      */
     public function getLabelContext($label)
     {
-        global $guid;
+        $guid = GibbonManager::getGuid();
 
         if (stristr($label->getDescription(), 'In ') === false) {
             return sprintf(__('In %1$s.'), $_SESSION[$guid]['currency']);

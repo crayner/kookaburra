@@ -415,7 +415,7 @@ function sidebarExtra($guid, $connection2, $todayStamp, $gibbonPersonID, $dateSt
         $output .= '</form>';
         $output .= '</div>';
 
-        global $pdo;
+        $pdo = \App\Manager\GibbonManager::getConnection();
 
         $form = Form::create('classChooser', $_SESSION[$guid]['absoluteURL'].'/index.php', 'get');
         $form->setFactory(DatabaseFormFactory::create($pdo));

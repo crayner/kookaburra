@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Comms;
 
+use App\Manager\GibbonManager;
 use Gibbon\Contracts\Comms\Mailer;
 use Gibbon\Contracts\Services\GibbonSession;
 use Gibbon\Domain\System\NotificationGateway;
@@ -185,8 +186,7 @@ class NotificationSender
      */
     protected function setupEmail()
     {
-        global $container;
-        $mail = $container->get(Mailer::class);
+        $mail = GibbonManager::getService(Mailer::class);
 
         // Format the sender
         $organisationName = $this->session->get('organisationName');

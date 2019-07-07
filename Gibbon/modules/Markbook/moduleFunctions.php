@@ -277,7 +277,7 @@ function renderStudentCumulativeMarks($gibbon, $pdo, $gibbonPersonID, $gibbonCou
 
 function renderStudentSubmission($student, $submission, $markbookColumn)
 {
-    global $guid;
+    $guid = \App\Manager\GibbonManager::getGuid();
 
     $output = '';
 

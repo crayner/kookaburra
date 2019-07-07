@@ -467,6 +467,16 @@ class GibbonManager implements ContainerAwareInterface
     {
         return self::$instance->version;
     }
+
+    /**
+     * getService
+     * @param string $name
+     * @return mixed
+     */
+    public static function getService(string $name)
+    {
+        return self::$instance->container->get($name);
+    }
 }
 
 require_once __DIR__.'/../../Gibbon/functions.php';

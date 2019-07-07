@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Forms;
 
+use Gibbon\Exception;
 use Gibbon\Forms\FormFactory;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Services\Format;
@@ -51,7 +52,8 @@ class DatabaseFormFactory extends FormFactory
      * @return  object DatabaseFormFactory
      */
     public static function create(Connection $pdo = null)
-    {
+    {if ($pdo === null)
+        throw new Exception('Stop required here');
         return new DatabaseFormFactory($pdo);
     }
 

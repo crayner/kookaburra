@@ -25,7 +25,9 @@ function getAbsenceCount($guid, $gibbonPersonID, $connection2, $dateStart, $date
 {
     $queryFail = false;
 
-    global $gibbon, $session, $pdo;
+    $gibbon = \App\Manager\GibbonManager::getGibbon();
+    $session = \App\Manager\GibbonManager::getSession();
+    $pdo = \App\Manager\GibbonManager::getConnection();
     require_once __DIR__ . '/src/AttendanceView.php';
     $attendance = new AttendanceView($gibbon, $pdo);
 

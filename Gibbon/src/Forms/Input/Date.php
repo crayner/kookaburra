@@ -19,6 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Forms\Input;
 
+use App\Manager\GibbonManager;
+
 /**
  * Date
  *
@@ -53,7 +55,7 @@ class Date extends TextField
      */
     public function setDateFromValue($value)
     {
-        global $guid;
+        $guid = GibbonManager::getGuid();
 
         $this->setAttribute('value', dateConvertBack($guid, $value));
 
@@ -66,7 +68,7 @@ class Date extends TextField
      */
     public function getLabelContext($label)
     {
-        global $guid;
+        $guid = GibbonManager::getGuid();
 
         if (stristr($label->getDescription(), 'Format') === false) {
             return __('Format').': '.$_SESSION[$guid]['i18n']['dateFormat'];
@@ -107,7 +109,7 @@ class Date extends TextField
      */
     protected function getElement()
     {
-        global $guid;
+        $guid = GibbonManager::getGuid();
 
         $validationFormat = '';
         $dateFormat = $_SESSION[$guid]['i18n']['dateFormat'];
