@@ -49,6 +49,9 @@ services:
             $installed: '%installed%'
         public: true
 
+    Gibbon\Core:
+        alias: 'config'
+
     locale:
         class: Gibbon\Locale
         arguments:
@@ -93,3 +96,5 @@ services:
     Gibbon\Contracts\Database\Connection:
         factory: ['@App\Manager\LegacyConnectionFactory', 'createConnection']
 
+    Gibbon\Module\Attendance\AttendanceView:
+        public: true
