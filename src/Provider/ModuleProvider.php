@@ -13,6 +13,7 @@
 namespace App\Provider;
 
 use App\Entity\Module;
+use App\Entity\Role;
 use App\Entity\Setting;
 use App\Manager\Traits\EntityTrait;
 
@@ -27,27 +28,33 @@ class ModuleProvider implements EntityProviderInterface
 
     /**
      * selectModulesByRole
-     * @param $gibbonRoleID
+     * @param Role|int $roleID
      * @return mixed
      */
-    public function selectModulesByRole($roleID)
+    public function selectModulesByRole($roleID, bool $byCategory = true)
     {
         $settingProvider = ProviderFactory::create(Setting::class);
         $mainMenuCategoryOrder = $settingProvider->getSettingByScope('System', 'mainMenuCategoryOrder');
+
+        $roleID = $roleID instanceof Role ? $roleID->getId() : $roleID;
 
         $result = $this->getRepository()->findModulesByRole($roleID);
         $sorted = [];
         foreach(explode(',', $mainMenuCategoryOrder) as $category)
         {
-            if (!isset($sorted[$category])) {
+            if ($byCategory && !isset($sorted[$category])) {
                 $sorted[$category] = [];
             }
             foreach($result as $module)
             {
                 $module['textDomain'] = $module['type'] === 'Core' ? null : $module['name'];
-                if ($module['category'] === $category)
+                $name = explode('_',$module['name']);
+                $module['name'] = $name[0];
+                if ($module['category'] === $category && $byCategory)
                 {
                     $sorted[$category][] = $module;
+                } elseif (!$byCategory) {
+                    $sorted[] = $module;
                 }
             }
         }

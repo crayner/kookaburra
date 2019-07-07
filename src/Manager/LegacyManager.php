@@ -366,8 +366,6 @@ class LegacyManager
             'thickbox'     => 'build/thickbox/thickbox.css',
         ], ['weight' => -1]);
 
-        $page->theme->stylesheets->add('theme', '/themes/'.$session->get('gibbonThemeName', 'Default').'/css/main.css', ['weight' => 1]);
-
         // Add right-to-left stylesheet
         if ($session->get('i18n')['rtl'] == 'Y') {
             $page->theme->stylesheets->add('theme-rtl', '/themes/'.$session->get('gibbonThemeName', 'Default').'/css/main_rtl.css', ['weight' => 1]);

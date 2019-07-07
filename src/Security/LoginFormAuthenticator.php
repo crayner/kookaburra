@@ -230,7 +230,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $session->set('gibbonThemeIDPersonal', $userData->getTheme() ? $userData->getTheme()->getId() : null);
 
         // Cache FF actions on login
-    //    $session->cacheFastFinderActions($userData->getgibbonRoleIDPrimary']);
+        $session->cacheFastFinderActions($primaryRole);
 
         return $userData;
     }

@@ -88,6 +88,11 @@ class GibbonManager implements ContainerAwareInterface
     private $page;
 
     /**
+     * @var bool
+     */
+    private $initialised = false;
+
+    /**
      * GibbonManager constructor.
      * @param RequestStack $stack
      */
@@ -105,7 +110,12 @@ class GibbonManager implements ContainerAwareInterface
      */
     public function execute(): ?Response
     {
+        if ($this->initialised)
+        {
+            return null;
+        }
         self::$instance = $this;
+
         $gibbon = $this->container->get('config');
         $gibbon->wrapVersion = $this->version;
         self::setGibbon($gibbon);
@@ -145,7 +155,7 @@ class GibbonManager implements ContainerAwareInterface
             ->preparePage()
             ->prepareSchoolYear()
         ;
-
+        $this->initialised = true;
         return null;
     }
 
@@ -154,6 +164,9 @@ class GibbonManager implements ContainerAwareInterface
      */
     public static function getGibbon(): Core
     {
+        if (null === self::$instance->gibbon) {
+            self::$instance->execute();
+        }
         return self::$instance->gibbon;
     }
 

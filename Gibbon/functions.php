@@ -483,7 +483,7 @@ function getPasswordPolicy($guid, $connection2)
 
 function getFastFinder($connection2, $guid)
 {
-    $form = Form::create('fastFinder', $_SESSION[$guid]['absoluteURL'].'/indexFindRedirect.php', 'get');
+    $form = Form::create('fastFinder', $_SESSION[$guid]['absoluteURL'].'/finder/redirect/', 'get');
     $form->setClass('blank fullWidth');
 
     $form->addHiddenValue('address', $_SESSION[$guid]['address']);

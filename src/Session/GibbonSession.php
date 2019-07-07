@@ -11,6 +11,9 @@
  */
 namespace App\Session;
 
+use App\Entity\Module;
+use App\Entity\Role;
+use App\Provider\ProviderFactory;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Contracts\Services\Session;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
@@ -376,4 +379,31 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
     {
         $this->getAttributeBag()->forget($keys);
     }
+
+    /**
+     * Cache translated FastFinder actions to allow searching actions with the current locale
+     * @version  v13
+     * @since    v13
+     * @param    string  $roleID
+     */
+    public function cacheFastFinderActions($roleID) {
+
+        // Get the accessible actions for the current user
+        $result = ProviderFactory::create(Module::class)->selectModulesByRole($roleID, false);
+
+        if (count($result) > 0) {
+            $actions = [];
+            // Translate the action names
+            foreach($result as $row)
+            {
+                $row['name'] = __($row['name']);
+                $actions[] = $row;
+            }
+
+            // Cache the resulting set of translated actions
+            $this->set('fastFinderActions', $actions);
+        }
+        return $actions;
+    }
+
 }

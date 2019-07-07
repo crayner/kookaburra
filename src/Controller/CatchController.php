@@ -16,12 +16,11 @@ namespace App\Controller;
 use App\Manager\GibbonManager;
 use Gibbon\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-    use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CatchController extends AbstractController
 {
-
     /**
      * index
      * @param Request $request
@@ -46,8 +45,9 @@ class CatchController extends AbstractController
         $connection2 = $manager::getPDO();
         $connection = $manager::getConnection2();
         $pdo = $manager::getConnection();
-        chdir(__DIR__.'/../../Gibbon/' . dirname($pathInfo));
+        $gibbon = $manager::getGibbon();
 
+        chdir(__DIR__.'/../../Gibbon/' . dirname($pathInfo));
         if ($request->getMethod() === 'POST')
         {
             include (__DIR__ . '/../../Gibbon/' . urldecode($request->getPathInfo()));
