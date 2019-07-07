@@ -107,3 +107,6 @@ services:
 
     Gibbon\Forms\View\FormRendererInterface:
         alias: Gibbon\Forms\FormRenderer
+
+    Gibbon\Tables\Prefab\RollGroupTable:
+        public: true
