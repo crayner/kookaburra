@@ -50,7 +50,7 @@ services:
         public: true
 
     Gibbon\Core:
-        alias: 'config'
+        alias: config
 
     locale:
         class: Gibbon\Locale
@@ -98,3 +98,12 @@ services:
 
     Gibbon\Module\Attendance\AttendanceView:
         public: true
+
+    Gibbon\Forms\Prefab\BulkActionForm:
+        public: true
+
+    Gibbon\Forms\FormFactoryInterface:
+        alias: Gibbon\Forms\FormFactory
+
+    Gibbon\Forms\View\FormRendererInterface:
+        alias: Gibbon\Forms\FormRenderer

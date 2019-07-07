@@ -19,9 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Forms\Prefab;
 
+use App\Manager\GibbonManager;
 use Gibbon\Forms\Form;
-use Gibbon\Forms\FormFactory;
-use Gibbon\Forms\FormRenderer;
 
 /**
  * BulkActionForm
@@ -33,7 +32,7 @@ class BulkActionForm extends Form
 {
     public static function create($id, $action, $method = 'post', $class = 'w-full blank bulkActionForm border-0 bg-transparent p-0')
     {
-        global $container;
+        $container = GibbonManager::getContainer();
 
         $form = $container->get(BulkActionForm::class)
             ->setID($id)
