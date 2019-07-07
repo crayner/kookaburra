@@ -9,12 +9,14 @@ Page Foot: Outputs the contents of the HTML <head> tag. This includes
 all stylesheets and scripts with a 'head' context.
 -->#}
 
+{% trans_default_domain "gibbon" %}
+
 {% block meta %}
     <title>{{ page.title }}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="content-language" content="{{ locale }}"/>
+    <meta http-equiv="content-language" content="{{ locale|default('en_GB') }}"/>
     <meta name="author" content="Craig Rayner, Hill Range Services"/>
     <meta name="robots" content="none"/>
     <meta name="Referrer‐Policy" value="no‐referrer | same‐origin"/>
@@ -24,7 +26,7 @@ all stylesheets and scripts with a 'head' context.
 
 {% block styles %}
     {% for asset in page.stylesheets %}
-        {% set assetVersion = asset.version is not empty ? asset.version : version %}
+        {% set assetVersion = asset.version is not empty ? asset.version : version|default('18.0.00') %}
         {% if asset.type == 'inline' %}
             <style type="text/css">{{ asset.src|raw }}</style>
         {% else %}

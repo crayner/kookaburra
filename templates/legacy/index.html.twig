@@ -10,6 +10,7 @@ TODO: add template variable details.
 
 {% trans_default_domain "gibbon" %}
 
+{% block full_document %}
 <!DOCTYPE html>
 <html {{ rightToLeft ? 'dir="rtl"' : '' }}>
     <head>
@@ -117,3 +118,4 @@ TODO: add template variable details.
         {% endblock foot %}
     </body>
 </html>
+{% endblock full_document %}
