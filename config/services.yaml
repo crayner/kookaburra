@@ -110,3 +110,8 @@ services:
 
     Gibbon\Tables\Prefab\RollGroupTable:
         public: true
+
+    Gibbon\Module\Rubrics\Visualise:
+        public: true
+        arguments:
+            $absoluteURL: '%absoluteURL%'

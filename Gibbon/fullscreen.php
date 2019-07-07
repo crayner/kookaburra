@@ -23,6 +23,8 @@ require_once './gibbon.php';
 // Setup the Page and Session objects
 $page = \App\Util\GlobalHelper::getPage();
 $session = \App\Manager\GibbonManager::getSession();
+$version = \App\Manager\GibbonManager::getVersion();
+$container = \App\Manager\GibbonManager::getContainer();
 
 // Check to see if system settings are set from databases
 if (!$session->has('systemSettingsSet')) {
@@ -53,7 +55,7 @@ if (empty($address)) {
         'version'     => $version,
         'pdo'         => $pdo,
         'connection2' => $connection2,
-        'autoloader'  => $autoloader,
+//        'autoloader'  => $autoloader,
         'container'   => $container,
         'page'        => $page,
     ];

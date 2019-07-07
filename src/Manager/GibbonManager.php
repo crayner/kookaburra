@@ -462,6 +462,11 @@ class GibbonManager implements ContainerAwareInterface
     {
         return self::getRequest()->getSession();
     }
+
+    public static function getVersion(): string
+    {
+        return self::$instance->version;
+    }
 }
 
 require_once __DIR__.'/../../Gibbon/functions.php';
