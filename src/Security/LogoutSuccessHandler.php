@@ -1,6 +1,8 @@
 <?php
 namespace App\Security;
 
+use App\Entity\SchoolYear;
+use App\Provider\ProviderFactory;
 use App\Util\LocaleHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -49,17 +51,17 @@ class LogoutSuccessHandler implements LogoutSuccessHandlerInterface
         if ($request->hasSession())
         {
             $session = $request->getSession();
-            $session->remove('googleAPIAccessToken');
-            $session->remove('knpu.oauth2_client_state');
-            $session->remove('username');
             $flashBag = $session->getFlashBag()->all();
             try {
-                $session->invalidate();
+                $session->clear();
             } catch(\ErrorException $e) {
                 $flashBag = null;
             }
-            if (! empty($flashBag))
+
+            if (null !== $flashBag)
                 $session->getFlashBag()->setAll($flashBag);
+
+            ProviderFactory::create(SchoolYear::class)->setCurrentSchoolYear($session);
         }
 		$request->setLocale($this->locale);
 

@@ -223,7 +223,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
             $state = $request->getSession()->get('google_state');
             list($schoolYearID, $i18nID) = explode(':', $state);
             $request->getSession()->forget('google_state');
-            if (($response = LoginFormAuthenticator::checkSchoolYear($user, $request->getSession(), $schoolYearID)) instanceof Response)
+            if (($response = LoginFormAuthenticator::checkSchoolYear($user, $request->getSession(), intval($schoolYearID))) instanceof Response)
                 return $response;
         }
 

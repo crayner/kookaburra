@@ -11,8 +11,11 @@
  */
 namespace App\Session;
 
+use App\Entity\I18n;
 use App\Entity\Module;
 use App\Entity\Role;
+use App\Entity\SchoolYear;
+use App\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Contracts\Services\Session;
@@ -89,6 +92,11 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
      */
     public function set($name, $value = null)
     {
+        if ($name === 'gibbonSchoolYearID' && (null === $value || '' === $value || 0 === $value))
+        {
+            $schoolYear = ProviderFactory::getRepository(SchoolYear::class)->findOneBy(['status' => 'Current']);
+            $value = $schoolYear ? $schoolYear->getId() : null;
+        }
         $this->getAttributeBag()->set($name, $value);
     }
 
@@ -334,30 +342,28 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
 
     /**
      * loadSystemSettings
-     * @param Connection $pdo
      */
-    public function loadSystemSettings(Connection $pdo)
+    public function loadSystemSettings()
     {
         // System settings from gibbonSetting
-        $sql = "SELECT name, value FROM gibbonSetting WHERE scope='System'";
-        $result = $pdo->executeQuery(array(), $sql);
+        $results = ProviderFactory::getRepository(Setting::class)->findByScope('System');
 
-        while ($row = $result->fetch()) {
-            if (!empty($row['value'])) {
-                $this->set($row['name'], $row['value']);
+        foreach($results as $row) {
+            if (!empty($row->getValue())) {
+                $this->set($row->getName(), $row->getValue());
             }
         }
     }
 
-    public function loadLanguageSettings(Connection $pdo)
+    /**
+     * loadLanguageSettings
+     */
+    public function loadLanguageSettings()
     {
-        // Language settings from gibboni18n
-        $sql = "SELECT * FROM gibboni18n WHERE systemDefault='Y'";
-        $result = $pdo->executeQuery(array(), $sql);
+        // Language settings from i18n
+        $results = ProviderFactory::getRepository(I18n::class)->findOneBySystemDefault('Y');
 
-        while ($row = $result->fetch()) {
-            $this->set('i18n', $row);
-        }
+        $this->set('i18n', $results->__toArray());
     }
 
     /**

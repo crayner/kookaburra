@@ -443,8 +443,7 @@ class GibbonManager implements ContainerAwareInterface
     {
         $session = $this->request->getSession();
         if (!$session->has('gibbonSchoolYearIDCurrent')) {
-            $repository = $this->providerFactory::getRepository(SchoolYear::class);
-            $schoolYear = $repository->findOneByStatus('Current');
+            $schoolYear = ProviderFactory::getRepository(SchoolYear::class)->findOneByStatus('Current');
             if ($schoolYear) {
                 $session->set('gibbonSchoolYearIDCurrent', $schoolYear->getId());
                 $session->set('gibbonSchoolYearNameCurrent', $schoolYear->getName());

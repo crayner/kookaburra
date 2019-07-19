@@ -20,6 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon\UI\Components;
 
 use App\Manager\GibbonManager;
+use App\Security\LogoutSuccessHandler;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Forms\Form;
@@ -118,7 +119,7 @@ class Sidebar implements OutputableInterface
                         $row->addSelectSchoolYear('gibbonSchoolYearIDGoogle')
                             ->setClass('fullWidth')
                             ->placeholder(null)
-                            ->selected($_SESSION[$guid]['gibbonSchoolYearID']);
+                            ->selected($this->session->get('gibbonSchoolYearID', $this->session->get('gibbonSchoolYearIDCurrent')));
 
                     $row = $form->addRow()->setClass('loginOptionsGoogle');
                         $row->addContent(sprintf($loginIcon, 'language', __('Language')));
@@ -205,11 +206,11 @@ class Sidebar implements OutputableInterface
                     $row->addSelectSchoolYear('gibbonSchoolYearID')
                         ->setClass('fullWidth')
                         ->placeholder(null)
-                        ->selected($this->session->get('gibbonSchoolYearID'));
+                        ->selected($this->session->get('gibbonSchoolYearID', $this->session->get('gibbonSchoolYearIDCurrent')));
 
                 $row = $form->addRow()->setClass('loginOptions');
                     $row->addContent(sprintf($loginIcon, 'language', __('Language')));
-                    $row->addSelectI18n('gibboni18nID')
+                    $row->addSelectI18n('gibbonI18nID')
                         ->setClass('fullWidth')
                         ->placeholder(null)
                         ->selected($this->session->get('i18n')['gibboni18nID']);

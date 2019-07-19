@@ -13,6 +13,8 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class I18n
@@ -288,5 +290,17 @@ class I18n
     {
         $this->rtl = self::checkBoolean($rtl, 'N');
         return $this;
+    }
+
+    /**
+     * __toArray
+     * @return array
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     */
+    public function __toArray(): array
+    {
+        $normaliser = new ObjectNormalizer();
+
+        return $normaliser->normalize($this);
     }
 }

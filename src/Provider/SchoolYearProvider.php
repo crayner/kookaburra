@@ -25,7 +25,6 @@ class SchoolYearProvider implements EntityProviderInterface
      */
     private $entityName = SchoolYear::class;
 
-
     /**
      * setCurrentSchoolYear
      * @param SessionInterface $session
@@ -34,15 +33,14 @@ class SchoolYearProvider implements EntityProviderInterface
      */
     public function setCurrentSchoolYear(SessionInterface $session)
     {
-        $row =$this->getRepository()->findOneBy(['status' => 'Current']);
-
+        $row = $this->getRepository()->findOneBy(['status' => 'Current']);
 
         //Check number of rows returned.
         if (!$row instanceof SchoolYear) {
             die(__('Configuration Error: there is a problem accessing the current Academic Year from the database.'));
         }
         
-        $session->set('gibbonSchoolYearID', $row->getId());
+        $session->set('gibbonSchoolYearID',$row->getId());
         $session->set('gibbonSchoolYearName', $row->getName());
         $session->set('gibbonSchoolYearSequenceNumber', $row->getSequenceNumber());
         $session->set('gibbonSchoolYearFirstDay', $row->getFirstDay());

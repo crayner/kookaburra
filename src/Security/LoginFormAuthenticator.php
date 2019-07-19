@@ -169,6 +169,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         //store the token blah blah blah
         $session = $request->getSession();
         $person = self::createUserSession($token->getUsername(), $session);
+        
+        if (! $person->isCanLogin())
+            return static::authenticationFailure(['loginReturn' => 'fail2']);
         if ($token->getUser()->getEncoderName() === 'md5')
         {
             $salt = $token->getUser()->createSalt();

@@ -136,7 +136,7 @@ class LegacyManager
         if ($session->has('passwordForceReset')) {
             if ($session->get('passwordForceReset') == 'Y' && $session->get('address') != 'preferences.php') {
                 $URL = $session->get('absoluteURL').'/preferences/';
-                $URL = $URL.'&forceReset=Y';
+                $URL = $URL.'?forceReset=Y';
                 return new RedirectResponse($URL);
             }
         }

@@ -1555,6 +1555,8 @@ function getModuleCategory($address, $connection2)
  */
 function setCurrentSchoolYear($guid,  $connection2)
 {
+    trigger_error('setCurrentSchoolYear is deprecated. Use SchoolYearProvider::setCurrentSchoolYear($session)', E_USER_ERROR);
+    return;
     //Run query
     try {
         $data = array();

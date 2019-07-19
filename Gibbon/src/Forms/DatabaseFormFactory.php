@@ -216,8 +216,8 @@ class DatabaseFormFactory extends FormFactory
         $results = $this->pdo->select($sql);
 
         $values = array_reduce($results->fetchAll(), function ($group, $item) {
-            if (isset($item['installed']) && $item['installed'] == 'Y') {
-                $group[$item['gibboni18nID']] = $item['systemDefault'] == 'Y'? $item['name'].' ('.__('System Default').')' : $item['name'];
+            if ((isset($item['installed']) && $item['installed'] == 'Y') || (isset($item['systemDefault']) && $item['systemDefault'] == 'Y')) {
+                $group[$item['gibboni18nID']] = $item['systemDefault'] == 'Y' ? $item['name'].' ('.__('System Default').')' : $item['name'];
             }
             return $group;
         }, []);
