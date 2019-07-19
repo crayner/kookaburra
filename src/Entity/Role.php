@@ -221,6 +221,14 @@ class Role implements EntityInterface
     private $canLoginRole = 'Y';
 
     /**
+     * @return boolean
+     */
+    public function isCanLoginRole(): bool
+    {
+        return $this->canLoginRole === 'Y' ? true : false;
+    }
+
+    /**
      * @return string
      */
     public function getCanLoginRole(): string
@@ -246,11 +254,19 @@ class Role implements EntityInterface
     private $futureYearsLogin = 'Y';
 
     /**
+     * @return boolean
+     */
+    public function isFutureYearsLogin(): bool
+    {
+        return $this->futureYearsLogin === 'Y' ? true : false;
+    }
+
+    /**
      * @return string
      */
     public function getFutureYearsLogin(): string
     {
-        return $this->futureYearsLogin;
+        return self::checkBoolean($this->futureYearsLogin);
     }
 
     /**
@@ -271,11 +287,19 @@ class Role implements EntityInterface
     private $pastYearsLogin = 'Y';
 
     /**
+     * @return boolean
+     */
+    public function isPastYearsLogin(): bool
+    {
+        return $this->pastYearsLogin === 'Y' ? true : false;
+    }
+
+    /**
      * @return string
      */
     public function getPastYearsLogin(): string
     {
-        return $this->pastYearsLogin;
+        return self::checkBoolean($this->pastYearsLogin);
     }
 
     /**

@@ -2,13 +2,16 @@
 namespace App\Security;
 
 use App\Entity\Person;
+use App\Manager\GibbonManager;
 use App\Manager\MessageManager;
 use App\Provider\SettingProvider;
 use App\Provider\PersonProvider;
+use App\Util\EntityHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -79,11 +82,13 @@ class GoogleAuthenticator implements AuthenticatorInterface
 		$this->settingManager = $settingManager;
         $this->logger = $logger;
         $this->provider = $provider;
-		if (! empty($settingManager->getParameter('google_client_id'))) {
+        if ($this->readGoogleOAuth() !== false) {
             $this->getClient();
             $this->getClient()->setLogger($logger);
         }
 	}
+
+
 
     /**
      * getCredentials
@@ -141,8 +146,8 @@ class GoogleAuthenticator implements AuthenticatorInterface
     private function getGoogleClient()
     {
         // @todo For some reason the Request Query is not set correctly on some servers.  When the setting causing this is identified we can do something about this.
-        if (empty($code = $this->getSettingManager()->getRequest()->query->get('code'))) {
-            $uri = 'http://' . $this->getSettingManager()->getRequest()->getHttpHost() . $this->getSettingManager()->getRequest()->getRequestUri();
+        if (empty($code = GibbonManager::getRequest()->query->get('code'))) {
+            $uri = 'http://' . GibbonManager::getRequest()->getHttpHost() . GibbonManager::getRequest()->getRequestUri();
             parse_str(parse_url($uri, PHP_URL_QUERY), $query);
             $code = $query['code'];
         }
@@ -181,6 +186,28 @@ class GoogleAuthenticator implements AuthenticatorInterface
 		$this->getProvider()->setSecurityUser($user);
 
 		$user = $this->getProvider()->getUser();
+
+		if (!$user->isCanLogin())
+		    return $this->authenticationFailure(['loginReturn' => 'fail2']);
+
+        if ($user->isPasswordForceReset())
+            $request->getSession()->set('passwordForceReset', 'Y');
+
+		if (!$user->getPrimaryRole() || !$user->getPrimaryRole()->isCanLoginRole())
+            return $this->authenticationFailure(['loginReturn' => 'fail2']);
+
+		if ($user->getFailCount() >= 3 && $user->isLastFailTimestampTooOld()) {
+		    if ($user->getFailCount() === 3) {
+		        $user->incFailCount();
+		        $user->setLastFailTimestamp(new \DateTime('now'));
+		        $user->setLastFailIPAddress($request->server->get('REMOTE_ADDR'));
+                $provider = EntityHelper::getProviderFactory()->create(Person::class);
+                $provider->setEntity($user)->saveEntity();
+            }
+            $this->logger->warning('Too many failed login (Google)');
+            return $this->authenticationFailure(['loginReturn' => 'fail6']);
+        }
+
 		if (null !== $user->getLocale())
 			$request->setLocale($user->getLocale());
 
@@ -188,6 +215,16 @@ class GoogleAuthenticator implements AuthenticatorInterface
             $this->getClient()->setApprovalPrompt('force');
             $targetPath = $this->getClient()->createAuthUrl();
             return new RedirectResponse($targetPath);
+        }
+
+        $user = LoginFormAuthenticator::createUserSession($user, $request->getSession());
+
+        if ($request->getSession()->has('google_state') || true) {
+            $state = $request->getSession()->get('google_state');
+            list($schoolYearID, $i18nID) = explode(':', $state);
+            $request->getSession()->forget('google_state');
+            if (($response = LoginFormAuthenticator::checkSchoolYear($user, $request->getSession(), $schoolYearID)) instanceof Response)
+                return $response;
         }
 
         if ($targetPath = $this->getTargetPath($request, $providerKey))
@@ -322,9 +359,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
     }
 
     /**
-     * connect
-     * @return string
-     * @throws \Google_Exception
+     * connectUrl
      */
     public function connectUrl(): string
     {
@@ -337,9 +372,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
     private $client;
 
     /**
-     * getClient
-     * @return \Google_Client
-     * @throws \Google_Exception
+     * oogle_Exception
      */
     public function getClient(): \Google_Client
     {
@@ -405,7 +438,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
      */
     public function setAccessToken($googleAPIAccessToken)
     {
-        $this->getSettingManager()->getSession()->set('googleAPIAccessToken', $googleAPIAccessToken);
+        GibbonManager::getSession()->set('googleAPIAccessToken', $googleAPIAccessToken);
         return $this;
     }
 
@@ -424,5 +457,45 @@ class GoogleAuthenticator implements AuthenticatorInterface
     public function getGoogleUser(): Object
     {
         return $this->google_user;
+    }
+
+    /**
+     * readGoogleOAuth
+     * @return bool|string
+     */
+    private function readGoogleOAuth()
+    {
+        $file = realpath(__DIR__ . '/../../config/google_oauth.json');
+        if (false === $file)
+            return $file;
+
+        try {
+            $this->clientSecrets = json_decode(file_get_contents($file), true);
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * authenticationFailure
+     * @param array $query
+     * @return RedirectResponse
+     */
+    private function authenticationFailure(array $query)
+    {
+        GibbonManager::getSession()->clear();
+        GibbonManager::getSession()->invalidate();
+        $route = '';
+        foreach($query as $q=>$w)
+        {
+            $route .= $q . '=' . $w;
+        }
+        if ('' === $route)
+            $route = '/';
+        else
+            $route = '/?' . $route;
+
+        return new RedirectResponse($route);
     }
 }

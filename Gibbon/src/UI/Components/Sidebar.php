@@ -93,17 +93,73 @@ class Sidebar implements OutputableInterface
         // Add Google Login Button
         if (!$this->session->has('username') && !$this->session->has('email')) {
             if ($googleOAuth == 'Y') {
+                $authUrl = \Google_Client::OAUTH2_AUTH_URL;
                 echo '<div class="column-no-break">';
                 echo '<h2>';
                 echo __('Login with Google');
                 echo '</h2>';
+                echo '<div>';
+                    $themeName = isset($_SESSION[$guid]['gibbonThemeName'])? $_SESSION[$guid]['gibbonThemeName'] : 'Default';
+                    echo '<a target=\'_top\' class="login" href="/google/connect/" onclick="addGoogleLoginParams(this)">';
+                        echo '<button class="w-full bg-white rounded shadow border border-gray-400 flex items-center px-2 py-1 mb-2 text-gray-600 hover:shadow-md hover:border-blue-600 hover:text-blue-600">';
+                            echo '<img class="w-10 h-10" src="themes/'.$themeName.'/img/google-login.svg">';
+                            echo '<span class="flex-grow text-lg">'.__('Sign in with Google').'</span>';
+                        echo '</button>';
+                    echo '</a>';
 
-                ?>
-                <script>
-                    $(function(){
-                        $('#siteloader').load('lib/google/index.php');
+                    $form = \Gibbon\Forms\Form::create('loginFormGoogle', '#');
+                    $form->setFactory(\Gibbon\Forms\DatabaseFormFactory::create($pdo));
+                    $form->setClass('blank fullWidth loginTableGoogle');
+
+                    $loginIcon = '<img src="'.$_SESSION[$guid]['absoluteURL'].'/themes/'.$themeName.'/img/%1$s.png" style="width:20px;height:20px;margin:-2px 0 0 2px;" title="%2$s">';
+
+                    $row = $form->addRow()->setClass('loginOptionsGoogle');
+                        $row->addContent(sprintf($loginIcon, 'planner', __('School Year')));
+                        $row->addSelectSchoolYear('gibbonSchoolYearIDGoogle')
+                            ->setClass('fullWidth')
+                            ->placeholder(null)
+                            ->selected($_SESSION[$guid]['gibbonSchoolYearID']);
+
+                    $row = $form->addRow()->setClass('loginOptionsGoogle');
+                        $row->addContent(sprintf($loginIcon, 'language', __('Language')));
+                        $row->addSelectI18n('gibboni18nIDGoogle')
+                            ->setClass('fullWidth')
+                            ->placeholder(null)
+                            ->selected($_SESSION[$guid]['i18n']['gibboni18nID']);
+
+                    $row = $form->addRow();
+                        $row->addContent('<a class="showGoogleOptions" onclick="false" href="#">'.__('Options').'</a>')
+                            ->wrap('<span class="small">', '</span>')
+                            ->setClass('right');
+
+                    echo $form->getOutput();
+                    ?>
+
+                    <script>
+                    $(".loginOptionsGoogle").hide();
+                    $(".showGoogleOptions").click(function(){
+                        if ($('.loginOptionsGoogle').is(':hidden')) $(".loginTableGoogle").removeClass('blank').addClass('noIntBorder');
+                        $(".loginOptionsGoogle").fadeToggle(1000, function() {
+                            if ($('.loginOptionsGoogle').is(':hidden')) $(".loginTableGoogle").removeClass('noIntBorder').addClass('blank');
+                        });
                     });
-                </script>
+
+                    function addGoogleLoginParams(element)
+                    {
+                        $(element).attr('href', function() {
+                            if ($('#gibbonSchoolYearIDGoogle').is(':visible')) {
+                                var googleSchoolYear = $('#gibbonSchoolYearIDGoogle').val();
+                                var googleLanguage = $('#gibboni18nIDGoogle').val();
+                                this.href = this.href + '?state='+googleSchoolYear+':'+googleLanguage+'&'
+                                return this.href;
+                            }
+                        });
+                    }
+                    </script>
+                    <?php
+                echo '</div>';
+                ?>
+
                 <div id="siteloader" style="min-height:73px"></div>
                 <?php
                 echo '</div>';

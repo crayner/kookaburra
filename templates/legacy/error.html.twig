@@ -10,7 +10,7 @@
 </p>
 {% if extendedError is defined %}
     <p>{{ extendedError|trans(extendedParams|default({}),'bilby') }}</p>
-{    {% if app.environment is same as('dev') %}
+    {% if app.environment is same as('dev') %}
         {{ dump(manager|default({})) }}
     {% endif %}
 {% endif %}

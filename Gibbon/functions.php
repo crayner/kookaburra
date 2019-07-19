@@ -23,6 +23,11 @@ use Gibbon\Services\Format;
 use Gibbon\Contracts\Comms\Mailer;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * getIPAddress
+ * @return array|bool|false|string
+ * @deprecated Use GlobalHelper::getIPAddress.
+ */
 function getIPAddress() {
     $return = false;
 
@@ -1735,6 +1740,17 @@ function formatPhone($num)
     return Format::phone($num);
 }
 
+/**
+ * setLog
+ * @param $connection2
+ * @param $gibbonSchoolYearID
+ * @param $gibbonModuleID
+ * @param $gibbonPersonID
+ * @param $title
+ * @param null $array
+ * @param null $ip
+ * @deprecated Use LogProvider::setLog($schoolYearID, $moduleID, $personID, $title, $array = null, $ip = null)
+ */
 function setLog($connection2, $gibbonSchoolYearID, $gibbonModuleID, $gibbonPersonID, $title, $array = null, $ip = null)
 {
     if ((!is_array($array) && $array != null) || $title == null || $gibbonSchoolYearID == null) {

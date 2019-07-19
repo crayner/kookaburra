@@ -27,7 +27,9 @@ use App\Provider\ProviderFactory;
 use App\Provider\SchoolYearProvider;
 use App\Provider\TimetableProvider;
 use App\Util\EntityHelper;
+use App\Util\ErrorHelper;
 use App\Util\FormatHelper;
+use App\Util\GlobalHelper;
 use App\Util\LocaleHelper;
 use App\Util\RelationshipHelper;
 use App\Util\SchoolYearHelper;
@@ -46,6 +48,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Class HelperListener
@@ -75,8 +78,9 @@ class HelperListener implements EventSubscriberInterface
         AuthorizationCheckerInterface $authorizationChecker,
         RouterInterface $router,
 //        TokenStorageInterface $tokenStorage,
-//        RequestStack $stack,
-//        TranslatorInterface $translator,
+        RequestStack $stack,
+        TranslatorInterface $translator,
+        Environment $twig,
         ContainerInterface $container,
 //        LoggerInterface $logger,
         GibbonManager $gibbonManager
@@ -84,6 +88,9 @@ class HelperListener implements EventSubscriberInterface
         $eh = new EntityHelper(new ProviderFactory($entityManager,$messageManager,$authorizationChecker,$router));
         $lcf = new LegacyConnectionFactory();
         $gibbonManager->setContainer($container);
+        $eh = new ErrorHelper($twig);
+        $gh = new GlobalHelper($stack);
+
     }
 
     /**

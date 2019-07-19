@@ -50,7 +50,7 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-#                    - App\Security\GoogleAuthenticator
+                    - App\Security\GoogleAuthenticator
                 entry_point: App\Security\LoginFormAuthenticator
             context: main
     role_hierarchy: '%security.hierarchy.roles%'

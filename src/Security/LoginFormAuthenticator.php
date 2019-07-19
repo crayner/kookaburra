@@ -13,11 +13,16 @@
 namespace App\Security;
 
 use App\Entity\Person;
-use App\Entity\Setting;
+use App\Entity\Role;
+use App\Entity\SchoolYear;
+use App\Manager\GibbonManager;
+use App\Provider\LogProvider;
 use App\Provider\ProviderFactory;
-use Doctrine\ORM\providerFactoryInterface;
+use App\Util\ErrorHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -54,6 +59,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $passwordEncoder;
 
     /**
+     * @var LoginFormAuthenticator
+     */
+    private static $instance;
+
+    /**
      * LoginFormAuthenticator constructor.
      * @param ProviderFactory $providerFactory
      * @param RouterInterface $router
@@ -65,6 +75,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        self::$instance = $this;
     }
 
     /**
@@ -157,7 +168,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         //store the token blah blah blah
         $session = $request->getSession();
-        $person = $this->createUserSession($token->getUsername(), $session);
+        $person = self::createUserSession($token->getUsername(), $session);
         if ($token->getUser()->getEncoderName() === 'md5')
         {
             $salt = $token->getUser()->createSalt();
@@ -170,6 +181,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             $token->getUser()->setPassword($password);
             ProviderFactory::create(Person::class)->setEntity($person)->saveEntity();
         }
+
+        if ($request->request->has('gibbonSchoolYearID'))
+            if (($response = static::checkSchoolYear($person, $session, $request->request->get('gibbonSchoolYearID'))) instanceof Response)
+                return $response;
 
         $session->save();
         if ($targetPath = $this->getTargetPath($request, $providerKey))
@@ -187,12 +202,21 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $this->router->generate('login');
     }
 
-    public function createUserSession($username, $session) {
+    /**
+     * createUserSession
+     * @param string|Person $username
+     * @param $session
+     * @return Person
+     */
+    public static function createUserSession($username, SessionInterface $session) {
 
-        $userData = ProviderFactory::getRepository(Person::class)->findOneByUsername($username);
-        if (null === $userData) {
-            $userData = $this->providerFactory::getRepository(Person::class)->findOneByEmail($username);
-        }
+        if ($username instanceof Person)
+            $userData = $username;
+        elseif ($username instanceof SecurityUser)
+            $userData = ProviderFactory::getRepository(Person::class)->find($username->getId());
+        else
+            $userData = ProviderFactory::getRepository(Person::class)->loadUserByUsernameOrEmail($username);
+
         $session->set('username', $username);
         $session->set('passwordStrong', $userData->getPasswordStrong());
         $session->set('passwordStrongSalt', $userData->getPasswordStrongSalt());
@@ -233,5 +257,67 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $session->cacheFastFinderActions($primaryRole);
 
         return $userData;
+    }
+
+    /**
+     * checkSchoolYear
+     * @param Person $person
+     * @param SessionInterface $session
+     * @param int $schoolYear
+     * @return bool|RedirectResponse|Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public static function checkSchoolYear(Person $person, SessionInterface $session, int $schoolYear = 0)
+    {
+        if (0 === $schoolYear || $schoolYear === intval($session->get('gibbonSchoolYearID')))
+            return true;
+
+        if (!$person->getPrimaryRole() instanceof Role)
+            return static::authenticationFailure(['loginReturn' => 'fail9']);
+
+        $role = $person->getPrimaryRole();
+
+        if (! $role->isFutureYearsLogin() && ! $role->isPastYearsLogin()) {
+            LogProvider::setLog($schoolYear, null, $person, 'Login - Failed', ['username' => $person->getUsername(), 'reason' => 'Not permitted to access non-current school year'], null);
+            return static::authenticationFailure(['loginReturn' => 'fail9']);
+        }
+        $schoolYear = ProviderFactory::create(SchoolYear::class)->find($schoolYear);
+
+        if (!$schoolYear instanceof SchoolYear)
+            return ErrorHelper::ErrorResponse('Configuration Error: there is a problem accessing the current Academic Year from the database.',[], self::$instance);
+
+        if (!$role->isPastYearsLogin() && $session->get('gibbonSchoolYearSequenceNumber') > $schoolYear->getSequenceNumber()) {
+            LogProvider::setLog($schoolYear, null, $person, 'Login - Failed', ['username' => $person->getUsername(), 'reason' => 'Not permitted to access non-current school year'], null);
+            return static::authenticationFailure(['loginReturn' => 'fail9']);
+        }
+
+        $session->set('gibbonSchoolYearID', $schoolYear->getId());
+        $session->set('gibbonSchoolYearName', $schoolYear->getName());
+        $session->set('gibbonSchoolYearSequenceNumber', $schoolYear->getSequenceNumber());
+        return true;
+    }
+
+    /**
+     * authenticationFailure
+     * @param array $query
+     * @return RedirectResponse
+     */
+    private static function authenticationFailure(array $query)
+    {
+        GibbonManager::getSession()->clear();
+        GibbonManager::getSession()->invalidate();
+        $route = '';
+        foreach($query as $q=>$w)
+        {
+            $route .= $q . '=' . $w;
+        }
+        if ('' === $route)
+            $route = '/';
+        else
+            $route = '/?' . $route;
+
+        return new RedirectResponse($route);
     }
 }

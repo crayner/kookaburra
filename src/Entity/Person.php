@@ -366,6 +366,15 @@ class Person implements EntityInterface
     private $passwordForceReset = 'N';
 
     /**
+     * isPasswordForceReset
+     * @return bool
+     */
+    public function isPasswordForceReset(): bool
+    {
+        return $this->getPasswordForceReset() === 'Y' ? true : false;
+    }
+
+    /**
      * @return null|string
      */
     public function getPasswordForceReset(): ?string
@@ -422,6 +431,15 @@ class Person implements EntityInterface
      * @ORM\Column(length=1, options={"default": "Y"}, name="canLogin")
      */
     private $canLogin;
+
+    /**
+     * isCanLogin
+     * @return bool
+     */
+    public function isCanLogin(): bool
+    {
+        return $this->getCanLogin() === 'Y' ? true : false;
+    }
 
     /**
      * @return null|string
@@ -667,6 +685,17 @@ class Person implements EntityInterface
     private $lastFailTimestamp;
 
     /**
+     * isLastFailTimestampTooOld
+     * @param $session
+     */
+    public function isLastFailTimestampTooOld(int $timeout = 1200): bool
+    {
+        if (null === $this->getLastFailTimestamp() || $this->getLastFailTimestamp()->getTimestamp() < strtotime('-'.$timeout.' seconds'))
+            return true;
+        return false;
+    }
+
+    /**
      * @return \DateTime|null
      */
     public function getLastFailTimestamp(): ?\DateTime
@@ -689,6 +718,17 @@ class Person implements EntityInterface
      * @ORM\Column(type="smallint", columnDefinition="INT(1)", nullable=true, name="failCount", options={"default": "0"})
      */
     private $failCount;
+
+    /**
+     * incFailCount
+     * @return int
+     */
+    public function incFailCount(): int
+    {
+        $failCount = intval($this->failCount);
+        $this->setFailCount(++$failCount);
+        return $this->getFailCount();
+    }
 
     /**
      * @return int|null

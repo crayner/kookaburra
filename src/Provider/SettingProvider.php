@@ -92,4 +92,84 @@ class SettingProvider implements EntityProviderInterface
 
         $session->set('systemSettingsSet',true);
     }
+
+    /**
+     * getSettingByScopeAsInteger
+     * @param string $scope
+     * @param string $name
+     * @param int $default
+     * @return int
+     * @throws \Exception
+     */
+    public function getSettingByScopeAsInteger(string $scope, string $name, int $default = 0): int
+    {
+        $result = $this->getSettingByScope($scope, $name);
+        if (empty($result))
+            return $default;
+        return intval($result);
+    }
+
+    /**
+     * getSettingByScopeAsArray
+     * @param string $scope
+     * @param string $name
+     * @param array $default
+     * @return array
+     * @throws \Exception
+     */
+    function getSettingByScopeAsArray(string $scope, string$name, array $default = []): array
+    {
+        $result = $this->getSettingByScope($scope, $name);
+        if (empty($result))
+            return $default;
+        return explode(',', $result);
+    }
+
+    /**
+     * getSettingByScopeAsArray
+     * @param string $scope
+     * @param string $name
+     * @param array $default
+     * @return array
+     * @throws \Exception
+     */
+    function getSettingByScopeAsDate(string $scope, string $name, ?\DateTime $default = null)
+    {
+        $result = $this->getSettingByScope($scope, $name);
+        if (empty($result))
+            return $default;
+        return unserialize($result);
+    }
+
+    /**
+     * getSettingByScopeAsBoolean
+     * @param string $scope
+     * @param string $name
+     * @param bool|null $default
+     * @return bool|null
+     * @throws \Exception
+     */
+    function getSettingByScopeAsBoolean(string $scope, string $name, ?bool $default = false)
+    {
+        $result = $this->getSettingByScope($scope, $name);
+        if (empty($result))
+            return $default;
+        return $result === 'Y' ? true : false ;
+    }
+
+    /**
+     * getSettingByScopeAsString
+     * @param string $scope
+     * @param string $name
+     * @param string|null $default
+     * @return string|null
+     * @throws \Exception
+     */
+    function getSettingByScopeAsString(string $scope, string $name, ?string $default = null)
+    {
+        $result = $this->getSettingByScope($scope, $name);
+        if (empty($result))
+            return $default;
+        return strval($result);
+    }
 }

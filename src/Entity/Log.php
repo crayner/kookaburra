@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Manager\EntityInterface;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -123,10 +124,11 @@ class Log implements EntityInterface
     }
 
     /**
-     * @param int|null $person
+     * setPerson
+     * @param Person|null $person
      * @return Log
      */
-    public function setPerson(?int $person): Log
+    public function setPerson(?Person $person): Log
     {
         $this->person = $person;
         return $this;
@@ -169,6 +171,17 @@ class Log implements EntityInterface
     }
 
     /**
+     * @param LifecycleEventArgs $event
+     * @ORM\PrePersist()
+     * @return Log
+     */
+    public function createTimestamp(LifecycleEventArgs $event): Log
+    {
+        return $this->setTimestamp(new \DateTime());
+    }
+
+
+    /**
      * @return string|null
      */
     public function getTitle(): ?string
@@ -195,6 +208,7 @@ class Log implements EntityInterface
     }
 
     /**
+     * setSerialisedArray
      * @param array|null $serialisedArray
      * @return Log
      */
