@@ -12,6 +12,7 @@
  */
 namespace App\Security;
 
+use App\Entity\I18n;
 use App\Entity\Person;
 use App\Entity\Role;
 use App\Entity\SchoolYear;
@@ -169,7 +170,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         //store the token blah blah blah
         $session = $request->getSession();
         $person = self::createUserSession($token->getUsername(), $session);
-        
+
         if (! $person->isCanLogin())
             return static::authenticationFailure(['loginReturn' => 'fail2']);
         if ($token->getUser()->getEncoderName() === 'md5')
@@ -188,6 +189,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         if ($request->request->has('gibbonSchoolYearID'))
             if (($response = static::checkSchoolYear($person, $session, $request->request->get('gibbonSchoolYearID'))) instanceof Response)
                 return $response;
+
+        static::setLanguage($request);
 
         $session->save();
         if ($targetPath = $this->getTargetPath($request, $providerKey))
@@ -322,5 +325,20 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             $route = '/?' . $route;
 
         return new RedirectResponse($route);
+    }
+
+    /**
+     * setLanguage
+     * @param Request $request
+     */
+    public static function setLanguage(Request $request, int $i18nID = null)
+    {
+        $session = $request->getSession();
+        if (null !== $i18nID && intval($i18nID) !== intval($session->get(['i18n', 'gibboni18nID'])))
+            ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $i18nID], false);
+        elseif ($request->request->has('gibboni18nID') && intval($request->request->get('gibboni18nID')) !== intval($session->get(['i18n', 'gibboni18nID'])))
+            ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $request->request->get('gibboni18nID')], false);
+        elseif ($session->has('gibboni18nIDPersonal') && intval($session->get('gibboni18nIDPersonal')) > 0)
+            ProviderFactory::create(I18n::class)->setLanguageSession($session,  ['id' => $session->get('gibboni18nIDPersonal'), 'active' => 'Y'], false);
     }
 }

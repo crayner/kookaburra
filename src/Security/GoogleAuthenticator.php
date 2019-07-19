@@ -225,6 +225,7 @@ class GoogleAuthenticator implements AuthenticatorInterface
             $request->getSession()->forget('google_state');
             if (($response = LoginFormAuthenticator::checkSchoolYear($user, $request->getSession(), intval($schoolYearID))) instanceof Response)
                 return $response;
+            LoginFormAuthenticator::setLanguage($request, $i18nID);
         }
 
         if ($targetPath = $this->getTargetPath($request, $providerKey))
