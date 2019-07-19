@@ -25,3 +25,4 @@ parameters:
         ROLE_SYSTEM_ADMIN:
             - ROLE_REGISTRAR
             - ROLE_PARENT
+    timezone: Australia/Sydney

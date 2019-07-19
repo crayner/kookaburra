@@ -46,13 +46,19 @@ trait TargetPathTrait
     {
         $session = $request->getSession();
         $path =  $session->get('_security.'.$providerKey.'.target_path');
-        if ($request->getContentType() === 'json') {
+dump($path);
+        if ($request->getContentType() === 'json')
             return $path;
-        }
+
         if (strpos($path, 'api_') === 0)
             $path = '';
+
         if (strpos($path, '_') === 0)
             $path = '';
+
+        if ($request->query->has('q') && $request->query->get('q') !== '/publicRegistration.php')
+                $path .= '/?q=' . $request->query->get('q');
+dump($path);
         return $path;
     }
 

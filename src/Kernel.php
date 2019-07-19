@@ -40,6 +40,9 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
+
+        $timezone = $container->getParameter('timezone');
+        ini_set('timezone', $timezone);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void

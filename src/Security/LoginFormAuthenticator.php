@@ -20,6 +20,7 @@ use App\Manager\GibbonManager;
 use App\Provider\LogProvider;
 use App\Provider\ProviderFactory;
 use App\Util\ErrorHelper;
+use App\Util\GlobalHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -173,6 +174,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         if (! $person->isCanLogin())
             return static::authenticationFailure(['loginReturn' => 'fail2']);
+
         if ($token->getUser()->getEncoderName() === 'md5')
         {
             $salt = $token->getUser()->createSalt();
@@ -193,6 +195,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         static::setLanguage($request);
 
         $session->save();
+        $ip = GlobalHelper::getIPAddress();
+        $person->setLastIPAddress($ip);
+        $person->setLastTimestamp(new \DateTime());
+        $person->setFailCount(0);
+        ProviderFactory::getEntityManager()->persist($person);
+        ProviderFactory::getEntityManager()->flush();
+
+        LogProvider::setLog($session->get('gibbonSchoolYearIDCurrent'), null, $person, 'Login - Success', array('username' => $person->getUsername()), $ip);
+
         if ($targetPath = $this->getTargetPath($request, $providerKey))
             return new RedirectResponse($targetPath);
 
