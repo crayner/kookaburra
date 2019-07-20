@@ -59,7 +59,7 @@ trait TargetPathTrait
 
         if (null !== $address && $address !== '/publicRegistration.php')
                 $path .= '/?q=' . $address;
-dump($request);
+
         return $path;
     }
 

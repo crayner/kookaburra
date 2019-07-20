@@ -19,8 +19,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\UI\Components;
 
+use App\Entity\SchoolYear;
 use App\Manager\GibbonManager;
-use App\Security\LogoutSuccessHandler;
+use App\Provider\ProviderFactory;
+use App\Provider\SchoolYearProvider;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Forms\Form;
@@ -176,7 +178,8 @@ class Sidebar implements OutputableInterface
                     echo __('Login');
                 echo '</h2>';
 
-                if (!$this->session->has('gibbonSchoolYearID')) setCurrentSchoolYear($guid, $connection2);
+                if (!$this->session->has('gibbonSchoolYearID'))
+                    ProviderFactory::create(SchoolYear::class)->setCurrentSchoolYear($this->session);
 
                 $form = Form::create('loginForm', $this->session->get('absoluteURL').'/login/?'.($request->query->has('q') ? 'q='.$request->query->get('q') : ''));
 

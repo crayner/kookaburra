@@ -1555,7 +1555,8 @@ function getModuleCategory($address, $connection2)
  */
 function setCurrentSchoolYear($guid,  $connection2)
 {
-    trigger_error('setCurrentSchoolYear is deprecated. Use SchoolYearProvider::setCurrentSchoolYear($session)', E_USER_ERROR);
+    $x = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
+    throw new \Gibbon\Exception(sprintf('setCurrentSchoolYear is deprecated. Use SchoolYearProvider::setCurrentSchoolYear($session). Called in %s on line %s', $x[0]['file'], $x[0]['line']));
     return;
     //Run query
     try {

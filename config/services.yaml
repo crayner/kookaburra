@@ -118,3 +118,9 @@ services:
 
     Gibbon\Tables\DataTable:
         public: true
+
+    Google_Service_Calendar:
+        class: Google_Service_Calendar
+        arguments:
+            - '@Google_Client'
+        public: true
