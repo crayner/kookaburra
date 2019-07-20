@@ -222,69 +222,6 @@ function getCurrentVersion($guid, $connection2, $version)
 }
 
 /**
- * Checks to see if a gibbon.mo language file exists for the given i18n code.
- *
- * @param string $absolutePath
- * @param string $code
- * @return bool
- */
-function i18nFileExists($absolutePath, $code)
-{
-    return file_exists($absolutePath.'/i18n/'.$code.'/LC_MESSAGES/gibbon.mo');
-}
-
-/**
- * Downloads and installs the gibbon.mo file for a given i18n code.
- *
- * @param string $absolutePath
- * @param string $code
- * @return bool
- */
-function i18nFileInstall($absolutePath, $code)
-{
-    // Grab the file contents from the GibbonEdu i18n repository
-    $gitHubURL = 'https://github.com/GibbonEdu/i18n/blob/master/'.$code.'/LC_MESSAGES/gibbon.mo?raw=true';
-    $gitHubContents = file_get_contents($gitHubURL);
-
-    if (empty($gitHubContents)) return false;
-
-    // Locate where the i18n files will be copied to on the server
-    $localPath = $absolutePath.'/i18n/'.$code.'/LC_MESSAGES/gibbon.mo';
-    $localDir = dirname($localPath);
-    if (!is_dir($localDir)) {
-        mkdir($localDir, 0755, true);
-    }
-
-    // Copy files
-    return file_put_contents($localPath, $gitHubContents) !== false;
-}
-
-/**
- * Finds and sets any languages to installed='Y' if the file already exists.
- * Sets langueges to  installed='N' if the file no longer exits.
- *
- * @param ContainerInterface $container
- */
-function i18nCheckAndUpdateVersion($container, $version = null)
-{
-    $absolutePath = $container->get('session')->get('absolutePath');
-
-    $i18nGateway = $container->get(I18nGateway::class);
-    $i18nList = $i18nGateway->selectActiveI18n()->fetchAll();
-
-    foreach ($i18nList as $i18n) {
-        $fileExists = i18nFileExists($absolutePath, $i18n['code']);
-
-        if ($i18n['installed'] == 'N' && $fileExists) {
-            $versionUpdate = version_compare($version, $i18n['version'], '>') ? $version : $i18n['version'];
-            $i18nGateway->updateI18nVersion($i18n['gibboni18nID'], 'Y', $versionUpdate);
-        } else if ($i18n['installed'] == 'Y' && !$fileExists) {
-            $i18nGateway->updateI18nVersion($i18n['gibboni18nID'], 'N', null);
-        }
-    }
-}
-
-/**
  * Recursively remove the contents of a folder, including sub-directories. Optionally remove the folder itself.
  *
  * @param string $dir

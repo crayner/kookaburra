@@ -51,14 +51,14 @@ if (isActionAccessible($guid, $connection2, '/modules/System Admin/i18n_manage.p
             echo '</div>';
         } else {
 
-            $form = Form::create('install', $_SESSION[$guid]['absoluteURL'].'/modules/System Admin/i18n_manage_installProcess.php');
+            $form = Form::create('install', $_SESSION[$guid]['absoluteURL'].'/system/admin/language/manage/');
             $form->addHiddenValue('address', $_GET['q']);
             $form->addHiddenValue('gibboni18nID', $gibboni18nID);
 
             $row = $form->addRow();
                 $col = $row->addColumn();
                 $col->addContent( ($mode == 'update'? __('Update') : __('Install')).' '.$i18n['name'])->wrap('<strong style="font-size: 18px;">', '</strong><br/><br/>');
-                $col->addContent(sprintf(__('This action will download the required files and place them in the %1$s folder on your server.'), '<b>'.$_SESSION[$guid]['absolutePath'].'/i18n/'.'</b>').' '.__('Are you sure you want to continue?'));
+                $col->addContent(sprintf(__('This action will download the required files and place them in the %1$s folder on your server.'), '<b>'.$container->getParameter('kernel.project_dir').'/translations/'.'</b>').' '.__('Are you sure you want to continue?'));
 
             $form->addRow()->addConfirmSubmit();
 

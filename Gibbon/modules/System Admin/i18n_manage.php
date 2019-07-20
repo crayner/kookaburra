@@ -42,7 +42,8 @@ if (isActionAccessible($guid, $connection2, '/modules/System Admin/i18n_manage.p
     }
 
     // Update any existing languages that may have been installed manually
-    i18nCheckAndUpdateVersion($container, $version);
+    $lm = new \App\Manager\SystemAdmin\LanguageManager();
+    $lm->i18nCheckAndUpdateVersion($container->getParameter('kernel.project_dir'), $version);
 
     echo '<h2>';
     echo __('Installed');
@@ -59,8 +60,8 @@ if (isActionAccessible($guid, $connection2, '/modules/System Admin/i18n_manage.p
 
     $languages = $i18nGateway->queryI18n($criteria, 'Y');
 
-    $languages->transform(function(&$i18n) use ($guid)  {
-        $i18n['isInstalled'] = i18nFileExists($_SESSION[$guid]['absolutePath'], $i18n['code']);
+    $languages->transform(function(&$i18n) use ($guid,$lm,$container)  {
+        $i18n['isInstalled'] = $lm->i18nFileExists($container->getParameter('kernel.project_dir'), $i18n['code']);
     });
 
     $form = Form::create('i18n_manage', $_SESSION[$guid]['absoluteURL'].'/modules/'.$_SESSION[$guid]['module'].'/i18n_manageProcess.php');
@@ -140,8 +141,8 @@ if (isActionAccessible($guid, $connection2, '/modules/System Admin/i18n_manage.p
 
     $languages = $i18nGateway->queryI18n($criteria, 'N');
 
-    $languages->transform(function(&$i18n) use ($guid)  {
-        $i18n['isInstalled'] = i18nFileExists($_SESSION[$guid]['absolutePath'], $i18n['code']);
+    $languages->transform(function(&$i18n) use ($guid,$lm,$container)  {
+        $i18n['isInstalled'] = $lm->i18nFileExists($container->getParameter('kernel.project_dir'), $i18n['code']);
     });
 
     // DATA TABLE

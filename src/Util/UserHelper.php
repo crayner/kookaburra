@@ -41,10 +41,10 @@ class UserHelper
      * UserHelper constructor.
      * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(TokenStorageInterface $tokenStorage, ProviderFactory $providerFactory)
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
         self::$tokenStorage = $tokenStorage;
-        self::$provider = $providerFactory->getProvider(Person::class);
+        self::$provider = ProviderFactory::create(Person::class);
     }
 
     /**

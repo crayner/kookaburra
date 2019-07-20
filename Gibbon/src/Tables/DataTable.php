@@ -53,6 +53,8 @@ class DataTable implements OutputableInterface
     private static $paginatedView;
     private static $dataTableView;
 
+    private $class = '';
+
     /**
      * DataTable constructor.
      * Create a data table with optional renderer.
@@ -432,5 +434,23 @@ class DataTable implements OutputableInterface
     public function getOutput()
     {
         return $this->renderer->renderTable($this, $this->data);
+    }
+
+    /**
+     * getClass
+     * @return string
+     */
+    public function getClass(): string
+    {
+        return $this->class;
+    }
+
+    /**
+     * instanceOf
+     * @return string
+     */
+    public function instanceOf(string $class): string
+    {
+        return $class === get_class($this);
     }
 }

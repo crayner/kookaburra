@@ -46,6 +46,7 @@ class CatchController extends AbstractController
         $connection = $manager::getConnection2();
         $pdo = $manager::getConnection();
         $gibbon = $manager::getGibbon();
+        $container = $manager::getContainer();
 
         chdir(__DIR__.'/../../Gibbon/' . dirname($pathInfo));
         if ($request->getMethod() === 'POST')

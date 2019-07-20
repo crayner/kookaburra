@@ -77,12 +77,12 @@ class HelperListener implements EventSubscriberInterface
         MessageManager $messageManager,
         AuthorizationCheckerInterface $authorizationChecker,
         RouterInterface $router,
-//        TokenStorageInterface $tokenStorage,
+        TokenStorageInterface $tokenStorage,
         RequestStack $stack,
-        TranslatorInterface $translator,
+//        TranslatorInterface $translator,
         Environment $twig,
         ContainerInterface $container,
-//        LoggerInterface $logger,
+        LoggerInterface $logger,
         GibbonManager $gibbonManager
     ) {
         $eh = new EntityHelper(new ProviderFactory($entityManager,$messageManager,$authorizationChecker,$router));
@@ -90,7 +90,8 @@ class HelperListener implements EventSubscriberInterface
         $gibbonManager->setContainer($container);
         $eh = new ErrorHelper($twig);
         $gh = new GlobalHelper($stack);
-
+        $sh = new SecurityHelper($logger, $authorizationChecker);
+        $uh = new UserHelper($tokenStorage);
     }
 
     /**

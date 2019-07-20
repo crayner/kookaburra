@@ -54,5 +54,4 @@ class I18nProvider implements EntityProviderInterface
         
         $session->set('i18n', $data);
     }
-
 }

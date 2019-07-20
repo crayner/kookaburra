@@ -167,11 +167,19 @@ class I18n
     }
 
     /**
+     * @return boolean
+     */
+    public function isActive(): bool
+    {
+        return $this->getActive() === 'Y' ? true : false;
+    }
+
+    /**
      * @return string|null
      */
     public function getActive(): ?string
     {
-        return $this->active;
+        return self::checkBoolean($this->active);
     }
 
     /**
@@ -189,7 +197,15 @@ class I18n
      */
     public function getInstalled(): ?string
     {
-        return $this->installed;
+        return self::checkBoolean($this->installed, 'N');
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isInstalled(): bool
+    {
+        return $this->getInstalled() === 'Y' ? true : false;
     }
 
     /**
@@ -200,6 +216,14 @@ class I18n
     {
         $this->installed = self::checkBoolean($installed, 'N');
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isSystemDefault(): bool
+    {
+        return $this->getSystemDefault() === 'Y' ? true : false;
     }
 
     /**
