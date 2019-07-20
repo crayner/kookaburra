@@ -289,7 +289,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public static function checkSchoolYear(Person $person, SessionInterface $session, int $schoolYear = 0)
     {
         if (0 === $schoolYear || $schoolYear === intval($session->get('gibbonSchoolYearID')))
-            return true;
+            return self::setSchoolYear($session, $schoolYear);
 
         if (!$person->getPrimaryRole() instanceof Role)
             return static::authenticationFailure(['loginReturn' => 'fail9']);
@@ -317,11 +317,34 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     }
 
     /**
+     * setSchoolYear
+     * @param SessionInterface $session
+     * @param int $schoolYear
+     * @return bool
+     */
+    public static function setSchoolYear(SessionInterface $session, int $schoolYear)
+    {
+        $schoolYear = $schoolYear === 0 ? ProviderFactory::getRepository(SchoolYear::class)->findOneByStatus('Current') : ProviderFactory::getRepository(SchoolYear::class)->find($schoolYear);
+
+        if ($schoolYear instanceof SchoolYear) {
+            $session->set('gibbonSchoolYearID', $schoolYear->getId());
+            $session->set('gibbonSchoolYearName', $schoolYear->getName());
+            $session->set('gibbonSchoolYearSequenceNumber', $schoolYear->getSequenceNumber());
+        } else {
+            $session->forget('gibbonSchoolYearID');
+            $session->forget('gibbonSchoolYearName');
+            $session->forget('gibbonSchoolYearSequenceNumber');
+        }
+
+        return true;
+    }
+
+    /**
      * authenticationFailure
      * @param array $query
      * @return RedirectResponse
      */
-    private static function authenticationFailure(array $query)
+    public static function authenticationFailure(array $query)
     {
         GibbonManager::getSession()->clear();
         GibbonManager::getSession()->invalidate();

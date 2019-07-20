@@ -34,7 +34,10 @@ class I18nProvider implements EntityProviderInterface
     function setLanguageSession(Session $session, array $criteria = ['systemDefault' => 'Y'], $defaultLanguage = true)
     {
         $result = $this->getRepository()->findOneBy($criteria);
-        
+        if (!$result instanceof I18n)
+            $result = $this->getRepository()->findOneBy(['systemDefault' => 'Y']);
+
+
         $data = [];
         $data['gibboni18nID'] = $result->getId();
         $data['code'] = $result->getCode();

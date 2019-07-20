@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Security\GoogleAuthenticator;
+use PhpParser\Node\Stmt\Else_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,9 +18,24 @@ class OAuthController extends AbstractController
      */
 	public function connectGoogle(GoogleAuthenticator $manager, Request $request)
 	{
+	    $state = null;
 	    if ($request->query->has('state'))
-	        $request->getSession()->set('google_state', $request->query->get('state'));
-	    return $this->redirect($manager->connectUrl());
+	        $state = $request->query->get('state');
+
+        if ($request->query->has('q')) {
+            if (null === $state)
+                $state = '0:0:' . $request->query->get('q');
+            else
+                $state .= ':' . $request->query->get('q');
+        }
+
+        if (null !== $state && !$request->query->has('q'))
+        	    $state .= ':false';
+
+        if (null !== $state)
+            $request->getSession()->set('google_state', $state);
+
+        return $this->redirect($manager->connectUrl());
 	}
 
 	/**

@@ -4,6 +4,7 @@ namespace App\Security;
 use App\Entity\Person;
 use App\Manager\GibbonManager;
 use App\Manager\MessageManager;
+use App\Provider\LogProvider;
 use App\Provider\SettingProvider;
 use App\Provider\PersonProvider;
 use App\Util\EntityHelper;
@@ -74,9 +75,9 @@ class GoogleAuthenticator implements AuthenticatorInterface
      * @param SecurityUserProvider $provider
      * @throws \Google_Exception
      */
-	public function __construct(EntityManagerInterface $em, RouterInterface $router, MessageManager $messageManager, SettingProvider $settingManager, LoggerInterface $logger, SecurityUserProvider $provider)
+	public function __construct(RouterInterface $router, MessageManager $messageManager, SettingProvider $settingManager, LoggerInterface $logger, SecurityUserProvider $provider)
 	{
-		$this->em = $em;
+		$this->em = $settingManager->getEntityManager();
 		$this->router = $router;
 		$this->messageManager = $messageManager;
 		$this->settingManager = $settingManager;
@@ -160,16 +161,22 @@ class GoogleAuthenticator implements AuthenticatorInterface
     }
 
     /**
-	 * @param Request                 $request
-	 * @param AuthenticationException $exception
-	 *
-	 * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
-	 */
+     * onAuthenticationFailure
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return RedirectResponse|Response|null
+     */
 	public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
 	{
-		$this->logger->notice("Google Authentication: ".  $exception->getMessage());
+		$this->logger->notice("Google Authentication Failure: ".  $exception->getMessage());
+        LogProvider::setLog($request->getSession()->get('gibbonSchoolYearIDCurrent'), null, null, 'Google Login - Failed', ['username' => $this->google_user, 'message' => $exception->getMessage()], $request->server->get('REMOTE_ADDR'));
 
-		return new RedirectResponse($this->router->generate($this->settingManager->getParameter('security.routes.security_user_login')));
+        LoginFormAuthenticator::authenticationFailure($request->query->all());
+
+        if ($targetPath = $this->getTargetPath($request, 'main'))
+            return new RedirectResponse($targetPath);
+
+		return new RedirectResponse('/');
 	}
 
     /**
@@ -218,15 +225,23 @@ class GoogleAuthenticator implements AuthenticatorInterface
         }
 
         $user = LoginFormAuthenticator::createUserSession($user, $request->getSession());
+        LoginFormAuthenticator::setSchoolYear($request->getSession(), 0);
 
-        if ($request->getSession()->has('google_state') || true) {
+        $q = null;
+        if ($request->getSession()->has('google_state')) {
             $state = $request->getSession()->get('google_state');
-            list($schoolYearID, $i18nID) = explode(':', $state);
+            list($schoolYearID, $i18nID, $q) = explode(':', $state);
+            if ($q === 'false')
+                $q = null;
             $request->getSession()->forget('google_state');
             if (($response = LoginFormAuthenticator::checkSchoolYear($user, $request->getSession(), intval($schoolYearID))) instanceof Response)
                 return $response;
+
             LoginFormAuthenticator::setLanguage($request, $i18nID);
+            if (null !== $q)
+                return new RedirectResponse('/?q=' . $q);
         }
+
 
         if ($targetPath = $this->getTargetPath($request, $providerKey))
             return new RedirectResponse($targetPath);
@@ -476,27 +491,5 @@ class GoogleAuthenticator implements AuthenticatorInterface
             return false;
         }
         return true;
-    }
-
-    /**
-     * authenticationFailure
-     * @param array $query
-     * @return RedirectResponse
-     */
-    private function authenticationFailure(array $query)
-    {
-        GibbonManager::getSession()->clear();
-        GibbonManager::getSession()->invalidate();
-        $route = '';
-        foreach($query as $q=>$w)
-        {
-            $route .= $q . '=' . $w;
-        }
-        if ('' === $route)
-            $route = '/';
-        else
-            $route = '/?' . $route;
-
-        return new RedirectResponse($route);
     }
 }

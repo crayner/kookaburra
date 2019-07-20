@@ -46,7 +46,8 @@ trait TargetPathTrait
     {
         $session = $request->getSession();
         $path =  $session->get('_security.'.$providerKey.'.target_path');
-dump($path);
+        $address = $session->has('address') ? $session->get('address') : null;
+
         if ($request->getContentType() === 'json')
             return $path;
 
@@ -56,9 +57,9 @@ dump($path);
         if (strpos($path, '_') === 0)
             $path = '';
 
-        if ($request->query->has('q') && $request->query->get('q') !== '/publicRegistration.php')
-                $path .= '/?q=' . $request->query->get('q');
-dump($path);
+        if (null !== $address && $address !== '/publicRegistration.php')
+                $path .= '/?q=' . $address;
+dump($request);
         return $path;
     }
 

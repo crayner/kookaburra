@@ -101,7 +101,7 @@ class Sidebar implements OutputableInterface
                 echo '</h2>';
                 echo '<div>';
                     $themeName = isset($_SESSION[$guid]['gibbonThemeName'])? $_SESSION[$guid]['gibbonThemeName'] : 'Default';
-                    echo '<a target=\'_top\' class="login" href="/google/connect/" onclick="addGoogleLoginParams(this)">';
+                    echo '<a target=\'_top\' class="login" href="/google/connect/'.($request->query->has('q') ? '?q='.$request->query->get('q') : '').'" onclick="addGoogleLoginParams(this)">';
                         echo '<button class="w-full bg-white rounded shadow border border-gray-400 flex items-center px-2 py-1 mb-2 text-gray-600 hover:shadow-md hover:border-blue-600 hover:text-blue-600">';
                             echo '<img class="w-10 h-10" src="themes/'.$themeName.'/img/google-login.svg">';
                             echo '<span class="flex-grow text-lg">'.__('Sign in with Google').'</span>';
@@ -145,13 +145,17 @@ class Sidebar implements OutputableInterface
                         });
                     });
 
-                    function addGoogleLoginParams(element)
+                    function addGoogleLoginParams(element,)
                     {
                         $(element).attr('href', function() {
                             if ($('#gibbonSchoolYearIDGoogle').is(':visible')) {
                                 var googleSchoolYear = $('#gibbonSchoolYearIDGoogle').val();
                                 var googleLanguage = $('#gibboni18nIDGoogle').val();
-                                this.href = this.href + '?state='+googleSchoolYear+':'+googleLanguage+'&'
+                                if (this.href.includes('?q=')) {
+                                    this.href = this.href + '&state=' + googleSchoolYear + ':' + googleLanguage + '&'
+                                } else {
+                                    this.href = this.href + '?state=' + googleSchoolYear + ':' + googleLanguage + '&'
+                                }
                                 return this.href;
                             }
                         });
