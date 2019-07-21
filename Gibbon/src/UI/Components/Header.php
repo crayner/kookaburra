@@ -205,7 +205,7 @@ class Header
             $return .= '<script type="text/javascript">
                 $(document).ready(function(){
                     setInterval(function() {
-                        $("#notifications").load("index_notification_ajax.php");
+                        $("#notifications").load("/index_notification_ajax.php");
                     }, '.$interval.');
                 });
             </script>';
