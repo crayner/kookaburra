@@ -11,10 +11,10 @@
  */
 namespace App\Entity;
 
+use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class I18n
@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Serializer;
  * @ORM\Entity(repositoryClass="App\Repository\I18nRepository")
  * @ORM\Table(name="i18n")
  */
-class I18n
+class I18n implements EntityInterface
 {
     use BooleanList;
 
