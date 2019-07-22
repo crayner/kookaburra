@@ -88,12 +88,12 @@ if (isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_view.php
 		$excel->getProperties()->setDescription('All Markbook Data');
 
         // Use advanced binder - better handling of numbers, percents, etc.
-        PHPExcel_Cell::setValueBinder( new PHPExcel_Cell_AdvancedValueBinder() );
+        \PhpOffice\PhpSpreadsheet\Cell\Cell::setValueBinder( new \PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder() );
 
         //Create border and fill style
-        $style_border = array('borders' => array('right' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '766f6e')), 'left' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '766f6e')), 'top' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '766f6e')), 'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '766f6e'))));
-        $style_head_fill = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'B89FE2')));
-        $style_head_fill2 = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'C5D9F1')));
+        $style_border = array('borders' => array('right' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => array('argb' => '766f6e')), 'left' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => array('argb' => '766f6e')), 'top' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => array('argb' => '766f6e')), 'bottom' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => array('argb' => '766f6e'))));
+        $style_head_fill = array('fill' => array('type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => array('rgb' => 'B89FE2')));
+        $style_head_fill2 = array('fill' => array('type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => array('rgb' => 'C5D9F1')));
 
         //Auto set first column width
         $excel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -156,13 +156,13 @@ if (isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_view.php
         }
 
         $DAS = $markbook->getDefaultAssessmentScale();
-        $markFormat = PHPExcel_Style_NumberFormat::FORMAT_GENERAL;
+        $markFormat = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_GENERAL;
 
         if (isset($DAS['percent']) && $DAS['percent'] == '%') {
-            $markFormat = PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE;
+            $markFormat = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_PERCENTAGE;
         }
         else if (isset($DAS['numeric']) && $DAS['numeric'] == 'Y') {
-            $markFormat = PHPExcel_Style_NumberFormat::FORMAT_NUMBER;
+            $markFormat = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER;
         }
 
         // Add columns for Overall Grades, if enabled

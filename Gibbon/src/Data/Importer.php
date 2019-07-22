@@ -22,6 +22,8 @@ namespace Gibbon\Data;
 use Gibbon\Data\ImportType;
 use Gibbon\Data\ParseCSV;
 use Gibbon\Contracts\Database\Connection;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 /**
  * Extended Import class
@@ -248,12 +250,12 @@ class Importer
             // Try to use the best reader if available, otherwise catch any read errors
             try {
                 if ($fileType == 'xml') {
-                    $objReader = \PHPExcel_IOFactory::createReader('Excel2003XML');
+                    $objReader = IOFactory::createReader('Xls');
                     $objPHPExcel = $objReader->load($filePath);
                 } else {
-                    $objPHPExcel = \PHPExcel_IOFactory::load($filePath);
+                    $objPHPExcel = IOFactory::load($filePath);
                 }
-            } catch (\PHPExcel_Reader_Exception $e) {
+            } catch (Exception $e) {
                 $this->errorID = Importer::ERROR_IMPORT_FILE;
                 return false;
             }
@@ -272,7 +274,7 @@ class Importer
                 }
             }
 
-            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');
+            $objWriter = IOFactory::createWriter($objPHPExcel, 'Csv');
 
             // Export back to CSV
             ob_start();

@@ -55,13 +55,13 @@ if (isActionAccessible($guid, $connection2, "/modules/System Admin/export_run.ph
         exit;
     }
 
-    // Create new PHPExcel object
-    $excel = new \PHPExcel();
+    // Create new Excel object
+    $excel = new \Gibbon\Excel();
 
     //Create border styles
     $style_head_fill= array(
-        'fill' => array('type' => \PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => 'eeeeee')),
-        'borders' => array('top' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '444444'), ), 'bottom' => array('style' => \PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '444444'), )),
+        'fill' => array('type' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => array('rgb' => 'eeeeee')),
+        'borders' => array('top' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => array('argb' => '444444'), ), 'bottom' => array('style' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => array('argb' => '444444'), )),
     );
 
     // Set document properties
@@ -234,25 +234,35 @@ if (isActionAccessible($guid, $connection2, "/modules/System Admin/export_run.ph
 
     $exportFileType = getSettingByScope($connection2, 'System Admin', 'exportDefaultFileType');
     if (empty($exportFileType)) {
-        $exportFileType = 'Excel2007';
+        $exportFileType = 'Xlsx';
     }
 
     switch ($exportFileType) {
-        case 'Excel2007':       $filename .= '.xlsx';
-                                $mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'; break;
-        case 'Excel5':          $filename .= '.xls';
-                                $mimetype = 'application/vnd.ms-excel'; break;
-        case 'OpenDocument':    $filename .= '.ods';
-                                $mimetype = 'application/vnd.oasis.opendocument.spreadsheet'; break;
-        case 'CSV':             $filename .= '.csv';
-                                $mimetype = 'text/csv'; break;
+        case 'Xlsx':
+            $filename .= '.xlsx';
+            $mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+            break;
+        case 'Xls':
+            $filename .= '.xls';
+            $mimetype = 'application/vnd.ms-excel';
+            break;
+        case 'Ods':
+            $filename .= '.ods';
+            $mimetype = 'application/vnd.oasis.opendocument.spreadsheet';
+            break;
+        case 'Csv':
+            $filename .= '.csv';
+            $mimetype = 'text/csv';
+            break;
+        default:
+            throw new \Gibbon\Exception(sprintf('The export file type of "%s" is not valid. Choose from [Xlsx,Xls,Ods,Csv]',$exportFileType));
     }
 
     // FINALIZE THE DOCUMENT SO IT IS READY FOR DOWNLOAD
     // Set active sheet index to the first sheet, so Excel opens this as the first sheet
     $excel->setActiveSheetIndex(0);
 
-    // Redirect output to a client’s web browser (Excel2007)
+    // Redirect output to a client’s web browser (Xlsx)
     header('Content-Type: '.$mimetype);
     header('Content-Disposition: attachment;filename="'.$filename.'"');
     header('Cache-Control: max-age=0');
@@ -265,7 +275,7 @@ if (isActionAccessible($guid, $connection2, "/modules/System Admin/export_run.ph
     header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
     header('Pragma: public'); // HTTP/1.0
 
-    $objWriter = \PHPExcel_IOFactory::createWriter($excel, $exportFileType);
+    $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($excel, $exportFileType);
     $objWriter->save('php://output');
     exit;
 }

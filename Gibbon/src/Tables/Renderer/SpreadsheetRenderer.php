@@ -176,29 +176,29 @@ class SpreadsheetRenderer implements RendererInterface
 
         $filename = $table->getMetaData('filename');
         $exportFileType = $table->getMetaData('filetype');
-        if (empty($exportFileType)) $exportFileType = 'Excel2007';
+        if (empty($exportFileType)) $exportFileType = 'Xlsx';
 
         // FINALIZE THE DOCUMENT SO IT IS READY FOR DOWNLOAD
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excel->setActiveSheetIndex(0);
 
         switch($exportFileType) {
-            case 'Excel2007':
+            case 'Xlsx':
                 $filename .= '.xlsx';
                 $mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                 $objWriter = IOFactory::createWriter($excel, 'Xlsx');
                 break;
-            case 'Excel5':
+            case 'Xls':
                 $filename .= '.xls';
                 $mimetype = 'application/vnd.ms-excel';
                 $objWriter = IOFactory::createWriter($excel, 'Xls');
                 break;
-            case 'OpenDocument':
+            case 'Ods':
                 $filename .= '.ods';
                 $mimetype = 'application/vnd.oasis.opendocument.spreadsheet';
                 $objWriter = IOFactory::createWriter($excel, 'Ods');
                 break;
-            case 'CSV':
+            case 'Csv':
                 $filename .= '.csv';
                 $mimetype = 'text/csv';
                 $objWriter = IOFactory::createWriter($excel, 'Csv');
