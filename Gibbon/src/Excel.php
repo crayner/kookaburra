@@ -1,16 +1,12 @@
 <?php
-//THESE EXCEL FUNCTIONS ARE DEPCREATED IN V11 FOR REMOVAL BY V13. They have been replaced by the PHPExcel library in /lib
-/*	Author: Raju Mazumder
- 	email:rajuniit@gmail.com
-	Class:A simple class to export mysql query and whole html and php page to excel,doc etc
- 	Downloaded from: http://webscripts.softpedia.com/script/PHP-Clases/Export-To-Excel-50394.html
-	License: GNU GPL
-*/
-/**
- */
+
 namespace Gibbon;
 
 use Gibbon\Contracts\Database\Connection;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * Export to Excel
@@ -18,7 +14,7 @@ use Gibbon\Contracts\Database\Connection;
  * @version	14th April 2016
  * @since	8th April 2016
  */
-class Excel extends \PHPExcel
+class Excel extends Spreadsheet
 {
 	private	$fileName;
 
@@ -50,7 +46,7 @@ class Excel extends \PHPExcel
 			if ($rNum === 1)
 			{
 				// Row 1 is the headers.
-				$cNum = -1;
+				$cNum = 0;
 				foreach($row as $name=>$value )
 				{
 					$cNum++ ;
@@ -59,7 +55,7 @@ class Excel extends \PHPExcel
 				$this->getActiveSheet()->getStyle('1:1')->getFont()->setBold(true);
 				$rNum++;
 			}
-			$cNum = -1 ;
+			$cNum = 0 ;
 			foreach($row as $value )
 			{
 				$cNum++ ;
@@ -107,11 +103,11 @@ class Excel extends \PHPExcel
 		// Instantiate a Writer to create an OfficeOpenXML Excel .xlsx file
 		// Write the Excel file to filename some_excel_file.xlsx in the current directory
 		if ($openXML)
-			$objWriter = new \PHPExcel_Writer_Excel2007($this);
+			$objWriter = new Xlsx($this);
 		else
 		{
 			$this->fileName = substr($this->fileName, 0, -1);
-			$objWriter = new \PHPExcel_Writer_Excel5($this);
+			$objWriter = new Xls($this);
 		}
 		// Write the Excel file to filename some_excel_file.xlsx in the current directory
 		$this->setHeader();
@@ -146,7 +142,7 @@ class Excel extends \PHPExcel
 	public function cellColour($cells, $colour)
 	{
     	$this->getActiveSheet()->getStyle($cells)->getFill()->applyFromArray( array(
-			'type' => \PHPExcel_Style_Fill::FILL_SOLID,
+			'type' => Fill::FILL_SOLID,
 			'startcolor' => array(
 				'rgb' => $colour
 			)
