@@ -21,8 +21,8 @@ namespace Gibbon\Services;
 
 use Gibbon\Domain\System\LogGateway;
 use Gibbon\Contracts\Services\GibbonSession;
-use League\Container\ContainerAwareInterface;
-use League\Container\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Background Processor

@@ -124,3 +124,6 @@ services:
         arguments:
             - '@Google_Client'
         public: true
+
+    Gibbon\Tables\Prefab\ClassGroupTable:
+        public: true

@@ -20,7 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon;
 
 use Gibbon\Contracts\Database\Connection;
-use Gibbon\Session;
 
 /**
  * File Upload Class
@@ -127,8 +126,9 @@ class FileUploader
             $destinationFolder = $this->getUploadsFolderByDate();
         }
 
+
         // Create the destination folder if it doesn't exit
-        if (is_dir($absolutePath.'/'.$destinationFolder) == false) {
+        if (! is_dir($absolutePath.'/'.$destinationFolder)) {
             $folderCreated = mkdir($absolutePath.'/'.$destinationFolder, 0755, true);
 
             if (!$folderCreated) {

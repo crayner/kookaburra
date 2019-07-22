@@ -4,7 +4,7 @@ parameters:
     databaseServer: 'localhost'
     databaseUsername: 'craigray'
     databasePassword: 'tiGGer44'
-    databaseName: 'craigray_bilby'
+    databaseName: 'craigray_kookaburra'
     databasePort: 3306
     caching: 1
     absoluteURL: 'http://bilby.craigrayner.com'
