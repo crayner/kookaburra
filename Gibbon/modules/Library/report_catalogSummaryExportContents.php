@@ -86,14 +86,14 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/report_catalogSumm
 	$excel->getProperties()->setDescription('Catalog Summary');
 
 
-	$excel->getActiveSheet()->setCellValueByColumnAndRow(0, 1, __('School ID'));
-	$excel->getActiveSheet()->setCellValueByColumnAndRow(1, 1, __('Name'). ' '. __('Producer'));
-	$excel->getActiveSheet()->setCellValueByColumnAndRow(2, 1, __('Type'));
-	$excel->getActiveSheet()->setCellValueByColumnAndRow(3, 1, __('Location'));
-	$excel->getActiveSheet()->setCellValueByColumnAndRow(4, 1, __('Ownership').' '.__('User/Owner'));
-	$excel->getActiveSheet()->setCellValueByColumnAndRow(5, 1, __('Status').' '.__('Borrowable'));
-	$excel->getActiveSheet()->setCellValueByColumnAndRow(6, 1, __('Purchase Date').' '.__('Vendor'));
-	$excel->getActiveSheet()->setCellValueByColumnAndRow(7, 1, __('Details'));
+	$excel->getActiveSheet()->setCellValueByColumnAndRow(1, 1, __('School ID'));
+	$excel->getActiveSheet()->setCellValueByColumnAndRow(2, 1, __('Name'). ' '. __('Producer'));
+	$excel->getActiveSheet()->setCellValueByColumnAndRow(3, 1, __('Type'));
+	$excel->getActiveSheet()->setCellValueByColumnAndRow(4, 1, __('Location'));
+	$excel->getActiveSheet()->setCellValueByColumnAndRow(5, 1, __('Ownership').' '.__('User/Owner'));
+	$excel->getActiveSheet()->setCellValueByColumnAndRow(6, 1, __('Status').' '.__('Borrowable'));
+	$excel->getActiveSheet()->setCellValueByColumnAndRow(7, 1, __('Purchase Date').' '.__('Vendor'));
+	$excel->getActiveSheet()->setCellValueByColumnAndRow(8, 1, __('Details'));
 	$excel->getActiveSheet()->getStyle("1:1")->getFont()->setBold(true);
 
     $count = 0;
@@ -103,13 +103,13 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/report_catalogSumm
         ++$count;
 		$r++;
 		//Column A
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(0, $r, $row['id']);
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(1, $r, $row['id']);
 		//Column B
         $x = $row['name'];
         if ($row['producer'] != '') {
             $x .= "; ".$row['producer'];
         }
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(1, $r, $x);
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(2, $r, $x);
 		//Column C
         $x = '';
 		$dataType = array('gibbonLibraryTypeID' => $row['gibbonLibraryTypeID']);
@@ -123,7 +123,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/report_catalogSumm
             $rowType = $resultType->fetch();
             $x = __($rowType['name']);
         }
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(2, $r, $x);
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(3, $r, $x);
 		//Column D
 		$x = '';
 		if ($row['gibbonSpaceID'] != '') {
@@ -140,7 +140,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/report_catalogSumm
         if ($row['locationDetail'] != '') {
             $x .=  "; ".$row['locationDetail'];
         }
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(3, $r, $x);
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(4, $r, $x);
 		//Column E
 		$x = '';
 		if ($row['ownershipType'] == 'School') {
@@ -159,9 +159,9 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/report_catalogSumm
                 $x .= "; ".formatName($rowPerson['title'], $rowPerson['preferredName'], $rowPerson['surname'], 'Staff', false, true);
             }
         }
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(4, $r, $x);
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(5, $r, $x);
 		//Column F
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(5, $r, $row['status']."; ".$row['borrowable']);
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(6, $r, $row['status']."; ".$row['borrowable']);
  		//Column G
 		$x = '';
         if ($row['purchaseDate'] == '') {
@@ -172,7 +172,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/report_catalogSumm
         if ($row['vendor'] != '') {
             $x .= "; ".$row['vendor'];
         }
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(6, $r, $x);
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(7, $r, $x);
 		//Column H
 		$x = '';
         $typeFieldsInner = unserialize($typeFields[$row['gibbonLibraryTypeID']]['fields']);
@@ -187,10 +187,10 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/report_catalogSumm
                 }
             }
         }
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(7, $r, $x);
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(8, $r, $x);
     }
     if ($count == 0) {
-		$excel->getActiveSheet()->setCellValueByColumnAndRow(0, $r, __('There are no records to display.'));
+		$excel->getActiveSheet()->setCellValueByColumnAndRow(1, $r, __('There are no records to display.'));
     }
 	$excel->exportWorksheet();
 }
