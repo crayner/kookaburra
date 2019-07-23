@@ -10,3 +10,11 @@
 ###< symfony/framework-bundle ###
 
 /public/uploads/
+/config/packages/kookaburra.yaml
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
