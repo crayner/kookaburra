@@ -12,6 +12,7 @@
 
 namespace App\Manager;
 
+use App\Util\GlobalHelper;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -147,13 +148,11 @@ class InstallationManager
 
     /**
      * readKookaburraYaml
-     * @return mixed
+     * @return array
      */
-    private function readKookaburraYaml()
+    private function readKookaburraYaml(): array
     {
-        $configFile = __DIR__ . '/../../config/packages/kookaburra.yaml';
-        if (realpath($configFile))
-            return Yaml::parse(file_get_contents($configFile));
+        return GlobalHelper::readKookaburraYaml();
     }
 
     /**
@@ -162,10 +161,7 @@ class InstallationManager
      */
     private function writeKookaburraYaml(array $config)
     {
-        $configFile = __DIR__ . '/../../config/packages/kookaburra.yaml';
-        if (realpath($configFile))
-            file_put_contents($configFile, Yaml::dump($config, 8));
-
+        GlobalHelper::writeKookaburraYaml($config);
     }
 
     /**
@@ -181,64 +177,67 @@ class InstallationManager
 
     /**
      * setMySQLSettings
-     * @param Request $request
+     * @param FormInterface $form
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function setMySQLSettings(Request $request, KernelInterface $kernel)
+    public function setMySQLSettings(FormInterface $form)
     {
-        $setting = $request->request->get('my_sql');
+        $setting = $form->getData();
         $config = $this->readKookaburraYaml();
 
-        foreach($setting as $name=>$value)
-        {
-            switch ($name) {
-                case 'host':
-                    $config['parameters']['databaseServer'] = $value;
-                    break;
-                case 'dbname':
-                    $config['parameters']['databaseName'] = $value;
-                    break;
-                case 'port':
-                    $config['parameters']['databasePort'] = $value;
-                    break;
-                case 'user':
-                    $config['parameters']['databaseUsername'] = $value;
-                    break;
-                case 'password':
-                    $config['parameters']['databasePassword'] = $value;
-                    break;
-                case 'demo':
-                    $config['parameters']['installation']['demo'] = $value === 'Y' ? true : false;
-                    break;
-                case 'submit':
-                case '_token':
-                    break;
-                default:
-                    dd($config,$name,$value);
-            }
-        }
+        $config['parameters']['databaseServer']         = $setting->getHost();
+        $config['parameters']['databaseName']           = $setting->getDbname();
+        $config['parameters']['databasePort']           = $setting->getPort();
+        $config['parameters']['databaseUsername']       = $setting->getUser();
+        $config['parameters']['databasePassword']       = $setting->getPassword();
+        $config['parameters']['installation']['demo']   = $setting->isDemo(); ;
 
         $this->writeKookaburraYaml($config);
 
+        $message['class'] = 'success';
+        $message['text'] = 'The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.';
+
+        return new Response($this->twig->render('installation/mysql_settings.html.twig',
+            [
+                'form' => $form->createView(),
+                'message' => $message,
+                'proceed' => true,
+            ]
+        ));
+    }
+
+    /**
+     * buildDatabase
+     * @param KernelInterface $kernel
+     * @return Response
+     * @throws \Exception
+     */
+    public function buildDatabase(KernelInterface $kernel): Response
+    {
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
         $input = new ArrayInput([
             'command' => 'doctrine:migrations:migrate',
             // (optional) define the value of command arguments
-           // 'fooArgument' => 'barValue',
+            // 'fooArgument' => 'barValue',
             // (optional) pass options to the command
             '--quiet' => '--quiet',
             '--no-interaction' => '--no-interaction',
         ]);
 
         // You can use NullOutput() if you don't need the output
-        $output = new NullOutput();
+        $output = new BufferedOutput();
         $application->run($input, $output);
 
         // return the output, don't use if you used NullOutput()
-        //$content = $output->fetch();
+        $content = $output->fetch();
 
-        // return new Response(""), if you used NullOutput()
+        if ('' !== $content)
+            return new Response($content);// if you used NullOutput()
 
 
         return new RedirectResponse('/installation/system/');

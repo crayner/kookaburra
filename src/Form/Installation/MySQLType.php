@@ -104,6 +104,7 @@ class MySQLType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                     ],
+                    'translation_domain' => 'kookaburra',
                 ]
             )
             ->add('demo', ChoiceType::class,

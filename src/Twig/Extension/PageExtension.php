@@ -17,6 +17,7 @@ use App\Entity\I18n;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
@@ -81,6 +82,8 @@ class PageExtension extends AbstractExtension
         try {
             return $this->i18nProvider->getRepository()->findLocaleRightToLeft();
         } catch (ConnectionException $e) {
+            return false;
+        } catch (TableNotFoundException $e) {
             return false;
         }
     }

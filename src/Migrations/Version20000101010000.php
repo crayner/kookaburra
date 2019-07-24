@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190625000344 extends SqlLoad implements ContainerAwareInterface
+final class Version20000101010000 extends SqlLoad implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 

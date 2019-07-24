@@ -15,6 +15,7 @@ namespace App\Util;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Yaml\Yaml;
 
 class GlobalHelper
 {
@@ -93,4 +94,29 @@ class GlobalHelper
             self::$request = self::$stack->getMasterRequest();
         return self::$request;
     }
+
+
+    /**
+     * readKookaburraYaml
+     * @return array
+     */
+    public static function readKookaburraYaml(): array
+    {
+        $configFile = __DIR__ . '/../../config/packages/kookaburra.yaml';
+        if (realpath($configFile))
+            return Yaml::parse(file_get_contents($configFile));
+        return [];
+    }
+
+    /**
+     * writeKookaburraYaml
+     * @param array $config
+     */
+    public static function writeKookaburraYaml(array $config): void
+    {
+        $configFile = __DIR__ . '/../../config/packages/kookaburra.yaml';
+        if (realpath($configFile))
+            file_put_contents($configFile, Yaml::dump($config, 8));
+    }
+
 }

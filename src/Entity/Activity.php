@@ -123,26 +123,26 @@ class Activity implements EntityInterface
     private $payment;
 
     /**
-     * @var array
-     */
-    private static $paymentTypeList = ['Entire Programme','Per GibbonSession','Per Week','Per Term'];
-
-    /**
      * @var string
      * @ORM\Column(length=9, name="paymentFirmness", nullable=true, options={"default": "Finalised"})
      */
     private $paymentFirmness = 'Finalised';
 
     /**
+     * @var array
+     */
+    private static $paymentFirmnessList = ['Finalised', 'Estimated'];
+
+    /**
      * @var string
-     * @ORM\Column(length=16, name="paymentType", nullable=true, options={"default": "Entire Programme"})
+     * @ORM\Column(length=24, name="paymentType", nullable=true, options={"default": "Entire Programme"})
      */
     private $paymentType = 'Entire Programme';
 
     /**
      * @var array
      */
-    private static $paymentFirmnessList = ['Finalised', 'Estimated'];
+    private static $paymentTypeList = ['Entire Programme','Per GibbonSession','Per Week','Per Term'];
 
     /**
      * @var Collection|null

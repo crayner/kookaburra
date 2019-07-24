@@ -406,7 +406,7 @@ input[type="button"].buttonAsLink {
 input[type="button"]:hover.buttonAsLink {
     border-bottom: 1px solid #c00;
 }
-button[type="submit"],input[type="submit"] {
+button[type="submit"],input[type="submit"],.btn-gibbon {
     border: 1px solid #222222;
     background-color: #444444;
     height: 28px;
@@ -1248,4 +1248,26 @@ table.smallIntBorder td.noPadding {
     height: 14px;
     width: 14px;
     opacity: 0.65;
+}
+.btn-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #28a745;
+}
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }

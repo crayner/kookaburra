@@ -16,14 +16,14 @@
         <tbody>
             <tr class="break">
                 <td class=" px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
-                    <h3>{{ 'Datatbase Settings'|trans }}</h3>
+                    <h3>{{ 'Database Settings'|trans }}</h3>
                 </td>
             </tr>
             {{ form_row(form.host) }}
             {{ form_row(form.dbname) }}
             {{ form_row(form.user) }}
             {{ form_row(form.password) }}
-            {{ form_row(form.port, {'translation_domain': 'kookaburra'}) }}
+            {{ form_row(form.port) }}
             {{ form_row(form.demo) }}
             {{ form_row(form.submit) }}
         </tbody>
@@ -33,6 +33,11 @@
 
 {% block sidebar %}
     {% include 'installation/sidebar.html.twig' %}
+    <h2>{{ 'Building the Database'|trans({}, 'kookaburra') }}</h2>
+    <p>{{ 'Once the correct settings for your database are verified, the system will immediately build the database. This is a process that can take minutes to complete.  You patience is appreciated.'|trans({}, 'kookaburra') }}</p>
+    {% if proceed %}
+        <p class="right"><button class="btn btn-success" type="button" onclick="window.open('/installation/build/','_self')">{{ 'Proceed'|trans({}, 'kookaburra') }}</button></p>
+    {% endif %}
 {% endblock sidebar %}
 
 

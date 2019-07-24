@@ -53,11 +53,15 @@ class InstallController extends AbstractController
 
     /**
      * installationMySQLSettings
-     *
      * @param Request $request
+     * @param InstallationManager $manager
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      * @Route("/installation/mysql/", name="installation_mysql")
      */
-    public function installationMySQLSettings(Request $request, InstallationManager $manager, KernelInterface $kernel)
+    public function installationMySQLSettings(Request $request, InstallationManager $manager)
     {
         $mysql = new MySQLSettings();
         $message = null;
@@ -68,14 +72,13 @@ class InstallController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                return $manager->setMySQLSettings($request, $kernel);
+                return $manager->setMySQLSettings($form);
             } else {
                 if (0 < count($form->getErrors()))
                 {
                     $message['class'] = 'error';
                     $message['text'] = $form->getErrors()[0]->getMessage();
                 }
-
             }
         }
 
@@ -83,7 +86,31 @@ class InstallController extends AbstractController
             [
                 'form' => $form->createView(),
                 'message' => $message,
+                'proceed' => false,
             ]
         );
+    }
+
+    /**
+     * installationBuild
+     * @param InstallationManager $manager
+     * @param KernelInterface $kernel
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Route("/installation/build/", name="installation_build")
+     */
+    public function installationBuild(InstallationManager $manager, KernelInterface $kernel)
+    {
+        return $manager->buildDatabase($kernel);
+    }
+
+    /**
+     * installationSystem
+     * @param Request $request
+     * @param InstallationManager $manager
+     * @Route("/installation/system/", name="installation_system")
+     */
+    public function installationSystem(Request $request, InstallationManager $manager)
+    {
+        dd($this);
     }
 }

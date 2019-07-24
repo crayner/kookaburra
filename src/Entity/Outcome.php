@@ -65,7 +65,7 @@ class Outcome
 
     /**
      * @var string|null
-     * @ORM\Column(length=1)
+     * @ORM\Column(length=16)
      */
     private $scope;
 
