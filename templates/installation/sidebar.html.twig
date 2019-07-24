@@ -1,0 +1,12 @@
+{% trans_default_domain "kookaburra" %}
+
+<h2>{{ 'Welcome To Kookaburra'|trans({}, 'kookaburra') }}</h2>
+
+<p style='padding-top: 7px'>
+    {{ 'Kookaburra Software is a fork of Gibbon.'|trans }}<br/><br/>
+    {{ 'Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.'|trans }}
+    <br/><br/>
+    {{ 'Free, open source and flexible, Gibbon can morph to meet the needs of a huge range of schools.'|trans({}, 'gibbon') }}
+    <br/><br/>
+    {{ 'For support, please visit %1$scraigrayner.com%2$s.'|trans({'%1$s': "<a target='_blank' href='https://www.craigrayner.com/support'>", '%2$s': '</a>'}, 'kookaburra')|raw }}
+</p>

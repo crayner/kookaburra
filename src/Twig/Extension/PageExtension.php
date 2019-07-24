@@ -17,6 +17,7 @@ use App\Entity\I18n;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -34,15 +35,21 @@ class PageExtension extends AbstractExtension
     private $session;
 
     /**
+     * @var RequestStack
+     */
+    private $stack;
+
+    /**
      * PageExtension constructor.
      *
      * @param ProviderFactory $factory
      * @param SessionInterface $session
      */
-    public function __construct(ProviderFactory $factory, SessionInterface $session)
+    public function __construct(ProviderFactory $factory, SessionInterface $session, RequestStack $stack)
     {
         $this->i18nProvider = $factory::create(I18n::class);
         $this->session = $session;
+        $this->stack = $stack;
     }
 
     /**
@@ -111,7 +118,10 @@ class PageExtension extends AbstractExtension
      */
     public function sidebar()
     {
-        return '';
+        $request = $this->stack->getCurrentRequest();
+        if (strpos($request->getPathInfo(), '/install') === 0)
+            return true;
+        return false;
     }
 
     /**
