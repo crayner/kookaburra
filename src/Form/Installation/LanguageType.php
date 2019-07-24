@@ -56,12 +56,18 @@ class LanguageType extends AbstractType
                 'attr' => [
                     'class' => 'w-64',
                 ],
-                'colspan_widget' => '2'
+                'widget_colspan' => '2',
+                'widget_class' => 'x-2 border-b-0 sm:border-b border-t-0 right',
+                'label_class' => 'px-2 border-b-0 sm:border-b border-t-0',
+                'row_class' => false,
             ]
         )->add('submit', SubmitType::class,
             [
                 'label' => 'Submit',
-                'colspan_widget' => '2',
+                'widget_colspan' => '2',
+                'widget_class' => 'x-2 border-b-0 sm:border-b border-t-0 right',
+                'label_class' => 'px-2 border-b-0 sm:border-b border-t-0',
+                'row_class' => false,
             ]
         )->setAction($this->router->generate('installation_check'));
     }

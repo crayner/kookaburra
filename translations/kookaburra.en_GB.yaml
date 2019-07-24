@@ -9,3 +9,6 @@ Kookaburra: Kookaburra
 'For support, please visit %1$scraigrayner.com%2$s.': 'For support, please visit %1$scraigrayner.com%2$s.'
 'Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.': 'Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.'
 'Kookaburra Software is a fork of Gibbon.': 'Kookaburra Software is a fork of Gibbon.'
+'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.': 'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.'
+'The MySQL Connection Settings did not connect. [%{message}]': 'The MySQL Connection Settings did not connect. [%{message}]'
+'The database does not exist and cannot be created. [%{message}]': 'The database does not exist and cannot be created. [%{message}]'

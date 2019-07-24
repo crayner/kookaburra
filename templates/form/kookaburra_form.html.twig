@@ -7,18 +7,19 @@
     {%- if help is not empty -%}
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
-    <tr class="px-2 border-b-0 sm:border-b border-t-0">
-        <td class=""{% if colspan_label > '1' %} colspan="{{ colspan_label }}"{% endif %}>
+    <tr{% if row_class is not same as(false) %} class="{{ row_class|default('flex flex-col sm:flex-row justify-between content-center p-0') }}"{% endif %}>
+        <td class="{{ label_class|default('flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0') }}"{% if label_colspan > '1' %} colspan="{{ label_colspan }}"{% endif %}>
             {{- form_label(form) -}}
             {{- form_help(form) -}}
         </td>
-        <td class="x-2 border-b-0 sm:border-b border-t-0"{% if colspan_widget > '1' %} colspan="{{ colspan_widget }}"{% endif %}>
+        <td class="{{ widget_class|default('flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0') }}"{% if widget_colspan > '1' %} colspan="{{ widget_colspan }}"{% endif %}>
                 {{- form_errors(form) -}}
+            <div class="flex-1 relative">
                 {{- form_widget(form, widget_attr) -}}
+            </div>
         </td>
     </tr>
 {%- endblock form_row -%}
-
 
 {%- block choice_widget_collapsed -%}
     {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
@@ -42,9 +43,9 @@
 
 
 {%- block button_row -%}
-    <tr>
-        <td class="px-2 border-b-0 sm:border-b border-t-0"{% if colspan_label > '1' %} colspan="{{ colspan_label }}"{% endif %}>{% if name is same as ('submit') %}<span class="emphasis small">* {{ 'denotes a required field'|trans }}</span>{% endif %}</td>
-        <td class="px-2 border-b-0 sm:border-b border-t-0 right"{% if colspan_widget > '1' %} colspan="{{ colspan_widget }}"{% endif %}>
+    <tr{% if row_class is not same as(false) %} class="{{ row_class|default('') }}"{% endif %}>
+        <td class="{{ label_class|default('flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0') }}"{% if label_colspan > '1' %} colspan="{{ label_colspan }}"{% endif %}>{% if name is same as ('submit') %}<span class="emphasis small">* {{ 'denotes a required field'|trans }}</span>{% endif %}</td>
+        <td class="{{ widget_class|default('w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 right') }}"{% if widget_colspan > '1' %} colspan="{{ widget_colspan }}"{% endif %}>
             {{- form_widget(form) -}}
         </td>
     </tr>
@@ -80,4 +81,25 @@
     {%- endif -%}
 {%- endblock form_label -%}
 
+{# Help #}
 
+{% block form_help -%}
+    {%- if help is not empty -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-text')|trim}) -%}
+        <span id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
+            {%- if translation_domain is same as(false) -%}
+                {%- if help_html is same as(false) -%}
+                    {{- help -}}
+                {%- else -%}
+                    {{- help|raw -}}
+                {%- endif -%}
+            {%- else -%}
+                {%- if help_html is same as(false) -%}
+                    {{- help|trans(help_translation_parameters, translation_domain) -}}
+                {%- else -%}
+                    {{- help|trans(help_translation_parameters, translation_domain)|raw -}}
+                {%- endif -%}
+            {%- endif -%}
+        </span>
+    {%- endif -%}
+{%- endblock form_help %}

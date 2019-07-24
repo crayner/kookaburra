@@ -35,8 +35,11 @@ class TableTypeExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['colspan_label'] = $options['colspan_label'];
-        $view->vars['colspan_widget'] = $options['colspan_widget'];
+        $view->vars['label_colspan'] = $options['label_colspan'];
+        $view->vars['widget_colspan'] = $options['widget_colspan'];
+        $view->vars['label_class'] = $options['label_class'];
+        $view->vars['widget_class'] = $options['widget_class'];
+        $view->vars['row_class'] = $options['row_class'];
     }
 
     /**
@@ -48,8 +51,14 @@ class TableTypeExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults(
             [
-                'colspan_label' => '1',
-                'colspan_widget' => '1',
+                'label_colspan' => '1',
+                'widget_colspan' => '1',
+                'label_class' => null,
+                'widget_class' => null,
+                'row_class' => null,
+                'help_attr' => [
+                    'class' =>'text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0',
+                ],
             ]
         );
     }

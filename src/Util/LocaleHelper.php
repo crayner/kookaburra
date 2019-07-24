@@ -17,6 +17,7 @@ use App\Entity\Person;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 
 class LocaleHelper
 {
@@ -86,6 +87,8 @@ class LocaleHelper
         } catch (ConnectionException $e) {
             return $locale;
         } catch (\ErrorException $e) {
+            return $locale;
+        } catch (TableNotFoundException $e) {
             return $locale;
         }
     }

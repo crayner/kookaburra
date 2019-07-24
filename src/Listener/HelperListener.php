@@ -121,7 +121,7 @@ class HelperListener implements EventSubscriberInterface
         $installed = intval($this->container->getParameter('installed'));
         switch($installed) {
             case 0:
-                $response = new RedirectResponse('/install/0/');
+                $response = new RedirectResponse('/installation/check/');
                 $event->setResponse($response);
                 break;
         }

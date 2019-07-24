@@ -12,9 +12,16 @@
 
 namespace App\Manager;
 
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
@@ -55,9 +62,9 @@ class InstallationManager
     public function check(array $systemRequirements, FormInterface $form)
     {
         $configFile = __DIR__ . '/../../config/packages/kookaburra.yaml';
-        if (false === realpath($configFile) && false !== realpath($configFile.'.gibbon'))
+        if (false === realpath($configFile) && false !== realpath($configFile.'.dist'))
         {
-            if (false === copy($configFile.'.gibbon', $configFile)) {
+            if (false === copy($configFile.'.dist', $configFile)) {
                 return new Response($this->twig->render('legacy/error.html.twig',
                     [
                         'extendedError' => 'Unable to copy the kookaburra.yaml file from the distribution file in /config/packages directory.',
@@ -67,7 +74,7 @@ class InstallationManager
                 ));
             } else {
                 $config = $this->readKookaburraYaml();
-                $config['parameters']['absoluteURL'] = str_replace('/install/0/', '', $this->urlHelper->getAbsoluteUrl('/install/0/'));
+                $config['parameters']['absoluteURL'] = str_replace('/installation/check/', '', $this->urlHelper->getAbsoluteUrl('/installation/check/'));
                 $this->writeKookaburraYaml($config);
             }
         }
@@ -127,7 +134,7 @@ class InstallationManager
         }
 
 
-        return new Response($this->twig->render('installation/step1.html.twig',
+        return new Response($this->twig->render('installation/ckeck.html.twig',
             [
                 'systemRequirements' => $systemRequirements,
                 'systemDisplay' => $systemDisplay,
@@ -161,10 +168,79 @@ class InstallationManager
 
     }
 
+    /**
+     * setLocale
+     * @param string $locale
+     */
     public function setLocale(string $locale)
     {
         $config = $this->readKookaburraYaml();
         $config['parameters']['locale'] = $locale;
         $this->writeKookaburraYaml($config);
+    }
+
+    /**
+     * setMySQLSettings
+     * @param Request $request
+     */
+    public function setMySQLSettings(Request $request, KernelInterface $kernel)
+    {
+        $setting = $request->request->get('my_sql');
+        $config = $this->readKookaburraYaml();
+
+        foreach($setting as $name=>$value)
+        {
+            switch ($name) {
+                case 'host':
+                    $config['parameters']['databaseServer'] = $value;
+                    break;
+                case 'dbname':
+                    $config['parameters']['databaseName'] = $value;
+                    break;
+                case 'port':
+                    $config['parameters']['databasePort'] = $value;
+                    break;
+                case 'user':
+                    $config['parameters']['databaseUsername'] = $value;
+                    break;
+                case 'password':
+                    $config['parameters']['databasePassword'] = $value;
+                    break;
+                case 'demo':
+                    $config['parameters']['installation']['demo'] = $value === 'Y' ? true : false;
+                    break;
+                case 'submit':
+                case '_token':
+                    break;
+                default:
+                    dd($config,$name,$value);
+            }
+        }
+
+        $this->writeKookaburraYaml($config);
+
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'doctrine:migrations:migrate',
+            // (optional) define the value of command arguments
+           // 'fooArgument' => 'barValue',
+            // (optional) pass options to the command
+            '--quiet' => '--quiet',
+            '--no-interaction' => '--no-interaction',
+        ]);
+
+        // You can use NullOutput() if you don't need the output
+        $output = new NullOutput();
+        $application->run($input, $output);
+
+        // return the output, don't use if you used NullOutput()
+        //$content = $output->fetch();
+
+        // return new Response(""), if you used NullOutput()
+
+
+        return new RedirectResponse('/installation/system/');
     }
 }
