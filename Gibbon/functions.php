@@ -2056,13 +2056,16 @@ function returnProcessGetAlert($return, $editLink = null, $customReturns = null)
  */
 function guid()
 {
-    $file = realpath(__dir__ . '/../config/packages/gibbon.yaml');
-    $data = Yaml::parse(file_get_contents($file));
-    if (isset($data['parameters']['guid'])) {
-        $guid = $data['parameters']['guid'];
-    } else {
-        throw new \RuntimeException(sprintf('The "guid" must be set in the %s file', $file));
-    }
+    $file = realpath(__dir__ . '/../config/packages/kookaburra.yaml');
+    if ($file) {
+        $data = Yaml::parse(file_get_contents($file));
+        if (isset($data['parameters']['guid'])) {
+            $guid = $data['parameters']['guid'];
+        } else {
+            throw new \RuntimeException(sprintf('The "guid" must be set in the %s file', $file));
+        }
 
-    return $guid;
+        return $guid;
+    }
+    return 'Generate a Secret Code';
 }

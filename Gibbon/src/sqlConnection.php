@@ -76,9 +76,9 @@ class sqlConnection implements ConnectionInterface
      */
     public function __construct( $message = null )
     {
-        if (realpath(__DIR__ . '/../../config/packages/gibbon.yaml') === false) return null;
+        if (realpath(__DIR__ . '/../../config/packages/kookaburra.yaml') === false) return null;
 
-        $data = Yaml::parse(file_get_contents(__DIR__ . '/../../config/packages/gibbon.yaml'));
+        $data = Yaml::parse(file_get_contents(__DIR__ . '/../../config/packages/kookaburra.yaml'));
 
         $data = $data['parameters'];
         $data['databasePort'] = isset($data['databasePort']) ? $data['databasePort'] : null;

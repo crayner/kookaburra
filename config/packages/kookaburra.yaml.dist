@@ -1,4 +1,13 @@
 parameters:
+    guid: 'Generate a Secret Code Here'
+    installed: ~
+    databaseServer: ~
+    databaseUsername: ~
+    databasePassword: ~
+    databaseName: ~
+    databasePort: ~
+    caching: 1
+    absoluteURL: ~
     security.hierarchy.roles:
         ROLE_USER: null
         ROLE_ALLOWED_TO_SWITCH: null
@@ -25,4 +34,5 @@ parameters:
         ROLE_SYSTEM_ADMIN:
             - ROLE_REGISTRAR
             - ROLE_PARENT
-    timezone: Australia/Sydney
+    timezone: ~
+    locale: ~

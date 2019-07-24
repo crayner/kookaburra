@@ -1,0 +1,7 @@
+'from a fork of ': 'from a fork of '
+'The page at address %address% was not found.': 'The page at address, %address%, was not found.'
+Kookaburra: Kookaburra
+'The directory containing the configuration files is writable, so the installation may proceed.': 'The directory containing the configuration files is writable, so the installation may proceed.'
+'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.': 'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.'
+'One or more of the system requirements listed above is not configured correctly.': 'One or more of the system requirements listed below is not configured correctly! Please ensure that all system requirements are met before procedding to installation of Kookaburra.'
+'The language %{code} selected is not a valid language choice for Kookaburra. Valid choices are %{codes}': 'The language "%{code}" selected is not a valid language choice for Kookaburra. Valid choices are "%{codes}".'

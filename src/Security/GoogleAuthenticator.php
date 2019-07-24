@@ -482,8 +482,8 @@ class GoogleAuthenticator implements AuthenticatorInterface
     private function readGoogleOAuth()
     {
         $file = realpath(__DIR__ . '/../../config/google_oauth.json');
-        if (false === $file)
-            return $file;
+        if (!realpath(__DIR__ . '/../../config/packages/kookaburra.json') || ! $file)
+            return false;
 
         try {
             $this->clientSecrets = json_decode(file_get_contents($file), true);

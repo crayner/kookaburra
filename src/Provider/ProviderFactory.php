@@ -58,9 +58,11 @@ class ProviderFactory
      * @param RouterInterface $router
      * @throws \Exception
      */
-    public function __construct(EntityManagerInterface $entityManager, MessageManager $messageManager,
-                                AuthorizationCheckerInterface $authorizationChecker,
-                                RouterInterface $router)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        MessageManager $messageManager,
+        AuthorizationCheckerInterface $authorizationChecker,
+        RouterInterface $router)
     {
         self::$entityManager = $entityManager;
         self::$messageManager = $messageManager;

@@ -15,6 +15,7 @@ use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class I18n
@@ -37,6 +38,7 @@ class I18n implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=5)
+     * @Assert\NotBlank()
      */
     private $code;
 
@@ -93,6 +95,31 @@ class I18n implements EntityInterface
      * @ORM\Column(length=1, options={"default": "N"})
      */
     private $rtl = 'N';
+
+    /**
+     * @var array
+     */
+    private static $languages = array(
+        'nl_NL' => 'Dutch - Nederland',
+        'en_GB' => 'English - United Kingdom',
+        'en_US' => 'English - United States',
+        'es_ES' => 'Español',
+        'fr_FR' => 'Français - France',
+        'he_IL' => 'עברית - ישראל',
+        'hr_HR' => 'Hrvatski - Hrvatska',
+        'it_IT' => 'Italiano - Italia',
+        'pl_PL' => 'Język polski - Polska',
+        'pt_BR' => 'Português - Brasil',
+        'ro_RO' => 'Română',
+        'sq_AL' => 'Shqip - Shqipëri',
+        'vi_VN' => 'Tiếng Việt - Việt Nam',
+        'tr_TR' => 'Türkçe - Türkiye',
+        'ar_SA' => 'العربية - المملكة العربية السعودية',
+        'th_TH' => 'ภาษาไทย - ราชอาณาจักรไทย',
+        'ur_PK' => 'پاکستان - اُردُو',
+        'zh_CN' => '汉语 - 中国',
+        'zh_HK' => '體字 - 香港',
+    );
 
     /**
      * @return int|null
@@ -299,11 +326,19 @@ class I18n implements EntityInterface
     }
 
     /**
+     * @return boolean|null
+     */
+    public function isRtl(): ?bool
+    {
+        return $this->getRtl() === 'Y' ? true : false;
+    }
+
+    /**
      * @return string|null
      */
     public function getRtl(): ?string
     {
-        return $this->rtl;
+        return self::checkBoolean($this->rtl, 'N');
     }
 
     /**
@@ -326,5 +361,13 @@ class I18n implements EntityInterface
         $normaliser = new ObjectNormalizer();
 
         return $normaliser->normalize($this);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getLanguages(): array
+    {
+        return self::$languages;
     }
 }

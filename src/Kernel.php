@@ -41,8 +41,14 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
 
-        $timezone = $container->getParameter('timezone');
+
+        if (!realpath($confDir . '/packages/kookaburra.yaml'))
+            $this->temporaryParameters($container);
+
+
+        $timezone = $container->getParameter('timezone', 'UTC');
         ini_set('timezone', $timezone);
+        ini_set('date.timezone', $timezone);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -52,5 +58,22 @@ class Kernel extends BaseKernel
         $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
+    }
+
+    /**
+     * temporaryParameters
+     * @param ContainerBuilder $container
+     */
+    private function temporaryParameters(ContainerBuilder $container)
+    {
+        $container->setParameter('timezone', 'UTC');
+        $container->setParameter('absoluteURL', null);
+        $container->setParameter('databaseServer', null);
+        $container->setParameter('databaseUsername', null);
+        $container->setParameter('databasePassword', null);
+        $container->setParameter('databaseName', null);
+        $container->setParameter('databasePort', null);
+        $container->setParameter('security.hierarchy.roles', null);
+        $container->setParameter('installed', 0);
     }
 }

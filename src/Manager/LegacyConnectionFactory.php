@@ -44,14 +44,17 @@ class LegacyConnectionFactory
      */
     public function __construct(string $message = null)
     {
-        $data = Yaml::parse(file_get_contents(__DIR__ . '/../../config/packages/gibbon.yaml'));
+        if (realpath(__DIR__ . '/../../config/packages/kookaburra.yaml')) {
+            $data = Yaml::parse(file_get_contents(__DIR__ . '/../../config/packages/kookaburra.yaml'));
 
-        $data = $data['parameters'];
-        $data['databasePort'] = isset($data['databasePort']) ? $data['databasePort'] : null;
+            $data = $data['parameters'];
+            $data['databasePort'] = isset($data['databasePort']) ? $data['databasePort'] : null;
 
-        $this->config = $data;
+            $this->config = $data;
 
-        return $this->generateConnection($data['databaseServer'], $data['databaseName'], $data['databaseUsername'], $data['databasePassword'], $data['databasePort'], $message);
+            return $this->generateConnection($data['databaseServer'], $data['databaseName'], $data['databaseUsername'], $data['databasePassword'], $data['databasePort'], $message);
+        }
+        return null;
     }
 
 
@@ -97,11 +100,11 @@ class LegacyConnectionFactory
 
     /**
      * createConnection
-     * @return Connection
+     * @return null|Connection
      */
-    public function createConnection(): Connection
+    public function createConnection(): ?Connection
     {
-        if (null === $this->connection)
+        if (null === $this->connection && null !== $this->getPDO())
         {
             $this->connection = new Connection($this->getPDO(), $this->config);
         }
@@ -111,9 +114,9 @@ class LegacyConnectionFactory
 
     /**
      * getPDO
-     * @return \PDO
+     * @return null|\PDO
      */
-    public function getPDO(): \PDO
+    public function getPDO(): ?\PDO
     {
         return $this->pdo;
     }

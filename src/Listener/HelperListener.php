@@ -40,8 +40,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
@@ -85,13 +87,16 @@ class HelperListener implements EventSubscriberInterface
         LoggerInterface $logger,
         GibbonManager $gibbonManager
     ) {
-        $eh = new EntityHelper(new ProviderFactory($entityManager,$messageManager,$authorizationChecker,$router));
-        $lcf = new LegacyConnectionFactory();
-        $gibbonManager->setContainer($container);
-        $eh = new ErrorHelper($twig);
-        $gh = new GlobalHelper($stack);
-        $sh = new SecurityHelper($logger, $authorizationChecker);
-        $uh = new UserHelper($tokenStorage);
+        if ($container->hasParameter('installed') && $container->getParameter('installed') > 0) {
+            $eh = new EntityHelper(new ProviderFactory($entityManager, $messageManager, $authorizationChecker, $router));
+            $lcf = new LegacyConnectionFactory();
+            $gibbonManager->setContainer($container);
+            $eh = new ErrorHelper($twig);
+            $gh = new GlobalHelper($stack);
+            $sh = new SecurityHelper($logger, $authorizationChecker);
+            $uh = new UserHelper($tokenStorage);
+        }
+        $this->container = $container;
     }
 
     /**
@@ -109,5 +114,16 @@ class HelperListener implements EventSubscriberInterface
      * gibbonInitiate
      * @param RequestEvent $event
      */
-    public function gibbonInitiate(){}
+    public function gibbonInitiate(RequestEvent $event){
+
+        if (false !== strpos($event->getRequest()->getPathInfo(), '/install'))
+            return;
+        $installed = intval($this->container->getParameter('installed'));
+        switch($installed) {
+            case 0:
+                $response = new RedirectResponse('/install/0/');
+                $event->setResponse($response);
+                break;
+        }
+    }
 }

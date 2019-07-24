@@ -16,6 +16,7 @@
 namespace App\Repository;
 
 use App\Entity\I18n;
+use App\Util\LocaleHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -26,11 +27,41 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class I18nRepository extends ServiceEntityRepository
 {
     /**
+     * @var string|null
+     */
+    private $locale;
+
+    /**
      * ApplicationFormRepository constructor.
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, I18n::class);
+    }
+
+    /**
+     * findSystemDefaultCode
+     * @return string|null
+     */
+    public function findSystemDefaultCode(): ?string
+    {
+        $systemDefault = $this->findOneBySystemDefault('Y');
+        return $systemDefault ? $systemDefault->getCode() : null;
+    }
+
+    /**
+     * findLocaleRightToLeft
+     * @return bool
+     * @throws \Exception
+     */
+    public function findLocaleRightToLeft(): bool
+    {
+        if (null === $this->locale)
+            $this->locale = LocaleHelper::getLocale();
+
+        $lang = $this->findOneByCode($this->locale);
+
+        return $lang ? $lang->isRtl() : false;
     }
 }

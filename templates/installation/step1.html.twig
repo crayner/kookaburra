@@ -1,0 +1,56 @@
+{% trans_default_domain "gibbon" %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% form_theme form
+    'form/kookaburra_form.html.twig'
+%}
+
+{% block page %}
+    <h2>{{ 'Installation - Step %1$s'|trans({'%1$s': '1'}) }}</h2>
+    <div class="{{ message.class }}">{{ message.text|trans({}, 'kookaburra') }}</div>
+    {{ form_start(form) }}
+    <table class="smallIntBorder w-full relative" cellspacing="0">
+        <tbody>
+            <tr class="break">
+                <td class=" px-2 border-b-0 sm:border-b border-t-0 " colspan="3">
+                    <h3>{{ 'System Requirements'|trans }}</h3>
+                </td>
+            </tr>
+        {% for name,details in systemDisplay['System Requirements'] %}
+            <tr>
+                <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+
+                    <label for="phpVersionLabel" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'%{name}': name}, 'kookaburra') }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans }}</span></label>
+                    {% endif %}
+                </td>
+                <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                    <div class="flex-1 relative">{{ details.detail|trans }}</div>
+                </td>
+                <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
+                    {% if details.result %}
+                        <span style="color: green"><i class="fas fa-check fa-2x fw"></i></span>
+                    {% else %}
+                        <span style="color: red"><i class="fas fa-times fa-2x fw"></i></span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+            <tr class="break">
+                <td class=" px-2 border-b-0 sm:border-b border-t-0 " colspan="3">
+                    <h3>{{ 'Language Settings'|trans }}</h3>
+                </td>
+            </tr>
+            {{ form_row(form.code) }}
+            {% if ready %}
+                {{ form_row(form.submit) }}
+            {% else %}
+                {% set attr = form.submit.vars.attr|merge({'disabled': 'disabled'}) %}
+                {{ form_row(form.submit, {'attr': attr}) }}
+            {% endif %}
+            {{ form_row(form._token) }}
+
+        </tbody>
+    </table>
+    {{ form_end(form) }}
+{% endblock page %}

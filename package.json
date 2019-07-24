@@ -26,6 +26,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.9.0",
         "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
         "tailwindcss": "^1.0.5"
     }

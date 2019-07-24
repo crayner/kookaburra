@@ -16,13 +16,14 @@ use App\Entity\I18n;
 use App\Entity\Person;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
+use Doctrine\DBAL\Exception\ConnectionException;
 
 class LocaleHelper
 {
     /**
      * @var string
      */
-    private static $locale = 'en';
+    private static $locale;
 
     /**
      * @var I18nProvider
@@ -33,22 +34,41 @@ class LocaleHelper
      * LocaleHelper constructor.
      * @param string $locale
      */
-    public function __construct(ProviderFactory $providerFactory, string $locale = 'en')
+    public function __construct(ProviderFactory $providerFactory, string $locale = null)
     {
-        self::$locale = self::getDefaultLocale($locale);
+        self::$locale = $locale;
         self::$provider = $providerFactory->getProvider(I18n::class);
+        self::getLocale();
+    }
+
+    /**
+     * getCurrentLocale
+     * @return string|null
+     * @throws \Exception
+     */
+    private static function getCurrentLocale()
+    {
         $user = UserHelper::getCurrentUser();
         if ($user instanceof Person)
-            self::$locale = ! empty($user->getI18nPersonal()) && ! empty($user->getI18nPersonal()->getCode()) ? $user->getI18nPersonal()->getCode() : self::$locale ;
+            self::$locale = ! empty($user->getI18nPersonal()) && ! empty($user->getI18nPersonal()->getCode()) ? $user->getI18nPersonal()->getCode() : self::$locale;
+
+        if (null === self::$locale)
+            self::getDefaultLocale('en_GB');
+        if (null === self::$locale)
+            self::$locale = 'en_GB';
+        return self::$locale;
     }
 
     /**
      * getLocale
-     *
+     * @param bool $refresh
      * @return string
+     * @throws \Exception
      */
-    public static function getLocale(): string
+    public static function getLocale(bool $refresh = false): string
     {
+        if (null === self::$locale || $refresh)
+            self::$locale = self::getCurrentLocale();
         return self::$locale;
     }
 
@@ -59,13 +79,14 @@ class LocaleHelper
      */
     public static function getDefaultLocale(string $locale): string
     {
-        if ($locale !== 'en' || empty(self::$provider))
+        if ($locale !== 'en_GB' || empty(self::$provider))
             return $locale;
-        return self::$provider->getRepository()->createQueryBuilder('i')
-            ->where('i.systemDefault = :yes')
-            ->setParameter('yes', 'Y')
-            ->select('i.code')
-            ->getQuery()
-            ->getSingleScalarResult() ?: $locale;
+        try {
+            return self::$provider->getRepository()->findSystemDefaultCode() ?: $locale;
+        } catch (ConnectionException $e) {
+            return $locale;
+        } catch (\ErrorException $e) {
+            return $locale;
+        }
     }
 }

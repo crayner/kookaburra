@@ -72,7 +72,7 @@ class Core
         $this->installed = $installed;
         
         // Load the configuration, if installed
-        $this->loadConfigFromFile($this->basePath . '/../config/packages/gibbon.yaml');
+        $this->loadConfigFromFile($this->basePath . '/../config/packages/kookaburra.yaml');
 
         // Set the current version
         $this->loadVersionFromFile($this->basePath . '/version.php');
