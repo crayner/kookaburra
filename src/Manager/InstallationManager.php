@@ -12,7 +12,14 @@
 
 namespace App\Manager;
 
+use App\Entity\Person;
+use App\Entity\Role;
+use App\Entity\Staff;
+use App\Provider\ProviderFactory;
+use App\Security\SecurityUser;
+use App\Security\SHA256PasswordEncoder;
 use App\Util\GlobalHelper;
+use App\Util\SecurityHelper;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -241,5 +248,56 @@ class InstallationManager
 
 
         return new RedirectResponse('/installation/system/');
+    }
+
+    /**
+     * getPasswordPolicy
+     * @return array
+     */
+    public function getPasswordPolicy(): array
+    {
+        return SecurityHelper::getPasswordPolicy();
+    }
+
+    /**
+     * setAdministrator
+     * @param FormInterface $form
+     */
+    public function setAdministrator(FormInterface $form)
+    {
+        $person = ProviderFactory::getRepository(Person::class)->findOneByUsername($form->get('username')->getData()) ?: new Person();
+        $person->setTitle($form->get('title')->getData());
+        $person->setSurname($form->get('surname')->getData());
+        $person->setFirstName($form->get('firstName')->getData());
+        $person->setPreferredName($form->get('firstName')->getData());
+        $person->setOfficialName($form->get('firstName')->getData().' '.$form->get('surname')->getData());
+        $person->setusername($form->get('username')->getData());
+        $encoder = new SHA256PasswordEncoder();
+        $salt = SecurityUser::createSalt();
+
+        $password = $encoder->encodePassword($form->get('password')->getData(), $salt);
+        $person->setPasswordStrongSalt($salt);
+        $person->setPasswordStrong($password);
+        $person->setStatus('Full');
+        $person->setCanLogin('Y');
+        $person->setPrimaryRole(ProviderFactory::getRepository(Role::class)->find(1));
+        $person->setEmail($form->get('email')->getData());
+        $person->setViewCalendarSchool('Y');
+        $person->setViewCalendarSpaceBooking('Y');
+
+        $em = ProviderFactory::getEntityManager();
+        $em->persist($person);
+        $em->flush();
+
+        if ($person->getId() > 1) {
+            $sql = 'UPDATE `gibbonPerson` SET `gibbonPersonID` = 1 WHERE `username` = :username';
+            $statement = $em->getConnection()->prepare($sql);
+            $statement->bindValue('username', $form->get('username')->getData());
+            $statement->execute();
+            $person = ProviderFactory::getRepository(Person::class)->find(1);
+        }
+        $person->setStaff(ProviderFactory::getRepository(Staff::class)->find(1));
+        $securityUser = new SecurityUser($person);
+
     }
 }

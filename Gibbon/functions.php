@@ -455,6 +455,13 @@ function doesPasswordMatchPolicy($connection2, $passwordNew)
     return $output;
 }
 
+/**
+ * getPasswordPolicy
+ * @param $guid
+ * @param $connection2
+ * @return bool|string
+ * @deprecated Use SecurityHelper::getPasswordPolicy
+ */
 function getPasswordPolicy($guid, $connection2)
 {
     $output = false;

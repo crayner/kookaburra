@@ -15,6 +15,7 @@ namespace App\Util;
 use App\Entity\Action;
 use App\Entity\Module;
 use App\Entity\Person;
+use App\Entity\Setting;
 use App\Provider\ActionProvider;
 use App\Provider\ModuleProvider;
 use App\Provider\ProviderFactory;
@@ -194,4 +195,43 @@ class SecurityHelper
     {
         return self::$checker;
     }
+
+    /**
+     * @var null|string
+     */
+    private static $passwordPolicy;
+
+    /**
+     * getPasswordPolicy
+     * @return array
+     */
+    public static function getPasswordPolicy(): array
+    {
+        if (null !== self::$passwordPolicy)
+            return self::$passwordPolicy;
+
+        $output = [];
+        $provider = ProviderFactory::create(Setting::class);
+        $alpha = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyAlpha');
+        $numeric = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNumeric');
+        $punctuation = $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNonAlphaNumeric');
+        $minLength = $provider->getSettingByScopeAsInteger('System', 'passwordPolicyMinLength');
+
+        if (!$alpha || !$numeric || !$punctuation || $minLength >= 0) {
+            $output[] = 'The password policy stipulates that passwords must:';
+            if ($alpha)
+                $output[] = 'Contain at least one lowercase letter, and one uppercase letter.';
+            if ($numeric)
+                $output[] = 'Contain at least one number.';
+            if ($punctuation)
+                $output[] = 'Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).';
+            if ($minLength >= 0)
+                $output[] = 'Must be at least %1$s characters in length.';
+        }
+        $output['minLength'] = $minLength;
+
+        self::$passwordPolicy = $output;
+        return self::$passwordPolicy;
+    }
+
 }

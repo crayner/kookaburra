@@ -14,8 +14,10 @@ namespace App\Controller;
 
 use App\Entity\I18n;
 use App\Form\Entity\MySQLSettings;
+use App\Form\Entity\SystemSettings;
 use App\Form\Installation\LanguageType;
 use App\Form\Installation\MySQLType;
+use App\Form\Installation\SystemType;
 use App\Manager\InstallationManager;
 use App\Util\LocaleHelper;
 use Gibbon\Exception;
@@ -111,6 +113,25 @@ class InstallController extends AbstractController
      */
     public function installationSystem(Request $request, InstallationManager $manager)
     {
-        dd($this);
+        $settings = new SystemSettings();
+        $message = null;
+
+        $form = $this->createForm(SystemType::class, $settings);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted())
+        {
+            if ($form->isValid())
+            {
+                $manager->setAdministrator($form);
+            }
+        }
+
+        return $this->render('installation/system_settings.html.twig',
+            [
+                'form' => $form->createView(),
+                'message' => $message,
+                'manager' => $manager,            ]
+        );
     }
 }

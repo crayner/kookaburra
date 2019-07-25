@@ -13,9 +13,13 @@
 namespace App\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -40,6 +44,8 @@ class TableTypeExtension extends AbstractTypeExtension
         $view->vars['label_class'] = $options['label_class'];
         $view->vars['widget_class'] = $options['widget_class'];
         $view->vars['row_class'] = $options['row_class'];
+        $view->vars['div_class'] = $options['div_class'];
+        $view->vars['sub_label'] = $options['sub_label'];
     }
 
     /**
@@ -59,6 +65,8 @@ class TableTypeExtension extends AbstractTypeExtension
                 'help_attr' => [
                     'class' =>'text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0',
                 ],
+                'div_class' => null,
+                'sub_label' => '',
             ]
         );
     }
@@ -70,10 +78,7 @@ class TableTypeExtension extends AbstractTypeExtension
     public static function getExtendedTypes(): iterable
     {
         return [
-            FormType::class,
-            SubmitType::class,
-            ChoiceType::class,
+            SubmitType::class,FormType::class,ChoiceType::class,CheckboxType::class,TextType::class,ButtonType::class
         ];
     }
-
 }

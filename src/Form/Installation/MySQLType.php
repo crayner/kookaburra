@@ -72,8 +72,6 @@ class MySQLType extends AbstractType
                         'class' => 'w-full',
                         'maxLength' => 50,
                     ],
-                    'widget_class' => 'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0',
-                    'label_class' => 'flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0',
                     'constraints' => [
                         new NotBlank(),
                     ],
@@ -86,7 +84,6 @@ class MySQLType extends AbstractType
                         'class' => 'w-full',
                         'maxLength' => 50,
                     ],
-                    'widget_class' => 'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0',
                     'constraints' => [
                         new NotBlank(),
                     ],
@@ -100,7 +97,6 @@ class MySQLType extends AbstractType
                         'class' => 'w-full',
                         'maxLength' => 5,
                     ],
-                    'widget_class' => 'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0',
                     'constraints' => [
                         new NotBlank(),
                     ],
@@ -118,7 +114,6 @@ class MySQLType extends AbstractType
                         'class' => 'w-full',
                         'maxLength' => 50,
                     ],
-                    'widget_class' => 'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0',
                     'constraints' => [
                         new NotBlank(),
                     ],
@@ -127,9 +122,6 @@ class MySQLType extends AbstractType
             ->add('submit', SubmitType::class,
                 [
                     'label' => 'Submit',
-                    'widget_class' => 'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 right',
-                    'label_class' => 'flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0',
-                    'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0',
                 ]
             )
         ;

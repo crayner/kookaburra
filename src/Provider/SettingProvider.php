@@ -37,7 +37,7 @@ class SettingProvider implements EntityProviderInterface
      * @return \App\Manager\EntityInterface|bool|null
      * @throws \Exception
      */
-    function getSettingByScope(string $scope, string $name, $returnRow = false)
+    public function getSettingByScope(string $scope, string $name, $returnRow = false)
     {
         $setting = $this->findOneBy(['scope' => $scope, 'name' => $name]);
 
@@ -55,7 +55,7 @@ class SettingProvider implements EntityProviderInterface
      * getSystemSettings
      * @throws \Exception
      */
-    function getSystemSettings(Session $session)
+    public function getSystemSettings(Session $session)
     {
         $session->set('systemSettingsSet', false);
         //System settings from gibbonSetting
@@ -117,7 +117,7 @@ class SettingProvider implements EntityProviderInterface
      * @return array
      * @throws \Exception
      */
-    function getSettingByScopeAsArray(string $scope, string$name, array $default = []): array
+    public function getSettingByScopeAsArray(string $scope, string$name, array $default = []): array
     {
         $result = $this->getSettingByScope($scope, $name);
         if (empty($result))
@@ -133,7 +133,7 @@ class SettingProvider implements EntityProviderInterface
      * @return array
      * @throws \Exception
      */
-    function getSettingByScopeAsDate(string $scope, string $name, ?\DateTime $default = null)
+    public function getSettingByScopeAsDate(string $scope, string $name, ?\DateTime $default = null)
     {
         $result = $this->getSettingByScope($scope, $name);
         if (empty($result))
@@ -149,7 +149,7 @@ class SettingProvider implements EntityProviderInterface
      * @return bool|null
      * @throws \Exception
      */
-    function getSettingByScopeAsBoolean(string $scope, string $name, ?bool $default = false)
+    public function getSettingByScopeAsBoolean(string $scope, string $name, ?bool $default = false)
     {
         $result = $this->getSettingByScope($scope, $name);
         if (empty($result))
@@ -165,7 +165,7 @@ class SettingProvider implements EntityProviderInterface
      * @return string|null
      * @throws \Exception
      */
-    function getSettingByScopeAsString(string $scope, string $name, ?string $default = null)
+    public function getSettingByScopeAsString(string $scope, string $name, ?string $default = null)
     {
         $result = $this->getSettingByScope($scope, $name);
         if (empty($result))

@@ -339,6 +339,7 @@ textarea {
 }
 
 input[type="text"],
+input[type="email"],
 input[type="password"],
 input[type="file"] {
     border-width: 1px;
@@ -349,6 +350,7 @@ input[type="file"] {
 }
 
 input[type="text"],
+input[type="email"],
 input[type="password"] {
     padding-left: 4px;
 }

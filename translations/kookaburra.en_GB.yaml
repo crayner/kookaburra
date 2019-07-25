@@ -16,3 +16,14 @@ Building the Database: Building the Database
 Once the correct settings for your database are verified, the system will immediately build the database. This is a process that can take minutes to complete.  You patience is appreciated.: Once the correct settings for your database are verified, the system will immediately build the database. This is a process that can take minutes to complete.  You patience is appreciated.
 The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.: The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.
 Proceed: Proceed
+Ms: Ms
+Miss: Miss
+Mr: Mr
+Mrs: Mrs
+Dr: Dr
+'The value "%{value}" is not valid. Valid results are "[%{valid}]"': 'The value "%{value}" is not valid. Valid results are "[%{valid}]"'
+The password must contain both lower and uppercase characters.: The password must contain both lower and uppercase characters.
+The password must contain as least one number.: The password must contain as least one number.
+Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).: Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).
+'Must be at least %1$s characters in length.': 'Must be at least %1$s characters in length.'
+'Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.': 'Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.'

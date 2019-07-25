@@ -1,0 +1,66 @@
+{% trans_default_domain "gibbon" %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% form_theme form
+    'form/kookaburra_form.html.twig'
+%}
+
+{% block page %}
+    <h2>{{ 'Installation - Step %1$s'|trans({'%1$s': '3'}) }}</h2>
+    {% if message is defined and message is iterable %}
+        <div class="{{ message.class }}">{{ message.text|trans({}, 'kookaburra') }}</div>
+    {% endif %}
+    {{ form_start(form) }}
+    <table class="smallIntBorder fullWidth standardForm relative" cellspacing="0">
+        <tbody>
+            <tr class="break">
+                <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="2">
+                    <h3>{{ 'User Account'|trans }}</h3>
+                </td>
+            </tr>
+            {{ form_row(form.title) }}
+            {{ form_row(form.surname) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.support) }}
+            {{ form_row(form.username) }}
+            <tr id="" class=" flex flex-col sm:flex-row justify-between content-center p-0">
+                <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
+                    <div class="warning">
+                        {% set lineCount = 0 %}
+                        {% for name, line in manager.getPasswordPolicy() %}
+                            {% if name is not same as('minLength') %}
+                                {% if lineCount is same as (0) %}
+                                    {{ line|trans({'%1$s': manager.getPasswordPolicy()['minLength']}) }}
+                                    <br/>
+                                    <ul>
+                                {% else %}
+                                    <li>
+                                        {{ line|trans({'%1$s': manager.getPasswordPolicy()['minLength']}) }}
+                                    </li>
+                                {% endif %}
+                                {% set lineCount = lineCount + 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {{ form_row(form.password) }}
+            <tr class="break">
+                <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="2">
+                    <h3>{{ 'System Settings'|trans }}</h3>
+                </td>
+            </tr>
+            {{ form_row(form.submit) }}
+        </tbody>
+    </table>
+    {{ form_end(form) }}
+{% endblock page %}
+
+{% block sidebar %}
+    {% include 'installation/sidebar.html.twig' %}
+{% endblock sidebar %}
+
+
