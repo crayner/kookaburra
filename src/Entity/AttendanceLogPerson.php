@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class AttendanceLogPerson
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\AttendanceLogPersonRepository")
- * @ORM\Table(name="AttendanceLogPerson", indexes={@ORM\Index(name="date", columns={"date"}),@ORM\Index(name="dateAndPerson", columns={"date","gibbonPersonID"}),@ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="dateContextPersonClass", columns={"date","context","gibbonPersonID","gibbonCourseClassID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="AttendanceLogPerson", indexes={@ORM\Index(name="date", columns={"date"}),@ORM\Index(name="dateAndPerson", columns={"date","gibbonPersonID"}),@ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="dateContextPersonClass", columns={"date","context","gibbonPersonID","gibbonCourseClassID"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class AttendanceLogPerson
@@ -27,7 +27,7 @@ class AttendanceLogPerson
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonAttendanceLogPersonID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonAttendanceLogPersonID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

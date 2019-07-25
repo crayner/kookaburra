@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Role
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
- * @ORM\Table(name="Role", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Role", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"})})
  */
 class Role implements EntityInterface
 {
@@ -32,7 +32,7 @@ class Role implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonRoleID", columnDefinition="INT(3) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonRoleID", columnDefinition="INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

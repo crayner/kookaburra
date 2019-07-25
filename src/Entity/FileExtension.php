@@ -19,14 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class FileExtension
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FileExtensionRepository")
- * @ORM\Table(name="FileExtension")
+ * @ORM\Table(options={"auto_increment": 1}, name="FileExtension")
  */
 class FileExtension
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="smallint", name="gibbonFileExtensionID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonFileExtensionID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

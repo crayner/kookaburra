@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Behaviour
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\BehaviourRepository")
- * @ORM\Table(name="Behaviour", indexes={@ORM\Index(name="gibbonPersonID",columns={"gibbonPersonID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Behaviour", indexes={@ORM\Index(name="gibbonPersonID",columns={"gibbonPersonID"})})
  * @ORM\HasLifecycleCallbacks
  */
 class Behaviour
@@ -26,7 +26,7 @@ class Behaviour
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonBehaviourID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonBehaviourID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

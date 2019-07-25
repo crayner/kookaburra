@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class FinanceInvoice
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FinanceInvoiceRepository")
- * @ORM\Table(name="FinanceInvoice")
+ * @ORM\Table(options={"auto_increment": 1}, name="FinanceInvoice")
  * @ORM\HasLifecycleCallbacks()
  */
 class FinanceInvoice
@@ -29,7 +29,7 @@ class FinanceInvoice
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonFinanceInvoiceID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonFinanceInvoiceID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

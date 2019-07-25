@@ -19,14 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class PlannerEntryGuest
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PlannerEntryGuestRepository")
- * @ORM\Table(name="PlannerEntryGuest")
+ * @ORM\Table(options={"auto_increment": 1}, name="PlannerEntryGuest")
  */
 class PlannerEntryGuest implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonPlannerEntryGuestID", columnDefinition="INT(16) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonPlannerEntryGuestID", columnDefinition="INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

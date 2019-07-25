@@ -22,14 +22,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Theme
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
- * @ORM\Table(name="Theme")
+ * @ORM\Table(options={"auto_increment": 1}, name="Theme")
  */
 class Theme implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonThemeID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonThemeID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

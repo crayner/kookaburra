@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class DaysOfWeek
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\DaysOfWeekRepository")
- * @ORM\Table(name="DaysOfWeek", uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name", "nameShort"}),@ORM\UniqueConstraint(name="nameShort",columns={"nameShort"}), @ORM\UniqueConstraint(name="sequenceNumber",columns={"sequenceNumber"}) })
+ * @ORM\Table(options={"auto_increment": 1}, name="DaysOfWeek", uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name", "nameShort"}),@ORM\UniqueConstraint(name="nameShort",columns={"nameShort"}), @ORM\UniqueConstraint(name="sequenceNumber",columns={"sequenceNumber"}) })
  */
 class DaysOfWeek implements EntityInterface
 {
@@ -29,7 +29,7 @@ class DaysOfWeek implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="smallint", name="gibbonDaysOfWeekID", columnDefinition="INT(2) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonDaysOfWeekID", columnDefinition="INT(2) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

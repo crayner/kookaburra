@@ -22,14 +22,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class SchoolYear
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SchoolYearRepository")
- * @ORM\Table(name="SchoolYear", uniqueConstraints={@ORM\UniqueConstraint(name="academicYearName", columns={"name"}), @ORM\UniqueConstraint(name="sequenceNumber", columns={"sequenceNumber"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="SchoolYear", uniqueConstraints={@ORM\UniqueConstraint(name="academicYearName", columns={"name"}), @ORM\UniqueConstraint(name="sequenceNumber", columns={"sequenceNumber"})})
  */
 class SchoolYear implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonSchoolYearID", columnDefinition="INT(3) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonSchoolYearID", columnDefinition="INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

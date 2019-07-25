@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Hook
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\HookRepository")
- * @ORM\Table(name="Hook", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name", "type"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Hook", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name", "type"})})
  */
 class Hook
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="smallint", name="gibbonHookID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonHookID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

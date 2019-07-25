@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ResourceTag
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ResourceTagRepository")
- * @ORM\Table(name="ResourceTag", uniqueConstraints={@ORM\UniqueConstraint(name="tag", columns={"tag"})}, indexes={@ORM\Index(name="tag_2", columns={"tag"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="ResourceTag", uniqueConstraints={@ORM\UniqueConstraint(name="tag", columns={"tag"})}, indexes={@ORM\Index(name="tag_2", columns={"tag"})})
  */
 class ResourceTag
 {
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonResourceTagID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonResourceTagID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

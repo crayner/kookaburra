@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Country
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
- * @ORM\Table(name="Country")
+ * @ORM\Table(options={"auto_increment": 1}, name="Country")
  */
 class Country
 {

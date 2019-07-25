@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class LibraryItemEvent
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\LibraryItemEventRepository")
- * @ORM\Table(name="LibraryItemEvent")
+ * @ORM\Table(options={"auto_increment": 1}, name="LibraryItemEvent")
  */
 class LibraryItemEvent
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonLibraryItemEventID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonLibraryItemEventID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class MedicalCondition
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\MedicalConditionRepository")
- * @ORM\Table(name="MedicalCondition", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="MedicalCondition", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  */
 class MedicalCondition
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="smallint", name="gibbonMedicalConditionID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonMedicalConditionID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

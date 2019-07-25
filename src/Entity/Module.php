@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Module
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ModuleRepository")
- * @ORM\Table(name="Module", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonModuleName", columns={"name"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Module", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonModuleName", columns={"name"})})
  * */
 class Module implements EntityInterface
 {
@@ -30,7 +30,7 @@ class Module implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonModuleID", columnDefinition="INT(4) UNSIGNED ZEROFILL", options={"comment": "This number is assigned at install, and is only unique to the installation"})
+     * @ORM\Column(type="integer", name="gibbonModuleID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT", options={"comment": "This number is assigned at install, and is only unique to the installation"})
      * @ORM\GeneratedValue
      */
     private $id;

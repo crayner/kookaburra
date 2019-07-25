@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class PlannerParentWeeklyEmailSummary
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PlannerParentWeeklyEmailSummaryRepository")
- * @ORM\Table(name="PlannerParentWeeklyEmailSummary", uniqueConstraints={@ORM\UniqueConstraint(name="key", columns={"key"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="PlannerParentWeeklyEmailSummary", uniqueConstraints={@ORM\UniqueConstraint(name="key", columns={"key"})})
  */
 class PlannerParentWeeklyEmailSummary
 {
@@ -28,7 +28,7 @@ class PlannerParentWeeklyEmailSummary
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonPlannerParentWeeklyEmailSummaryID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonPlannerParentWeeklyEmailSummaryID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

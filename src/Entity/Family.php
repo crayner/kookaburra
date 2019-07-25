@@ -22,14 +22,14 @@ use Doctrine\ORM\PersistentCollection;
  * Class Family
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FamilyRepository")
- * @ORM\Table(name="Family")
+ * @ORM\Table(options={"auto_increment": 1}, name="Family")
  */
 class Family
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonFamilyID", columnDefinition="INT(7) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonFamilyID", columnDefinition="INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

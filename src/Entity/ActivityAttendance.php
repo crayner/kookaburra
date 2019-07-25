@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ActivityAttendance
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ActivityAttendanceRepository")
- * @ORM\Table(name="ActivityAttendance")
+ * @ORM\Table(options={"auto_increment": 1}, name="ActivityAttendance")
  * @ORM\HasLifecycleCallbacks
  */
 class ActivityAttendance implements EntityInterface
@@ -28,7 +28,7 @@ class ActivityAttendance implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonActivityAttendanceID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonActivityAttendanceID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

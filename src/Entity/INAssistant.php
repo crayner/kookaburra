@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class INAssistant
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\INAssistantRepository")
- * @ORM\Table(name="INAssistant")
+ * @ORM\Table(options={"auto_increment": 1}, name="INAssistant")
  */
 class INAssistant
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonINAssistantID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonINAssistantID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

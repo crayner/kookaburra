@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class StringReplacement
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StringReplacementRepository")
- * @ORM\Table(name="String")
+ * @ORM\Table(options={"auto_increment": 1}, name="String")
  */
 class StringReplacement
 {
@@ -35,7 +35,7 @@ class StringReplacement
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonStringID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonStringID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

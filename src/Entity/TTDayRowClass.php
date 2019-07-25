@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class TTDayRowClass
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTDayRowClassRepository")
- * @ORM\Table(name="TTDayRowClass", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="gibbonSpaceID", columns={"gibbonSpaceID"}), @ORM\Index(name="gibbonTTColumnRowID", columns={"gibbonTTColumnRowID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="TTDayRowClass", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="gibbonSpaceID", columns={"gibbonSpaceID"}), @ORM\Index(name="gibbonTTColumnRowID", columns={"gibbonTTColumnRowID"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class TTDayRowClass implements EntityInterface
@@ -28,7 +28,7 @@ class TTDayRowClass implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonTTDayRowClassID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonTTDayRowClassID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

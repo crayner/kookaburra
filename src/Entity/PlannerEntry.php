@@ -23,7 +23,7 @@ use Doctrine\ORM\PersistentCollection;
  * Class PlannerEntry
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PlannerEntryRepository")
- * @ORM\Table(name="PlannerEntry", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="PlannerEntry", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"})})
  */
 class PlannerEntry implements EntityInterface
 {
@@ -32,7 +32,7 @@ class PlannerEntry implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonPlannerEntryID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonPlannerEntryID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class I18n
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\I18nRepository")
- * @ORM\Table(name="i18n")
+ * @ORM\Table(options={"auto_increment": 1}, name="i18n")
  */
 class I18n implements EntityInterface
 {
@@ -30,7 +30,7 @@ class I18n implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="smallint", name="gibboni18nID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibboni18nID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

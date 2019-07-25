@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class CourseClassMap
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseClassMapRepository")
- * @ORM\Table(name="CourseClassMap", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonCourseClassID", columns={"gibbonCourseClassID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="CourseClassMap", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonCourseClassID", columns={"gibbonCourseClassID"})})
  */
 class CourseClassMap
 {
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonCourseClassMapID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonCourseClassMapID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

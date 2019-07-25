@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class AttendanceCode
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\AttendanceCodeRepository")
- * @ORM\Table(name="AttendanceCode", uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),@ORM\UniqueConstraint(name="nameShort",columns={"nameShort"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="AttendanceCode", uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"}),@ORM\UniqueConstraint(name="nameShort",columns={"nameShort"})})
  */
 class AttendanceCode
 {
@@ -27,7 +27,7 @@ class AttendanceCode
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint", name="gibbonAttendanceCodeID", columnDefinition="INT(3) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonAttendanceCodeID", columnDefinition="INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

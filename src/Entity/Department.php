@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Department
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\DepartmentRepository")
- * @ORM\Table(name="Department")
+ * @ORM\Table(options={"auto_increment": 1}, name="Department")
  */
 class Department
 {
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint", name="gibbonDepartmentID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonDepartmentID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

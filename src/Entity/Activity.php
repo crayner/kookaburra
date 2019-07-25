@@ -24,7 +24,7 @@ use Doctrine\ORM\PersistentCollection;
  * Class Action
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
- * @ORM\Table(name="Activity")
+ * @ORM\Table(options={"auto_increment": 1}, name="Activity")
  */
 class Activity implements EntityInterface
 {
@@ -33,7 +33,7 @@ class Activity implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonActivityID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonActivityID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

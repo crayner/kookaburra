@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class RubricCell
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\RubricCellRepository")
- * @ORM\Table(name="RubricCell", indexes={@ORM\Index(name="gibbonRubricID", columns={"gibbonRubricID"}), @ORM\Index(name="gibbonRubricColumnID", columns={"gibbonRubricColumnID"}), @ORM\Index(name="gibbonRubricRowID", columns={"gibbonRubricRowID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="RubricCell", indexes={@ORM\Index(name="gibbonRubricID", columns={"gibbonRubricID"}), @ORM\Index(name="gibbonRubricColumnID", columns={"gibbonRubricColumnID"}), @ORM\Index(name="gibbonRubricRowID", columns={"gibbonRubricRowID"})})
  */
 class RubricCell
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonRubricCellID", columnDefinition="INT(11) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonRubricCellID", columnDefinition="INT(11) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

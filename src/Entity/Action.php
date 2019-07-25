@@ -24,7 +24,7 @@ use Doctrine\ORM\PersistentCollection;
  * Class Action
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ActionRepository")
- * @ORM\Table(name="Action",uniqueConstraints={@ORM\UniqueConstraint(name="moduleActionName", columns={"name", "gibbonModuleID"})}, indexes={@ORM\Index(name="gibbonModuleID", columns={"gibbonModuleID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Action",uniqueConstraints={@ORM\UniqueConstraint(name="moduleActionName", columns={"name", "gibbonModuleID"})}, indexes={@ORM\Index(name="gibbonModuleID", columns={"gibbonModuleID"})})
  */
 class Action implements EntityInterface
 {
@@ -33,7 +33,7 @@ class Action implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonActionID", columnDefinition="INT(7) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonActionID", columnDefinition="INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Setting
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SettingRepository")
- * @ORM\Table(name="Setting", uniqueConstraints={@ORM\UniqueConstraint(name="scope", columns={"scope","nameDisplay"}), @ORM\UniqueConstraint(name="scope_2", columns={"scope","name"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Setting", uniqueConstraints={@ORM\UniqueConstraint(name="scope", columns={"scope","nameDisplay"}), @ORM\UniqueConstraint(name="scope_2", columns={"scope","name"})})
  */
 class Setting implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonSettingID", columnDefinition="INT(5) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonSettingID", columnDefinition="INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

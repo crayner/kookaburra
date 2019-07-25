@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class RubricRow
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\RubricRowRepository")
- * @ORM\Table(name="RubricRow", indexes={@ORM\Index(name="gibbonRubricID", columns={"gibbonRubricID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="RubricRow", indexes={@ORM\Index(name="gibbonRubricID", columns={"gibbonRubricID"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class RubricRow
@@ -27,7 +27,7 @@ class RubricRow
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonRubricRowID", columnDefinition="INT(9) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonRubricRowID", columnDefinition="INT(9) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

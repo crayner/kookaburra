@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class InternalAssessmentColumn
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\InternalAssessmentColumnRepository")
- * @ORM\Table(name="InternalAssessmentColumn")
+ * @ORM\Table(options={"auto_increment": 1}, name="InternalAssessmentColumn")
  */
 class InternalAssessmentColumn
 {
@@ -28,7 +28,7 @@ class InternalAssessmentColumn
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonInternalAssessmentColumnID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonInternalAssessmentColumnID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

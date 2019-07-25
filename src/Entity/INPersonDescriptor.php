@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class INPersonDescriptor
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\INPersonDescriptorRepository")
- * @ORM\Table(name="INPersonDescriptor")
+ * @ORM\Table(options={"auto_increment": 1}, name="INPersonDescriptor")
  */
 class INPersonDescriptor
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonINPersonDescriptorID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonINPersonDescriptorID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

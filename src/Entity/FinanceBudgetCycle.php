@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class FinanceBudgetCycle
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FinanceBudgetCycleRepository")
- * @ORM\Table(name="FinanceBudgetCycle", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="FinanceBudgetCycle", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  */
 class FinanceBudgetCycle
 {
@@ -28,7 +28,7 @@ class FinanceBudgetCycle
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonFinanceBudgetCycleID", columnDefinition="INT(6) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonFinanceBudgetCycleID", columnDefinition="INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

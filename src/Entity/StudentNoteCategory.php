@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class StudentNoteCategory
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StudentNoteCategoryRepository")
- * @ORM\Table(name="StudentNoteCategory")
+ * @ORM\Table(options={"auto_increment": 1}, name="StudentNoteCategory")
  */
 class StudentNoteCategory
 {
@@ -29,7 +29,7 @@ class StudentNoteCategory
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="smallint", name="gibbonStudentNoteCategoryID", columnDefinition="INT(5) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonStudentNoteCategoryID", columnDefinition="INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

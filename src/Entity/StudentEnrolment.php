@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class StudentEnrolment
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StudentEnrolmentRepository")
- * @ORM\Table(name="StudentEnrolment", indexes={@ORM\Index(name="gibbonSchoolYearID", columns={"gibbonSchoolYearID"}), @ORM\Index(name="gibbonYearGroupID", columns={"gibbonYearGroupID"}), @ORM\Index(name="gibbonRollGroupID", columns={"gibbonRollGroupID"}), @ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID","gibbonSchoolYearID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="StudentEnrolment", indexes={@ORM\Index(name="gibbonSchoolYearID", columns={"gibbonSchoolYearID"}), @ORM\Index(name="gibbonYearGroupID", columns={"gibbonYearGroupID"}), @ORM\Index(name="gibbonRollGroupID", columns={"gibbonRollGroupID"}), @ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID","gibbonSchoolYearID"})})
  */
 class StudentEnrolment
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonStudentEnrolmentID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonStudentEnrolmentID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

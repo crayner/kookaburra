@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class FinanceExpenseApprover
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FinanceExpenseApproverRepository")
- * @ORM\Table(name="FinanceExpenseApprover")
+ * @ORM\Table(options={"auto_increment": 1}, name="FinanceExpenseApprover")
  * @ORM\HasLifecycleCallbacks
  */
 
@@ -27,7 +27,7 @@ class FinanceExpenseApprover
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint", name="gibbonFinanceExpenseApproverID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonFinanceExpenseApproverID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

@@ -19,14 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class UnitBlock
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\UnitBlockRepository")
- * @ORM\Table(name="UnitBlock")
+ * @ORM\Table(options={"auto_increment": 1}, name="UnitBlock")
  */
 class UnitBlock implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonUnitBlockID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonUnitBlockID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

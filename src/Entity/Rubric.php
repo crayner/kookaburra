@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Rubric
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\RubricRepository")
- * @ORM\Table(name="Rubric")
+ * @ORM\Table(options={"auto_increment": 1}, name="Rubric")
  */
 class Rubric
 {
@@ -28,7 +28,7 @@ class Rubric
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonRubricID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonRubricID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

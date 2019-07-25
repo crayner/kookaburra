@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Substitute
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SubstituteRepository")
- * @ORM\Table(name="Substitute", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonPersonID", columns={"gibbonPersonID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Substitute", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonPersonID", columns={"gibbonPersonID"})})
  */
 class Substitute implements EntityInterface
 {
@@ -29,7 +29,7 @@ class Substitute implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonSubstituteID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonSubstituteID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

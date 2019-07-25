@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class CrowdAssessDiscuss
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CrowdAssessDiscussRepository")
- * @ORM\Table(name="CrowdAssessDiscuss")
+ * @ORM\Table(options={"auto_increment": 1}, name="CrowdAssessDiscuss")
  * @ORM\HasLifecycleCallbacks
  */
 class CrowdAssessDiscuss
@@ -27,7 +27,7 @@ class CrowdAssessDiscuss
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonCrowdAssessDiscussID", columnDefinition="INT(16) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonCrowdAssessDiscussID", columnDefinition="INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

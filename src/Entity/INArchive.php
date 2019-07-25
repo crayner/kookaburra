@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class INArchive
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\INArchiveRepository")
- * @ORM\Table(name="INArchive")
+ * @ORM\Table(options={"auto_increment": 1}, name="INArchive")
  */
 class INArchive
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonINArchiveID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonINArchiveID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

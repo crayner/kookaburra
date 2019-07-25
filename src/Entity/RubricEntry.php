@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class RubricEntry
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\RubricEntryRepository")
- * @ORM\Table(name="RubricEntry", indexes={@ORM\Index(name="gibbonRubricID", columns={"gibbonRubricID"}), @ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID"}), @ORM\Index(name="gibbonRubricCellID", columns={"gibbonRubricCellID"}), @ORM\Index(name="contextDBTable", columns={"contextDBTable"}), @ORM\Index(name="contextDBTableID", columns={"contextDBTableID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="RubricEntry", indexes={@ORM\Index(name="gibbonRubricID", columns={"gibbonRubricID"}), @ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID"}), @ORM\Index(name="gibbonRubricCellID", columns={"gibbonRubricCellID"}), @ORM\Index(name="contextDBTable", columns={"contextDBTable"}), @ORM\Index(name="contextDBTableID", columns={"contextDBTableID"})})
  */
 class RubricEntry
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonRubricEntry", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonRubricEntry", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

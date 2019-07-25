@@ -23,7 +23,7 @@ use Doctrine\ORM\PersistentCollection;
  * Class Messenger
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\MessengerRepository")
- * @ORM\Table(name="Messenger")
+ * @ORM\Table(options={"auto_increment": 1}, name="Messenger")
  */
 class Messenger implements EntityInterface
 {
@@ -32,7 +32,7 @@ class Messenger implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonMessengerID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonMessengerID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class StaffCoverage
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StaffCoverageRepository")
- * @ORM\Table(name="StaffCoverage")
+ * @ORM\Table(options={"auto_increment": 1}, name="StaffCoverage")
  */
 class StaffCoverage implements EntityInterface
 {
@@ -30,7 +30,7 @@ class StaffCoverage implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonStaffCoverageID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonStaffCoverageID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

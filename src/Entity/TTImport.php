@@ -19,14 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class TTImport
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTImportRepository")
- * @ORM\Table(name="TTImport")
+ * @ORM\Table(options={"auto_increment": 1}, name="TTImport")
  */
 class TTImport implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonTTImportID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonTTImportID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

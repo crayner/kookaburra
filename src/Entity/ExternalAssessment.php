@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ExternalAssessment
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ExternalAssessmentRepository")
- * @ORM\Table(name="ExternalAssessment")
+ * @ORM\Table(options={"auto_increment": 1}, name="ExternalAssessment")
  */
 class ExternalAssessment
 {
@@ -29,7 +29,7 @@ class ExternalAssessment
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint", name="gibbonExternalAssessmentID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonExternalAssessmentID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

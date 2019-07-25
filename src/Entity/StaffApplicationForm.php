@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class StaffApplicationForm
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StaffApplicationFormRepository")
- * @ORM\Table(name="StaffApplicationForm")
+ * @ORM\Table(options={"auto_increment": 1}, name="StaffApplicationForm")
  */
 class StaffApplicationForm
 {
@@ -28,7 +28,7 @@ class StaffApplicationForm
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonStaffApplicationFormID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonStaffApplicationFormID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

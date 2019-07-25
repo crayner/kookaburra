@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class NotificationListener
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\NotificationListenerRepository")
- * @ORM\Table(name="NotificationListener")
+ * @ORM\Table(options={"auto_increment": 1}, name="NotificationListener")
  * */
 class NotificationListener
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonNotificationListenerID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonNotificationListenerID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

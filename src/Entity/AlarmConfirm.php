@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class AlarmConfirm
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\AlarmConfirmRepository")
- * @ORM\Table(name="AlarmConfirm", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonAlarmID", columns={"gibbonAlarmID","gibbonPersonID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="AlarmConfirm",options={"auto_increment": 1}, uniqueConstraints={@ORM\UniqueConstraint(name="gibbonAlarmID", columns={"gibbonAlarmID","gibbonPersonID"})})
  * @ORM\HasLifecycleCallbacks
  */
 class AlarmConfirm
@@ -27,7 +27,7 @@ class AlarmConfirm
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonAlarmConfirmID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonAlarmConfirmID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

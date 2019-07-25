@@ -21,7 +21,7 @@ use Doctrine\ORM\PersistentCollection;
  * Class Group
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
- * @ORM\Table(name="Group")
+ * @ORM\Table(options={"auto_increment": 1}, name="Group")
  * @ORM\HasLifecycleCallbacks()
  */
 class Group
@@ -29,7 +29,7 @@ class Group
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonGroupID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonGroupID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

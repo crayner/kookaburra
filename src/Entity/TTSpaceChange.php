@@ -19,14 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class TTSpaceChange
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTSpaceChangeRepository")
- * @ORM\Table(name="TTSpaceChange", indexes={@ORM\Index(name="gibbonTTDayRowClassID", columns={"gibbonTTDayRowClassID"}), @ORM\Index(name="date", columns={"date"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="TTSpaceChange", indexes={@ORM\Index(name="gibbonTTDayRowClassID", columns={"gibbonTTDayRowClassID"}), @ORM\Index(name="date", columns={"date"})})
  */
 class TTSpaceChange  implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonTTSpaceChangeID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonTTSpaceChangeID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

@@ -20,14 +20,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class SchoolYearSpecialDay
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SchoolYearSpecialDayRepository")
- * @ORM\Table(name="SchoolYearSpecialDay", uniqueConstraints={@ORM\UniqueConstraint(name="date", columns={"date"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="SchoolYearSpecialDay", uniqueConstraints={@ORM\UniqueConstraint(name="date", columns={"date"})})
  */
 class SchoolYearSpecialDay implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonSchoolYearSpecialDayID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonSchoolYearSpecialDayID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

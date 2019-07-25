@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Log
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\LogRepository")
- * @ORM\Table(name="Log")
+ * @ORM\Table(options={"auto_increment": 1}, name="Log")
  * @ORM\HasLifecycleCallbacks()
  */
 class Log implements EntityInterface
@@ -28,7 +28,7 @@ class Log implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonLogID", columnDefinition="INT(16) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonLogID", columnDefinition="INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

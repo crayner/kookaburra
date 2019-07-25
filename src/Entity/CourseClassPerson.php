@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class CourseClassPerson
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseClassPersonRepository")
- * @ORM\Table(name="CourseClassPerson", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID", "role"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="CourseClassPerson", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID", "role"})})
  */
 class CourseClassPerson implements EntityInterface
 {
@@ -28,7 +28,7 @@ class CourseClassPerson implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonCourseClassPersonID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonCourseClassPersonID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

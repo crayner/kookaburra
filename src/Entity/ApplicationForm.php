@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ApplicationForm
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ApplicationFormRepository")
- * @ORM\Table(name="ApplicationForm")
+ * @ORM\Table(options={"auto_increment": 1}, name="ApplicationForm",options={"auto_increment": 1})
  * @ORM\HasLifecycleCallbacks
  */
 class ApplicationForm
@@ -31,7 +31,7 @@ class ApplicationForm
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonApplicationFormID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonApplicationFormID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

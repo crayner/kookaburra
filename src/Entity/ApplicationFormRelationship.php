@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ApplicationFormRelationship
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ApplicationFormRelationshipRepository")
- * @ORM\Table(name="ApplicationFormRelationship")
+ * @ORM\Table(options={"auto_increment": 1}, name="ApplicationFormRelationship")
  */
 class ApplicationFormRelationship
 {
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonApplicationFormRelationshipID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonApplicationFormRelationshipID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

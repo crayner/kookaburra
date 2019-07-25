@@ -24,7 +24,7 @@ use Doctrine\ORM\PersistentCollection;
  * Class RollGroup
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\RollGroupRepository")
- * @ORM\Table(name="RollGroup")
+ * @ORM\Table(options={"auto_increment": 1}, name="RollGroup")
  */
 class RollGroup implements EntityInterface
 {
@@ -32,7 +32,7 @@ class RollGroup implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint", name="gibbonRollGroupID", columnDefinition="INT(5) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonRollGroupID", columnDefinition="INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

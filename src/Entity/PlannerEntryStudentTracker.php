@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class PlannerEntryStudentTracker
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PlannerEntryStudentTrackerRepository")
- * @ORM\Table(name="PlannerEntryStudentTracker")
+ * @ORM\Table(options={"auto_increment": 1}, name="PlannerEntryStudentTracker")
  */
 class PlannerEntryStudentTracker
 {
@@ -28,7 +28,7 @@ class PlannerEntryStudentTracker
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonPlannerEntryStudentTrackerID", columnDefinition="INT(16) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonPlannerEntryStudentTrackerID", columnDefinition="INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

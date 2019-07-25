@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ActivitySlot
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ActivitySlotRepository")
- * @ORM\Table(name="ActivitySlot")
+ * @ORM\Table(options={"auto_increment": 1}, name="ActivitySlot")
  */
 class ActivitySlot
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonActivitySlotID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonActivitySlotID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

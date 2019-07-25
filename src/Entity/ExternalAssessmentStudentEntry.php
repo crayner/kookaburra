@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ExternalAssessmentStudentEntry
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ExternalAssessmentStudentEntryRepository")
- * @ORM\Table(name="ExternalAssessmentStudentEntry", indexes={@ORM\Index(name="gibbonExternalAssessmentStudentID", columns={"gibbonExternalAssessmentStudentID"}),@ORM\Index(name="gibbonExternalAssessmentFieldID", columns={"gibbonExternalAssessmentFieldID"}),@ORM\Index(name="gibbonScaleGradeID", columns={"gibbonScaleGradeID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="ExternalAssessmentStudentEntry", indexes={@ORM\Index(name="gibbonExternalAssessmentStudentID", columns={"gibbonExternalAssessmentStudentID"}),@ORM\Index(name="gibbonExternalAssessmentFieldID", columns={"gibbonExternalAssessmentFieldID"}),@ORM\Index(name="gibbonScaleGradeID", columns={"gibbonScaleGradeID"})})
  */
 class ExternalAssessmentStudentEntry
 {
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonExternalAssessmentStudentEntryID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonExternalAssessmentStudentEntryID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

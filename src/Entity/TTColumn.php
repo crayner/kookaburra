@@ -39,14 +39,14 @@ use Doctrine\ORM\PersistentCollection;
  * Class TTColumn
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTColumnRepository")
- * @ORM\Table(name="TTColumn")
+ * @ORM\Table(options={"auto_increment": 1}, name="TTColumn")
  */
 class TTColumn implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonTTColumnID", columnDefinition="INT(6) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonTTColumnID", columnDefinition="INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

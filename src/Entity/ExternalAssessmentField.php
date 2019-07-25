@@ -19,14 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ExternalAssessmentField
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ExternalAssessmentFieldRepository")
- * @ORM\Table(name="ExternalAssessmentField", indexes={@ORM\Index(name="gibbonExternalAssessmentID", columns={"gibbonExternalAssessmentID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="ExternalAssessmentField", indexes={@ORM\Index(name="gibbonExternalAssessmentID", columns={"gibbonExternalAssessmentID"})})
  */
 class ExternalAssessmentField
 {
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonExternalAssessmentFieldID", columnDefinition="INT(6) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonExternalAssessmentFieldID", columnDefinition="INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

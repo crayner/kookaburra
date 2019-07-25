@@ -21,14 +21,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class House
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\HouseRepository")
- * @ORM\Table(name="House", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name","nameShort"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="House", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name","nameShort"})})
  */
 class House
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="smallint", name="gibbonHouseID", columnDefinition="INT(3) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonHouseID", columnDefinition="INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

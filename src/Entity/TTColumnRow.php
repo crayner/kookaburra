@@ -22,14 +22,14 @@ use Doctrine\ORM\PersistentCollection;
  * Class TTColumnRow
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTColumnRowRepository")
- * @ORM\Table(name="TTColumnRow", indexes={@ORM\Index(name="gibbonTTColumnID", columns={"gibbonTTColumnID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="TTColumnRow", indexes={@ORM\Index(name="gibbonTTColumnID", columns={"gibbonTTColumnID"})})
  */
 class TTColumnRow implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonTTColumnRowID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonTTColumnRowID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

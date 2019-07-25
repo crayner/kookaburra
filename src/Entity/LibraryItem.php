@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class LibraryItem
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\LibraryItemRepository")
- * @ORM\Table(name="LibraryItem", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="LibraryItem", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  */
 class LibraryItem
 {
@@ -28,7 +28,7 @@ class LibraryItem
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonLibraryItemID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonLibraryItemID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

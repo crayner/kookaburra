@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class LibraryType
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\LibraryTypeRepository")
- * @ORM\Table(name="LibraryType")
+ * @ORM\Table(options={"auto_increment": 1}, name="LibraryType")
  */
 class LibraryType
 {
@@ -28,7 +28,7 @@ class LibraryType
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="smallint", name="gibbonLibraryTypeID", columnDefinition="INT(5) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="smallint", name="gibbonLibraryTypeID", columnDefinition="INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

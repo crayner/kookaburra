@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Outcome
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\OutcomeRepository")
- * @ORM\Table(name="Outcome")
+ * @ORM\Table(options={"auto_increment": 1}, name="Outcome")
  * */
 class Outcome
 {
@@ -28,7 +28,7 @@ class Outcome
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonOutcomeID", columnDefinition="INT(8) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonOutcomeID", columnDefinition="INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

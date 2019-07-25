@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class PersonReset
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PersonResetRepository")
- * @ORM\Table(name="PersonReset")
+ * @ORM\Table(options={"auto_increment": 1}, name="PersonReset")
  * @ORM\HasLifecycleCallbacks()
  */
 class PersonReset
@@ -26,7 +26,7 @@ class PersonReset
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonPersonResetID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonPersonResetID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

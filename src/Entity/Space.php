@@ -18,14 +18,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Space
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SpaceRepository")
- * @ORM\Table(name="Space", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Space", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  */
 class Space
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonSpaceID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonSpaceID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

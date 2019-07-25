@@ -17,17 +17,21 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
-use App\Util\FormatHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints as ASSERT;
 
 /**
  * Class GibbonPerson
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
- * @ORM\Table(name="Person", uniqueConstraints={@ORM\UniqueConstraint(name="username", columns={"username"})}, indexes={@ORM\Index(name="username_2", columns={"username", "email"})})
+ * @ASSERT\UniqueEntity(
+ *     fields={"username"},
+ *     errorPath="username",
+ * )
+ * @ORM\Table(options={"auto_increment": 1}, name="Person", options={"auto_increment": 1}, uniqueConstraints={@ORM\UniqueConstraint(name="username", columns={"username"})}, indexes={@ORM\Index(name="username_2", columns={"username", "email"})})
  */
 class Person implements EntityInterface
 {
@@ -36,7 +40,7 @@ class Person implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonPersonID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonPersonID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
@@ -76,6 +80,8 @@ class Person implements EntityInterface
     }
 
     /**
+     * Id.
+     *
      * @param int|null $id
      * @return Person
      */
@@ -85,6 +91,7 @@ class Person implements EntityInterface
         return $this;
     }
 
+
     /**
      * @var string|null
      * @ORM\Column(length=5)
@@ -92,11 +99,22 @@ class Person implements EntityInterface
     private $title;
 
     /**
+     * @var array
+     */
+    private static $titleList = [
+        'Ms',
+        'Miss',
+        'Mr',
+        'Mrs',
+        'Dr',
+    ];
+
+    /**
      * @return null|string
      */
     public function getTitle(): ?string
     {
-        return $this->title;
+        return rtrim($this->title,'.');
     }
 
     /**
@@ -105,7 +123,7 @@ class Person implements EntityInterface
      */
     public function setTitle(?string $title): Person
     {
-        $this->title = mb_substr($title, 0, 5);
+        $this->title = in_array($title, self::getTitleList()) ? $title : null;
         return $this;
     }
 
@@ -209,7 +227,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=60, name="nameInCharacters")
      */
-    private $nameInCharacters;
+    private $nameInCharacters = '';
 
     /**
      * @return null|string
@@ -233,7 +251,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=16, options={"default": "Unspecified"})
      */
-    private $gender;
+    private $gender = 'Unspecified';
 
     /**
      * @var array
@@ -291,7 +309,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="password")
      */
-    private $MD5Password;
+    private $MD5Password = '';
 
     /**
      * @return string|null
@@ -488,7 +506,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(name="gibbonRoleIDAll", length=255)
      */
-    private $allRoles;
+    private $allRoles = '';
 
     /**
      * @return null|string
@@ -610,7 +628,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=15, name="lastIPAddress")
      */
-    private $lastIPAddress;
+    private $lastIPAddress = '';
 
     /**
      * @return null|string
@@ -752,7 +770,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(type="text")
      */
-    private $address1;
+    private $address1 = '';
 
     /**
      * @return null|string
@@ -776,7 +794,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="address1District")
      */
-    private $address1District;
+    private $address1District = '';
 
     /**
      * @return null|string
@@ -800,7 +818,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="address1Country")
      */
-    private $address1Country;
+    private $address1Country = '';
 
     /**
      * @return null|string
@@ -824,7 +842,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(type="text")
      */
-    private $address2;
+    private $address2 = '';
 
     /**
      * @return null|string
@@ -848,7 +866,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255)
      */
-    private $address2District;
+    private $address2District = '';
 
     /**
      * @return null|string
@@ -872,7 +890,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255)
      */
-    private $address2Country;
+    private $address2Country = '';
 
     /**
      * @return null|string
@@ -901,7 +919,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=6)
      */
-    private $phone1Type;
+    private $phone1Type = '';
 
     /**
      * @return null|string
@@ -925,7 +943,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=7, name="phone1CountryCode")
      */
-    private $phone1CountryCode;
+    private $phone1CountryCode = '';
 
     /**
      * @return null|string
@@ -949,7 +967,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=20)
      */
-    private $phone1;
+    private $phone1 = '';
 
     /**
      * @return null|string
@@ -973,7 +991,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=6)
      */
-    private $phone2Type;
+    private $phone2Type = '';
 
     /**
      * @return null|string
@@ -997,7 +1015,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=7, name="phone2CountryCode")
      */
-    private $phone2CountryCode;
+    private $phone2CountryCode = '';
 
     /**
      * @return null|string
@@ -1021,7 +1039,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=20)
      */
-    private $phone2;
+    private $phone2 = '';
 
     /**
      * @return null|string
@@ -1045,7 +1063,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=6)
      */
-    private $phone3Type;
+    private $phone3Type = '';
 
     /**
      * @return null|string
@@ -1069,7 +1087,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=7, name="phone3CountryCode")
      */
-    private $phone3CountryCode;
+    private $phone3CountryCode = '';
 
     /**
      * @return null|string
@@ -1093,7 +1111,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=20)
      */
-    private $phone3;
+    private $phone3 = '';
 
     /**
      * @return null|string
@@ -1117,7 +1135,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=6)
      */
-    private $phone4Type;
+    private $phone4Type = '';
 
     /**
      * @return null|string
@@ -1141,7 +1159,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=7, name="phone4CountryCode")
      */
-    private $phone4CountryCode;
+    private $phone4CountryCode = '';
 
     /**
      * @return null|string
@@ -1165,7 +1183,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=20)
      */
-    private $phone4;
+    private $phone4 = '';
 
     /**
      * @return null|string
@@ -1189,7 +1207,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255)
      */
-    private $website;
+    private $website = '';
 
     /**
      * @return null|string
@@ -1213,7 +1231,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30, name="languageFirst")
      */
-    private $languageFirst;
+    private $languageFirst = '';
 
     /**
      * @return null|string
@@ -1237,7 +1255,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30, name="languageSecond")
      */
-    private $languageSecond;
+    private $languageSecond = '';
 
     /**
      * @return null|string
@@ -1261,7 +1279,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30, name="languageThird")
      */
-    private $languageThird;
+    private $languageThird = '';
 
     /**
      * @return null|string
@@ -1285,7 +1303,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30, name="countryOfBirth")
      */
-    private $countryOfBirth;
+    private $countryOfBirth = '';
 
     /**
      * @return null|string
@@ -1309,7 +1327,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="birthCertificateScan")
      */
-    private $birthCertificateScan;
+    private $birthCertificateScan = '';
 
     /**
      * @return null|string
@@ -1333,7 +1351,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255)
      */
-    private $ethnicity;
+    private $ethnicity = '';
 
     /**
      * @return null|string
@@ -1357,7 +1375,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255)
      */
-    private $citizenship1;
+    private $citizenship1 = '';
 
     /**
      * @return null|string
@@ -1381,7 +1399,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $citizenship1Passport;
+    private $citizenship1Passport = '';
 
     /**
      * @return null|string
@@ -1405,7 +1423,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="citizenship1PassportScan")
      */
-    private $citizenship1PassportScan;
+    private $citizenship1PassportScan = '';
 
     /**
      * @return null|string
@@ -1429,7 +1447,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255)
      */
-    private $citizenship2;
+    private $citizenship2 = '';
 
     /**
      * @return null|string
@@ -1453,7 +1471,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $citizenship2Passport;
+    private $citizenship2Passport = '';
 
     /**
      * @return null|string
@@ -1477,7 +1495,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $religion;
+    private $religion = '';
 
     /**
      * @return null|string
@@ -1501,7 +1519,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30, name="nationalIDCardNumber")
      */
-    private $nationalIDCardNumber;
+    private $nationalIDCardNumber = '';
 
     /**
      * @return null|string
@@ -1525,7 +1543,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="nationalIDCardScan")
      */
-    private $nationalIDCardScan;
+    private $nationalIDCardScan = '';
 
     /**
      * @return null|string
@@ -1549,7 +1567,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="residencyStatus")
      */
-    private $residencyStatus;
+    private $residencyStatus = '';
 
     /**
      * @return null|string
@@ -1597,7 +1615,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=90)
      */
-    private $profession;
+    private $profession = '';
 
     /**
      * @return null|string
@@ -1621,7 +1639,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=90)
      */
-    private $employer;
+    private $employer = '';
 
     /**
      * @return null|string
@@ -1645,7 +1663,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=90, name="jobTitle")
      */
-    private $jobTitle;
+    private $jobTitle = '';
 
     /**
      * @return null|string
@@ -1669,7 +1687,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=90)
      */
-    private $emergency1Name;
+    private $emergency1Name = '';
 
     /**
      * @return null|string
@@ -1693,7 +1711,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $emergency1Number1;
+    private $emergency1Number1 = '';
 
     /**
      * @return null|string
@@ -1717,7 +1735,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $emergency1Number2;
+    private $emergency1Number2 = '';
 
     /**
      * @return null|string
@@ -1741,7 +1759,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $emergency1Relationship;
+    private $emergency1Relationship = '';
 
     /**
      * @return null|string
@@ -1765,7 +1783,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=90)
      */
-    private $emergency2Name;
+    private $emergency2Name = '';
 
     /**
      * @return null|string
@@ -1789,7 +1807,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $emergency2Number1;
+    private $emergency2Number1 = '';
 
     /**
      * @return null|string
@@ -1813,7 +1831,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $emergency2Number2;
+    private $emergency2Number2 = '';
 
     /**
      * @return null|string
@@ -1837,7 +1855,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=30)
      */
-    private $emergency2Relationship;
+    private $emergency2Relationship = '';
 
     /**
      * @return null|string
@@ -1886,7 +1904,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=10, name="studentID")
      */
-    private $studentID;
+    private $studentID = '';
 
     /**
      * @return null|string
@@ -1983,7 +2001,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=100, name="lastSchool")
      */
-    private $lastSchool;
+    private $lastSchool = '';
 
     /**
      * @return null|string
@@ -2007,7 +2025,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=100, name="nextSchool")
      */
-    private $nextSchool;
+    private $nextSchool = '';
 
     /**
      * @return null|string
@@ -2031,7 +2049,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=50, name="departureReason")
      */
-    private $departureReason;
+    private $departureReason = '';
 
     /**
      * @return null|string
@@ -2055,7 +2073,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column()
      */
-    private $transport;
+    private $transport = '';
 
     /**
      * @return null|string
@@ -2079,7 +2097,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(type="text", name="transportNotes")
      */
-    private $transportNotes;
+    private $transportNotes = '';
 
     /**
      * @return null|string
@@ -2103,7 +2121,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(type="text", name="calendarFeedPersonal")
      */
-    private $calendarFeedPersonal;
+    private $calendarFeedPersonal = '';
 
     /**
      * @return null|string
@@ -2127,7 +2145,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"}, name="viewCalendarSchool")
      */
-    private $viewCalendarSchool;
+    private $viewCalendarSchool = 'N';
 
     /**
      * getViewCalendarSchool
@@ -2152,7 +2170,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"}, name="viewCalendarPersonal")
      */
-    private $viewCalendarPersonal;
+    private $viewCalendarPersonal = 'Y';
 
     /**
      * getViewCalendarPersonal
@@ -2177,7 +2195,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=1, options={"default": "N"}, name="viewCalendarSpaceBooking")
      */
-    private $viewCalendarSpaceBooking;
+    private $viewCalendarSpaceBooking = 'N';
 
     /**
      * @return null|string
@@ -2227,7 +2245,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=20, name="lockerNumber")
      */
-    private $lockerNumber;
+    private $lockerNumber = '';
 
     /**
      * @return null|string
@@ -2251,7 +2269,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=20, name="vehicleRegistration")
      */
-    private $vehicleRegistration;
+    private $vehicleRegistration = '';
 
     /**
      * @return null|string
@@ -2275,7 +2293,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="personalBackground")
      */
-    private $personalBackground;
+    private $personalBackground = '';
 
     /**
      * @return null|string
@@ -2445,7 +2463,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="googleAPIRefreshToken")
      */
-    private $googleAPIRefreshToken;
+    private $googleAPIRefreshToken = '';
 
     /**
      * @return null|string
@@ -2469,7 +2487,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"}, name="receiveNotificationEmails")
      */
-    private $receiveNotificationEmails;
+    private $receiveNotificationEmails = 'Y';
 
     /**
      * @return null|string
@@ -2632,5 +2650,20 @@ class Person implements EntityInterface
     public function getLocale(): ?string
     {
         return $this->getI18nPersonal();
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTitleList(bool $forChoice = false): array
+    {
+        if ($forChoice)
+        {
+            $choice = [];
+            foreach(self::$titleList as $name)
+                $choice[$name] = $name;
+            return $choice;
+        }
+        return self::$titleList;
     }
 }

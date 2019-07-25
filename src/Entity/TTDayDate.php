@@ -19,14 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
  * Class TTDayDate
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTDayDateRepository")
- * @ORM\Table(name="TTDayDate", indexes={@ORM\Index(name="gibbonTTDayID", columns={"gibbonTTDayID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="TTDayDate", indexes={@ORM\Index(name="gibbonTTDayID", columns={"gibbonTTDayID"})})
  */
 class TTDayDate implements EntityInterface
 {
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonTTDayDateID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonTTDayDateID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

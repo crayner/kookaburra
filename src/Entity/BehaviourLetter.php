@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
  * Class BehaviourLetter
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\BehaviourLetterRepository")
- * @ORM\Table(name="BehaviourLetter")
+ * @ORM\Table(options={"auto_increment": 1}, name="BehaviourLetter")
  * @ORM\HasLifecycleCallbacks
  */
 class BehaviourLetter
@@ -27,7 +27,7 @@ class BehaviourLetter
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonBehaviourLetterID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonBehaviourLetterID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

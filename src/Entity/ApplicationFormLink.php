@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ApplicationFormLink
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ApplicationFormLinkRepository")
- * @ORM\Table(name="ApplicationFormLink", uniqueConstraints={@ORM\UniqueConstraint(name="link",columns={"gibbonApplicationFormID1","gibbonApplicationFormID2"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="ApplicationFormLink", uniqueConstraints={@ORM\UniqueConstraint(name="link",columns={"gibbonApplicationFormID1","gibbonApplicationFormID2"})})
  * @ORM\HasLifecycleCallbacks
  */
 class ApplicationFormLink
@@ -27,7 +27,7 @@ class ApplicationFormLink
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonApplicationFormLinkID", columnDefinition="INT(12) UNSIGNED")
+     * @ORM\Column(type="integer", name="gibbonApplicationFormLinkID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

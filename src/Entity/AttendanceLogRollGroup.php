@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class AttendanceLogRollGroup
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\AttendanceLogRollGroupRepository")
- * @ORM\Table(name="AttendanceLogRollGroup")
+ * @ORM\Table(options={"auto_increment": 1}, name="AttendanceLogRollGroup")
  * @ORM\HasLifecycleCallbacks
  */
 class AttendanceLogRollGroup
@@ -27,7 +27,7 @@ class AttendanceLogRollGroup
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonAttendanceLogRollGroupID", columnDefinition="INT(14) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonAttendanceLogRollGroupID", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

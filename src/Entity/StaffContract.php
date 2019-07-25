@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class StaffContract
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StaffContractRepository")
- * @ORM\Table(name="StaffContract")
+ * @ORM\Table(options={"auto_increment": 1}, name="StaffContract")
  * @ORM\HasLifecycleCallbacks()
  */
 class StaffContract
@@ -26,7 +26,7 @@ class StaffContract
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonStaffContractID", columnDefinition="INT(12) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="bigint", name="gibbonStaffContractID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

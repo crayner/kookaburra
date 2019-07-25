@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class MarkbookWeight
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\MarkbookWeightRepository")
- * @ORM\Table(name="MarkbookWeight")
+ * @ORM\Table(options={"auto_increment": 1}, name="MarkbookWeight")
  */
 class MarkbookWeight
 {
@@ -27,7 +27,7 @@ class MarkbookWeight
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonMarkbookWeightID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonMarkbookWeightID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

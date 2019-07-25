@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class NotificationEvent
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\NotificationEventRepository")
- * @ORM\Table(name="NotificationEvent", uniqueConstraints={@ORM\UniqueConstraint(name="event", columns={"event","moduleName"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="NotificationEvent", uniqueConstraints={@ORM\UniqueConstraint(name="event", columns={"event","moduleName"})})
  * */
 class NotificationEvent implements EntityInterface
 {
@@ -29,7 +29,7 @@ class NotificationEvent implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonNotificationEventID", columnDefinition="INT(6) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonNotificationEventID", columnDefinition="INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ScaleGrade
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ScaleGradeRepository")
- * @ORM\Table(name="ScaleGrade")
+ * @ORM\Table(options={"auto_increment": 1}, name="ScaleGrade")
  */
 class ScaleGrade
 {
@@ -28,7 +28,7 @@ class ScaleGrade
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonScaleGradeID", columnDefinition="INT(7) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="gibbonScaleGradeID", columnDefinition="INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
