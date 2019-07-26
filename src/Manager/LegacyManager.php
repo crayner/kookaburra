@@ -264,7 +264,7 @@ class LegacyManager
          */
         $localeCode = str_replace('_', '-', $session->get('i18n')['code']);
         $localeCodeShort = substr($session->get('i18n')['code'], 0, 2);
-        $localePath = $session->get('absolutePath').'/build/jquery-ui/i18n/jquery.ui.datepicker-%1$s.js';
+        $localePath = $session->get('absolutePath').'/gibbon/jquery-ui/i18n/jquery.ui.datepicker-%1$s.js';
 
         $datepickerLocale = 'en-GB';
         if ($localeCode === 'en-US' || is_file(sprintf($localePath, $localeCode))) {
@@ -298,7 +298,7 @@ class LegacyManager
                     'locale' => $datepickerLocale,
                 ],
                 'thickbox' => [
-                    'pathToImage' => $session->get('absoluteURL').'/build/thickbox/loadingAnimation.gif',
+                    'pathToImage' => $session->get('absoluteURL').'/gibbon/thickbox/loadingAnimation.gif',
                 ],
                 'tinymce' => [
                     'valid_elements' => getSettingByScope($connection2, 'System', 'allowableHTML'),
@@ -319,40 +319,40 @@ class LegacyManager
 
         // Set page scripts: head
         $page->scripts->addMultiple([
-            'lv'             => 'build/LiveValidation/livevalidation_standalone.compressed.js',
-            'jquery'         => 'build/jquery/jquery.js',
-            'jquery-migrate' => 'build/jquery/jquery-migrate.min.js',
-            'jquery-ui'      => 'build/jquery-ui/js/jquery-ui.min.js',
-            'jquery-time'    => 'build/jquery-timepicker/jquery.timepicker.min.js',
-            'jquery-chained' => 'build/chained/jquery.chained.min.js',
-            'core'           => 'build/core/core.min.js',
+            'lv'             => 'gibbon/LiveValidation/livevalidation_standalone.compressed.js',
+            'jquery'         => 'gibbon/jquery/jquery.js',
+            'jquery-migrate' => 'gibbon/jquery/jquery-migrate.min.js',
+            'jquery-ui'      => 'gibbon/jquery-ui/js/jquery-ui.min.js',
+            'jquery-time'    => 'gibbon/jquery-timepicker/jquery.timepicker.min.js',
+            'jquery-chained' => 'gibbon/chained/jquery.chained.min.js',
+            'core'           => 'gibbon/core/core.min.js',
         ], ['context' => 'head']);
 
         // Set page scripts: foot - jquery
         $page->scripts->addMultiple([
-            'jquery-latex'    => 'build/jquery-jslatex/jquery.jslatex.js',
-            'jquery-form'     => 'build/jquery-form/jquery.form.js',
+            'jquery-latex'    => 'gibbon/jquery-jslatex/jquery.jslatex.js',
+            'jquery-form'     => 'gibbon/jquery-form/jquery.form.js',
             //This sets the default for en-US, or changes for none en-US
-            'jquery-date'     => $datepickerLocale === 'en-US' ? '' : 'build/jquery-ui/i18n/jquery.ui.datepicker-'.$datepickerLocale.'.js',
-            'jquery-autosize' => 'build/jquery-autosize/jquery.autosize.min.js',
-            'jquery-timeout'  => 'build/jquery-sessionTimeout/jquery.sessionTimeout.min.js',
-            'jquery-token'    => 'build/jquery-tokeninput/src/jquery.tokeninput.js',
+            'jquery-date'     => $datepickerLocale === 'en-US' ? '' : 'gibbon/jquery-ui/i18n/jquery.ui.datepicker-'.$datepickerLocale.'.js',
+            'jquery-autosize' => 'gibbon/jquery-autosize/jquery.autosize.min.js',
+            'jquery-timeout'  => 'gibbon/jquery-sessionTimeout/jquery.sessionTimeout.min.js',
+            'jquery-token'    => 'gibbon/jquery-tokeninput/src/jquery.tokeninput.js',
         ], ['context' => 'foot']);
 
         // Set page scripts: foot - misc
-        $thickboxInline = 'var tb_pathToImage="'.$session->get('absoluteURL').'/build/thickbox/loadingAnimation.gif";';
+        $thickboxInline = 'var tb_pathToImage="'.$session->get('absoluteURL').'/gibbon/thickbox/loadingAnimation.gif";';
         $page->scripts->add('thickboxi', $thickboxInline, ['type' => 'inline']);
         $page->scripts->addMultiple([
-            'thickbox' => 'build/thickbox/thickbox-compressed.js',
-            'tinymce'  => 'build/tinymce/tinymce.min.js',
+            'thickbox' => 'gibbon/thickbox/thickbox-compressed.js',
+            'tinymce'  => 'gibbon/tinymce/tinymce.min.js',
         ], ['context' => 'foot']);
 
         // Set page scripts: foot - core
         $page->scripts->add('core-config', 'window.Gibbon = '.json_encode($javascriptConfig).';', ['type' => 'inline']);
-        $page->scripts->add('core-setup', 'build/core/setup.js');
+        $page->scripts->add('core-setup', 'gibbon/core/setup.js');
 
         // Register scripts available to the core, but not included by default
-        $page->scripts->register('chart', 'build/Chart.js/2.0/Chart.bundle.min.js', ['context' => 'head']);
+        $page->scripts->register('chart', 'gibbon/Chart.js/2.0/Chart.bundle.min.js', ['context' => 'head']);
 
         // Set system analytics code from session cache
         $page->addHeadExtra($session->get('analytics'));
@@ -361,9 +361,9 @@ class LegacyManager
          * STYLESHEETS & CSS
          */
         $page->stylesheets->addMultiple([
-            'jquery-ui'    => 'build/jquery-ui/css/blitzer/jquery-ui.css',
-            'jquery-time'  => 'build/jquery-timepicker/jquery.timepicker.css',
-            'thickbox'     => 'build/thickbox/thickbox.css',
+            'jquery-ui'    => 'gibbon/jquery-ui/css/blitzer/jquery-ui.css',
+            'jquery-time'  => 'gibbon/jquery-timepicker/jquery.timepicker.css',
+            'thickbox'     => 'gibbon/thickbox/thickbox.css',
         ], ['weight' => -1]);
 
         // Add right-to-left stylesheet
@@ -389,8 +389,8 @@ class LegacyManager
             ['type' => 'inline']
         );
 
-        $page->stylesheets->add('theme-dev', 'build/core/theme.min.css');
-        $page->stylesheets->add('core', 'build/core/core.min.css', ['weight' => 10]);
+        $page->stylesheets->add('theme-dev', 'gibbon/core/theme.min.css');
+        $page->stylesheets->add('core', 'gibbon/core/core.min.css', ['weight' => 10]);
 
         /**
          * USER CONFIGURATION

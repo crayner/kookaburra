@@ -45,8 +45,8 @@ if (isActionAccessible($guid, $connection2, '/modules/System Admin/systemCheck.p
 
     $phpVersion = phpversion();
     $apacheVersion = function_exists('apache_get_version')? apache_get_version() : false;
-    $mysqlVersion = $pdo->selectOne("SELECT VERSION()");
-    $mysqlCollation = $pdo->selectOne("SELECT COLLATION('gibbon')");
+    $mysqlVersion = $pdo->selectOne("SELECT VERSION()")['VERSION()'];
+    $mysqlCollation = $pdo->selectOne("SELECT COLLATION('a')")["COLLATION('a')"];
 
     $phpRequirement = $gibbon->getSystemRequirement('php');
     $mysqlRequirement = $gibbon->getSystemRequirement('mysql');
@@ -142,20 +142,21 @@ if (isActionAccessible($guid, $connection2, '/modules/System Admin/systemCheck.p
         }
     }
 
-    // FILE PERMS
-    $form->addRow()->addHeading(__('File Permissions'));
+    if (substr(PHP_OS, 0, 3) !== 'WIN') {
+        // FILE PERMS
+        $form->addRow()->addHeading(__('File Permissions'));
 
-    $row = $form->addRow();
+        $row = $form->addRow();
         $row->addLabel('systemWriteLabel', __('System not publicly writeable'));
         $row->addTextField('systemWrite')->setValue(sprintf(__('%s files checked (%s publicly writeable)'), $fileCount, $publicWriteCount))->readonly();
-        $row->addContent($publicWriteCount == 0? $trueIcon : $falseIcon);
+        $row->addContent($publicWriteCount == 0 ? $trueIcon : $falseIcon);
 
-    $row = $form->addRow();
+        $row = $form->addRow();
         $row->addLabel('uploadsFolderLabel', __('Uploads folder server writeable'));
-        $row->addTextField('uploadsFolder')->setValue($_SESSION[$guid]['absoluteURL'].'/uploads')->readonly();
-        $row->addContent(is_writable($_SESSION[$guid]['absolutePath'].'/uploads')? $trueIcon : $falseIcon);
+        $row->addTextField('uploadsFolder')->setValue($_SESSION[$guid]['absolutePath'] . '/uploads')->readonly();
+        $row->addContent(is_writable($_SESSION[$guid]['absolutePath'] . '/uploads') ? $trueIcon : $falseIcon);
 
-
+    }
     echo $form->getOutput();
 
 

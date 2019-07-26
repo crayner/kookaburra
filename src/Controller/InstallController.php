@@ -45,6 +45,7 @@ class InstallController extends AbstractController
             $errors = $validator->validate($form->get('code')->getData(), new \App\Validator\I18n());
             if (0 === count($errors)) {
                 $manager->setLocale($form->get('code')->getData());
+                $manager->setInstallationStatus('mysql');
                 return $this->redirectToRoute('installation_mysql');
             }
         }
@@ -73,6 +74,7 @@ class InstallController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                $manager->setInstallationStatus('build');
                 return $manager->setMySQLSettings($form);
             } else {
                 if (0 < count($form->getErrors()))
@@ -133,16 +135,20 @@ class InstallController extends AbstractController
             [
                 'form' => $form->createView(),
                 'message' => $message,
-                'manager' => $manager,            ]
+                'manager' => $manager,
+            ]
         );
     }
 
     /**
      * installationComplete
+     * @param InstallationManager $manager
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/installation/complete/", name="installation_complete")
      */
-    public function installationComplete()
+    public function installationComplete(InstallationManager $manager)
     {
+        $manager->setInstallationStatus('complete');
         return $this->render('installation/complete.html.twig');
     }
 }

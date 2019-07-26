@@ -24,15 +24,12 @@ use App\Util\SecurityHelper;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Intl\Currencies;
-use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
 /**
@@ -85,6 +82,7 @@ class InstallationManager
             } else {
                 $config = $this->readKookaburraYaml();
                 $config['parameters']['absoluteURL'] = str_replace('/installation/check/', '', $this->urlHelper->getAbsoluteUrl('/installation/check/'));
+                $config['parameters']['guid'] = str_replace(['{','-','}'], '', com_create_guid());
                 $this->writeKookaburraYaml($config);
             }
         }
@@ -248,7 +246,7 @@ class InstallationManager
         if ('' !== $content)
             return new Response($content);// if you used NullOutput()
 
-
+        $this->setInstallationStatus('system');
         return new RedirectResponse('/installation/system/');
     }
 
@@ -324,5 +322,21 @@ class InstallationManager
         $config['parameters']['timezone'] = $form->get('timezone')->getData();
         unset( $config['parameters']['installation']);
         $this->writeKookaburraYaml($config);
+    }
+
+    /**
+     * setInstallationStatus
+     * @param string $status
+     */
+    public function setInstallationStatus(string $status)
+    {
+        $config = $this->readKookaburraYaml();
+        $config['parameters']['installation']['status'] = $status;
+        if ($status === 'complete') {
+            $config['parameters']['installed'] = true;
+            unset($config['parameters']['installation']);
+        }
+        $this->writeKookaburraYaml($config);
+
     }
 }

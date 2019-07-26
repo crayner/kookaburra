@@ -31,7 +31,6 @@ class CatchController extends AbstractController
         $cwd = getcwd();
         $pathInfo = urldecode($request->getPathInfo());
 
-
         if (realpath(__DIR__ . '/../../Gibbon/' . $pathInfo) === false)
         {
             throw new Exception(sprintf('The file %s does not exist in the %s directory!', $pathInfo, realpath(__DIR__ . '/../../Gibbon')));

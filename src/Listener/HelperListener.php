@@ -62,6 +62,15 @@ use Twig\Environment;
 class HelperListener implements EventSubscriberInterface
 {
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
      * HelperListener constructor.
      * @param EntityManagerInterface $entityManager
      * @param MessageManager $messageManager
@@ -97,6 +106,7 @@ class HelperListener implements EventSubscriberInterface
             $uh = new UserHelper($tokenStorage);
         }
         $this->container = $container;
+        $this->router = $router;
     }
 
     /**
@@ -114,16 +124,37 @@ class HelperListener implements EventSubscriberInterface
      * gibbonInitiate
      * @param RequestEvent $event
      */
-    public function gibbonInitiate(RequestEvent $event){
-
-        if (false !== strpos($event->getRequest()->getPathInfo(), '/install'))
+    public function gibbonInitiate(RequestEvent $event)
+    {
+        if (false !== strpos($event->getRequest()->getPathInfo(), '/installation/'))
             return;
-        $installed = intval($this->container->getParameter('installed'));
-        switch($installed) {
-            case 0:
-                $response = new RedirectResponse('/installation/check/');
-                $event->setResponse($response);
-                break;
+
+        $installed =  $this->container->hasParameter('installed') ? (bool) $this->container->getParameter('installed') : false;
+
+        if ($installed)
+            return;
+
+        $installationProcess = $this->container->hasParameter('installation') ? $this->container->getParameter('installation') : [];
+
+        if (!isset($installationProcess['status']) || $installationProcess['status'] === 'check') {
+            $config = GlobalHelper::readKookaburraYaml();
+            $config['parameters']['installation']['status'] = 'check';
+            $config['parameters']['installed'] = false;
+            GlobalHelper::writeKookaburraYaml($config);
+            $event->setResponse(new RedirectResponse($this->router->generate('installation_check')));
+            return ;
+        }
+        if ($installationProcess['status'] === 'mysql') {
+            $event->setResponse(new RedirectResponse($this->router->generate('installation_mysql')));
+            return ;
+        }
+        if ($installationProcess['status'] === 'build') {
+            $event->setResponse(new RedirectResponse($this->router->generate('installation_build')));
+            return ;
+        }
+        if ($installationProcess['status'] === 'system') {
+            $event->setResponse(new RedirectResponse($this->router->generate('installation_system')));
+            return ;
         }
     }
 }

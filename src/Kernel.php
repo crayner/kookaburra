@@ -74,6 +74,7 @@ class Kernel extends BaseKernel
         $container->setParameter('databaseName', null);
         $container->setParameter('databasePort', null);
         $container->setParameter('security.hierarchy.roles', null);
-        $container->setParameter('installed', 0);
+        $container->setParameter('installed', false);
+        $container->setParameter('installation', []);
     }
 }
