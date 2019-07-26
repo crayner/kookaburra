@@ -13,13 +13,21 @@
             {{- form_help(form) -}}
         </td>
         <td class="{{ widget_class|default('w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0') }}"{% if widget_colspan > '1' %} colspan="{{ widget_colspan }}"{% endif %}>
-                {{- form_errors(form) -}}
-            <div class="{{ div_class|default('flex-1 relative') }}{% if 'checkbox' in block_prefixes %} right{% endif %}">
+            <div class="{{ div_class|default('flex-1 relative') }}{% if 'checkbox' in block_prefixes %} right{% endif %}{{ errors|length > 0 ? ' errors' : '' }}">
                 {{- form_widget(form, widget_attr) -}}
+                {{- form_errors(form) -}}
             </div>
         </td>
     </tr>
 {%- endblock form_row -%}
+
+{%- block header_row -%}
+    <tr{% if row_class is not same as(false) %} class="{{ row_class|default("break") }}{% endif %}">
+        <td{% if label_class is not same as(false) %} class="{{ label_class|default("px-2 border-b-0 sm:border-b border-t-0") }}"{% endif %}{% if label_colspan > 1 %} colspan="{{ label_colspan }}"{% endif %}>
+            <h3>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</h3>
+        </td>
+    </tr>
+{%- endblock header_row -%}
 
 {%- block choice_widget_collapsed -%}
     {%- if required and placeholder is none and not placeholder_in_choices and not multiple and (attr.size is not defined or attr.size <= 1) -%}
@@ -41,7 +49,6 @@
     </select>
 {%- endblock choice_widget_collapsed -%}
 
-
 {%- block button_row -%}
     <tr{% if row_class is not same as(false) %} class="{{ row_class|default('flex flex-col sm:flex-row justify-between content-center p-0') }}"{% endif %}>
         <td class="{{ label_class|default('flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0') }}"{% if label_colspan > '1' %} colspan="{{ label_colspan }}"{% endif %}>{% if name is same as ('submit') %}<span class="emphasis small">* {{ 'denotes a required field'|trans }}</span>{% endif %}</td>
@@ -55,8 +62,6 @@
     {% if sub_label is not same as('') %}<label class="leading-normal">{{ (translation_domain is same as(false) ? sub_label : sub_label|trans({}, translation_domain)) }}</label>{% endif %}
     <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
 {%- endblock checkbox_widget -%}
-
-
 
 {# Labels #}
 
@@ -110,3 +115,17 @@
         </span>
     {%- endif -%}
 {%- endblock form_help %}
+
+
+{# Errors #}
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <br/>
+        <ul>
+            {%- for error in errors -%}
+                <li>{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
