@@ -1273,3 +1273,11 @@ table.smallIntBorder td.noPadding {
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+div.errors input, div.errors select, div.errors checkbox {
+    border: 1px solid red;
+}
+.errors li {
+    color: red;
+    list-style: none;
+    font-size: 0.65rem;
+}
