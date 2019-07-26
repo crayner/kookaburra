@@ -66,4 +66,11 @@ class SystemAdminController extends AbstractController
             return new RedirectResponse($url. '&return=warning1');
         return new RedirectResponse($url. '&return=success0');
     }
+
+    /**
+     * check
+     * @Route("/system/check/", name="system_check")
+     * @Security("is_granted('ROLE_ACTION', ['/modules/System Admin/systemCheck.php'])")
+     */
+    public function check(){}
 }

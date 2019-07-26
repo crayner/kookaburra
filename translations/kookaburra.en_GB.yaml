@@ -27,3 +27,6 @@ The password must contain as least one number.: The password must contain as lea
 Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).: Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).
 'Must be at least %1$s characters in length.': 'Must be at least %1$s characters in length.'
 'Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.': 'Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.'
+'Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.':
+    'Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.'
+'Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.': 'Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.'

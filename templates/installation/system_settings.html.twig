@@ -14,16 +14,11 @@
     {{ form_start(form) }}
     <table class="smallIntBorder fullWidth standardForm relative" cellspacing="0">
         <tbody>
-            <tr class="break">
-                <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="2">
-                    <h3>{{ 'User Account'|trans }}</h3>
-                </td>
-            </tr>
+            {{ form_row(form.userAccountHeader) }}
             {{ form_row(form.title) }}
             {{ form_row(form.surname) }}
             {{ form_row(form.firstName) }}
             {{ form_row(form.email) }}
-            {{ form_row(form.support) }}
             {{ form_row(form.username) }}
             <tr id="" class=" flex flex-col sm:flex-row justify-between content-center p-0">
                 <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
@@ -48,11 +43,18 @@
                 </td>
             </tr>
             {{ form_row(form.password) }}
-            <tr class="break">
-                <td class="px-2 border-b-0 sm:border-b border-t-0" colspan="2">
-                    <h3>{{ 'System Settings'|trans }}</h3>
-                </td>
-            </tr>
+            {{ form_row(form.systemSettingsHeader) }}
+            {{ form_row(form.baseUrl) }}
+            {{ form_row(form.basePath) }}
+            {{ form_row(form.systemName) }}
+            {{ form_row(form.installType) }}
+            {{ form_row(form.organisationHeader) }}
+            {{ form_row(form.organisationName) }}
+            {{ form_row(form.organisationNameShort) }}
+            {{ form_row(form.miscellaneousHeader) }}
+            {{ form_row(form.country) }}
+            {{ form_row(form.currency) }}
+            {{ form_row(form.timezone) }}
             {{ form_row(form.submit) }}
         </tbody>
     </table>

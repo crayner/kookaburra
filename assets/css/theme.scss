@@ -61,7 +61,7 @@ body {
     @apply bg-gray-100 border-gray-600 text-gray-600;
 }
 
-.message {
+.info, .message {
     @apply bg-blue-200 border-blue-700 text-blue-700;
 }
 
@@ -91,11 +91,11 @@ body {
     @apply bg-purple-200 border-purple-700 text-purple-700;
 }
 
-div.message, div.success, div.warning, div.error, div.exception, div.dull {
+div.message, div.info, div.success, div.warning, div.error, div.exception, div.dull {
     @apply shadow border-l-6 p-3 my-3 text-xs;
 }
 
-div.message a, div.success a, div.warning a, div.error a, div.exception a, div.dull a {
+div.message a, div.info a, div.success a, div.warning a, div.error a, div.exception a, div.dull a {
     color: inherit;
 }
 

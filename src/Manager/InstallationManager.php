@@ -14,6 +14,7 @@ namespace App\Manager;
 
 use App\Entity\Person;
 use App\Entity\Role;
+use App\Entity\Setting;
 use App\Entity\Staff;
 use App\Provider\ProviderFactory;
 use App\Security\SecurityUser;
@@ -30,6 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
@@ -298,6 +300,29 @@ class InstallationManager
         }
         $person->setStaff(ProviderFactory::getRepository(Staff::class)->find(1));
         $securityUser = new SecurityUser($person);
+    }
 
+    /**
+     * setSystemSettings
+     * @param FormInterface $form
+     */
+    public function setSystemSettings(FormInterface $form)
+    {
+        $settingProvider = ProviderFactory::create(Setting::class);
+
+        $settingProvider->setSettingByScope('System', 'absoluteURL', $form->get('baseUrl')->getData());
+        $settingProvider->setSettingByScope('System', 'absolutePath', $form->get('basePath')->getData());
+        $settingProvider->setSettingByScope('System', 'systemName', $form->get('systemName')->getData());
+        $settingProvider->setSettingByScope('System', 'installType', $form->get('installType')->getData());
+        $settingProvider->setSettingByScope('System', 'organisationName', $form->get('organisationName')->getData());
+        $settingProvider->setSettingByScope('System', 'organisationNameShort', $form->get('organisationNameShort')->getData());
+        $settingProvider->setSettingByScope('System', 'country', $form->get('country')->getData());
+        $settingProvider->setSettingByScope('System', 'currency', $form->get('currency')->getData().' '.Currencies::getSymbol($form->get('currency')->getData()));
+        $settingProvider->setSettingByScope('System', 'timezone', $form->get('timezone')->getData());
+        $config = $this->readKookaburraYaml();
+        $config['parameters']['absoluteURL'] = $form->get('baseUrl')->getData();
+        $config['parameters']['timezone'] = $form->get('timezone')->getData();
+        unset( $config['parameters']['installation']);
+        $this->writeKookaburraYaml($config);
     }
 }

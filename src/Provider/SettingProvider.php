@@ -15,6 +15,7 @@ namespace App\Provider;
 use App\Entity\I18n;
 use App\Entity\Person;
 use App\Entity\Setting;
+use App\Exception\SettingNotFoundException;
 use App\Manager\Traits\EntityTrait;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Services\Format;
@@ -171,5 +172,22 @@ class SettingProvider implements EntityProviderInterface
         if (empty($result))
             return $default;
         return strval($result);
+    }
+
+    /**
+     * setSettingByScope
+     * @param string $scope
+     * @param string $name
+     * @param string $value
+     * @throws SettingNotFoundException
+     */
+    public function setSettingByScope(string $scope, string $name, string $value)
+    {
+        $setting = $this->getSettingByScope($scope, $name, true);
+        if (false === $setting)
+            throw new SettingNotFoundException($scope,$name);
+
+        $setting->setValue($value);
+        $this->saveEntity();
     }
 }

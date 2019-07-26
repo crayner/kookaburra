@@ -20,7 +20,6 @@ use App\Form\Installation\MySQLType;
 use App\Form\Installation\SystemType;
 use App\Manager\InstallationManager;
 use App\Util\LocaleHelper;
-use Gibbon\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -113,10 +112,11 @@ class InstallController extends AbstractController
      */
     public function installationSystem(Request $request, InstallationManager $manager)
     {
-        $settings = new SystemSettings();
+        $settings = new SystemSettings($request);
+        $settings->injectRequest($request);
         $message = null;
 
-        $form = $this->createForm(SystemType::class, $settings);
+        $form = $this->createForm(SystemType::class, $settings, ['timezone' => $this->getParameter('timezone')]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted())
@@ -124,7 +124,9 @@ class InstallController extends AbstractController
             if ($form->isValid())
             {
                 $manager->setAdministrator($form);
+                $manager->setSystemSettings($form);
             }
+            return $this->redirectToRoute('installation_complete');
         }
 
         return $this->render('installation/system_settings.html.twig',
@@ -133,5 +135,14 @@ class InstallController extends AbstractController
                 'message' => $message,
                 'manager' => $manager,            ]
         );
+    }
+
+    /**
+     * installationComplete
+     * @Route("/installation/complete/", name="installation_complete")
+     */
+    public function installationComplete()
+    {
+        return $this->render('installation/complete.html.twig');
     }
 }
