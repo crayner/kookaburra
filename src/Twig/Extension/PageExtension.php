@@ -66,7 +66,6 @@ class PageExtension extends AbstractExtension
             new TwigFunction('notificationTray', [$this, 'notificationTray']),
             new TwigFunction('sidebar', [$this, 'sidebar']),
             new TwigFunction('content', [$this, 'content']),
-            new TwigFunction('breadcrumbs', [$this, 'breadcrumbs']),
             new TwigFunction('alerts', [$this, 'alerts']),
             new TwigFunction('getThemeName', [$this, 'getThemeName']),
         ];
@@ -132,15 +131,6 @@ class PageExtension extends AbstractExtension
      * @return bool
      */
     public function content()
-    {
-        return false;
-    }
-
-    /**
-     * breadcrumbs
-     * @return bool
-     */
-    public function breadcrumbs()
     {
         return false;
     }

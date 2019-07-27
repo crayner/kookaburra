@@ -18,7 +18,7 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    .addEntry('default', './assets/themes/default/default.js')
+    .addEntry('Default', './assets/themes/default/default.js')
     .addStyleEntry('css/theme', './assets/css/theme.scss')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .splitEntryChunks()

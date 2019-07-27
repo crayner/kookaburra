@@ -1,0 +1,8 @@
+default_catch:
+    path:     /{path}
+    defaults:
+        _controller: 'App\Controller\CatchController::index'
+        path: /catch/
+        permanent: true
+    requirements:
+        path: ".+"

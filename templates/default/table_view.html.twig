@@ -1,0 +1,28 @@
+{% trans_default_domain "gibbon" %}
+
+<div class="{{ table.wrapperClass is not same as ('') ? table.wrapperClass|trim : '' }}">
+    <table class="{{ table.tableClass is not same as ('') ? table.tableClass|trim : '' }}" cellspacing="{{ table.cellSpacing }}">
+        <thead>
+            <tr class="{{ table.theadClass is not same as ('') ? table.theadClass|trim : '' }}">
+                {% for column in table.columns %}
+                    <th class="{{ column.headClass is not same as ('') ? column.headClass|trim : '' }}" style="{{ column.style is not same as('') ? column.style|trim : '' }}" colspan="{{ column.colspan }}">{{ column.label|trans(column.labelParams|default({})) }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in table_data %}
+                <tr class="{{ table.tbodyClass is not same as ('') ? table.tbodyClass|trim : '' }}">
+                    {% for column in table.columns %}
+                        <td class="{{ column.bodyClass is not same as ('') ? column.bodyClass|trim : '' }}" style="{{ column.style is not same as('') ? column.style|trim : '' }}" colspan="{{ column.colspan }}">
+                            {% if column.name is same as ('actionColumn') %}
+
+                            {% else %}
+                                {{ data.get(column.name, table.parameters)|raw }}
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

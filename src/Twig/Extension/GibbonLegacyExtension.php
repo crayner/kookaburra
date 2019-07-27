@@ -17,7 +17,6 @@ use Twig\TwigFunction;
 
 class GibbonLegacyExtension extends AbstractExtension
 {
-
     /**
      * @return string
      */

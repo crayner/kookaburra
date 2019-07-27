@@ -120,7 +120,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      */
     public function getPrimaryRole(): ?Role
     {
-        return $this->isUser() ? $this->getUser()->getPrimaryRole() : null;
+        return $this->primaryRole;
     }
 
     /**
@@ -131,7 +131,6 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     public function setPrimaryRole(?Role $primaryRole): SecurityUser
     {
         $this->primaryRole = $primaryRole;
-        if ($this->isUser()) $this->getUser()->setPrimaryRole($primaryRole);
         return $this;
     }
 
@@ -140,7 +139,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      * @param Person|null $user
      * @return bool
      */
-    private function isUser(Person $user = null)
+    private function isUser(Person $user)
     {
         return $user instanceof Person;
     }

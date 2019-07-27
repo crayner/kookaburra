@@ -54,8 +54,6 @@ class SecurityHelper
         LoggerInterface $logger,
         AuthorizationCheckerInterface $checker
     ) {
-        self::$actionProvider = ProviderFactory::create(Action::class);
-        self::$moduleProvider = ProviderFactory::create(Module::class);
         self::$logger = $logger;
         self::$checker = $checker;
     }
@@ -65,7 +63,7 @@ class SecurityHelper
      */
     public static function getActionProvider(): ActionProvider
     {
-        return self::$actionProvider;
+        return ProviderFactory::create(Action::class);
     }
 
     /**
@@ -73,7 +71,7 @@ class SecurityHelper
      */
     public static function getModuleProvider(): ModuleProvider
     {
-        return self::$moduleProvider;
+        return ProviderFactory::create(Module::class);
     }
 
     /**

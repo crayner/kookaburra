@@ -52,18 +52,30 @@
                             {% include 'default/navigation.html.twig' %}
                         {% endif %}
 
-                        {% if breadcrumbs() %}
+                        {% if breadcrumbs is defined %}
                             <div class="sm:pt-10 lg:pt-0">
                                 <div class="absolute lg:static top-0 my-6 text-xs text-blue-700">
-                                    {% for title, src in breadcrumbs() %}
-                                        {% if loop.last %}
-                                            <span class="trailEnd">{{ title }}</span>
-                                        {% elseif loop.revindex > 5 and loop.index != 1 %}
-                                            <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ src }}">...</a> >
-                                        {% else %}
-                                            <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ src }}">{{ title }}</a> >
-                                        {% endif %}
-                                    {% endfor %}
+                                    {% if breadcrumbs is same as('new') %}
+                                        {% for crumb in createBreadCrumbs(module) %}
+                                            {% if loop.last %}
+                                                <span class="trailEnd">{{ crumb.name }}</span>
+                                            {% elseif loop.revindex > 5 and loop.index != 1 %}
+                                                <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ crumb.uri }}">...</a> >
+                                            {% else %}
+                                                <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ crumb.uri }}">{{ crumb.name }}</a> >
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for title, src in breadcrumbs %}
+                                            {% if loop.last %}
+                                                <span class="trailEnd">{{ title }}</span>
+                                            {% elseif loop.revindex > 5 and loop.index != 1 %}
+                                                <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ src }}">...</a> >
+                                            {% else %}
+                                                <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ src }}">{{ title }}</a> >
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
                             </div>
                         {% endif %}
@@ -74,10 +86,10 @@
                                 <div class="{{ type }}">{{ text|raw }}</div>
                             {% endfor %}
                         {% endfor %}
-
+                        {% block content %}
                         {{ content()|join("\n")|raw }}
-
-                    {% endblock %}
+                        {% endblock content %}
+                    {% endblock page %}
                 </div>
 
 

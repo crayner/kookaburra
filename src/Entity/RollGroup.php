@@ -14,7 +14,9 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use App\Manager\Traits\EntityGlobals;
 use App\Util\EntityHelper;
+use App\Util\Format;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,6 +31,9 @@ use Doctrine\ORM\PersistentCollection;
 class RollGroup implements EntityInterface
 {
     use BooleanList;
+
+    use EntityGlobals;
+
     /**
      * @var integer|null
      * @ORM\Id()
@@ -415,5 +420,48 @@ class RollGroup implements EntityInterface
     public function __toArray(array $ignore = []): array
     {
         return EntityHelper::__toArray(RollGroup::class, $this, $ignore);
+    }
+
+    public function getTutors(): array
+    {
+        $tutors = [];
+        if ($this->getTutor())
+            $tutors[] = $this->getTutor();
+        if ($this->getTutor2())
+            $tutors[] = $this->getTutor2();
+        if ($this->getTutor3())
+            $tutors[] = $this->getTutor3();
+
+        return $tutors;
+    }
+
+    /**
+     * getFormatTutors
+     * @return string
+     */
+    public function getFormatTutors(array $parameters): string
+    {
+        $result = Format::nameList($this->getTutors(), 'Staff', false, true, null);
+        if (count($result) > 1 && $parameters['formatTutors'])
+            $result[0] .= ' (' . $parameters['formatTutors'] . ')';
+        return implode('<br/>', $result);
+    }
+
+    /**
+     * getSpaceName
+     * @return string
+     */
+    public function getSpaceName(): string
+    {
+        return $this->getSpace() ? $this->getSpace()->getName() : '';
+    }
+
+    /**
+     * getStudentCount
+     * @return int
+     */
+    public function getStudentCount(): int
+    {
+        return $this->getStudentEnrolments() ? count($this->getStudentEnrolments()) : '';
     }
 }

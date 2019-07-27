@@ -1,0 +1,11 @@
+{% trans_default_domain "gibbon" %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% set module = {'baseURL': '/roll/group', 'crumbs': [{'uri': '/list/', 'name': 'Roll Groups'}],  'title': 'View Roll Groups'} %}
+{% set breadcrumbs = 'new' %}
+
+{% block content %}
+    <p>{{ 'This page shows all roll groups in the current school year.'|trans }}</p>
+    {% include 'default/table_view.html.twig' %}
+{% endblock content %}
