@@ -16,6 +16,7 @@ use App\Entity\Action;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
 use App\Session\GibbonSession;
+use App\Util\SecurityHelper;
 use Gibbon\Core;
 use Gibbon\Database\Connection;
 use Gibbon\Database\MySqlConnector;
@@ -264,11 +265,11 @@ class GibbonManager implements ContainerAwareInterface
         // which is currently used in many Process pages.
         // TODO: replace this logic when switching to routing.
 
-        $address = $this->request->query->get('q') ?? $this->request->request->get('address') ?? '';
+        $address = $this->getAddress();
 
         $session->set('address', $address);
-        $session->set('module', $address ? getModuleName($address) : '');
-        $session->set('action', $address ? getActionName($address) : '');
+        $session->set('module', $address ? SecurityHelper::getModuleName($address) : '');
+        $session->set('action', $address ? SecurityHelper::getActionName($address) : '');
         $session->setGuid($this->guid);
 
         if (!$session->has('absoluteURL') || $session->get('absoluteURL') !== $this->container->getParameter('absoluteURL')) {
@@ -475,6 +476,17 @@ class GibbonManager implements ContainerAwareInterface
     public static function getService(string $name)
     {
         return self::$instance->container->get($name);
+    }
+
+    /**
+     * getAddress
+     * @return string
+     */
+    private function getAddress(): string
+    {
+        $address = $this->request->query->get('q') ?? $this->request->request->get('address') ?? '';
+
+        return $address;
     }
 }
 

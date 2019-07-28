@@ -1,0 +1,12 @@
+{% trans_default_domain "gibbon" %}
+
+{% if action.style is same as('view') %}
+    {% set routeParams = {} %}
+    {% for name, field in action.dataField %}
+        {% set value = data.get(field, table.parameters) %}
+        {% set routeParams = routeParams|merge({('' ~ name): value}) %}
+    {% endfor %}
+    <div class="flex -m-2 sm:m-0">
+        <a href="{{ path(action.route, routeParams) }}" class="{{ action.actionClass }}"><span class="fas fa-search-plus fa-2x{{ action.iconClass is not same as('') ? ' ' ~ action.iconClass : '' }}"></span></a>
+    </div>
+{% endif %}

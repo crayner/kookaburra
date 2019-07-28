@@ -16,6 +16,7 @@ use App\Entity\Action;
 use App\Entity\Module;
 use App\Entity\Person;
 use App\Entity\Setting;
+use App\Exception\RouteConfigurationException;
 use App\Provider\ActionProvider;
 use App\Provider\ModuleProvider;
 use App\Provider\ProviderFactory;
@@ -121,6 +122,22 @@ class SecurityHelper
     }
 
     /**
+     * checkModuleRouteReady
+     * @param string $address
+     * @return bool|Module
+     */
+    public static function checkModuleRouteReady(string $route)
+    {
+        try {
+            return self::getModuleProvider()->findOneBy(['name' => self::getModuleNameFromRoute($route), 'active' => 'Y']);
+        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
+        }
+
+        return false;
+    }
+
+    /**
      * getModuleName
      * @param string $address
      * @return bool|string
@@ -140,6 +157,37 @@ class SecurityHelper
         return substr($address, (10 + strlen(self::getModuleName($address))));
     }
 
+    /**
+     * getModuleName
+     * @param string $address
+     * @return bool|string
+     */
+    public static function getModuleNameFromRoute(string $route)
+    {
+        $route = self::splitRoute($route);
+        return $route['module'];
+    }
+
+    /**
+     * getActionName
+     * @param $address
+     * @return bool|string
+     */
+    public static function getActionNameFromRoute($route)
+    {
+        $route = self::splitRoute($route);
+        return $route['action'];
+    }
+
+    public  static function splitRoute(string $route): array
+    {
+        $route = explode('__', $route);
+        if (count($route) !== 2)
+            throw new RouteConfigurationException(implode('__', $route));
+        $route['module'] = ucwords(str_replace('_', ' ', $route[0]));
+        $route['action'] = $route[1];
+        return $route;
+    }
     /**
      * isActionAccessible
      * @param string $address
@@ -164,14 +212,61 @@ class SecurityHelper
                     try {
                         $role = UserHelper::getCurrentUser()->getPrimaryRole();
                         if (count(self::getActionProvider()->findByURLListModuleRole(
-                            [
-                                'name' => "%".$action."%",
-                                "module" => $module,
-                                'role' => $role,
-                                'sub' => $sub,
-                            ]
+                                [
+                                    'name' => "%".$action."%",
+                                    "module" => $module,
+                                    'role' => $role,
+                                    'sub' => $sub,
+                                ]
                             )) > 0)
-                                return true;
+                            return true;
+                    } catch (PDOException $e) {
+                    }
+                } else {
+                    self::$logger->warning(sprintf('No module was linked to the address "%s"', $address));
+                }
+            }
+        } else {
+            self::$logger->debug(sprintf('The user was not valid!' ));
+        }
+        self::$logger->debug(sprintf('The action "%s", role "%s" and sub-action "%s" combination is not accessible.', $action, $role, $sub ));
+
+        return false;
+    }
+
+    /**
+     * isRouteAccessible
+     * @param string $route
+     * @param string $sub
+     * @param LoggerInterface|null $logger
+     * @return bool
+     * @throws \Exception
+     */
+    public static function isRouteAccessible(string $route, string $sub = '%', ?LoggerInterface $logger = null): bool
+    {
+        $action = '';
+        $module = '';
+        $role = '';
+        //Check user is logged in
+        if (UserHelper::getCurrentUser() instanceof Person) {
+            //Check user has a current role set
+            if (! empty(UserHelper::getCurrentUser()->getPrimaryRole())) {
+                //Check module ready
+                $module = self::checkModuleRouteReady($route);
+                $action = self::getActionNameFromRoute($route);
+                if ($module instanceof Module) {
+                    //Check current role has access rights to the current action.
+                    try {
+                        $role = UserHelper::getCurrentUser()->getPrimaryRole();
+                        if (count(self::getActionProvider()->findByURLListModuleRole(
+                                [
+                                    'name' => "%".$action."%",
+                                    "module" => $module,
+                                    'role' => $role,
+                                    'sub' => $sub,
+                                ]
+                            )) > 0)
+                            return true;
                     } catch (PDOException $e) {
                     }
                 } else {

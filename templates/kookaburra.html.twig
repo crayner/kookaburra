@@ -8,7 +8,7 @@
             {{ include('default/head.html.twig') }}
         {% endblock head %}
     </head>
-    <body style="background: url('{{ asset('build/static/backgroundPage.jpg') }}') repeat fixed center top #A88EDB!important;">
+    <body style="background: url('{{ asset('build/static/backgroundPage.jpg') }}') repeat fixed center top olivedrab!important;">
     <div id="wrapOuter" class="sm:px-6">
         <div class="mx-auto max-w-6xl text-right text-white text-xs md:text-sm px-2 xl:px-0 {{ houseIDLogo() ? 'mt-2' : 'mt-6' }}">
             {{ minorLinks()|raw }}
@@ -38,7 +38,7 @@
                 {% if sidebar() %}
                     <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
                         {% block sidebar %}
-                            {% include 'default/navigation.html.twig' %}
+                            {% include 'default/sidebar/sidebar.html.twig' %}
                         {% endblock sidebar %}
                     </div>
                     <br style="clear: both">

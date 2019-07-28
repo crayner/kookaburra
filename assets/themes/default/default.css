@@ -1282,3 +1282,7 @@ div.errors input, div.errors select, div.errors checkbox {
     list-style: none;
     font-size: 0.65rem;
 }
+.fa-grey {
+    color: grey;
+    background-color: transparent;
+}

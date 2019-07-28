@@ -1,0 +1,17 @@
+{% trans_default_domain 'gibbon' %}
+
+{% if (sidebar.role_switcher is defined %}
+<div class="column-no-break">
+    <h2 style='margin-bottom: 10px' class='sidebar'>{{ 'Role Switcher'|trans }}</h2>
+    <p>{{ 'You have multiple roles within the system. Use the list below to switch role:'|trans }}</p>
+    <ul>
+        {% for role in app.user.getAllRolesByArray() %}
+            {% if role.id is same as(app.session.get('gibbonRoleIDCurrent')) %}
+                <li><a href="roleSwitcherProcess.php?gibbonRoleID={{ role.id }}">{{ role.name|trans }}</a> <i>{{ 'Active'|trans }}</i></li>
+            {% else %}
+                <li><a href="roleSwitcherProcess.php?gibbonRoleID={{ role.id }}">{{ role.name|trans }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

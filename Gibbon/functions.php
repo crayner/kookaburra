@@ -1499,13 +1499,19 @@ function getRoleList($gibbonRoleIDAll, $connection2)
     return $output;
 }
 
-//Get the module name from the address
+/**
+ * Get the module name from the address
+ * @deprecated Use SecurityUser::getModuleName
+ */
 function getModuleName($address)
 {
     return substr(substr($address, 9), 0, strpos(substr($address, 9), '/'));
 }
 
-//Get the action name from the address
+/**
+ * Get the action name from the address
+ * @deprecated Use SecurityHelper::getActionName
+ */
 function getActionName($address)
 {
     return strlen(getModuleName($address)) > 0 ? substr($address, (10 + strlen(getModuleName($address)))) : '';

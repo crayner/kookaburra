@@ -113,6 +113,8 @@ class ModuleGateway extends QueryableGateway
                 GROUP BY name
                 ORDER BY gibbonModule.name, gibbonAction.category, gibbonAction.name, precedence DESC";
 
-        return $this->db()->select($sql, $data);
+        $result = $this->db()->select($sql, $data);
+        dd($result);
+        return $result;
     }
 }

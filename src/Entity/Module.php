@@ -327,4 +327,13 @@ class Module implements EntityInterface
         $this->actions = $actions;
         return $this;
     }
+
+    /**
+     * getEntryURLFullRoute
+     * @return string
+     */
+    public function getEntryURLFullRoute(): string
+    {
+        return strtolower(implode('_', $this->getName())). '_' .$this->getEntryURL();
+    }
 }

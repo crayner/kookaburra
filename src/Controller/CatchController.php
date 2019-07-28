@@ -12,13 +12,16 @@
 
 namespace App\Controller;
 
-
 use App\Manager\GibbonManager;
 use Gibbon\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class CatchController
+ * @package App\Controller
+ */
 class CatchController extends AbstractController
 {
     /**

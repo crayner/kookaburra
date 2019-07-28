@@ -13,6 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\Action;
+use App\Entity\Module;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -42,5 +43,23 @@ class ActionRepository extends ServiceEntityRepository
             ->setParameters(['urlList' => $URLList, 'moduleName' => $moduleName, 'roleID' => $roleID])
             ->getQuery()
             ->getArrayResult();
+    }
+
+    /**
+     * findOneByModuleContainsURL
+     * @param Module $module
+     * @param string $address
+     * @return Action|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneByModuleContainsURL(Module $module, string $address): ?Action
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.module = :module')
+            ->setParameter('module', $module)
+            ->andWhere('a.URLList LIKE :route')
+            ->setParameter('route', '%'.$address.'%')
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

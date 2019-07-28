@@ -96,8 +96,7 @@ class HelperListener implements EventSubscriberInterface
         Environment $twig,
         ContainerInterface $container,
         LoggerInterface $logger,
-        GibbonManager $gibbonManager,
-        Format $format
+        GibbonManager $gibbonManager
     ) {
         if ($container->hasParameter('installed') && $container->getParameter('installed')) {
             $eh = new EntityHelper(new ProviderFactory($entityManager, $messageManager, $authorizationChecker, $router));
@@ -110,7 +109,6 @@ class HelperListener implements EventSubscriberInterface
         }
         $this->container = $container;
         $this->router = $router;
-        $this->format = $format;
     }
 
     /**
@@ -121,7 +119,6 @@ class HelperListener implements EventSubscriberInterface
     {
         return [
             KernelEvents::REQUEST => ['gibbonInitiate', 128],
-            KernelEvents::CONTROLLER => ['initiateController', 0],
         ];
     }
 
@@ -161,15 +158,5 @@ class HelperListener implements EventSubscriberInterface
             $event->setResponse(new RedirectResponse($this->router->generate('installation_system')));
             return ;
         }
-    }
-
-    /**
-     * initiateController
-     * @param ControllerEvent $event
-     */
-    public function initiateController(ControllerEvent $event)
-    {
-        $request = $event->getRequest();
-        $this->format->setupFromSession($request->getSession());
     }
 }

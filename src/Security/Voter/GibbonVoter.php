@@ -50,13 +50,9 @@ class GibbonVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $subject, array $attributes): int
     {
-        if (in_array('ROLE_ACTION', $attributes)) {
-            $resolver = new OptionsResolver();
-            $resolver->setDefaults([
-                0 => 'You can never find this string in the action table.',
-                1 => '%',
-            ]);
-            $subject = $resolver->resolve($subject);
+        if (in_array('ROLE_ACTION', $attributes))
+        {
+            $subject = $this->resolveSubject($subject);
             if (SecurityHelper::isActionAccessible($subject[0], $subject[1]))
                 return VoterInterface::ACCESS_GRANTED;
             else {
@@ -66,8 +62,31 @@ class GibbonVoter implements VoterInterface
                     self::$logger->info(sprintf('The user "%s" attempted to access the action "%s" and was denied.', $token->getUser()->formatName(), $subject[0]), $subject);
                 return VoterInterface::ACCESS_DENIED;
             }
+        } elseif (in_array('ROLE_ROUTE', $attributes))
+        {
+            $subject = $this->resolveSubject($subject);
+            if (SecurityHelper::isRouteAccessible($subject[0], $subject[1]))
+                return VoterInterface::ACCESS_GRANTED;
+            else {
+                if (empty($token->getUser()) || ! $token->getUser() instanceof UserInterface)
+                    self::$logger->info(sprintf('The user was not correctly authenticated to authorise for route "%s".', $subject[0]), $subject);
+                else
+                    self::$logger->info(sprintf('The user "%s" attempted to access the route "%s" and was denied.', $token->getUser()->formatName(), $subject[0]), $subject);
+                return VoterInterface::ACCESS_DENIED;
+            }
         }
 
         return VoterInterface::ACCESS_ABSTAIN;
+    }
+
+    private function resolveSubject(array$subject): array
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults([
+            0 => 'You can never find this string in the action table.',
+            1 => '%',
+        ]);
+        return $resolver->resolve($subject);
+
     }
 }

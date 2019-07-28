@@ -17,6 +17,7 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use App\Util\Format;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -2630,7 +2631,7 @@ class Person implements EntityInterface
     {
         $name = $preferredName ? $this->getPreferredName() : $this->getFirstName();
         $name = $initial ? substr($name, 0, 1): $name;
-        return FormatHelper::name($this->getTitle(), $name, $this->getSurname(),$this->getPrimaryRole() ? $this->getPrimaryRole()->getCategory() : 'Staff', $reverse, $informal);
+        return Format::name($this->getTitle(), $name, $this->getSurname(),$this->getPrimaryRole() ? $this->getPrimaryRole()->getCategory() : 'Staff', $reverse, $informal);
     }
 
     /**

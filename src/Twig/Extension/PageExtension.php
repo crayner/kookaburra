@@ -16,10 +16,13 @@ namespace App\Twig\Extension;
 use App\Entity\I18n;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
+use App\Twig\Sidebar;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -41,16 +44,28 @@ class PageExtension extends AbstractExtension
     private $stack;
 
     /**
+     * @var Sidebar
+     */
+    private $sidebar;
+
+    /**
+     * @var RouterInterface 
+     */
+    private $router;
+
+    /**
      * PageExtension constructor.
      *
      * @param ProviderFactory $factory
      * @param SessionInterface $session
      */
-    public function __construct(ProviderFactory $factory, SessionInterface $session, RequestStack $stack)
+    public function __construct(ProviderFactory $factory, Sidebar $sidebar, SessionInterface $session, RequestStack $stack, RouterInterface $router)
     {
         $this->i18nProvider = $factory::create(I18n::class);
         $this->session = $session;
         $this->stack = $stack;
+        $this->sidebar = $sidebar;
+        $this->router = $router;
     }
 
     /**
@@ -64,10 +79,12 @@ class PageExtension extends AbstractExtension
             new TwigFunction('houseIDLogo', [$this, 'houseIDLogo']),
             new TwigFunction('minorLinks', [$this, 'minorLinks']),
             new TwigFunction('notificationTray', [$this, 'notificationTray']),
-            new TwigFunction('sidebar', [$this, 'sidebar']),
+            new TwigFunction('sidebar', [$this->sidebar, 'hasContent']),
+            new TwigFunction('getSidebar', [$this->sidebar, 'getContent']),
             new TwigFunction('content', [$this, 'content']),
             new TwigFunction('alerts', [$this, 'alerts']),
             new TwigFunction('getThemeName', [$this, 'getThemeName']),
+            new TwigFunction('checkURL', [$this, 'checkURL']),
         ];
     }
 
@@ -115,18 +132,6 @@ class PageExtension extends AbstractExtension
     }
 
     /**
-     * sideBar
-     * @return string|boolean
-     */
-    public function sidebar()
-    {
-        $request = $this->stack->getCurrentRequest();
-        if (strpos($request->getPathInfo(), '/install') === 0)
-            return true;
-        return false;
-    }
-
-    /**
      * content
      * @return bool
      */
@@ -151,5 +156,19 @@ class PageExtension extends AbstractExtension
     public function getThemeName(): string
     {
         return $this->session->get('gibbonThemeName', 'default');
+    }
+
+    public function checkURL(array $link)
+    {
+        if (false === strpos($link['entryURL'], '.php')) {
+            $route = $link['url'];
+            $route = explode('q=/modules/', $route);
+            if (count($route) !== 2)
+                return $link['url'];
+            $route = strtolower(str_replace(' ', '_', substr($route[1], 0, strpos($route[1], '/')))) . '__' . $link['entryURL'];
+            $url = $this->router->generate($route, [], Router::ABSOLUTE_URL);
+            return $url;
+        }
+        return $link['url'];
     }
 }

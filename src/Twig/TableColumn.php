@@ -13,6 +13,8 @@
 namespace App\Twig;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 class TableColumn
 {
     /**
@@ -44,6 +46,11 @@ class TableColumn
      * @var string|null
      */
     private $style = '';
+
+    /**
+     * @var ArrayCollection
+     */
+    private $actions;
 
     /**
      * create
@@ -174,5 +181,49 @@ class TableColumn
     {
         $this->style = $style;
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getActions(): ArrayCollection
+    {
+        if (null === $this->actions)
+            $this->actions = new ArrayCollection();
+
+        return $this->actions;
+    }
+
+    /**
+     * Actions.
+     *
+     * @param ArrayCollection|null $actions
+     * @return TableColumn
+     */
+    public function setActions(?ArrayCollection $actions): TableColumn
+    {
+        $this->actions = $actions;
+        return $this;
+    }
+
+    /**
+     * addAction
+     * @param string $title
+     * @param string $style
+     * @param string $route
+     * @param array $dataField
+     * @return TableAction
+     */
+    public function addAction(string $title, string $style, string $route, array $dataField): TableAction
+    {
+        if ($this->getActions()->containsKey($title)) {
+            $action = $this->actions->get($title);
+            $action->setTitle($title)->setStyle($style)->setRoute($route)->setDataField($dataField);
+        } else {
+            $action = TableAction::create($title, $style, $route, $dataField);
+            $this->actions->set($title, $action);
+        }
+
+        return $action;
     }
 }

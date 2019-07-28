@@ -15,7 +15,11 @@
                     {% for column in table.columns %}
                         <td class="{{ column.bodyClass is not same as ('') ? column.bodyClass|trim : '' }}" style="{{ column.style is not same as('') ? column.style|trim : '' }}" colspan="{{ column.colspan }}">
                             {% if column.name is same as ('actionColumn') %}
-
+                                <nav class="relative group">
+                                    {% for action in column.actions %}
+                                        {% include 'default/table_view_action.html.twig' %}
+                                    {% endfor %}
+                                </nav>
                             {% else %}
                                 {{ data.get(column.name, table.parameters)|raw }}
                             {% endif %}

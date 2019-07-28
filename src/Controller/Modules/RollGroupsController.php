@@ -15,6 +15,7 @@ namespace App\Controller\Modules;
 use App\Entity\RollGroup;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
+use App\Twig\Sidebar;
 use App\Twig\TableViewManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,20 +24,19 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class RollGroupController
+ * Class RollGroupsController
  * @package App\Controller\Modules
- * @Route("/roll/group", name="roll_group_")
+ * @Route("/roll/groups", name="roll_groups__")
  */
-class RollGroupController extends AbstractController
+class RollGroupsController extends AbstractController
 {
     /**
      * list
      * @Route("/list/", name="list")
-     * @Security("is_granted('ROLE_ACTION', ['/modules/Roll Groups/rollGroups.php'])")
+     * @Security("is_granted('ROLE_ROUTE', ['roll_groups__list'])")
      */
-    public function list(Request $request, TranslatorInterface $translator)
+    public function list(Request $request, TranslatorInterface $translator, Sidebar $sidebar)
     {
-
         $rollGroups = ProviderFactory::getRepository(RollGroup::class)->findBy(['schoolYear' => ProviderFactory::getRepository(SchoolYear::class)->find($request->getSession()->get('gibbonSchoolYearID', 0))],['name' => 'ASC']);
 
         $table = new TableViewManager(['formatTutors' => $translator->trans('Main Tutor')]);
@@ -48,7 +48,8 @@ class RollGroupController extends AbstractController
             $table->addColumn('studentCount', 'Students')->setHeadClass('column hidden md:table-cell')->setBodyClass('p-2 sm:p-3 hidden md:table-cell');
         }
         $table->addColumn('website', 'Website')->setHeadClass('column hidden md:table-cell')->setBodyClass('p-2 sm:p-3 hidden md:table-cell');
-        $table->addColumn('actionColumn', 'Actions')->setStyle("width: '1%'");
+        $table->addColumn('actionColumn', 'Actions')->setStyle("width: '1%'")->addAction('View', 'view', 'roll_groups__detail', ['id' => 'Id']);
+
 
         return $this->render('modules/roll_groups/list.html.twig',
             [
@@ -56,5 +57,17 @@ class RollGroupController extends AbstractController
                 'table' => $table,
             ]
         );
+    }
+
+    /**
+     * detail
+     * @param RollGroup $id
+     * @param Request $request
+     * @Route("/{id}/detail/", name="detail")
+     * @Security("is_granted('ROLE_ACTION', ['/modules/Roll Groups/rollGroups_details.php'])")
+     */
+    public function detail(RollGroup $id, Request $request)
+    {
+        dd($this);
     }
 }
