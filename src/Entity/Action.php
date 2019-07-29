@@ -544,4 +544,15 @@ class Action implements EntityInterface
             'gibbonModuleID' => $this->getModule() ? $this->getModule()->getId() : null,
         ];
     }
+
+    /**
+     * getRouteName
+     * @param String $module
+     * @param string $action
+     * @return string
+     */
+    public static function getRouteName(String $module, string $action)
+    {
+        return strtolower(str_replace(' ', '_',  $module). '__' . $action);
+    }
 }

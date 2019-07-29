@@ -15,7 +15,6 @@ namespace App\Controller\Modules;
 use App\Entity\RollGroup;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
-use App\Twig\Sidebar;
 use App\Twig\TableViewManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,12 +31,14 @@ class RollGroupsController extends AbstractController
 {
     /**
      * list
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/list/", name="list")
      * @Security("is_granted('ROLE_ROUTE', ['roll_groups__list'])")
      */
-    public function list(Request $request, TranslatorInterface $translator, Sidebar $sidebar)
+    public function list(Request $request, TranslatorInterface $translator)
     {
-        $sidebar->getContent();
         $rollGroups = ProviderFactory::getRepository(RollGroup::class)->findBy(['schoolYear' => ProviderFactory::getRepository(SchoolYear::class)->find($request->getSession()->get('gibbonSchoolYearID', 0))],['name' => 'ASC']);
 
         $table = new TableViewManager(['formatTutors' => $translator->trans('Main Tutor')]);

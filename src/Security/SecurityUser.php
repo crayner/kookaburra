@@ -22,10 +22,10 @@ use App\Util\UserHelper;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInterface, \Serializable
 {
-
     /**
      * SecurityUser constructor.
      * @param Person $user
@@ -44,6 +44,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
             $this->setEmail($user->getEmail());
             $this->setGoogleAPIRefreshToken($user->getGoogleAPIRefreshToken());
             $this->setLocale($user->getI18nPersonal());
+            $this->person = $user;
         }
     }
 
@@ -139,9 +140,13 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      * @param Person|null $user
      * @return bool
      */
-    private function isUser(Person $user)
+    private function isUser(?Person $user): bool
     {
-        return $user instanceof Person;
+        if ($user)
+            return $user instanceof Person;
+        if ($this->person instanceof Person && $this->getId() === $this->person->getId())
+            return true;
+        return false;
     }
 
     /**
@@ -536,4 +541,20 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
         return $s;
     }
 
+    /**
+     * @var Person
+     */
+    private $person;
+
+    /**
+     * @return Person
+     */
+    public function getPerson(): Person
+    {
+        if (null === $this->person && $this->getId() > 0)
+        {
+            $this->person = $this->__construct(ProviderFactory::getRepository(Person::class)->find($this->getId()));
+        }
+        return $this->person;
+    }
 }

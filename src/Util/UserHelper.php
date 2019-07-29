@@ -70,7 +70,7 @@ class UserHelper
         $user = self::getCurrentSecurityUser();
 
         if ($user instanceof SecurityUser)
-            self::$currentUser = self::getProvider()->find($user->getId());
+            self::$currentUser = $user->getPerson();
         else
             self::$currentUser = null;
 

@@ -16,6 +16,7 @@ namespace App\Twig\Extension;
 use App\Entity\I18n;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
+use App\Twig\MainMenu;
 use App\Twig\Sidebar;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
@@ -49,6 +50,11 @@ class PageExtension extends AbstractExtension
     private $sidebar;
 
     /**
+     * @var MainMenu
+     */
+    private $mainMenu;
+
+    /**
      * @var RouterInterface 
      */
     private $router;
@@ -59,13 +65,14 @@ class PageExtension extends AbstractExtension
      * @param ProviderFactory $factory
      * @param SessionInterface $session
      */
-    public function __construct(ProviderFactory $factory, Sidebar $sidebar, SessionInterface $session, RequestStack $stack, RouterInterface $router)
+    public function __construct(ProviderFactory $factory, Sidebar $sidebar, SessionInterface $session, RequestStack $stack, RouterInterface $router, MainMenu $mainMenu)
     {
         $this->i18nProvider = $factory::create(I18n::class);
         $this->session = $session;
         $this->stack = $stack;
         $this->sidebar = $sidebar;
         $this->router = $router;
+        $this->mainMenu = $mainMenu;
     }
 
     /**
@@ -79,8 +86,8 @@ class PageExtension extends AbstractExtension
             new TwigFunction('houseIDLogo', [$this, 'houseIDLogo']),
             new TwigFunction('minorLinks', [$this, 'minorLinks']),
             new TwigFunction('notificationTray', [$this, 'notificationTray']),
-            new TwigFunction('sidebar', [$this->sidebar, 'hasContent']),
             new TwigFunction('getSidebar', [$this->sidebar, 'getContent']),
+            new TwigFunction('getMainMenu', [$this->mainMenu, 'getContent']),
             new TwigFunction('content', [$this, 'content']),
             new TwigFunction('alerts', [$this, 'alerts']),
             new TwigFunction('getThemeName', [$this, 'getThemeName']),

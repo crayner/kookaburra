@@ -7,58 +7,25 @@
  *
  * User: craig
  * Date: 29/07/2019
- * Time: 07:42
+ * Time: 13:43
  */
 
-namespace App\Listener;
+namespace App\Twig;
 
 
 use App\Entity\Module;
 use App\Provider\ProviderFactory;
-use App\Security\SecurityUser;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\ControllerEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class MainMenuListener implements EventSubscriberInterface
+class ModuleMenu implements ContentInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    use ContentTrait;
 
     /**
-     * MainMenuListener constructor.
-     * @param TokenStorageInterface $tokenStorage
+     * execute
      */
-    public function __construct(TokenStorageInterface $tokenStorage)
+    public function execute(): void
     {
-        $this->tokenStorage = $tokenStorage;
-    }
-
-    /**
-     * getSubscribedEvents
-     * @return array
-     */
-    public static function getSubscribedEvents()
-    {
-        return [
-            KernelEvents::CONTROLLER => ['buildMainMenu', -16],
-        ];
-    }
-
-    /**
-     * buildMainMenu
-     * @param ControllerEvent $event
-     */
-    public function buildMainMenu(ControllerEvent $event)
-    {
-        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
-        if (! $user instanceof SecurityUser)
-            return;
-
-        $request = $event->getRequest();
+        $request = $this->getRequest();
 
         if ($request->attributes->has('module') && false !== $request->attributes->get('module'))
         {
@@ -83,7 +50,7 @@ class MainMenuListener implements EventSubscriberInterface
             }
 
             $request->getSession()->set('menuModuleItems', $menuModuleItems);
-            $request->attributes->set('menuModuleItems', $menuModuleItems);
+            $this->addContent('menuModuleItems', $menuModuleItems);
             $request->getSession()->set('menuModuleName', $currentModule->getName());
         } else {
             $request->getSession()->forget(['menuModuleItems', 'menuModuleName']);

@@ -28,27 +28,27 @@
                 </div>
 
                 <nav id="header-menu" class="w-full bg-gray-200 justify-between">
-                    {{ include('default/menu.html.twig') }}
+                    {% include 'default/menu.html.twig'  %}
                 </nav>
 
-            {% endblock %}
+            {% endblock header %}
 
-            <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ sidebar() ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
+            <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
 
-                {% if sidebar() %}
+                {% if app.request.attributes.has('Sidebar') or app.request.attributes.has('ModuleMenu')  %}
                     <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
                         {% block sidebar %}
-                            {% include 'default/sidebar/sidebar.html.twig' with {sidebar: getSidebar()} %}
+                            {% include 'default/sidebar/sidebar.html.twig' %}
                         {% endblock sidebar %}
                     </div>
                     <br style="clear: both">
                 {% endif %}
 
-                <div id="content" class="w-full {{ sidebar() ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
+                <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
 
                     {% block page %}
 
-                        {% if content() and not sidebar() %}
+                        {% if content() and not app.request.attributes.has('sidebar') %}
                             {% include 'default/navigation.html.twig' %}
                         {% endif %}
 

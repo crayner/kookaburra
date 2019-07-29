@@ -21,6 +21,7 @@ use App\Manager\GibbonManager;
 use Gibbon\Forms\Form;
 use Gibbon\Services\Format;
 use Gibbon\Contracts\Comms\Mailer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -1348,6 +1349,16 @@ function dateConvertBack($guid, $date)
     return Format::date($date);
 }
 
+/**
+ * isActionAccessible
+ * @param $guid
+ * @param $connection2
+ * @param $address
+ * @param string $sub
+ * @return bool
+ * @deprecated Use SecurityHelper::isActionAccessible($address, $sub = ''', ?LoggerInterface $logger = null)
+ *          or SecurityHelper::isRouteAccessible(string $route, string $sub = '%', ?LoggerInterface $logger = null)
+ */
 function isActionAccessible($guid, $connection2, $address, $sub = '')
 {
     $output = false;
