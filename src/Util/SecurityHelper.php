@@ -23,6 +23,7 @@ use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 class SecurityHelper
 {
@@ -325,6 +326,26 @@ class SecurityHelper
 
         self::$passwordPolicy = $output;
         return self::$passwordPolicy;
+    }
+
+    /**
+     * isGranted
+     * @param $role
+     * @param null $object
+     * @param null $field
+     * @return bool
+     */
+    public static function isGranted($role, $object = null)
+    {
+        if (null === self::$checker) {
+            return false;
+        }
+
+        try {
+            return self::$checker->isGranted($role, $object);
+        } catch (AuthenticationCredentialsNotFoundException $e) {
+            return false;
+        }
     }
 
 }

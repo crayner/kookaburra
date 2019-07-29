@@ -13,15 +13,16 @@
 namespace App\Listener;
 
 
-use App\Entity\Module;
-use App\Provider\ProviderFactory;
-use App\Security\SecurityUser;
+use App\Twig\FastFinder;
 use App\Twig\MainMenu;
+use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
 use App\Twig\Sidebar;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PageListener implements EventSubscriberInterface
 {
@@ -41,16 +42,34 @@ class PageListener implements EventSubscriberInterface
     private $moduleMenu;
 
     /**
+     * @var MinorLinks
+     */
+    private $minorLinks;
+
+    /**
      * PageListener constructor.
      * @param Sidebar $sideBar
      * @param MainMenu $mainMenu
      * @param ModuleMenu $moduleMenu
+     * @param MinorLinks $minorLinks
+     * @param TranslatorInterface $trans
+     * @param RouterInterface $router
      */
-    public function __construct(Sidebar $sideBar, MainMenu $mainMenu, ModuleMenu $moduleMenu)
-    {
+    public function __construct(
+        Sidebar $sideBar,
+        MainMenu $mainMenu,
+        ModuleMenu $moduleMenu,
+        MinorLinks $minorLinks,
+        FastFinder $fastFinder,
+        TranslatorInterface $trans,
+        RouterInterface $router
+    ) {
         $this->sideBar = $sideBar;
         $this->mainMenu = $mainMenu;
         $this->moduleMenu = $moduleMenu;
+        $this->minorLinks = $minorLinks;
+        $this->minorLinks->setTranslator($trans)->setRouter($router);
+        $this->fastFinder = $fastFinder;
     }
 
 
@@ -74,5 +93,7 @@ class PageListener implements EventSubscriberInterface
         $this->sideBar->getContent();
         $this->mainMenu->getContent();
         $this->moduleMenu->getContent();
+        $this->minorLinks->getContent();
+        $this->fastFinder->getContent();
     }
 }

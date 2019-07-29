@@ -897,8 +897,10 @@ function getAge($guid, $stamp, $short = false, $yearsOnly = false)
 {
     return Format::age(date('Y-m-d', $stamp), $short);
 }
-
-//Looks at the grouped actions accessible to the user in the current module and returns the highest
+/**
+ * Looks at the grouped actions accessible to the user in the current module and returns the highest
+ * @deprecated use SecurityHelper::getHighestGroupedAction($address)
+ */
 function getHighestGroupedAction($guid, $address, $connection2)
 {
     $output = false;
@@ -919,7 +921,10 @@ function getHighestGroupedAction($guid, $address, $connection2)
     return $output;
 }
 
-//Returns the category of the specified role
+/**
+ * Returns the category of the specified role
+ * @deprecated Use RoleProvider::getRoleCategory(int $roleID)
+ */
 function getRoleCategory($gibbonRoleID, $connection2)
 {
     $output = false;

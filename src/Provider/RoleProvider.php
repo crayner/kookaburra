@@ -43,4 +43,25 @@ class RoleProvider implements EntityProviderInterface
 
         return $result;
     }
+
+    /**
+     * @var array|null
+     */
+    private static $entities;
+
+    /**
+     * getRoleCategory
+     * @param $roleID
+     */
+    public static function getRoleCategory($roleID)
+    {
+        $roleID = intval($roleID);
+        $provider = ProviderFactory::create(Role::class);
+        if (isset($provider::$entities[$roleID]))
+            return $provider::$entities[$roleID]->getCategory();
+        $role = $provider->find($roleID);
+        if ($role)
+            $provider::$entities[$roleID] = $role;
+        return $role->getCategory();
+    }
 }
