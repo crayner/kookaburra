@@ -158,8 +158,18 @@ class PageExtension extends AbstractExtension
         return $this->session->get('gibbonThemeName', 'default');
     }
 
+    /**
+     * checkURL
+     * @param array $link
+     * @return mixed|string
+     */
     public function checkURL(array $link)
     {
+        if (isset($link['route']) && false !== $link['route'])
+        {
+            return $this->router->generate($link['route'], [], Router::ABSOLUTE_URL);
+        }
+
         if (false === strpos($link['entryURL'], '.php')) {
             $route = $link['url'];
             $route = explode('q=/modules/', $route);

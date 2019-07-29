@@ -1,5 +1,6 @@
 default_catch:
     path:     /{path}
+    condition: "request.getPathInfo() matches '@^(?!\/\_.*$).*@'"
     defaults:
         _controller: 'App\Controller\CatchController::index'
         path: /catch/

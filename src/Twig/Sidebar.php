@@ -9,9 +9,7 @@
  * Date: 27/07/2019
  * Time: 16:43
  */
-
 namespace App\Twig;
-
 
 use App\Manager\AddressManager;
 use App\Util\UserHelper;
@@ -81,6 +79,10 @@ class Sidebar
             if (count($user->getAllRolesAsArray()) > 1 && false === $this->getRequest()->get('address')) {
 
                 $this->addContent('role_switcher', true);
+            }
+            if ($this->getRequest()->attributes->get('menuModuleItems'))
+            {
+                $this->addContent('menuModule', $this->getRequest()->attributes->get('menuModuleItems'));
             }
         }
     }

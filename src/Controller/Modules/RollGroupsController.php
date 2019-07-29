@@ -37,6 +37,7 @@ class RollGroupsController extends AbstractController
      */
     public function list(Request $request, TranslatorInterface $translator, Sidebar $sidebar)
     {
+        $sidebar->getContent();
         $rollGroups = ProviderFactory::getRepository(RollGroup::class)->findBy(['schoolYear' => ProviderFactory::getRepository(SchoolYear::class)->find($request->getSession()->get('gibbonSchoolYearID', 0))],['name' => 'ASC']);
 
         $table = new TableViewManager(['formatTutors' => $translator->trans('Main Tutor')]);

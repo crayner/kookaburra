@@ -64,13 +64,19 @@ class ModuleProvider implements EntityProviderInterface
 
     /**
      * selectModuleActionsByRole
-     * @param int $moduleID
-     * @param int $roleID
+     * @param Module|int $moduleID
+     * @param Role|int $roleID
      * @return array
      * @throws \Exception
      */
-    public function selectModuleActionsByRole(int $moduleID, int $roleID)
+    public function selectModuleActionsByRole($moduleID, $roleID)
     {
+        if ($moduleID instanceof Module)
+            $moduleID = $moduleID->getId();
+
+        if ($roleID instanceof Role)
+            $roleID = $roleID->getId();
+
         $result = $this->getRepository()->findModuleActionsByRole($moduleID, $roleID);
 
         $categories = [];

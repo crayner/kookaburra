@@ -18,10 +18,8 @@ use App\Provider\ProviderFactory;
 use App\Util\Format;
 use App\Util\SecurityHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -131,15 +129,5 @@ class AddressModuleActionListener implements EventSubscriberInterface
         $action = ProviderFactory::getRepository(Action::class)->findOneByModuleContainsURL($module, explode('__', $address)[1]);
         $request->attributes->set('action', $action);
         $request->getSession()->set('action', $action ? explode('__', $address)[1] : '');
-    }
-
-    /**
-     * initiateController
-     * @param ControllerEvent $event
-     */
-    public function initiateController(ControllerEvent $event)
-    {
-        $request = $event->getRequest();
-        dd($event);
     }
 }

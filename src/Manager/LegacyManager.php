@@ -481,7 +481,7 @@ class LegacyManager
                             ? $item['entryURL']
                             : $item['alternateEntryURL'];
 
-                        $item['url'] = $session->get('absoluteURL').'/index.php?q='.$modulePath.'/'.$entryURL;
+                        $item['url'] = $session->get('absoluteURL').'/?q='.$modulePath.'/'.$entryURL;
                     }
                 }
 

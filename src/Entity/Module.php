@@ -332,8 +332,8 @@ class Module implements EntityInterface
      * getEntryURLFullRoute
      * @return string
      */
-    public function getEntryURLFullRoute(): string
+    public function getEntryURLFullRoute(?string $entryURL = null): string
     {
-        return strtolower(implode('_', $this->getName())). '_' .$this->getEntryURL();
+        return strtolower(str_replace(' ', '_',  $this->getName()). '__' . ($entryURL ?: $this->getEntryURL()));
     }
 }
