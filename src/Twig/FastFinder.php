@@ -13,11 +13,12 @@
 namespace App\Twig;
 
 use App\Entity\StudentEnrolment;
+use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
 use App\Provider\RoleProvider;
 use App\Util\SecurityHelper;
-use Gibbon\Forms\Form;
-use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class FastFinder
@@ -28,40 +29,100 @@ class FastFinder implements ContentInterface
     use ContentTrait;
 
     /**
+     * @var ScriptManager
+     */
+    private $scriptManager;
+
+    /**
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * execute
      * @throws \Exception
      */
     public function execute(): void
     {
-        $form = Form::create('fastFinder', $this->getSession()->get('absoluteURL').'/finder/redirect/', 'get');
-        $form->setClass('blank fullWidth');
-
-        $form->addHiddenValue('address', $this->getSession()->get('address'));
-
-        $row = $form->addRow();
-        $row->addFinder('fastFinderSearch')
-            ->fromAjax($this->getSession()->get('absoluteURL').'/index_fastFinder_ajax.php')
-            ->setClass('w-full text-white')
-            ->setParameter('hintText', __('Start typing a name...'))
-            ->setParameter('noResultsText', __('No results'))
-            ->setParameter('searchingText', __('Searching...'))
-            ->setParameter('tokenLimit', 1)
-            ->addValidation('Validate.Presence', 'failureMessage: " "');
-        $row->addSubmit(__('Go'));
-
         $highestActionClass = SecurityHelper::getHighestGroupedAction('/modules/Planner/planner.php');
 
         $templateData = [
-            'roleCategory'        => RoleProvider::getRoleCategory($this->getSession()->get('gibbonRoleIDCurrent')),
-            'studentIsAccessible' => SecurityHelper::isActionAccessible('/modules/students/student_view.php'),
-            'staffIsAccessible'   => SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php'),
-            'classIsAccessible'   => SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses',
-            'form'                => $form->getOutput(),
+            'action'                => $this->getRouter()->generate('finder_redirect'),
+            'roleCategory'          => RoleProvider::getRoleCategory($this->getSession()->get('gibbonRoleIDCurrent')),
         ];
 
-        $templateData['enrolmentCount'] = ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('gibbonSchoolYearID'));
-
-        $this->addContent('fastFinder', $templateData);
+        $templateData['trans_fastFind'] = $this->getTranslator()->trans('Fast Finder', [], 'gibbon');
+        $templateData['trans_fastFindActions'] = $this->getTranslator()->trans('Actions', [], 'gibbon');
+        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses' ? ', '.$this->getTranslator()->trans('Classes', [], 'gibbon') : '';
+        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/students/student_view.php') ? ', '.$this->getTranslator()->trans('Students', [], 'gibbon') : '';
+        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php') ? ', '.$this->getTranslator()->trans('Staff', [], 'gibbon') : '';
+        $templateData['trans_enrolmentCount'] = $templateData['roleCategory'] === 'Staff' ? $this->getTranslator()->trans('Total Student Enrolment:', [], 'gibbon') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('gibbonSchoolYearID')) : '';
+        $templateData['themeName'] = $this->getSession()->get('gibbonThemeName');
+        $this->getScriptManager()->addAppProp('fastFinder', $templateData);
     }
 
+    /**
+     * @return ScriptManager
+     */
+    public function getScriptManager(): ScriptManager
+    {
+        return $this->scriptManager;
+    }
+
+    /**
+     * ScriptManager.
+     *
+     * @param ScriptManager $scriptManager
+     * @return FastFinder
+     */
+    public function setScriptManager(ScriptManager $scriptManager): FastFinder
+    {
+        $this->scriptManager = $scriptManager;
+        return $this;
+    }
+
+    /**
+     * @return RouterInterface
+     */
+    public function getRouter(): RouterInterface
+    {
+        return $this->router;
+    }
+
+    /**
+     * Router.
+     *
+     * @param RouterInterface $router
+     * @return FastFinder
+     */
+    public function setRouter(RouterInterface $router): FastFinder
+    {
+        $this->router = $router;
+        return $this;
+    }
+
+    /**
+     * @return TranslatorInterface
+     */
+    public function getTranslator(): TranslatorInterface
+    {
+        return $this->translator;
+    }
+
+    /**
+     * Translator.
+     *
+     * @param TranslatorInterface $translator
+     * @return FastFinder
+     */
+    public function setTranslator(TranslatorInterface $translator): FastFinder
+    {
+        $this->translator = $translator;
+        return $this;
+    }
 }

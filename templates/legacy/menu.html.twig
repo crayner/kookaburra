@@ -14,7 +14,6 @@ Main Menu: Displays the top-level categories and active modules.
         <a class="block uppercase font-bold text-sm text-gray-800 hover:text-purple-500 no-underline px-2 py-3" href="{{ absoluteURL }}/index.php">{{ __('Home') }}</a>
     </li>
 
-    {% dump(menuMain|default([])) %}
     {% for categoryName, items in menuMain|default([]) if isLoggedIn %}
     <li class="sm:relative group mt-1">
         <a class="block uppercase font-bold text-sm text-gray-800 hover:text-purple-500 no-underline px-2 py-3" href="#">{{ __(categoryName) }}</a>

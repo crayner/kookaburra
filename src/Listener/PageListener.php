@@ -13,6 +13,7 @@
 namespace App\Listener;
 
 
+use App\Manager\ScriptManager;
 use App\Twig\FastFinder;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
@@ -62,7 +63,8 @@ class PageListener implements EventSubscriberInterface
         MinorLinks $minorLinks,
         FastFinder $fastFinder,
         TranslatorInterface $trans,
-        RouterInterface $router
+        RouterInterface $router,
+        ScriptManager $scriptManager
     ) {
         $this->sideBar = $sideBar;
         $this->mainMenu = $mainMenu;
@@ -70,6 +72,7 @@ class PageListener implements EventSubscriberInterface
         $this->minorLinks = $minorLinks;
         $this->minorLinks->setTranslator($trans)->setRouter($router);
         $this->fastFinder = $fastFinder;
+        $this->fastFinder->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
     }
 
 

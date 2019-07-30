@@ -1,0 +1,14 @@
+{% set tags = getEncoreEntryScriptTags() %}
+{% set appProps = getAppProps() %}
+{% if tags|length > 0 %}
+    <script type="application/javascript" lang="js">
+        {% for tagName in tags %}
+            {% if appProps[tagName] is defined %}
+                window.{{ tagName|upper }}_PROPS = {{ appProps[tagName]|json_encode|raw }}
+            {% endif %}
+        {% endfor %}
+    </script>
+    {% for tagName in tags %}
+        {{ encore_entry_script_tags(tagName) }}
+    {% endfor %}
+{% endif %}

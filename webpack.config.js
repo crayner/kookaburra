@@ -19,6 +19,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('Default', './assets/themes/default/default.js')
+    .addEntry('fastFinder', './assets/js/fastFinder.js')
     .addStyleEntry('css/theme', './assets/css/theme.scss')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .splitEntryChunks()

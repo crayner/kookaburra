@@ -16,6 +16,7 @@ use App\Manager\GibbonManager;
 use App\Manager\LegacyConnectionFactory;
 use App\Manager\MessageManager;
 use App\Manager\SchoolYearManager;
+use App\Manager\ScriptManager;
 use App\Provider\ActionProvider;
 use App\Provider\FamilyAdultProvider;
 use App\Provider\FamilyChildProvider;

@@ -14,6 +14,7 @@ namespace App\Twig\Extension;
 
 
 use App\Entity\I18n;
+use App\Manager\ScriptManager;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use App\Twig\MainMenu;
@@ -60,19 +61,37 @@ class PageExtension extends AbstractExtension
     private $router;
 
     /**
+     * @var ScriptManager
+     */
+    private $scriptManager;
+
+    /**
      * PageExtension constructor.
      *
-     * @param ProviderFactory $factory
+     * @param Sidebar $sidebar
      * @param SessionInterface $session
+     * @param RequestStack $stack
+     * @param RouterInterface $router
+     * @param MainMenu $mainMenu
+     * @param ScriptManager $scriptManager
+     * @param ProviderFactory $providerFactory
      */
-    public function __construct(ProviderFactory $factory, Sidebar $sidebar, SessionInterface $session, RequestStack $stack, RouterInterface $router, MainMenu $mainMenu)
-    {
-        $this->i18nProvider = $factory::create(I18n::class);
+    public function __construct(
+        Sidebar $sidebar,
+        SessionInterface $session,
+        RequestStack $stack,
+        RouterInterface $router,
+        MainMenu $mainMenu,
+        ScriptManager $scriptManager,
+        ProviderFactory $providerFactory
+    )  {
+        $this->i18nProvider = $providerFactory::create(I18n::class);
         $this->session = $session;
         $this->stack = $stack;
         $this->sidebar = $sidebar;
         $this->router = $router;
         $this->mainMenu = $mainMenu;
+        $this->scriptManager = $scriptManager;
     }
 
     /**
@@ -92,6 +111,8 @@ class PageExtension extends AbstractExtension
             new TwigFunction('alerts', [$this, 'alerts']),
             new TwigFunction('getThemeName', [$this, 'getThemeName']),
             new TwigFunction('checkURL', [$this, 'checkURL']),
+            new TwigFunction('getEncoreEntryScriptTags', [$this->scriptManager, 'getEncoreEntryScriptTags']),
+            new TwigFunction('getAppProps', [$this->scriptManager, 'getAppProps']),
         ];
     }
 

@@ -22,7 +22,7 @@ class FinderController extends AbstractController
     /**
      * finderSearch
      * @param Request $request
-     * @Route("/finder/redirect/", name="finder_request", methods={"GET"})
+     * @Route("/finder/redirect/", name="finder_redirect", methods={"GET"})
      */
     public function finderRedirect(Request $request)
     {

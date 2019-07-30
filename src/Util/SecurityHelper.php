@@ -85,6 +85,8 @@ class SecurityHelper
     public static function getHighestGroupedAction(string $address)
     {
         $module = self::checkModuleReady($address);
+        if ($user = UserHelper::getCurrentUser() === null)
+            return false;
         try {
             $result =  self::getActionProvider()->getRepository()->createQueryBuilder('a')
                 ->select('a.name')
