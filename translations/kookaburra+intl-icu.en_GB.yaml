@@ -1,0 +1,10 @@
+birthday_icon: "{count, plural,
+        =0   {{name}'s birthday today!}
+        one   {One day until {name}'s birthday!}
+        other   {# days until {name}'s birthday!}
+    }"
+concerns_alert_level: "{highest_level, select,
+    High    {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are more than {low} events recorded for a student.'}
+    Medium   {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+    Low   {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+}"

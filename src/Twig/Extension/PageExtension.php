@@ -14,6 +14,7 @@ namespace App\Twig\Extension;
 
 
 use App\Entity\I18n;
+use App\Entity\Person;
 use App\Manager\ScriptManager;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
@@ -117,6 +118,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getEncoreEntryScriptTags', [$this->scriptManager, 'getEncoreEntryScriptTags']),
             new TwigFunction('getAppProps', [$this->scriptManager, 'getAppProps']),
             new TwigFunction('formatUsing', [$this, 'formatUsing']),
+            new TwigFunction('getAlertBar', [$this, 'getAlertBar']),
         ];
     }
 
@@ -223,5 +225,19 @@ class PageExtension extends AbstractExtension
     public function formatUsing($method, ...$args)
     {
         return Format::$method($args);
+    }
+
+    /**
+     * getAlertBar
+     * @param Person $person
+     * @param string $divExtras
+     * @param bool $div
+     * @param bool $large
+     * @return mixed
+     */
+    public function getAlertBar(Person $person, string $divExtras = '', bool $div = true, bool $large = false)
+    {
+        $provider = ProviderFactory::create(Person::class);
+        return $provider->getAlertBar($person, $divExtras, $div, $large);
     }
 }

@@ -526,6 +526,14 @@ function getFastFinder($connection2, $guid)
     return $templateData;
 }
 
+/**
+ * getAlert
+ * @param $guid
+ * @param $connection2
+ * @param $gibbonAlertLevelID
+ * @return array|bool
+ * @deprcated use AlertRepository->find($id)
+ */
 function getAlert($guid, $connection2, $gibbonAlertLevelID)
 {
     $output = false;

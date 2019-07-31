@@ -15,6 +15,9 @@ namespace App\Provider;
 use App\Manager\MessageManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -51,24 +54,31 @@ class ProviderFactory
     private static $factory;
 
     /**
-     * EntityTrait constructor.
+     * @var RequestStack
+     */
+    private static $stack;
+
+    /**
+     * ProviderFactory constructor.
      * @param EntityManagerInterface $entityManager
      * @param MessageManager $messageManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param RouterInterface $router
-     * @throws \Exception
+     * @param RequestStack $stack
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         MessageManager $messageManager,
         AuthorizationCheckerInterface $authorizationChecker,
-        RouterInterface $router)
-    {
+        RouterInterface $router,
+        RequestStack $stack
+    )  {
         self::$entityManager = $entityManager;
         self::$messageManager = $messageManager;
         self::$authorizationChecker = $authorizationChecker;
         self::$router = $router;
         self::$factory = $this;
+        self::$stack = $stack;
     }
 
     /**
@@ -147,5 +157,45 @@ class ProviderFactory
     public static function getRouter(): RouterInterface
     {
         return self::$router;
+    }
+
+    /**
+     * @var null|SessionInterface
+     */
+    private static $session;
+
+    /**
+     * @return SessionInterface
+     */
+    public static function getSession(): ?SessionInterface
+    {
+        if (null === self::$session)
+            self::$session = self::getRequest() ? self::getRequest()->getSession() : null;
+
+        return self::$session;
+    }
+
+    /**
+     * @var Request|null
+     */
+    private static $request;
+
+    /**
+     * @return SessionInterface
+     */
+    public static function getRequest(): ?Request
+    {
+        if (null === self::$request)
+            self::$request = self::getStack()->getCurrentRequest();
+
+        return self::$request;
+    }
+
+    /**
+     * @return RequestStack
+     */
+    public static function getStack(): RequestStack
+    {
+        return self::$stack;
     }
 }

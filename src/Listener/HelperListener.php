@@ -100,7 +100,7 @@ class HelperListener implements EventSubscriberInterface
         GibbonManager $gibbonManager
     ) {
         if ($container->hasParameter('installed') && $container->getParameter('installed')) {
-            $eh = new EntityHelper(new ProviderFactory($entityManager, $messageManager, $authorizationChecker, $router));
+            $eh = new EntityHelper(new ProviderFactory($entityManager, $messageManager, $authorizationChecker, $router, $stack));
             $lcf = new LegacyConnectionFactory();
             $gibbonManager->setContainer($container);
             $eh = new ErrorHelper($twig);

@@ -94,9 +94,9 @@
                         </div>
 
                         {% if form.confidential.vars.data is same as(true) %}
-                        <div class="text-xs text-gray-600 italic leading-snug">
-
-                        </div>
+                            <div class="text-xs text-gray-600 italic leading-snug">
+                                {% include 'default/alert_bar.html.twig' with {alerts: getAlertBar(student.person, ' data-conf="confidential')} %}
+                            </div>
                         {% endif %}
                     </div>
                 {% endfor %}

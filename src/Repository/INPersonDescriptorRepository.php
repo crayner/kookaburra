@@ -13,6 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\INPersonDescriptor;
+use App\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -29,5 +30,21 @@ class INPersonDescriptorRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, INPersonDescriptor::class);
+    }
+
+    /**
+     * findAlertsByPerson
+     * @param Person $person
+     * @return array|null
+     */
+    public function findAlertsByPerson(Person $person): ?array
+    {
+        return $this->createQueryBuilder('i')
+            ->join('i.alertLevel', 'al')
+            ->where('i.person = :person')
+            ->setParameter('person', $person)
+            ->orderBy('al.sequenceNumber', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

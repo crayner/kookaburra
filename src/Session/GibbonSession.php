@@ -80,9 +80,19 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
      */
     public function get($name, $default = null)
     {
-        if ($name === 'guid')
+        switch ($name)
         {
-            return $this->guid();
+            case 'guid':
+                return $this->guid();
+                break;
+            case 'schoolYear':
+                if (null === $this->getAttributeBag()->get($name, null))
+                {
+                    $id = $this->getAttributeBag()->get('gibbonSchoolYearID', 0);
+                    $this->set('schoolYear', ProviderFactory::getRepository(SchoolYear::class)->find($id));
+                    return $this->getAttributeBag()->get($name, null);
+                }
+                break;
         }
         return $this->getAttributeBag()->get($name, $default);
     }

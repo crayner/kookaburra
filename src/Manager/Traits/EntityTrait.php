@@ -22,6 +22,9 @@ use App\Provider\ProviderFactory;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -69,6 +72,11 @@ trait EntityTrait
     private $router;
 
     /**
+     * @var RequestStack
+     */
+    private $stack;
+
+    /**
      * EntityTrait constructor.
      * @param ProviderFactory $providerFactory
      * @throws \Exception
@@ -80,6 +88,7 @@ trait EntityTrait
         self::$entityRepository = $this->getRepository();
         $this->authorizationChecker = $providerFactory::getAuthorizationChecker();
         $this->router = $providerFactory::getRouter();
+        $this->stack = $providerFactory::getStack();
         $this->providerFactory = $providerFactory;
         if (method_exists($this, 'additionalConstruct'))
             $this->additionalConstruct();
@@ -409,5 +418,45 @@ trait EntityTrait
     public function getProviderFactory(): ProviderFactory
     {
         return $this->providerFactory;
+    }
+
+    /**
+     * @var null|SessionInterface
+     */
+    private $session;
+
+    /**
+     * @return SessionInterface
+     */
+    public function getSession(): ?SessionInterface
+    {
+        if (null === $this->session)
+            $this->session = $this->getRequest() ? $this->getRequest()->getSession() : null;
+
+        return $this->session;
+    }
+
+    /**
+     * @var Request|null
+     */
+    private  $request;
+
+    /**
+     * @return SessionInterface
+     */
+    public function getRequest(): ?Request
+    {
+        if (null === $this->request)
+            $this->request = $this->getStack()->getCurrentRequest();
+
+        return $this->request;
+    }
+
+    /**
+     * @return RequestStack
+     */
+    public function getStack(): RequestStack
+    {
+        return $this->stack;
     }
 }
