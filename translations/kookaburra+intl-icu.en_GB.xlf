@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Loco xml export: XLIFF 1.2
+ Project: kookaburra+intl-icu.en_GB.yml conversion
+ Release: Working copy
+ Locales: en-AU, en-GB
+ Exported by: Unregistered user
+ Exported at: Wed, 31 Jul 2019 08:37:01 +1000
+-->
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en-GB" target-language="en-GB" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="loco:$1">
+        <source>birthday_icon</source>
+        <target>{count, plural,
+            =0   {{name}'s birthday today!}
+            one   {One day until {name}'s birthday!}
+            other   {# days until {name}'s birthday!}
+        }</target>
+      </trans-unit>
+      <trans-unit id="loco:$2">
+        <source>from a fork of </source>
+        <target>from a fork of </target>
+      </trans-unit>
+      <trans-unit id="loco:$3">
+        <source>The page at address %address% was not found.</source>
+        <target>The page at address, %address%, was not found.</target>
+      </trans-unit>
+      <trans-unit id="loco:$4">
+        <source>Kookaburra</source>
+        <target>Kookaburra</target>
+      </trans-unit>
+      <trans-unit id="loco:$5">
+        <source>The directory containing the configuration files is writable, so the installation may proceed.</source>
+        <target>The directory containing the configuration files is writable, so the installation may proceed.</target>
+      </trans-unit>
+      <trans-unit id="loco:$6">
+        <source>The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.</source>
+        <target>The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.</target>
+      </trans-unit>
+      <trans-unit id="loco:$7">
+        <source>One or more of the system requirements listed above is not configured correctly.</source>
+        <target>One or more of the system requirements listed below is not configured correctly! Please ensure that all system requirements are met before proceeding to installation of Kookaburra.</target>
+      </trans-unit>
+      <trans-unit id="loco:$8">
+        <source>The language %{code} selected is not a valid language choice for Kookaburra. Valid choices are %{codes}</source>
+        <target>The language "%{code}" selected is not a valid language choice for Kookaburra. Valid choices are "%{codes}".</target>
+      </trans-unit>
+      <trans-unit id="loco:$9">
+        <source>Welcome To Kookaburra</source>
+        <target>Welcome To Kookaburra</target>
+      </trans-unit>
+      <trans-unit id="loco:$10">
+        <source>For support, please visit %1$scraigrayner.com%2$s.</source>
+        <target>For support, please visit %1$scraigrayner.com%2$s.</target>
+      </trans-unit>
+      <trans-unit id="loco:$11">
+        <source>Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.</source>
+        <target>Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.</target>
+      </trans-unit>
+      <trans-unit id="loco:$12">
+        <source>Kookaburra Software is a fork of Gibbon.</source>
+        <target>Kookaburra Software is a fork of Gibbon.</target>
+      </trans-unit>
+      <trans-unit id="loco:$13">
+        <source>Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.</source>
+        <target>Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.</target>
+      </trans-unit>
+      <trans-unit id="loco:$14">
+        <source>The MySQL Connection Settings did not connect. [%{message}]</source>
+        <target>The MySQL Connection Settings did not connect. [%{message}]</target>
+      </trans-unit>
+      <trans-unit id="loco:$15">
+        <source>The database does not exist and cannot be created. [%{message}]</source>
+        <target>The database does not exist and cannot be created. [%{message}]</target>
+      </trans-unit>
+      <trans-unit id="loco:$16">
+        <source>Building the Database</source>
+        <target>Building the Database</target>
+      </trans-unit>
+      <trans-unit id="loco:$17">
+        <source>Once the correct settings for your database are verified, the system will immediately build the database. This is a process that can take minutes to complete.  You patience is appreciated.</source>
+        <target>Once the correct settings for your database are verified, the system will immediately build the database. This is a process that can take minutes to complete.  You patience is appreciated.</target>
+      </trans-unit>
+      <trans-unit id="loco:$18">
+        <source>The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.</source>
+        <target>The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.</target>
+      </trans-unit>
+      <trans-unit id="loco:$19">
+        <source>Proceed</source>
+        <target>Proceed</target>
+      </trans-unit>
+      <trans-unit id="loco:$20">
+        <source>Ms</source>
+        <target>Ms</target>
+      </trans-unit>
+      <trans-unit id="loco:$21">
+        <source>Miss</source>
+        <target>Miss</target>
+      </trans-unit>
+      <trans-unit id="loco:$22">
+        <source>Mr</source>
+        <target>Mr</target>
+      </trans-unit>
+      <trans-unit id="loco:$23">
+        <source>Mrs</source>
+        <target>Mrs</target>
+      </trans-unit>
+      <trans-unit id="loco:$24">
+        <source>Dr</source>
+        <target>Dr</target>
+      </trans-unit>
+      <trans-unit id="loco:$25">
+        <source>The value "%{value}" is not valid. Valid results are "[%{valid}]"</source>
+        <target>The value "%{value}" is not valid. Valid results are "[%{valid}]"</target>
+      </trans-unit>
+      <trans-unit id="loco:$26">
+        <source>The password must contain both lower and uppercase characters.</source>
+        <target>The password must contain both lower and uppercase characters.</target>
+      </trans-unit>
+      <trans-unit id="loco:$27">
+        <source>The password must contain as least one number.</source>
+        <target>The password must contain as least one number.</target>
+      </trans-unit>
+      <trans-unit id="loco:$28">
+        <source>Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).</source>
+        <target>Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).</target>
+      </trans-unit>
+      <trans-unit id="loco:$29">
+        <source>Must be at least %1$s characters in length.</source>
+        <target>Must be at least %1$s characters in length.</target>
+      </trans-unit>
+      <trans-unit id="loco:$30">
+        <source>Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.</source>
+        <target>Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.</target>
+      </trans-unit>
+      <trans-unit id="loco:$31">
+        <source>Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.</source>
+        <target>Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.</target>
+      </trans-unit>
+      <trans-unit id="loco:$32">
+        <source>Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.</source>
+        <target>Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.</target>
+      </trans-unit>
+      <trans-unit id="loco:$33">
+        <source>Unknown</source>
+        <target>Unknown</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

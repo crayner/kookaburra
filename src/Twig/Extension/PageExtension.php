@@ -19,6 +19,7 @@ use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use App\Twig\MainMenu;
 use App\Twig\Sidebar;
+use App\Util\Format;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -83,7 +84,8 @@ class PageExtension extends AbstractExtension
         RouterInterface $router,
         MainMenu $mainMenu,
         ScriptManager $scriptManager,
-        ProviderFactory $providerFactory
+        ProviderFactory $providerFactory,
+        Format $format
     )  {
         $this->i18nProvider = $providerFactory::create(I18n::class);
         $this->session = $session;
@@ -92,6 +94,7 @@ class PageExtension extends AbstractExtension
         $this->router = $router;
         $this->mainMenu = $mainMenu;
         $this->scriptManager = $scriptManager;
+        $this->format = $format;
     }
 
     /**
@@ -113,6 +116,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('checkURL', [$this, 'checkURL']),
             new TwigFunction('getEncoreEntryScriptTags', [$this->scriptManager, 'getEncoreEntryScriptTags']),
             new TwigFunction('getAppProps', [$this->scriptManager, 'getAppProps']),
+            new TwigFunction('formatUsing', [$this, 'formatUsing']),
         ];
     }
 
@@ -208,5 +212,16 @@ class PageExtension extends AbstractExtension
             return $url;
         }
         return $link['url'];
+    }
+
+    /**
+     * formatUsing
+     * @param $method
+     * @param mixed ...$args
+     * @return mixed
+     */
+    public function formatUsing($method, ...$args)
+    {
+        return Format::$method($args);
     }
 }

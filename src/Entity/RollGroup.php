@@ -389,15 +389,40 @@ class RollGroup implements EntityInterface
 
     /**
      * getStudentEnrolments
+     * @param string|null $sortBy
      * @return Collection
      */
-    public function getStudentEnrolments(): Collection
+    public function getStudentEnrolments(?string $sortBy = ''): Collection
     {
         if (empty($this->studentEnrolments))
             $this->studentEnrolments = new ArrayCollection();
 
         if ($this->studentEnrolments instanceof PersistentCollection)
             $this->studentEnrolments->initialize();
+
+        if ('' !== $sortBy) {
+            $iterator = $this->studentEnrolments->getIterator();
+            $iterator->uasort(
+                function ($a, $b) use ($sortBy) {
+                    if (!$a->getPerson() instanceof Person || !$b->getPerson() instanceof Person)
+                        return 1;
+
+                    if (strpos($sortBy, 'rollOrder') === 0)
+                        return ($a->getRollOrder().$a->getPerson()->getSurname().$a->getPerson()->getPreferredName() < $b->getRollOrder().$b->getPerson()->getSurname().$b->getPerson()->getPreferredName()) ? -1 : 1;
+
+                    if (strpos($sortBy, 'surname') === 0)
+                        return ($a->getPerson()->getSurname().$a->getPerson()->getPreferredName() < $b->getPerson()->getSurname().$b->getPerson()->getPreferredName()) ? -1 : 1;
+
+                    if (strpos($sortBy, 'preferredName') === 0)
+                        return ($a->getPerson()->getPreferredName().$a->getPerson()->getSurname() < $b->getPerson()->getPreferredName().$b->getPerson()->getSurname()) ? -1 : 1;
+
+                    return 1;
+                }
+            );
+
+            $this->studentEnrolments = new ArrayCollection(iterator_to_array($iterator, false));
+        }
+
 
         return $this->studentEnrolments;
     }
@@ -422,6 +447,10 @@ class RollGroup implements EntityInterface
         return EntityHelper::__toArray(RollGroup::class, $this, $ignore);
     }
 
+    /**
+     * getTutors
+     * @return array
+     */
     public function getTutors(): array
     {
         $tutors = [];
@@ -463,5 +492,22 @@ class RollGroup implements EntityInterface
     public function getStudentCount(): int
     {
         return $this->getStudentEnrolments() ? count($this->getStudentEnrolments()) : '';
+    }
+
+    /**
+     * getAssistants
+     * @return array
+     */
+    public function getAssistants(): array
+    {
+        $tutors = [];
+        if ($this->getAssistant())
+            $tutors[] = $this->getAssistant();
+        if ($this->getAssistant2())
+            $tutors[] = $this->getAssistant2();
+        if ($this->getAssistant3())
+            $tutors[] = $this->getAssistant3();
+
+        return $tutors;
     }
 }

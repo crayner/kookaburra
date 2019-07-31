@@ -58,6 +58,21 @@ class TableViewManager
     private $parameters;
 
     /**
+     * @var string
+     */
+    private $title = '';
+
+    /**
+     * @var array
+     */
+    private $metaData = [];
+
+    /**
+     * @var ArrayCollection
+     */
+    private $headerActions;
+
+    /**
      * TableViewManager constructor.
      * @param array $parameters
      */
@@ -259,5 +274,100 @@ class TableViewManager
     {
         $this->parameters = $parameters;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * Title.
+     *
+     * @param string $title
+     * @return TableViewManager
+     */
+    public function setTitle(string $title): TableViewManager
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetaData(): array
+    {
+        if (!is_array($this->metaData))
+            $this->metaData = [];
+
+        return $this->metaData;
+    }
+
+    /**
+     * MetaData.
+     *
+     * @param array $metaData
+     * @return TableViewManager
+     */
+    public function setMetaData(array $metaData): TableViewManager
+    {
+        $this->metaData = $metaData;
+        return $this;
+    }
+
+    /**
+     * addMetaData
+     * @param string $name
+     * @param $data
+     * @return TableViewManager
+     */
+    public function addMetaData(string $name, $data): TableViewManager
+    {
+        $this->metaData[$name] = $data;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|TableAction[]
+     */
+    public function getHeaderActions(): ArrayCollection
+    {
+        if (null === $this->headerActions)
+            $this->headerActions = new ArrayCollection();
+
+        return $this->headerActions;
+    }
+
+    /**
+     * HeaderActions.
+     *
+     * @param ArrayCollection $headerActions
+     * @return TableViewManager
+     */
+    public function setHeaderActions(ArrayCollection $headerActions): TableViewManager
+    {
+        $this->headerActions = $headerActions;
+        return $this;
+    }
+
+    /**
+     * addHeaderAction
+     * @param string $name
+     * @param $title
+     * @return TableAction
+     */
+    public function addHeaderAction(string $name, $title): TableAction
+    {
+        $action = new TableAction();
+        if ($this->getHeaderActions()->containsKey($name))
+            $action = $this->headerActions->get($name);
+
+        $action->setTitle($title);
+        $this->headerActions->set($name, $action);
+        return $action;
     }
 }

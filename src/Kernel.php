@@ -45,10 +45,8 @@ class Kernel extends BaseKernel
         if (!realpath($confDir . '/packages/kookaburra.yaml'))
             $this->temporaryParameters($container);
 
-
         $timezone = $container->getParameter('timezone', 'UTC');
-        ini_set('timezone', $timezone);
-        ini_set('date.timezone', $timezone);
+        date_default_timezone_set($timezone);
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void

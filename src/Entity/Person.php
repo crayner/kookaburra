@@ -611,7 +611,7 @@ class Person implements EntityInterface
     public function getImage240(bool $default = false): ?string
     {
         if (empty($this->image_240) && $default)
-            return 'build/static/DefaultPerson.png';
+            return '/build/static/DefaultPerson.png';
         return $this->image_240;
     }
 
@@ -2627,11 +2627,11 @@ class Person implements EntityInterface
      * @param bool $initial
      * @return string
      */
-    public function formatName(bool $preferredName = true, bool $reverse = false, bool $informal = false, bool $initial = false)
+    public function formatName(bool $preferredName = true, bool $reverse = false, bool $informal = false, bool $initial = false, bool $title = false)
     {
         $name = $preferredName ? $this->getPreferredName() : $this->getFirstName();
         $name = $initial ? substr($name, 0, 1): $name;
-        return Format::name($this->getTitle(), $name, $this->getSurname(),$this->getPrimaryRole() ? $this->getPrimaryRole()->getCategory() : 'Staff', $reverse, $informal);
+        return Format::name($title ? $this->getTitle() : '', $name, $this->getSurname(),$this->getPrimaryRole() ? $this->getPrimaryRole()->getCategory() : 'Staff', $reverse, $informal);
     }
 
     /**
@@ -2666,5 +2666,73 @@ class Person implements EntityInterface
             return $choice;
         }
         return self::$titleList;
+    }
+
+    /**
+     * Returns an HTML <img> based on the supplied photo path, using a placeholder image if none exists. Size may be either 75 or 240 at this time.
+     *
+     * @param int|string $size
+     * @param string $class
+     * @return string
+     */
+    public function photo($size = 75, string $class = '')
+    {
+        $class .= ' inline-block shadow bg-white border border-gray-600 ';
+
+        $path = $this->getImage240(true);
+
+        switch ($size) {
+            case 240:
+            case 'lg':
+                $class .= 'w-48 sm:w-64 max-w-full p-1 mx-auto';
+                $imageSize = 240;
+                break;
+            case 75:
+            case 'md':
+                $class .= 'w-20 lg:w-24 p-1';
+                $imageSize = 75;
+                break;
+            case 'sm':
+                $class .= 'w-12 sm:w-20 p-px sm:p-1';
+                $imageSize = 75;
+                break;
+            default:
+                $imageSize = $size;
+        }
+
+        if (!file_exists(__DIR__.'/../../public/'.$path) ) {
+            $path = '/themes/{theme}/img/anonymous_'.$imageSize.'.jpg';
+        }
+
+        return sprintf('<img class="%1$s" src="%2$s" />', trim($class), $path);
+    }
+
+    /**
+     * Display an icon if this user's birthday is within the next week.
+     *
+     * @return string
+     */
+    public function birthdayIcon()
+    {
+        if (!$this->getDob() instanceof \DateTime)
+            return '';
+
+        $dob = new \DateTime(date('Y-') . $this->getDob()->format('m-d'));
+        $today = new \DateTime('now');
+        if ($today->format('Ymd') > $dob->format('Ymd'))
+            return '';
+
+        $daysUntilNextBirthday = $today->diff($dob)->days;
+        if ($daysUntilNextBirthday >= 8)
+            return '';
+
+        // HEY SHORTY IT'S YOUR BIRTHDAY! (or Close)
+        $result['colour'] = 'text-pink-800';
+        $result['params']['{name}'] = $this->getPreferredName();
+        $result['params']['count'] = $daysUntilNextBirthday;
+        if ($daysUntilNextBirthday > 0)
+            $result['colour'] = 'text-gray-800';
+
+        return $result;
     }
 }

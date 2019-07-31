@@ -529,6 +529,7 @@ class Format
      * @param int|string $size
      * @param string $class
      * @return string
+     * @depreceted Use Person::photo
      */
     public static function userPhoto($path, $size = 75, $class = '')
     {
@@ -564,6 +565,7 @@ class Format
      * @param string $dob YYYY-MM-DD
      * @param string $preferredName
      * @return string
+     * @deprecated Use Person->birthdayIcon
      */
     public static function userBirthdayIcon($dob, $preferredName)
     {

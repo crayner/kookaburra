@@ -1,6 +1,9 @@
 {% trans_default_domain "gibbon" %}
 
 <div class="{{ table.wrapperClass is not same as ('') ? table.wrapperClass|trim : '' }}">
+    {% if table.title|length > 0 %}
+        <h3>{{ table.title|trans }}</h3>
+    {% endif %}
     <table class="{{ table.tableClass is not same as ('') ? table.tableClass|trim : '' }}" cellspacing="{{ table.cellSpacing }}">
         <thead>
             <tr class="{{ table.theadClass is not same as ('') ? table.theadClass|trim : '' }}">

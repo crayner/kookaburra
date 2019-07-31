@@ -15,6 +15,8 @@ namespace App\Security\Voter;
 use App\Provider\ActionProvider;
 use App\Util\SecurityHelper;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -29,15 +31,21 @@ class GibbonVoter implements VoterInterface
     /**
      * @var LoggerInterface
      */
-    private static $logger;
+    private $logger;
+
+    /**
+     * @var RequestStack
+     */
+    private $stack;
 
     /**
      * GibbonVoter constructor.
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, RequestStack $stack)
     {
-        self::$logger = $logger;
+        $this->logger = $logger;
+        $this->stack = $stack;
     }
     /**
      * vote
@@ -52,26 +60,27 @@ class GibbonVoter implements VoterInterface
     {
         if (in_array('ROLE_ACTION', $attributes))
         {
-            $subject = $this->resolveSubject($subject);
+            $subject = $this->resolveSubject($subject ?: []);
             if (SecurityHelper::isActionAccessible($subject[0], $subject[1]))
                 return VoterInterface::ACCESS_GRANTED;
             else {
                 if (empty($token->getUser()) || ! $token->getUser() instanceof UserInterface)
-                    self::$logger->info(sprintf('The user was not correctly authenticated to authorise for action "%s".', $subject[0]), $subject);
+                    $this->logger->info(sprintf('The user was not correctly authenticated to authorise for action "%s".', $subject[0]), $subject);
                 else
-                    self::$logger->info(sprintf('The user "%s" attempted to access the action "%s" and was denied.', $token->getUser()->formatName(), $subject[0]), $subject);
+                    $this->logger->info(sprintf('The user "%s" attempted to access the action "%s" and was denied.', $token->getUser()->formatName(), $subject[0]), $subject);
                 return VoterInterface::ACCESS_DENIED;
             }
         } elseif (in_array('ROLE_ROUTE', $attributes))
         {
+            $subject[0] = !isset($subject[0]) ? $this->getRequest()->get('_route') : $subject[0];
             $subject = $this->resolveSubject($subject);
             if (SecurityHelper::isRouteAccessible($subject[0], $subject[1]))
                 return VoterInterface::ACCESS_GRANTED;
             else {
                 if (empty($token->getUser()) || ! $token->getUser() instanceof UserInterface)
-                    self::$logger->info(sprintf('The user was not correctly authenticated to authorise for route "%s".', $subject[0]), $subject);
+                    $this->logger->info(sprintf('The user was not correctly authenticated to authorise for route "%s".', $subject[0]), $subject);
                 else
-                    self::$logger->info(sprintf('The user "%s" attempted to access the route "%s" and was denied.', $token->getUser()->formatName(), $subject[0]), $subject);
+                    $this->logger->info(sprintf('The user "%s" attempted to access the route "%s" and was denied.', $token->getUser()->formatName(), $subject[0]), $subject);
                 return VoterInterface::ACCESS_DENIED;
             }
         }
@@ -79,6 +88,11 @@ class GibbonVoter implements VoterInterface
         return VoterInterface::ACCESS_ABSTAIN;
     }
 
+    /**
+     * resolveSubject
+     * @param array $subject
+     * @return array
+     */
     private function resolveSubject(array$subject): array
     {
         $resolver = new OptionsResolver();
@@ -88,5 +102,21 @@ class GibbonVoter implements VoterInterface
         ]);
         return $resolver->resolve($subject);
 
+    }
+
+    /**
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * getRequest
+     * @return Request
+     */
+    private function getRequest(): Request
+    {
+        if (null === $this->request)
+            $this->request = $this->stack->getCurrentRequest();
+        return $this->request;
     }
 }

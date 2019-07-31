@@ -96,13 +96,13 @@ TODO: add template variable details.
                 {% block footer %}
                 <div class="relative bg-transparent-600 text-white text-center text-sm p-6 mb-10 leading-normal rounded-b">
                     <span class="inline-block">
-                        {{ 'Powered by'|trans }} <a class="link-white" target='_blank' href='http://help.craigrayner.com'>{{ 'Kookaburra'|trans({}, 'bilby') }}</a> {{ wrapVersion }}</span>
+                        {{ 'Powered by'|trans }} <a class="link-white" target='_blank' href='http://help.craigrayner.com'>{{ 'Kookaburra'|trans({}, 'kookaburra') }}</a> {{ wrapVersion }}</span>
                     <span class="inline-block">|  &#169; <a class="link-white" target='_blank' href='http://www.craigrayner.com'>Craig Rayner</a> 2019-{{ 'now'|date('Y') }}</span>
                     <br/>
 
                     <span class="text-xs">
                         {{ 'Created under the'|trans }} <a class="link-white" target='_blank' href='https://opensource.org/licenses/MIT'>MIT</a> {{ 'licence' }},
-                        {{ 'from a fork of '|trans({},'bilby') }} <a class="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon v18.0.00</a>
+                        {{ 'from a fork of '|trans({},'kookaburra') }} <a class="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon v18.0.00</a>
                         <br/>
                         {{ footerThemeAuthor|default('') }}<br/>
                     </span>

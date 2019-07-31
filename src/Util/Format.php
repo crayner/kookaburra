@@ -97,8 +97,8 @@ class Format
         if (empty($preferredName) && empty($surname)) return '';
 
         if ($roleCategory == 'Staff' or $roleCategory == 'Other') {
-            $setting = 'nameFormatStaff' . ($informal? 'Informal' : 'Formal') . ($reverse? 'Reversed' : '');
-            $format = isset(static::$settings[$setting])? static::$settings[$setting] : '[title] [preferredName:1]. [surname]';
+            $setting = 'nameFormatStaff' . ($informal ? 'Informal' : 'Formal') . ($reverse? 'Reversed' : '');
+            $format = isset(static::$settings[$setting])? static::$settings[$setting] : '[title] [preferredName]. [surname]';
 
             $output = preg_replace_callback('/\[+([^\]]*)\]+/u',
                 function ($matches) use ($title, $preferredName, $surname) {

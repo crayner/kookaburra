@@ -2,7 +2,8 @@
 
 {% extends 'kookaburra.html.twig' %}
 
-{% set module = {'baseURL': '/roll/group', 'crumbs': [{'uri': '/list/', 'name': 'Roll Groups'}],  'title': 'View Roll Groups'} %}
+{% set moduleName = 'Roll Groups' %}
+{% set module = {'baseURL': '/roll/groups', 'crumbs': [{uri: '/list/', name: 'Roll Groups'}],  'title': 'View Roll Groups'} %}
 {% set breadcrumbs = 'new' %}
 
 {% block content %}

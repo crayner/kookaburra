@@ -1,0 +1,129 @@
+'Activity Spread by Roll Group': 'Activity Spread by Roll Group'
+'Activity Type by Roll Group': 'Activity Type by Roll Group'
+'Add Roll Group': 'Add Roll Group'
+'All Enrolled Students by Roll Group': 'All Enrolled Students by Roll Group'
+'All Roll Groups': 'All Roll Groups'
+'All roll groups have been registered.': 'All roll groups have been registered.'
+'Allows users to view a listing of roll groups': 'Allows users to view a listing of roll groups'
+'Attendance By Roll': 'Attendance By Roll Group'
+'Attendance By Roll Group': 'Attendance By Roll Group'
+'Background Color': 'Background Colour'
+'Browse Library BG Color': 'Browse Library BG Colour'
+'Bulk email to any of my roll groups': 'Bulk email to any of my roll groups'
+'Bulk email to any roll group': 'Bulk email to any roll group'
+'Choose Roll Group': 'Choose Roll Group'
+'Class Enrolment by Roll Group': 'Class Enrolment by Roll Group'
+'Edit Roll Group': 'Edit Roll Group'
+'Enable Notifications by Roll Group': 'Enable Notifications by Roll Group'
+'Enrol the student in the selected school year (as the student has been assigned to a roll group).': 'Enrol the student in the selected school year (as the student has been assigned to a roll group).'
+'Font/Border Color': 'Font/Border Colour'
+'Letters Home by Roll Group': 'Letters Home by Roll Group'
+'Manage Roll Groups': 'Manage Roll Groups'
+'My Roll Group': 'My Roll Group'
+'My Roll Groups': 'My Roll Groups'
+'Next Roll Group': 'Next Roll Group'
+'Print a report of roll groups who have not been registered on a given day': 'Print a report of roll groups who have not been registered on a given day'
+'Print roll group lists showing count of various activity types': 'Print roll group lists showing count of various activity types'
+'Print student roll group lists': 'Print student roll group lists'
+'Print work summary statistical data by roll group': 'Print work summary statistical data by roll group'
+'RGB Hex value, without leading #. Background color used behind library browsing screen.': 'RGB Hex value, without leading #. Background colour used behind library browsing screen.'
+'Roll Group': 'Roll Group'
+'Roll Group Summary': 'Roll Group Summary'
+'Roll Group at Entry': 'Roll Group at Entry'
+'Roll Groups': 'Roll Groups'
+'Roll Groups Not Registered': 'Roll Groups Not Registered'
+'Roll group short name, as set in School Admim. Must already exist.': 'Roll group short name, as set in School Admim. Must already exist.'
+'Roll group short name, as set in School Admin. Must already exist.': 'Roll group short name, as set in School Admim. Must already exist.'
+'Select Roll Groups': 'Select Roll Groups'
+'Show students in roll group, less those with an older sibling, so that letters can be carried home by oldest in family.': 'Show students in roll group, less those with an older sibling, so that letters can be carried home by oldest in family.'
+'Shows the number of classes students are enroled in, organised by roll group': 'Shows the number of classes students are enroled in, organised by roll group'
+'Students By Roll Group': 'Students By Roll Group'
+'Students by Roll Group': 'Students by Roll Group'
+'Students by Roll Groups': 'Students by Roll Groups'
+'Summarises gender and number of students across all roll groups.': 'Summarises gender and number of students across all roll groups.'
+'Take Attendance by Roll Group': 'Take Attendance by Roll Group'
+'Take attendance, one roll group at a time': 'Take attendance, one roll group at a time'
+'The student has successfully been enroled in the specified school year, year group and roll group.': 'The student has successfully been enroled in the specified school year, year group and roll group.'
+'This page shows all roll groups in the current school year.': 'This page shows all roll groups in the current school year.'
+'Up to 3 per roll group. The first-listed will be marked as "Main Tutor".': 'Up to 3 per roll group. The first-listed will be marked as "Main Tutor".'
+'View Roll Groups': 'View Roll Groups'
+'View a brief profile of roll groups in school.': 'View a brief profile of roll groups in school.'
+'View spread of enrolment over terms and days by roll group': 'View spread of enrolment over terms and days by roll group'
+'Work Summary by Roll Group': 'Work Summary by Roll Group'
+'Year groups or roll groups are not properly set up, so you cannot proceed with this section.': 'Year groups or roll groups are not properly set up, so you cannot proceed with this section.'
+'Main Tutor': 'Main Tutor'
+Classes: Classes
+Students: Students
+Staff: Staff
+'Total Student Enrolment:': 'Total Student Enrolment:'
+Home: Home
+'Module Menu': 'Module Menu'
+'Role Switcher': 'Role Switcher'
+'You have multiple roles within the system. Use the list below to switch role:': 'You have multiple roles within the system. Use the list below to switch role:'
+Active: Active
+'denotes a required field': 'denotes a required field'
+'Installation - Step %1$s': 'Installation - Step %1$s'
+'System Requirements': 'System Requirements'
+'Language Settings': 'Language Settings'
+'Database Settings': 'Database Settings'
+'Powered by': 'Powered by'
+'Created under the': 'Created under the'
+'Oh no!': 'Oh no!'
+'Something has gone wrong: the Gibbons have escaped!': 'Something has gone wrong: the Gibbons have escaped!'
+'An error has occurred. This could mean a number of different things, but generally indicates that you have a misspelt address, or are trying to access a page that you are not permitted to access.': 'An error has occurred. This could mean a number of different things, but generally indicates that you have a misspelt address, or are trying to access a page that you are not permitted to access.'
+'If you cannot solve this problem by retyping the address, or through other means, please contact your system administrator.': 'If you cannot solve this problem by retyping the address, or through other means, please contact your system administrator.'
+Welcome: Welcome
+'Student Applications': 'Student Applications'
+'Parents of students interested in study at %1$s may use our %2$s online roll%3$s to initiate the application process.': 'Parents of students interested in study at %1$s may use our %2$s online roll%3$s to initiate the application process.'
+'Staff Applications': 'Staff Applications'
+'Individuals interested in working at %1$s may use our %2$s online roll%3$s to view job openings and begin the recruitment process.': 'Individuals interested in working at %1$s may use our %2$s online roll%3$s to view job openings and begin the recruitment process.'
+Departments: Departments
+'Please feel free to %1$sbrowse our departmental inrollation%2$s, to learn more about %3$s.': 'Please feel free to %1$sbrowse our departmental inrollation%2$s, to learn more about %3$s.'
+'Learn With Us': 'Learn With Us'
+'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.': 'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.'
+'Basic Inrollation': 'Basic Inrollation'
+Name: Name
+Tutors: Tutors
+'Educational Assistants': 'Educational Assistants'
+Location: Location
+Website: Website
+Filters: Filters
+'Show Confidential Data': 'Show Confidential Data'
+Logout: Logout
+Preferences: Preferences
+Fast Finder: Fast Finder
+Actions: Actions
+Admin: Admin
+School Admin: School Admin
+System Admin: System Admin
+Timetable Admin: Timetable Admin
+User Admin: User Admin
+Assess: Assess
+Crowd Assessment: Crowd Assessment
+Rollal Assessment: Rollal Assessment
+Markbook: Markbook
+Rubrics: Rubrics
+Tracking: Tracking
+Learn: Learn
+Activities: Activities
+Individual Needs: Individual Needs
+Library: Library
+Planner: Planner
+Timetable: Timetable
+Other: Other
+Finance: Finance
+Messenger: Messenger
+People: People
+Attendance: Attendance
+Behaviour: Behaviour
+Data Updater: Data Updater
+Roll Tutors: Roll Tutors
+Room: Room
+Sort By: Sort By
+Roll Order: Roll Order
+Surname: Surname
+Preferred Name: Preferred Name
+Return to: Return to
+Formal Assessment: Formal Assessment
+Basic Information: Basic Information
+Print: Print
