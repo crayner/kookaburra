@@ -12,6 +12,7 @@
 
 namespace App\Form\Modules\RollGroups;
 
+use App\Manager\ScriptManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,6 +25,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DetailStudentSortType extends AbstractType
 {
+    /**
+     * @var ScriptManager
+     */
+    private $scriptManager;
+
+    /**
+     * DetailStudentSortType constructor.
+     * @param ScriptManager $scriptManager
+     */
+    public function __construct(ScriptManager $scriptManager)
+    {
+        $this->scriptManager = $scriptManager;
+    }
+
     /**
      * buildForm
      * @param FormBuilderInterface $builder
@@ -50,7 +65,7 @@ class DetailStudentSortType extends AbstractType
             ->add('confidential', CheckboxType::class,
                 [
                     'attr' => [
-                        'onChange' => 'this.form.submit()'
+                        'onClick' => 'return toggleConfidential()'
                     ],
                     'label' => 'Show Confidential Data',
                     'required' => false,
@@ -58,6 +73,7 @@ class DetailStudentSortType extends AbstractType
                 ]
             )
         ;
+        $this->scriptManager->addPageScript('modules/roll_groups/scripts.html.twig');
     }
 
     /**

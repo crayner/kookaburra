@@ -76,8 +76,6 @@ class RollGroupsController extends AbstractController
     {
         $softError = (!$rollGroup instanceof RollGroup) ? 'The selected record does not exist, or you do not have access to it.' : '';
 
-        $canViewConfidential = true;
-
         $canPrint = SecurityHelper::isActionAccessible('/modules/Students/report_students_byRollGroup_print.php');
 
         $highestAction = SecurityHelper::getHighestGroupedAction('/modules/Students/student_view_details.php');

@@ -36,6 +36,11 @@ class ScriptManager
     private $appProps;
 
     /**
+     * @var ArrayCollection
+     */
+    private $pageScripts;
+
+    /**
      * @return array
      */
     public function getEncoreEntryCSSFiles(): array
@@ -126,6 +131,43 @@ class ScriptManager
 
         $this->getAppProps()->set($tag, $props);
 
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPageScripts(): ArrayCollection
+    {
+        if (null === $this->pageScripts)
+            $this->pageScripts = new ArrayCollection();
+
+        return $this->pageScripts;
+    }
+
+    /**
+     * PageScripts.
+     *
+     * @param ArrayCollection $pageScripts
+     * @return ScriptManager
+     */
+    public function setPageScripts(ArrayCollection $pageScripts): ScriptManager
+    {
+        $this->pageScripts = $pageScripts;
+        return $this;
+    }
+
+    /**
+     * addPageScript
+     * @param string $script
+     * @return ScriptManager
+     */
+    public function addPageScript(string $script): ScriptManager
+    {
+        if ($this->getPageScripts()->contains($script))
+            return $this;
+
+        $this->pageScripts->add($script);
         return $this;
     }
 }

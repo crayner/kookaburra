@@ -119,6 +119,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getAppProps', [$this->scriptManager, 'getAppProps']),
             new TwigFunction('formatUsing', [$this, 'formatUsing']),
             new TwigFunction('getAlertBar', [$this, 'getAlertBar']),
+            new TwigFunction('getPageScripts', [$this->scriptManager, 'getPageScripts']),
         ];
     }
 

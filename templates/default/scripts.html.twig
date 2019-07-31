@@ -12,3 +12,7 @@
         {{ encore_entry_script_tags(tagName) }}
     {% endfor %}
 {% endif %}
+
+{% for script in getPageScripts() %}
+    {% include script %}
+{% endfor %}
