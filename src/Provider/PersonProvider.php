@@ -13,14 +13,15 @@
 namespace App\Provider;
 
 use App\Entity\AlertLevel;
+use App\Entity\Behaviour;
 use App\Entity\INPersonDescriptor;
 use App\Entity\MarkbookEntry;
 use App\Entity\Person;
+use App\Entity\PersonMedical;
 use App\Entity\Setting;
 use App\Manager\Traits\EntityTrait;
 use App\Security\SecurityUser;
 use App\Util\SecurityHelper;
-use Gibbon\Services\Format;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -109,8 +110,8 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
                 if ($alert = $this->providerFactory::getRepository(AlertLevel::class)->find($alertLevelID)) {
                     $alerts[] = $this->resolveAlert([
                         'highestLevel'    => $alert->getName(),
-                        'highestColour'   => $alert->getColor(),
-                        'highestColourBG' => $alert->getcolorBG(),
+                        'highestColour'   => $alert->getColour(),
+                        'highestColourBG' => $alert->getColourBG(),
                         'tag'             => 'A',
                         'title'           => 'concerns_alert_level', // 'Student has a %name% alert for academic concern over the past 60 days.',
                         'title_params'    => array_merge(['name' => $alert->getName(), 'highest_level' => $alert->getName()],  $alertThresholdParams),
@@ -119,94 +120,91 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
                     ]);
                 }
             }
-dd($alerts);
+
             // Behaviour
             $alertLevelID = '';
             $alertThresholdText = '';
-            try {
-                $dataAlert = array('gibbonPersonID' => $person, 'date' => date('Y-m-d', (time() - (24 * 60 * 60 * 60))));
-                $sqlAlert = "SELECT * FROM gibbonBehaviour WHERE gibbonPersonID=:gibbonPersonID AND type='Negative' AND date>:date";
-                $resultAlert = $connection2->prepare($sqlAlert);
-                $resultAlert->execute($dataAlert);
-            } catch (PDOException $e) {}
 
-            $behaviourAlertLowThreshold = getSettingByScope($connection2, 'Students', 'behaviourAlertLowThreshold');
-            $behaviourAlertMediumThreshold = getSettingByScope($connection2, 'Students', 'behaviourAlertMediumThreshold');
-            $behaviourAlertHighThreshold = getSettingByScope($connection2, 'Students', 'behaviourAlertHighThreshold');
+            $results = ProviderFactory::getRepository(Behaviour::class)->findNegativeInLast60Days($person);
 
-            if ($resultAlert->rowCount() >= $behaviourAlertHighThreshold) {
+            $behaviourAlertLowThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertLowThreshold');
+            $behaviourAlertMediumThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertMediumThreshold');
+            $behaviourAlertHighThreshold = $settingProvider->getSettingByScope('Students', 'behaviourAlertHighThreshold');
+
+            if (count($results) >= $behaviourAlertHighThreshold) {
                 $alertLevelID = 001;
-                $alertThresholdText = sprintf(__('This alert level occurs when there are more than %1$s events recorded for a student.'), $behaviourAlertHighThreshold);
-            } elseif ($resultAlert->rowCount() >= $behaviourAlertMediumThreshold) {
+                $alertThresholdParams = ['low' => $behaviourAlertHighThreshold];
+            } elseif (count($results) >= $behaviourAlertMediumThreshold) {
                 $alertLevelID = 002;
-                $alertThresholdText = sprintf(__('This alert level occurs when there are between %1$s and %2$s events recorded for a student.'), $behaviourAlertMediumThreshold, ($behaviourAlertHighThreshold-1));
-            } elseif ($resultAlert->rowCount() >= $behaviourAlertLowThreshold) {
+                $alertThresholdParams = ['high' => $behaviourAlertHighThreshold - 1, 'low' => $behaviourAlertMediumThreshold];
+            } elseif (count($results) >= $behaviourAlertLowThreshold) {
                 $alertLevelID = 003;
-                $alertThresholdText = sprintf(__('This alert level occurs when there are between %1$s and %2$s events recorded for a student.'), $behaviourAlertLowThreshold, ($behaviourAlertMediumThreshold-1));
+                $alertThresholdParams = ['high' => $behaviourAlertMediumThreshold - 1, 'low' => $behaviourAlertLowThreshold];
             }
 
             if ($alertLevelID != '') {
-                if ($alert = getAlert($guid, $connection2, $alertLevelID)) {
-                    $alerts[] = [
-                        'highestLevel'    => __($alert['name']),
-                        'highestColour'   => $alert['color'],
-                        'highestColourBG' => $alert['colorBG'],
-                        'tag'             => __('B'),
-                        'title'           => sprintf(__('Student has a %1$s alert for behaviour over the past 60 days.'), __($alert['name'])).' '.$alertThresholdText,
-                        'link'            => './index.php?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person.'&subpage=Behaviour',
-                    ];
+                if ($alert = $this->providerFactory::getRepository(AlertLevel::class)->find($alertLevelID)) {
+                    $alerts[] = $this->resolveAlert([
+                        'highestLevel'    => $alert->getName(),
+                        'highestColour'   => $alert->getColour(),
+                        'highestColourBG' => $alert->getColourBG(),
+                        'tag'             => 'B',
+                        'title'           => 'behaviour_alert_level', // 'Student has a %name% alert for academic concern over the past 60 days.',
+                        'title_params'    => array_merge(['name' => $alert->getName(), 'highest_level' => $alert->getName()],  $alertThresholdParams),
+                        'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId().'&subpage=Behaviour',
+                        'translation_domain' => 'kookaburra',
+                    ]);
                 }
             }
 
             // Medical
-            if ($alert = getHighestMedicalRisk($guid, $person, $connection2)) {
-                $alerts[] = [
+            if ($alert = ProviderFactory::getRepository(PersonMedical::class)->findHighestMedicalRisk($person)) {
+                dd($alert);
+                $alerts[] = $this->resolveAlert([
                     'highestLevel'    => $alert[1],
                     'highestColour'   => $alert[3],
                     'highestColourBG' => $alert[4],
-                    'tag'             => __('M'),
-                    'title'           => sprintf(__('Medical alerts are set, up to a maximum of %1$s'), $alert[1]),
-                    'link'            => './index.php?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person.'&subpage=Medical',
-                ];
+                    'tag'             => 'M',
+                    'title'           => 'medical_alert_level',
+                    'title_params'    => ['name' => $alert->getName()],
+                    'translation_domain' => 'kookaburra',
+                    'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId().'&subpage=Medical',
+                ]);
             }
 
             // Privacy
-            $privacySetting = getSettingByScope($connection2, 'User Admin', 'privacy');
-            if ($privacySetting == 'Y' and $privacy != '') {
-                if ($alert = getAlert($guid, $connection2, 001)) {
-                    $alerts[] = [
-                        'highestLevel'    => __($alert['name']),
-                        'highestColour'   => $alert['color'],
-                        'highestColourBG' => $alert['colorBG'],
-                        'tag'             => __('P'),
-                        'title'           => sprintf(__('Privacy is required: %1$s'), $privacy),
-                        'link'            => './index.php?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person,
-                    ];
+            $privacySetting = $settingProvider->getSettingByScopeAsBoolean('User Admin', 'privacy');
+            if ($privacySetting && $privacy !== '' && null !== $privacy) {
+                if ($alert = ProviderFactory::getRepository(AlertLevel::class)->find(1)) {
+                    $alerts[] = $this->resolveAlert([
+                        'highestLevel'    => $alert->getName(),
+                        'highestColour'   => $alert->getColour(),
+                        'highestColourBG' => $alert->getColourBG(),
+                        'tag'             => 'P',
+                        'title'           => 'privacy_alert_level', // sprintf(__('Privacy is required: %1$s'), $privacy),
+                        'title_params'    => ['message' => $privacy],
+                        'translation_domain' => 'kookaburra',
+                        'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId(),
+                    ]);
                 }
             }
 
             // Output alerts
-            $classDefault = 'block align-middle text-center font-bold border-0 border-t-2 ';
-            $classDefault .= $large
+
+            $alerts['alerts'] = $alerts;
+            $alerts['classDefault'] = 'block align-middle text-center font-bold border-0 border-t-2 ';
+            $alerts['classDefault'] .= $large
                 ? 'text-4xl w-10 pt-1 mr-2 leading-none'
                 : 'text-xs w-4 pt-px mr-1 leading-none';
 
-            foreach ($alerts as $alert) {
-                $style = "color: #{$alert['highestColour']}; border-color: #{$alert['highestColour']}; background-color: #{$alert['highestColourBG']};";
-                $class = $classDefault .' '. ($alert['class'] ?? 'float-left');
-                $output .= Format::link($alert['link'], $alert['tag'], [
-                    'title' => $alert['title'],
-                    'class' => $class,
-                    'style' => $style,
-                ]);
-            }
-
-            if ($div == true) {
-                $output = "<div {$divExtras} class='w-20 lg:w-24 h-6 text-left py-1 px-0 mx-auto'>{$output}</div>";
+            if ($div) {
+                $alerts['wrapperClass'] =  'w-20 lg:w-24 h-6 text-left py-1 px-0 mx-auto';
+                $alerts['wrapper'] = true;
+                $alerts['wrapperExtras'] = $divExtras;
             }
         }
 
-        return $output;
+        return $alerts;
     }
 
     /**

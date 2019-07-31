@@ -81,8 +81,17 @@
                         </div>
                     </div>
                 </div>
+
+
                 {% for student in rollGroup.studentEnrolments(sortBy.sortBy) %}
                     <div class="flex-col w-1/2 sm:w-1/3 md:w-1/5 my-2 sm:my-4 text-center">
+
+                        {% if form.confidential.vars.data is same as(true) %}
+                            <div class="text-xs text-gray-600 italic leading-snug">
+                                {% include 'default/alert_bar.html.twig' with {alerts: getAlertBar(student.person, ' data-conf=confidential')} %}
+                            </div>
+                        {% endif %}
+
                         <div class="relative">
                             <div>{{ student.person.photo('md')|replace({'{theme}': getThemeName()})|raw }}</div>
                         </div>
@@ -93,13 +102,11 @@
                             {% include 'default/birthday_icon.html.twig' with {person: student.person} %}
                         </div>
 
-                        {% if form.confidential.vars.data is same as(true) %}
-                            <div class="text-xs text-gray-600 italic leading-snug">
-                                {% include 'default/alert_bar.html.twig' with {alerts: getAlertBar(student.person, ' data-conf="confidential')} %}
-                            </div>
-                        {% endif %}
+
                     </div>
                 {% endfor %}
+
+
             </div>
         {{ form_end(form) }}
     {% endif %}

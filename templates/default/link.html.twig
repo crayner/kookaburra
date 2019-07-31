@@ -1,0 +1,14 @@
+{# do NO translation here #}
+{% if url|length is same as(0) %}
+    {{ text }}
+{% else %}
+    {% if text|length is same as(0) %}
+        {% set text = url %}
+    {% endif %}
+    {% set url = url|trim('./', 'left') %}
+    {% if absoluteURL in url %}
+        {% set attr = attr ~ ' target="_blank"' %}
+        {% set url = url|replace(absoluteURL, '') %}
+    {% endif %}
+    <a href="{{ absoluteURL }}{{ url }}" {{ attr|raw }}>{{ text }}</a>
+{% endif %}

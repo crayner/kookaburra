@@ -367,6 +367,7 @@ class Format
      * @param string $text
      * @param string $title
      * @return string
+     * @deprecated use 'default/link.html.twig'
      */
     public static function link($url, $text = '', $attr = [])
     {

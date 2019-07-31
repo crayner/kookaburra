@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -74,6 +75,13 @@ class PersonMedical
      * @ORM\Column(type="text")
      */
     private $comment;
+
+    /**
+     * @var Collection|PersonMedicalCondition[]
+     * @ORM\OneToMany(targetEntity="PersonMedicalCondition", mappedBy="personMedical")
+     * @ORM\JoinColumn(name="gibbonPersonMedicalID", referencedColumnName="gibbonPersonMedicalID", nullable=false)
+     */
+    private $personMedicalConditions;
 
     /**
      * @return int|null
@@ -207,5 +215,25 @@ class PersonMedical
     public static function getBloodTypeList(): array
     {
         return self::$bloodTypeList;
+    }
+
+    /**
+     * @return PersonMedicalCondition[]|Collection
+     */
+    public function getPersonMedicalConditions()
+    {
+        return $this->personMedicalConditions;
+    }
+
+    /**
+     * PersonMedicalConditions.
+     *
+     * @param PersonMedicalCondition[]|Collection $personMedicalConditions
+     * @return PersonMedical
+     */
+    public function setPersonMedicalConditions($personMedicalConditions)
+    {
+        $this->personMedicalConditions = $personMedicalConditions;
+        return $this;
     }
 }

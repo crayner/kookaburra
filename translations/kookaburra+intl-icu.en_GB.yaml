@@ -4,7 +4,14 @@ birthday_icon: "{count, plural,
         other   {# days until {name}'s birthday!}
     }"
 concerns_alert_level: "{highest_level, select,
-    High    {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are more than {low} events recorded for a student.'}
-    Medium   {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
-    Low   {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
-}"
+        High    {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are more than {low} events recorded for a student.'}
+        Medium   {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+        Low   {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+    }"
+behaviour_alert_level: "{highest_level, select,
+        High    {'Student has a {name} alert for behaviour over the past 60 days. This alert level occurs when there are more than {low} events recorded for a student.'}
+        Medium   {'Student has a {name} alert for behaviour over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+        Low   {'Student has a {name} alert for behaviour over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+    }"
+medical_alert_level: 'Medical alerts are set, up to a maximum of {name}'
+privacy_alert_level: 'Privacy is required: {message}'

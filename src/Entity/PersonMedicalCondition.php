@@ -32,7 +32,7 @@ class PersonMedicalCondition
 
     /**
      * @var PersonMedical|null
-     * @ORM\ManyToOne(targetEntity="PersonMedical")
+     * @ORM\ManyToOne(targetEntity="PersonMedical", inversedBy="personMedicalConditions")
      * @ORM\JoinColumn(name="gibbonPersonMedicalID",referencedColumnName="gibbonPersonMedicalID", nullable=false)
      */
     private $personMedical;

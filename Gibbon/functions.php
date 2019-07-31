@@ -872,7 +872,16 @@ function htmlPrep($str)
     return htmlentities($str, ENT_QUOTES, 'UTF-8');
 }
 
-//Returns the risk level of the highest-risk condition for an individual
+/**
+ * getHighestMedicalRisk
+ *
+ * Returns the risk level of the highest-risk condition for an individual
+ * @deprecated Use PersonMedicalRepository->findHighestMedicalRisk($person)
+ * @param $guid
+ * @param $gibbonPersonID
+ * @param $connection2
+ * @return array|bool
+ */
 function getHighestMedicalRisk($guid, $gibbonPersonID, $connection2)
 {
     $output = false;
