@@ -1,0 +1,7 @@
+{% for extra in sidebar.getExtras(position) %}
+    {% if extra.type is same as('image') %}
+        <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-6">
+            {% include 'default/display_image.html.twig' with {image: extra.content} %}
+        </div>
+    {% endif %}
+{% endfor %}

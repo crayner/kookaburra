@@ -449,6 +449,7 @@ class GibbonManager implements ContainerAwareInterface
                 $session->set('gibbonSchoolYearIDCurrent', $schoolYear->getId());
                 $session->set('gibbonSchoolYearNameCurrent', $schoolYear->getName());
                 $session->set('gibbonSchoolYearSequenceNumberCurrent', $schoolYear->getSequenceNumber());
+                $session->set('schoolYearCurrent', $schoolYear);
             }
         }
         return $this;

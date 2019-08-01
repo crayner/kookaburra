@@ -17,6 +17,7 @@ use App\Entity\SchoolYear;
 use App\Form\Modules\RollGroups\DetailStudentSortType;
 use App\Manager\Module\RollGroup\RollGroupTable;
 use App\Provider\ProviderFactory;
+use App\Twig\Sidebar;
 use App\Twig\TableViewManager;
 use App\Util\SecurityHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -72,9 +73,12 @@ class RollGroupsController extends AbstractController
      * @Route("/{rollGroup}/detail/", name="detail")
      * @Security("is_granted('ROLE_ROUTE')")
      */
-    public function detail(RollGroup $rollGroup, Request $request)
+    public function detail(RollGroup $rollGroup, Request $request, Sidebar $sidebar)
     {
         $softError = (!$rollGroup instanceof RollGroup) ? 'The selected record does not exist, or you do not have access to it.' : '';
+
+        if ($rollGroup->getTutor())
+            $sidebar->addExtra('image', $rollGroup->getTutor()->photo('lg'));
 
         $canPrint = SecurityHelper::isActionAccessible('/modules/Students/report_students_byRollGroup_print.php');
 

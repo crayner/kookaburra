@@ -313,6 +313,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $session->set('gibbonSchoolYearID', $schoolYear->getId());
         $session->set('gibbonSchoolYearName', $schoolYear->getName());
         $session->set('gibbonSchoolYearSequenceNumber', $schoolYear->getSequenceNumber());
+        $session->set('schoolYear', $schoolYear);
         return true;
     }
 
@@ -330,10 +331,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             $session->set('gibbonSchoolYearID', $schoolYear->getId());
             $session->set('gibbonSchoolYearName', $schoolYear->getName());
             $session->set('gibbonSchoolYearSequenceNumber', $schoolYear->getSequenceNumber());
+            $session->set('schoolYear', $schoolYear);
         } else {
             $session->forget('gibbonSchoolYearID');
             $session->forget('gibbonSchoolYearName');
             $session->forget('gibbonSchoolYearSequenceNumber');
+            $session->forget('schoolYear');
         }
 
         return true;

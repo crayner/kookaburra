@@ -24,17 +24,25 @@ interface ContentInterface
     public function execute(): void;
 
     /**
-     * getContent
-     * @return bool
+     * getAttribute
+     * @param string $name
+     * @return mixed
      */
-    public function getContent(): bool;
+    public function getAttribute(string $name);
 
     /**
-     * addContent
-     * @param $name
-     * @param $value
-     * @return self
+     * hasAttribute
+     * @param string $name
+     * @return bool
      */
-    public function addContent(string $name, $value): ContentInterface;
+    public function hasAttribute(string $name): bool;
+
+    /**
+     * addAttribute
+     * @param string $name
+     * @param $content
+     * @return ContentInterface
+     */
+    public function addAttribute(string $name, $content): ContentInterface;
 
 }

@@ -50,7 +50,8 @@ class ModuleMenu implements ContentInterface
             }
 
             $request->getSession()->set('menuModuleItems', $menuModuleItems);
-            $this->addContent('menuModuleItems', $menuModuleItems);
+            $this->addAttribute('menuModuleItems', $menuModuleItems);
+            $this->addAttribute('ModuleMenu', true);
             $request->getSession()->set('menuModuleName', $currentModule->getName());
         } else {
             $request->getSession()->forget(['menuModuleItems', 'menuModuleName']);

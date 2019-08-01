@@ -1,2 +1,6 @@
+{% set sidebar = getSidebar() %}
+{% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'top'} %}
 {% include 'default/sidebar/role_switcher.html.twig' %}
-{% include 'default/sidebar/navigation.html.twig' %}
+
+{% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'bottom'} %}
+{% include 'default/sidebar/module_menu.html.twig' %}

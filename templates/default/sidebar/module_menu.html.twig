@@ -1,39 +1,23 @@
 {% trans_default_domain "gibbon" %}
-{% set sidebar = app.request.attributes.has('Sidebar') or app.request.attributes.has('ModuleMenu') %}
-{% if app.request.attributes.has('ModuleMenu') %}
+{% dump(getModuleMenu()) %}
+{% set sidebar = getModuleMenu().valid and getModuleMenu().hasAttribute('ModuleMenu') %}
+{% if sidebar %}
     <div>
-        {% if app.request.attributes.has('menuModuleItems') %}
+        {% if getModuleMenu().hasAttribute('menuModuleItems') %}
             <button data-toggle="#navigation" class="w-full flex justify-center items-center sm:w-48 bg-white border border-grey-600 border-solid p-2 mt-16 sm:mt-4 sm:absolute sm:top-0 sm:right-0 sm:mr-6 z-40 {{ sidebar ? 'lg:hidden' }}">
                 <span class="text-gray-600 text-sm sm:text-xs font-bold uppercase ">{{ 'Module Menu'|trans }}</span>
                 <svg class="fill-current h-4 w-4 sm:h-3 sm:w-3 text-gray-600 ml-2" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>{{ __('Module Menu') }}</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
             </button>
         {% endif %}
 
-        {% if app.request.attributes.has('extraSidebar') %}
-            {% for code in app.request.attributes.get('extraSidebar') if app.request.attributes.has('Sidebar') and app.request.attributes.has('sidebarPosition') and app.request.attributes.get('sidebarPosition')|default('') != 'bottom' %}
-                {% if code is not empty %}
-                    <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-6">
-                        {{ code|raw }}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-
-
-        {% if app.request.attributes.has('Sidebar') and app.request.attributes.has('sidebarContents') %}
-            <div class="md:column-2 lg:column-1 {{ page.breadcrumbs ? 'pt-10 lg:pt-0' }} ">
-                {{ app.request.attributes.get('sidebarContents')|default('')|raw }}
-            </div>
-        {% endif %}
-
-        {% if app.request.attributes.has('menuModuleItems') %}
+        {% if getModuleMenu().hasAttribute('menuModuleItems') %}
             <nav id="navigation" class="w-full hidden absolute top-0 z-40 mt-24 sm:mt-12 -ml-6 px-6
             {{ sidebar ? 'lg:block lg:static lg:p-0 lg:my-6 lg:mx-0' }}">
 
                 <ul class="w-full bg-white border list-none column-1 sm:column-2 md:column-3 m-0 pt-6 px-6 shadow-lg
                 {{ sidebar ? 'lg:bg-transparent lg:border-0 lg:column-1 lg:shadow-none lg:p-0' }}">
 
-                    {% for categoryName, items in app.request.attributes.get('menuModuleItems') %}
+                    {% for categoryName, items in getModuleMenu().getAttribute('menuModuleItems') %}
                         <li class="w-full column-no-break p-0 ">
                             <h5 class="m-0 mb-1 text-xs pb-0 ">{{ categoryName|trans({}, (items|first).textDomain|default('gibbon')) }}</h5>
                             <ul class="list-none m-0 mb-6">
@@ -51,10 +35,5 @@
             </nav>
         {% endif %}
 
-        {% for code in app.request.attributes.get('extraSidebar')|default({}) if app.request.attributes.has('Sidebar') and app.request.attributes.has('sidebarPosition') and app.request.attributes.get('sidebarPosition')|default('') != 'bottom' %}
-        <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-0">
-                {{ code|raw }}
-            </div>
-        {% endfor %}
     </div>
 {% endif %}

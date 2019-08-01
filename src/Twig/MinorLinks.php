@@ -77,7 +77,7 @@ class MinorLinks implements ContentInterface
             }
         }
 
-        $this->addContent('minorLinks', $return);
+        $this->addAttribute('minorLinks', $return);
     }
 
     /**

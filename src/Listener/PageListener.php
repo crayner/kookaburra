@@ -93,10 +93,10 @@ class PageListener implements EventSubscriberInterface
      */
     public function buildPageContent(ControllerEvent $event)
     {
-        $this->sideBar->getContent();
-        $this->mainMenu->getContent();
-        $this->moduleMenu->getContent();
-        $this->minorLinks->getContent();
-        $this->fastFinder->getContent();
+        $this->sideBar->execute();
+        $this->mainMenu->execute();
+        $this->moduleMenu->execute();
+        $this->minorLinks->execute();
+        $this->fastFinder->execute();
     }
 }

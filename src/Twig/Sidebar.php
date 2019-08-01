@@ -13,6 +13,7 @@ namespace App\Twig;
 
 use App\Security\SecurityUser;
 use App\Util\UserHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Sidebar implements ContentInterface
 {
@@ -30,8 +31,58 @@ class Sidebar implements ContentInterface
             // Show role switcher if user has more than one role
             if (count($user->getAllRolesAsArray()) > 1 && false === $this->getRequest()->get('address')) {
 
-                $this->addContent('role_switcher', true);
+                $this->addAttribute('role_switcher', true);
             }
         }
+    }
+
+    /**
+     * @var ArrayCollection|SidebarExtra[]
+     */
+    private $extras;
+
+    /**
+     * @return SidebarExtra[]|ArrayCollection
+     */
+    public function getExtras(string $position = 'all')
+    {
+        if (null === $this->extras)
+            $this->extras = new ArrayCollection();
+
+        if (in_array($position, ['top','bottom'])) {
+            return $this->extras->filter(
+                function ($entry) use ($position) {
+                    return $entry->getPosition() === $position;
+                }
+            );
+        }
+        return $this->extras;
+    }
+
+    /**
+     * Extras.
+     *
+     * @param SidebarExtra[]|ArrayCollection $extra
+     * @return Sidebar
+     */
+    public function setExtras(ArrayCollection $extras)
+    {
+        $this->extras = $extras;
+        return $this;
+    }
+
+    /**
+     * addExtra
+     * @param string $type
+     * @param array $content
+     * @return SidebarExtra
+     * @throws \Gibbon\Exception
+     */
+    public function addExtra(string $type, array $content): SidebarExtra
+    {
+        $extra = new SidebarExtra($type, $content);
+        $this->getExtras()->add($extra);
+
+        return $extra->setPriority($this->getExtras()->count());
     }
 }

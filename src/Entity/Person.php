@@ -2673,7 +2673,7 @@ class Person implements EntityInterface
      *
      * @param int|string $size
      * @param string $class
-     * @return string
+     * @return array
      */
     public function photo($size = 75, string $class = '')
     {
@@ -2704,7 +2704,10 @@ class Person implements EntityInterface
             $path = '/themes/{theme}/img/anonymous_'.$imageSize.'.jpg';
         }
 
-        return sprintf('<img class="%1$s" src="%2$s" />', trim($class), $path);
+        $result['class'] = $class;
+        $result['asset'] = $path;
+
+        return $result;
     }
 
     /**

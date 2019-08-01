@@ -92,7 +92,7 @@
                         </div>
 
                         <div class="relative">
-                            <div>{{ student.person.photo('md')|replace({'{theme}': getThemeName()})|raw }}</div>
+                            <div>{% include 'default/display_image.html.twig' with {image: student.person.photo} %}</div>
                         </div>
 
 

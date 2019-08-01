@@ -12,6 +12,7 @@
 
 namespace App\Twig;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -22,12 +23,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 trait ContentTrait
 {
-    /**
-     * @var array|boolean
-     */
-    private $content = false;
-
-
     /**
      * @var RequestStack
      */
@@ -44,41 +39,17 @@ trait ContentTrait
     private $session;
 
     /**
+     * @var ArrayCollection
+     */
+    private $attributes;
+
+    /**
      * MainMenu constructor.
      * @param RequestStack $stack
      */
     public function __construct(RequestStack $stack)
     {
         $this->stack = $stack;
-    }
-
-    /**
-     * getContent
-     * @return bool
-     */
-    public function getContent(): bool
-    {
-        if (false === $this->content)
-            $this->execute();
-
-        return $this->content;
-    }
-
-    /**
-     * addContent
-     * @param string $name
-     * @param $value
-     * @return ContentInterface
-     */
-    public function addContent(string $name, $value): ContentInterface
-    {
-        if (false === $this->content)
-            $this->getRequest()->attributes->set(basename(get_class($this)), true);
-
-        $this->content = true;
-        $this->getRequest()->attributes->set($name, $value);
-
-        return $this;
     }
 
     /**
@@ -101,5 +72,73 @@ trait ContentTrait
             $this->session = $this->getRequest()->getSession();
 
         return $this->session;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAttributes(): ArrayCollection
+    {
+        if (null === $this->attributes)
+            $this->attributes = new ArrayCollection();
+        return $this->attributes;
+    }
+
+    /**
+     * Attributes.
+     *
+     * @param ArrayCollection $attributes
+     * @return ContentTrait
+     */
+    public function setAttributes(ArrayCollection $attributes): ContentTrait
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * addAttribute
+     * @param string $name
+     * @param $content
+     * @return $this
+     */
+    public function addAttribute(string $name, $content): ContentInterface
+    {
+        $this->getAttributes()->set($name, $content);
+
+        return $this;
+    }
+
+    /**
+     * hasAttribute
+     * @param string $name
+     * @return bool
+     */
+    public function hasAttribute(string $name): bool
+    {
+        return $this->getAttributes()->containsKey($name);
+    }
+
+    /**
+     * getAttribute
+     * @param string $name
+     * @return mixed|null
+     */
+    public function getAttribute(string $name)
+    {
+        return $this->hasAttribute($name) ? $this->attributes->get($name) : null;
+    }
+
+    /**
+     * @var bool
+     */
+    private $valid;
+
+    /**
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        return $this->valid = $this->getAttributes()->count() > 0;
     }
 }

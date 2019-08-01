@@ -56,7 +56,7 @@ class MainMenu implements ContentInterface
             } else {
                 $menuMainItems = $this->getSession()->get('menuMainItems', false);
             }
-            $this->addContent('menuMainItems', $menuMainItems);
+            $this->addAttribute('menuMainItems', $menuMainItems);
         }
     }
 }

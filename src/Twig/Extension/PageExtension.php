@@ -19,6 +19,7 @@ use App\Manager\ScriptManager;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use App\Twig\MainMenu;
+use App\Twig\ModuleMenu;
 use App\Twig\Sidebar;
 use App\Util\Format;
 use Doctrine\DBAL\Exception\ConnectionException;
@@ -68,6 +69,11 @@ class PageExtension extends AbstractExtension
     private $scriptManager;
 
     /**
+     * @var ModuleMenu
+     */
+    private $moduleMenu;
+
+    /**
      * PageExtension constructor.
      *
      * @param Sidebar $sidebar
@@ -84,6 +90,7 @@ class PageExtension extends AbstractExtension
         RequestStack $stack,
         RouterInterface $router,
         MainMenu $mainMenu,
+        ModuleMenu $moduleMenu,
         ScriptManager $scriptManager,
         ProviderFactory $providerFactory,
         Format $format
@@ -94,6 +101,7 @@ class PageExtension extends AbstractExtension
         $this->sidebar = $sidebar;
         $this->router = $router;
         $this->mainMenu = $mainMenu;
+        $this->moduleMenu = $moduleMenu;
         $this->scriptManager = $scriptManager;
         $this->format = $format;
     }
@@ -109,8 +117,9 @@ class PageExtension extends AbstractExtension
             new TwigFunction('houseIDLogo', [$this, 'houseIDLogo']),
             new TwigFunction('minorLinks', [$this, 'minorLinks']),
             new TwigFunction('notificationTray', [$this, 'notificationTray']),
-            new TwigFunction('getSidebar', [$this->sidebar, 'getContent']),
-            new TwigFunction('getMainMenu', [$this->mainMenu, 'getContent']),
+            new TwigFunction('getSidebar', [$this, 'getSidebar']),
+            new TwigFunction('getMainMenu', [$this, 'getMainMenu']),
+            new TwigFunction('getModuleMenu', [$this, 'getModuleMenu']),
             new TwigFunction('content', [$this, 'content']),
             new TwigFunction('alerts', [$this, 'alerts']),
             new TwigFunction('getThemeName', [$this, 'getThemeName']),
@@ -240,5 +249,32 @@ class PageExtension extends AbstractExtension
     {
         $provider = ProviderFactory::create(Person::class);
         return $provider->getAlertBar($person, $divExtras, $div, $large);
+    }
+
+    /**
+     * getSideBar
+     * @return Sidebar
+     */
+    public function getSideBar(): Sidebar
+    {
+        return $this->sidebar;
+    }
+
+    /**
+     * getMainMenu
+     * @return MainMenu
+     */
+    public function getMainMenu(): MainMenu
+    {
+        return $this->mainMenu;
+    }
+
+    /**
+     * getModuleMenu
+     * @return ModuleMenu
+     */
+    public function getModuleMenu(): ModuleMenu
+    {
+        return $this->moduleMenu;
     }
 }
