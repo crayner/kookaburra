@@ -12,8 +12,10 @@
 
 namespace App\Controller;
 
+use App\Twig\FastFinder;
 use Gibbon\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -45,5 +47,16 @@ class FinderController extends AbstractController
             default:
                 throw new Exception(sprintf('The finder search failed for the unknown type of "%s".', $type));
         }
+    }
+
+    /**
+     * loadFastFinderOptions
+     * @Route("/api/finder/{serach}/search/", name="api_finder_options")
+     */
+    public function loadFastFinderOptions(string $search, FastFinder $fastFinder)
+    {
+        dd($search);
+
+        return new JsonResponse($data, 200);
     }
 }

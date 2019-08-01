@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
+import Autosuggest from 'react-autosuggest';
 
 export default class FastFinderApp extends Component {
     constructor (props) {
@@ -41,9 +41,11 @@ export default class FastFinderApp extends Component {
                                             <div className="flex-1 relative">
                                                 <ul className="token-input-list-facebook">
                                                     <li className="token-input-input-token-facebook">
-                                                        <input type="text" autoComplete="off" autoCapitalize="off" id="token-input-fastFinderSearch"
-                                                                                                            style={{border: 'none', outline: 'none', width: '100%'}} />
-                                                        <div style="position: absolute; top: -9999px; left: -9999px; width: auto; font-size: 13px; font-family: Arial; font-weight: 400; letter-spacing: 0px; white-space: nowrap;"></div>
+                                                        <Autosuggest
+                                                            id={'token-input-fastFinderSearch'}
+                                                            style={{border: 'none', outline: 'none', width: '100%'}}
+                                                            suggestions={[]}
+                                                        />
                                                     </li>
                                                 </ul>
                                                 <input type="text" id="fastFinderSearch" name="fastFinderSearch"

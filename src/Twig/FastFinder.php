@@ -12,12 +12,19 @@
 
 namespace App\Twig;
 
+use App\Entity\CourseClass;
+use App\Entity\CourseClassPerson;
+use App\Entity\Module;
+use App\Entity\Role;
 use App\Entity\StudentEnrolment;
 use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
 use App\Provider\RoleProvider;
+use App\Security\SecurityUser;
+use App\Util\CacheHelper;
 use App\Util\SecurityHelper;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -44,11 +51,19 @@ class FastFinder implements ContentInterface
     private $translator;
 
     /**
+     * @var TokenStorageInterface
+     */
+    private $token;
+
+    /**
      * execute
      * @throws \Exception
      */
     public function execute(): void
     {
+        if (!$this->getToken()->getToken() || !$this->getToken()->getToken()->getUser() instanceof SecurityUser || !$this->getToken()->getToken()->getUser()->getPerson())
+            return;
+
         $highestActionClass = SecurityHelper::getHighestGroupedAction('/modules/Planner/planner.php');
 
         $templateData = [
@@ -63,6 +78,11 @@ class FastFinder implements ContentInterface
         $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php') ? ', '.$this->getTranslator()->trans('Staff', [], 'gibbon') : '';
         $templateData['trans_enrolmentCount'] = $templateData['roleCategory'] === 'Staff' ? $this->getTranslator()->trans('Total Student Enrolment:', [], 'gibbon') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('gibbonSchoolYearID')) : '';
         $templateData['themeName'] = $this->getSession()->get('gibbonThemeName');
+
+        $templateData['actions'] = $this->getFastFinderActions($this->getSession()->get('gibbonRoleIDCurrent'));
+
+        $templateData['classes'] = $this->accessibleClasses();
+
         $this->getScriptManager()->addAppProp('fastFinder', $templateData);
     }
 
@@ -123,6 +143,78 @@ class FastFinder implements ContentInterface
     public function setTranslator(TranslatorInterface $translator): FastFinder
     {
         $this->translator = $translator;
+        return $this;
+    }
+
+    /**
+     * getFastFinderActions
+     *
+     * @param int $roleID
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getFastFinderActions(int $roleID) {
+
+        if (CacheHelper::isStale('fastFinderActions'))
+        {
+            // Get the accessible actions for the current user
+            $role = ProviderFactory::getRepository(Role::class)->find($roleID);
+            $actions = ProviderFactory::getRepository(Module::class)->findFastFinderActions($role);
+            foreach($actions as $q=>$row)
+            {
+                $actions[$q]['name'] = $this->getTranslator()->trans($row['name'], [], 'gibbon');
+            }
+            CacheHelper::setCacheValue('fastFinderActions', $actions, 10);
+        } else {
+            $actions = CacheHelper::getCacheValue('fastFinderActions');
+        }
+        return $actions;
+    }
+
+    /**
+     * accessibleClasses
+     * @throws \Exception
+     */
+    public function accessibleClasses()
+    {
+        if (CacheHelper::isStale('fastFinderClasses')) {
+            $classIsAccessible = false;
+            $highestActionClass = SecurityHelper::getHighestGroupedAction('/modules/Planner/planner.php');
+            if (SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses') {
+                $classIsAccessible = true;
+            }
+            // CLASSES
+            if ($classIsAccessible || true) {
+                if ($highestActionClass === 'Lesson Planner_viewEditAllClasses' || $highestActionClass === 'Lesson Planner_viewAllEditMyClasses') {
+                    $classes = ProviderFactory::getRepository(CourseClass::class)->findAccessibleClasses($this->getSession()->get('schoolYear'));
+                } else {
+                    $classes = ProviderFactory::getRepository(CourseClassPerson::class)->findAccessibleClasses($this->getSession()->get('schoolYear'), $this->getToken()->getToken()->getUser()->getPerson());
+                }
+            }
+            CacheHelper::setCacheValue('fastFinderClasses', $classes);
+        } else {
+            $classes = CacheHelper::getCacheValue('fastFinderClasses');
+        }
+        return $classes;
+    }
+
+    /**
+     * @return TokenStorageInterface
+     */
+    public function getToken(): TokenStorageInterface
+    {
+        return $this->token;
+    }
+
+    /**
+     * Token.
+     *
+     * @param TokenStorageInterface $token
+     * @return FastFinder
+     */
+    public function setToken(TokenStorageInterface $token): FastFinder
+    {
+        $this->token = $token;
         return $this;
     }
 }

@@ -14,6 +14,7 @@ namespace App\Repository;
 
 use App\Entity\CourseClass;
 use App\Entity\Person;
+use App\Entity\SchoolYear;
 use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -49,5 +50,24 @@ class CourseClassRepository extends ServiceEntityRepository
             ->setParameter('schoolYear', SchoolYearHelper::getCurrentSchoolYear())
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * findAccessibleClasses
+     * @param SchoolYear $schoolYear
+     * @return mixed
+     */
+    public function findAccessibleClasses(SchoolYear $schoolYear)
+    {
+        $result = $this->createQueryBuilder('cc')
+            ->select(['cc.id', "CONCAT(c.nameShort, '.', cc.nameShort, ': ', c.name) AS name"])
+            ->join('cc.course', 'c')
+            ->where('c.schoolYear = :schoolYear')
+            ->setParameter('schoolYear', $schoolYear)
+            ->getQuery()
+            ->getResult();
+        foreach($result as $q=>$w)
+            $result[$q]['type'] = NULL;
+        return $result;
     }
 }

@@ -48,7 +48,7 @@ TODO: add template variable details.
                     {% if sidebar %}
                         <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
                             {% block sidebar %}
-                            {{ include('legacy/module_menu.html.twig') }}
+                            {{ include('legacy/navigation.html.twig') }}
                             {% endblock sidebar %}
                         </div>
                         <br style="clear: both">
@@ -59,7 +59,7 @@ TODO: add template variable details.
                         {% block page %}
 
                         {% if content and not sidebar %}
-                            {{ include('legacy/module_menu.html.twig') }}
+                            {{ include('legacy/navigation.html.twig') }}
                         {% endif %}
 
                         {% if page.breadcrumbs %}

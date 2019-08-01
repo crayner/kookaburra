@@ -1,5 +1,4 @@
 {% trans_default_domain "gibbon" %}
-{% dump(getModuleMenu()) %}
 {% set sidebar = getModuleMenu().valid and getModuleMenu().hasAttribute('ModuleMenu') %}
 {% if sidebar %}
     <div>

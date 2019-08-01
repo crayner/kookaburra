@@ -13,6 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\Module;
+use App\Entity\Role;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -85,5 +86,31 @@ class ModuleRepository extends ServiceEntityRepository
             ->getResult();
 
         return $result;
+    }
+
+    /**
+     * findFastFinderActions
+     * @param Role $role
+     * @return mixed
+     */
+    public function findFastFinderActions(Role $role)
+    {
+        return $this->createQueryBuilder('m')
+            ->select([
+                "CONCAT(m.name, '/', a.entryURL) AS id",
+                "SUBSTRING_INDEX(a.name, '_', 1) AS name",
+                'm.type',
+                'm.name AS module',
+            ])
+            ->join('m.actions', 'a')
+            ->join('a.permissions', 'p')
+            ->where('m.active = :yes')
+            ->andWhere('a.menuShow = :yes')
+            ->andWhere('p.role = :role')
+            ->orderBy('a.name', 'ASC')
+            ->setParameters(['yes' => 'Y', 'role' => $role])
+            ->distinct()
+            ->getQuery()
+            ->getResult();
     }
 }

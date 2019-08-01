@@ -47,7 +47,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Roll Groups/rollGroups.php
     $table = DataTable::create('rollGroups');
 
     $table->addColumn('name', __('Name'));
-    $table->addColumn('tutors', __('Form Tutors'))->format($formatTutorsList);
+    $table->addColumn('tutors', __('Roll Tutors'))->format($formatTutorsList);
     $table->addColumn('space', __('Room'));
     if (getRoleCategory($_SESSION[$guid]['gibbonRoleIDCurrent'], $connection2) == "Staff") {
         $table->addColumn('students', __('Students'));

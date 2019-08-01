@@ -48,7 +48,7 @@ class RollGroupsController extends AbstractController
         $table = new TableViewManager(['formatTutors' => $translator->trans('Main Tutor', [], 'gibbon')]);
 
         $table->addColumn('name','Name');
-        $table->addColumn('formatTutors', 'Form Tutors');
+        $table->addColumn('formatTutors', 'Roll Tutors');
         $table->addColumn('spaceName', 'Room')->setHeadClass('column hidden sm:table-cell')->setBodyClass('p-2 sm:p-3 hidden sm:table-cell');
         if ($this->getUser()->getPrimaryRole() && $this->getUser()->getPrimaryRole()->getCategory() == "Staff") {
             $table->addColumn('studentCount', 'Students')->setHeadClass('column hidden md:table-cell')->setBodyClass('p-2 sm:p-3 hidden md:table-cell');

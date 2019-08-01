@@ -27,6 +27,7 @@ use App\Provider\PersonProvider;
 use App\Provider\ProviderFactory;
 use App\Provider\SchoolYearProvider;
 use App\Provider\TimetableProvider;
+use App\Util\CacheHelper;
 use App\Util\EntityHelper;
 use App\Util\ErrorHelper;
 use App\Util\Format;
@@ -81,10 +82,10 @@ class HelperListener implements EventSubscriberInterface
      * @param RouterInterface $router
      * @param TokenStorageInterface $tokenStorage
      * @param RequestStack $stack
-     * @param TranslatorInterface $translator
+     * @param Environment $twig
      * @param ContainerInterface $container
      * @param LoggerInterface $logger
-     * @throws \Exception
+     * @param GibbonManager $gibbonManager
      */
     public function __construct(
         EntityManagerInterface $entityManager,

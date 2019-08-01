@@ -19,10 +19,12 @@ use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
 use App\Twig\Sidebar;
+use App\Util\CacheHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PageListener implements EventSubscriberInterface
@@ -48,6 +50,16 @@ class PageListener implements EventSubscriberInterface
     private $minorLinks;
 
     /**
+     * @var CacheHelper
+     */
+    private  $cacheHelper;
+
+    /**
+     * @var TokenStorageInterface
+     */
+    private  $token;
+
+    /**
      * PageListener constructor.
      * @param Sidebar $sideBar
      * @param MainMenu $mainMenu
@@ -64,7 +76,9 @@ class PageListener implements EventSubscriberInterface
         FastFinder $fastFinder,
         TranslatorInterface $trans,
         RouterInterface $router,
-        ScriptManager $scriptManager
+        ScriptManager $scriptManager,
+        CacheHelper $cacheHelper,
+        TokenStorageInterface $token
     ) {
         $this->sideBar = $sideBar;
         $this->mainMenu = $mainMenu;
@@ -73,6 +87,8 @@ class PageListener implements EventSubscriberInterface
         $this->minorLinks->setTranslator($trans)->setRouter($router);
         $this->fastFinder = $fastFinder;
         $this->fastFinder->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
+        $this->cacheHelper = $cacheHelper;
+        $this->token = $token;
     }
 
 
@@ -93,10 +109,11 @@ class PageListener implements EventSubscriberInterface
      */
     public function buildPageContent(ControllerEvent $event)
     {
+        $this->cacheHelper::setSession($event->getRequest()->getSession());
         $this->sideBar->execute();
         $this->mainMenu->execute();
         $this->moduleMenu->execute();
         $this->minorLinks->execute();
-        $this->fastFinder->execute();
+        $this->fastFinder->setToken($this->token)->execute();
     }
 }
