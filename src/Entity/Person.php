@@ -2738,4 +2738,89 @@ class Person implements EntityInterface
 
         return $result;
     }
+
+    /**
+     * @var StudentEnrolment|null
+     * @ORM\OneToMany(targetEntity="App\Entity\StudentEnrolment", mappedBy="person")
+     */
+    private $studentEnrolments;
+
+    /**
+     * getStudentEnrolments
+     * @return Collection|null
+     */
+    public function getStudentEnrolments(): ?Collection
+    {
+        if (null === $this->studentEnrolments)
+            $this->studentEnrolments = new ArrayCollection();
+
+        if ($this->studentEnrolments instanceof PersistentCollection)
+            $this->studentEnrolments->initialize();
+
+        return $this->studentEnrolments;
+    }
+
+    /**
+     * StudentEnrolments.
+     *
+     * @param StudentEnrolment|null $studentEnrolments
+     * @return Person
+     */
+    public function setStudentEnrolments(?StudentEnrolment $studentEnrolments): Person
+    {
+        $this->studentEnrolments = $studentEnrolments;
+        return $this;
+    }
+
+    /**
+     * @var FamilyAdult|null
+     * @ORM\OneToMany(targetEntity="App\Entity\FamilyAdult", mappedBy="person")
+     */
+    private $adults;
+
+    /**
+     * @return FamilyAdult|null
+     */
+    public function getAdults(): ?FamilyAdult
+    {
+        return $this->adults;
+    }
+
+    /**
+     * Adults.
+     *
+     * @param FamilyAdult|null $adults
+     * @return Person
+     */
+    public function setAdults(?FamilyAdult $adults): Person
+    {
+        $this->adults = $adults;
+        return $this;
+    }
+
+    /**
+     * @var FamilyChild|null
+     * @ORM\OneToMany(targetEntity="App\Entity\FamilyChild", mappedBy="person")
+     */
+    private $children;
+
+    /**
+     * @return FamilyChild|null
+     */
+    public function getChildren(): ?FamilyChild
+    {
+        return $this->children;
+    }
+
+    /**
+     * Children.
+     *
+     * @param FamilyChild|null $children
+     * @return Person
+     */
+    public function setChildren(?FamilyChild $children): Person
+    {
+        $this->children = $children;
+        return $this;
+    }
 }

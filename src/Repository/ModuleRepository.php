@@ -93,21 +93,20 @@ class ModuleRepository extends ServiceEntityRepository
      * @param Role $role
      * @return mixed
      */
-    public function findFastFinderActions(Role $role)
+    public function findFastFinderActions(Role $role, string $actionTitle)
     {
         return $this->createQueryBuilder('m')
             ->select([
-                "CONCAT(m.name, '/', a.entryURL) AS id",
-                "SUBSTRING_INDEX(a.name, '_', 1) AS name",
-                'm.type',
-                'm.name AS module',
+                "CONCAT('Act-', m.name, '/', a.entryURL) AS id",
+                "CONCAT('".$actionTitle."', SUBSTRING_INDEX(a.name, '_', 1)) AS text",
+                'm.name as search'
             ])
             ->join('m.actions', 'a')
             ->join('a.permissions', 'p')
             ->where('m.active = :yes')
             ->andWhere('a.menuShow = :yes')
             ->andWhere('p.role = :role')
-            ->orderBy('a.name', 'ASC')
+            ->orderBy('text', 'ASC')
             ->setParameters(['yes' => 'Y', 'role' => $role])
             ->distinct()
             ->getQuery()

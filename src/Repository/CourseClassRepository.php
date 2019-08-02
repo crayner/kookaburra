@@ -57,17 +57,20 @@ class CourseClassRepository extends ServiceEntityRepository
      * @param SchoolYear $schoolYear
      * @return mixed
      */
-    public function findAccessibleClasses(SchoolYear $schoolYear)
+    public function findAccessibleClasses(SchoolYear $schoolYear, string $classTitle)
     {
         $result = $this->createQueryBuilder('cc')
-            ->select(['cc.id', "CONCAT(c.nameShort, '.', cc.nameShort, ': ', c.name) AS name"])
+            ->select([
+                "CONCAT('Cla-', cc.id) As id",
+                "CONCAT('" . $classTitle . "', c.nameShort, '.', cc.nameShort) AS text",
+                'c.name AS search'
+            ])
             ->join('cc.course', 'c')
             ->where('c.schoolYear = :schoolYear')
             ->setParameter('schoolYear', $schoolYear)
+            ->orderBy('text')
             ->getQuery()
             ->getResult();
-        foreach($result as $q=>$w)
-            $result[$q]['type'] = NULL;
         return $result;
     }
 }
