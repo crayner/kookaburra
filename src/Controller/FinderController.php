@@ -24,12 +24,12 @@ class FinderController extends AbstractController
     /**
      * finderSearch
      * @param Request $request
-     * @Route("/finder/redirect/", name="finder_redirect", methods={"GET"})
+     * @Route("/finder/{id}/redirect/", name="finder_redirect", methods={"GET"})
      */
-    public function finderRedirect(Request $request)
+    public function finderRedirect(string $id, Request $request)
     {
-        $type = substr($request->query->get('fastFinderSearch'), 0, 3);
-        $id = substr($request->query->get('fastFinderSearch'), 4);
+        $type = substr($id, 0, 3);
+        $id = substr($id, 4);
 
         switch ($type) {
             case 'Stu':

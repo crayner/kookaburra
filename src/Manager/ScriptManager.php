@@ -21,14 +21,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ScriptManager
 {
     /**
-     * @var array
+     * @var ArrayCollection
      */
-    private  $encoreEntryCSSFiles = [];
+    private  $encoreEntryCSSFiles;
 
     /**
-     * @var array
+     * @var ArrayCollection
      */
-    private $encoreEntryScriptTags = [];
+    private $encoreEntryScriptTags;
 
     /**
      * @var ArrayCollection
@@ -41,32 +41,54 @@ class ScriptManager
     private $pageScripts;
 
     /**
-     * @return array
+     * @var ArrayCollection
      */
-    public function getEncoreEntryCSSFiles(): array
+    private $pageStyles;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getEncoreEntryCSSFiles(): ArrayCollection
     {
+        if (null === $this->encoreEntryCSSFiles)
+            $this->encoreEntryCSSFiles = new ArrayCollection();
+
         return $this->encoreEntryCSSFiles;
     }
 
     /**
-     * EncoreEntryCSSFiles.
+     * EncoreEntryCSSFiles
      *
-     * @param array $encoreEntryCSSFiles
+     * @param ArrayCollection|null $encoreEntryCSSFiles
      * @return ScriptManager
      */
-    public function setEncoreEntryCSSFiles(array $encoreEntryCSSFiles): ScriptManager
+    public function setEncoreEntryCSSFiles(?ArrayCollection $encoreEntryCSSFiles): ScriptManager
     {
         $this->encoreEntryCSSFiles = $encoreEntryCSSFiles;
         return $this;
     }
 
     /**
+     * addEncoreEntryCSSFile
+     * @param string $name
+     * @return ScriptManager
+     */
+    public function addEncoreEntryCSSFile(string $name): ScriptManager
+    {
+        if ($this->getEncoreEntryCSSFiles()->contains($name))
+            return $this;
+
+        $this->encoreEntryCSSFiles->add($name);
+        return $this;
+    }
+
+    /**
      * @return array
      */
-    public function getEncoreEntryScriptTags(): array
+    public function getEncoreEntryScriptTags(): ArrayCollection
     {
-        if (!is_array($this->encoreEntryScriptTags))
-            $this->encoreEntryScriptTags = [];
+        if (null === $this->encoreEntryScriptTags)
+            $this->encoreEntryScriptTags = new ArrayCollection();
 
         return $this->encoreEntryScriptTags;
     }
@@ -74,10 +96,10 @@ class ScriptManager
     /**
      * EncoreEntryScriptTags.
      *
-     * @param array $encoreEntryScriptTags
+     * @param ArrayCollection $encoreEntryScriptTags
      * @return ScriptManager
      */
-    public function setEncoreEntryScriptTags(array $encoreEntryScriptTags): ScriptManager
+    public function setEncoreEntryScriptTags(?ArrayCollection $encoreEntryScriptTags): ScriptManager
     {
         $this->encoreEntryScriptTags = $encoreEntryScriptTags;
         return $this;
@@ -90,9 +112,10 @@ class ScriptManager
      */
     public function addEncoreEntryScriptTag(string $tag): ScriptManager
     {
-        if (!in_array($tag, $this->getEncoreEntryScriptTags()))
-            $this->encoreEntryScriptTags[] = $tag;
+        if ($this->getEncoreEntryScriptTags()->contains($tag))
+            return $this;
 
+        $this->encoreEntryScriptTags->add($tag);
         return $this;
     }
 
@@ -168,6 +191,43 @@ class ScriptManager
             return $this;
 
         $this->pageScripts->add($script);
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPageStyles(): ArrayCollection
+    {
+        if (null === $this->pageStyles)
+            $this->pageStyles = new ArrayCollection();
+
+        return $this->pageStyles;
+    }
+
+    /**
+     * PageStyles.
+     *
+     * @param ArrayCollection $pageStyle
+     * @return ScriptManager
+     */
+    public function setPageStyles(ArrayCollection $pageStyles): ScriptManager
+    {
+        $this->pageStyles = $pageStyles;
+        return $this;
+    }
+
+    /**
+     * addPageScript
+     * @param string $script
+     * @return ScriptManager
+     */
+    public function addPageStyle(string $style): ScriptManager
+    {
+        if ($this->getPageStyles()->contains($style))
+            return $this;
+
+        $this->pageStyles->add($style);
         return $this;
     }
 }

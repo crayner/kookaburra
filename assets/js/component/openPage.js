@@ -21,7 +21,6 @@ export function openPage(url, options, locale) {
     if (locale !== '')
         locale = '/' + locale
 
-
     window.open(window.location.protocol + '//' + window.location.hostname + locale + url, target, specs)
 }
 

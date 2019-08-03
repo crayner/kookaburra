@@ -66,7 +66,7 @@ class PersonRepository extends ServiceEntityRepository
     public function findStaffForFastFinder(string $staffTitle): ?array
     {
         return $this->createQueryBuilder('p')
-            ->select(["CONCAT('".$staffTitle . ' - ' . "', p.surname, ', ', p.preferredName) as text", "CONCAT('Sta-', p.id) AS id", "CONCAT(p.username, ' ', p.email) AS search"])
+            ->select(["CONCAT('".$staffTitle . "', p.surname, ', ', p.preferredName) as text", "CONCAT('Sta-', p.id) AS id", "CONCAT(p.username, ' ', p.email) AS search"])
             ->join('p.staff', 's')
             ->where('p.status = :full')
             ->andWhere('s.person IS NOT NULL')

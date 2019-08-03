@@ -1,3 +1,19 @@
+{% for style in getEncoreEntryCSSFiles() %}
+    <script type="application/javascript" language="JavaScript">
+        function cssLinks() {
+            {% set link = encore_entry_css_files(style) %}
+            {% for css in link %}
+                var newLink = document.createElement("link");
+                newLink.href = '{{ asset(css) }}'
+                newLink.rel = 'stylesheet'
+                newLink.type = 'text/css'
+                newLink.media = 'screen'
+                document.head.appendChild(newLink)
+            {% endfor %}
+        }
+        window.addEventListener('load', cssLinks());
+    </script>
+{% endfor %}
 {% set tags = getEncoreEntryScriptTags() %}
 {% set appProps = getAppProps() %}
 {% if tags|length > 0 %}

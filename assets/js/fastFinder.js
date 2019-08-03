@@ -3,6 +3,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import FastFinderApp from "./fastFinder/FastFinderApp";
+import '../css/fastFinder/fastFinder.css'
 
 window.onload = function () {
     const fastFinderWrapper = document.getElementById('fastFinderWrapper')

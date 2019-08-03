@@ -1,15 +1,82 @@
-'use strict';
+'use strict'
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Autosuggest from 'react-autosuggest';
+import Autosuggest from 'react-autosuggest'
+import {openPage} from "../component/openPage"
 
 export default class FastFinderApp extends Component {
     constructor (props) {
         super(props)
-        this.otherProps = {...props}
-        this.state = {}
-        console.log(this)
+        this.fastFindChoices = props.fastFindChoices
+        this.state = {
+            value: '',
+            suggestions: [],
+        }
+
+        this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
+        this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
+        this.onChange = this.onChange.bind(this)
+        this.getSuggestionValue = this.getSuggestionValue.bind(this);
+        this.renderSuggestion = this.renderSuggestion.bind(this);
+    }
+
+    // Autosuggest will call this function every time you need to update suggestions.
+    // You already implemented this logic above, so just use it.
+    onSuggestionsFetchRequested(value) {
+        if (value.value.length > 0) {
+            this.setState({
+                suggestions: this.getSuggestions(value.value)
+            })
+        }
+    }
+
+    // Autosuggest will call this function every time you need to clear suggestions.
+    onSuggestionsClearRequested() {
+        this.setState({
+            suggestions: []
+        })
+    }
+
+    onChange(event) {
+        if (event.target.value !== undefined)
+        {
+            this.setState({
+                value: event.target.value
+            })
+        }
+    }
+
+    getSuggestions(value) {
+        var suggestions = []
+        value = value.trim().toLowerCase()
+        if (value.length > 1) {
+            this.fastFindChoices.filter(group => {
+                var x = group.suggestions.filter(row => {
+                    var search = row.text + ' ' + row.search
+                    search = search.trim().toLowerCase()
+                    return search.includes(value)
+                })
+                if (x.length > 0) {
+                    var z = x.map(sugg => {
+                        return {id: sugg.id, text: group.prefix + ' - ' + sugg.text}
+                    })
+                    suggestions = suggestions.concat(z)
+                }
+            })
+        }
+        console.log(suggestions)
+        return suggestions
+    }
+
+    getSuggestionValue(suggestion) {
+        var url = "/finder/{id}/redirect/"
+        url = url.replace('{id}', suggestion.id)
+        openPage(url, [], false)
+    }
+
+    renderSuggestion(suggestion) {
+        return (<span>{suggestion.text}</span>)
     }
 
     render () {
@@ -30,41 +97,23 @@ export default class FastFinderApp extends Component {
                             { this.props.trans_fastFind }: { this.props.trans_fastFindActions }
                         </div>
 
+
                         <div className="w-full px-2 sm:py-2">
-                            <form className={'blank fullWidth'} id={'fastFinder'}>
-                            <table className="blank fullWidth relative" cellSpacing="0">
-                                <tbody>
-                                    <tr>
-
-
-                                        <td className="px-2 border-b-0 sm:border-b border-t-0 w-full text-white">
-                                            <div className="flex-1 relative">
-                                                <ul className="token-input-list-facebook">
-                                                    <li className="token-input-input-token-facebook">
-                                                        <Autosuggest
-                                                            id={'token-input-fastFinderSearch'}
-                                                            style={{border: 'none', outline: 'none', width: '100%'}}
-                                                            suggestions={[]}
-                                                        />
-                                                    </li>
-                                                </ul>
-                                                <input type="text" id="fastFinderSearch" name="fastFinderSearch"
-                                                       className="w-full text-white finderInput" style={{"display": "none"}} />
-                                                    </div>
-
-
-                                        </td>
-
-
-                                        <td className=" px-2 border-b-0 sm:border-b border-t-0 right">
-                                            <input type="submit" value="Go" />
-
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                            </form>
+                            <div className="flex-1 relative">
+                                <Autosuggest
+                                    id={'token-input-fastFinderSearch'}
+                                    suggestions={this.state.suggestions}
+                                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                    getSuggestionValue={this.getSuggestionValue}
+                                    renderSuggestion={this.renderSuggestion}
+                                    inputProps={{
+                                        value: this.state.value,
+                                        placeholder: this.props.trans_placeholder,
+                                        onChange: this.onChange,
+                                    }}
+                                />
+                            </div>
                         </div>
 
                         {this.props.roleCategory === 'Staff' ?
@@ -77,4 +126,8 @@ export default class FastFinderApp extends Component {
             </div>
         )
     }
+}
+
+FastFinderApp.propTypes = {
+    fastFindChoices: PropTypes.array,
 }
