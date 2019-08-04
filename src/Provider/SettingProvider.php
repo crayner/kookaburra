@@ -17,6 +17,7 @@ use App\Entity\Person;
 use App\Entity\Setting;
 use App\Exception\SettingNotFoundException;
 use App\Manager\Traits\EntityTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Services\Format;
 use PDOException;
@@ -31,6 +32,11 @@ class SettingProvider implements EntityProviderInterface
     private $entityName = Setting::class;
 
     /**
+     * @var ArrayCollection
+     */
+    private $settings;
+
+    /**
      * getSettingByScope
      * @param string $scope
      * @param string $name
@@ -40,14 +46,18 @@ class SettingProvider implements EntityProviderInterface
      */
     public function getSettingByScope(string $scope, string $name, $returnRow = false)
     {
-        $setting = $this->findOneBy(['scope' => $scope, 'name' => $name]);
+        $setting = $this->getSetting($scope, $name) ?: $this->findOneBy(['scope' => $scope, 'name' => $name]);
 
         if (null === $setting) {
             return false;
         }
+
+        $this->addSetting($setting);
+
         if ($returnRow) {
             return $setting;
         }
+
 
         return $setting->getValue();
     }
@@ -189,5 +199,58 @@ class SettingProvider implements EntityProviderInterface
 
         $setting->setValue($value);
         $this->saveEntity();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSettings(): ArrayCollection
+    {
+        if (null === $this->settings)
+            $this->settings = new ArrayCollection();
+
+        return $this->settings;
+    }
+
+    /**
+     * Settings.
+     *
+     * @param ArrayCollection $settings
+     * @return SettingProvider
+     */
+    public function setSettings(ArrayCollection $settings): SettingProvider
+    {
+        $this->settings = $settings;
+        return $this;
+    }
+
+    /**
+     * addSetting
+     * @param Setting $setting
+     * @return SettingProvider
+     */
+    private function addSetting(Setting $setting): SettingProvider
+    {
+        $scope = $setting->getScope();
+        $name = $setting->getName();
+        if (!$this->getSettings()->containsKey($scope))
+            $this->settings->set($scope, new ArrayCollection());
+
+        $this->settings->get($scope)->set($name, $setting);
+        return $this;
+    }
+
+    /**
+     * getSetting
+     * @param $scope
+     * @param $name
+     * @return |null
+     */
+    private function getSetting($scope, $name)
+    {
+        if (!$this->getSettings()->containsKey($scope))
+            $this->settings->set($scope, new ArrayCollection());
+
+        return $this->settings->get($scope)->containskey($name) ? $this->settings->get($scope)->get($name) : null;
     }
 }

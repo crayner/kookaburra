@@ -1,0 +1,33 @@
+
+<div class="mx-auto max-w-6xl text-right text-white text-xs md:text-sm px-2 xl:px-0 {{ houseIDLogo() ? 'mt-2' : 'mt-6' }}">
+    {% set links = pageManager('minorLinks').getContent() %}
+    {% for link in links %}
+        {% set url = link.url %}
+        {% if url is iterable %}
+            {% set url = '/' ~ path(url.route, url.params|default({})) %}
+        {% endif %}
+        {% if link.text is iterable %}
+            {% set text = link.text[0]|trans(link.text[1], link.translation_domain) %}
+        {% elseif link.translation_domain is not same as(false) %}
+            {% set text = link.text|trans({}, link.translation_domain)%}
+        {% else %}
+            {% set text = link.text %}
+        {% endif %}
+        {% set attr = '' %}
+            {% if link.class|default('') is not same as('') %}
+                    {% set attr = attr ~ ' class="' ~ link.class ~ '"' %}
+            {% endif %}
+            {% if link.target|default('') is not same as('') %}
+                    {% set attr = attr ~ ' target="' ~ link.target ~ '"' %}
+            {% endif %}
+        {% set wrapper = link.wrapper|default('') %}
+
+        {% if not loop.first and wrapper is same as('') %}
+            {{ ' . ' }}
+        {% endif %}
+        {% include 'default/link.html.twig' %}
+    {% endfor %}
+    {% if pageManager('minorLinks').getHouseLogo() is not same as([]) %}
+        <img src="{{ asset(pageManager('minorLinks').getHouseLogo().src) }}" title="{{ pageManager('minorLinks').getHouseLogo().title }}" class="{{ pageManager('minorLinks').getHouseLogo().class }}" style="{{ pageManager('minorLinks').getHouseLogo().style }}" />
+    {% endif %}
+</div>

@@ -13,6 +13,7 @@
 namespace App\Provider;
 
 use App\Entity\RollGroup;
+use App\Entity\StudentEnrolment;
 use App\Manager\Traits\EntityTrait;
 
 class RollGroupProvider implements EntityProviderInterface

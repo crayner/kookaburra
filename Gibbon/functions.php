@@ -1309,7 +1309,7 @@ function getSystemSettings($guid, $connection2)
 }
 /**
  * Set language session variables
- * @deprcated Use I18nProvider::setLanguageSession
+ * @deprecated Use I18nProvider::setLanguageSession
  */
 function setLanguageSession($guid, $row, $defaultLanguage = true)
 {

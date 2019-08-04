@@ -13,9 +13,11 @@
 namespace App\Repository;
 
 use App\Entity\Person;
+use App\Entity\RollGroup;
 use App\Entity\StudentEnrolment;
 use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**

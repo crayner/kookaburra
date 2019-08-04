@@ -84,7 +84,6 @@ class PageListener implements EventSubscriberInterface
         $this->mainMenu = $mainMenu;
         $this->moduleMenu = $moduleMenu;
         $this->minorLinks = $minorLinks;
-        $this->minorLinks->setTranslator($trans)->setRouter($router);
         $this->fastFinder = $fastFinder;
         $this->fastFinder->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
         $this->cacheHelper = $cacheHelper;

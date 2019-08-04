@@ -17,6 +17,7 @@ use App\Entity\SchoolYear;
 use App\Form\Modules\RollGroups\DetailStudentSortType;
 use App\Manager\Module\RollGroup\RollGroupTable;
 use App\Provider\ProviderFactory;
+use App\Twig\MinorLinks;
 use App\Twig\Sidebar;
 use App\Twig\TableViewManager;
 use App\Util\SecurityHelper;
@@ -43,7 +44,7 @@ class RollGroupsController extends AbstractController
      */
     public function list(Request $request, TranslatorInterface $translator)
     {
-        $rollGroups = ProviderFactory::getRepository(RollGroup::class)->findBy(['schoolYear' => ProviderFactory::getRepository(SchoolYear::class)->find($request->getSession()->get('gibbonSchoolYearID', 0))],['name' => 'ASC']);
+        $rollGroups = ProviderFactory::getRepository(RollGroup::class)->findBy(['schoolYear' => ProviderFactory::getRepository(SchoolYear::class)->find($request->getSession()->get('schoolYear', null))],['name' => 'ASC']);
 
         $table = new TableViewManager(['formatTutors' => $translator->trans('Main Tutor', [], 'gibbon')]);
 

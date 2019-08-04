@@ -31,3 +31,4 @@ Contain at least one non-alphanumeric character (e.g. a punctuation mark or spac
     'Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.'
 'Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.': 'Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.'
 Unknown: Unknown
+organisation_website: '%name% Website'

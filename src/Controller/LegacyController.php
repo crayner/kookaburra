@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\I18n;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
-use Gibbon\View\Page;
+use App\Provider\ProviderFactory;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,5 +37,19 @@ class LegacyController extends AbstractController
                 'manager' => $result,
             ]
         );
+    }
+
+    /**
+     * localeSwitch
+     * @param string $i18n
+     * @param Request $request
+     * @return Response
+     * @Route("/locale/{i18n}/switch/", name="locale_switch")
+     * @IsGranted("ROLE_USER")
+     */
+    public function localeSwitch(string $i18n, Request $request)
+    {
+        ProviderFactory::create(I18n::class)->setLanguageSession($request->getSession(), ['code' => $i18n]);
+        return $this->forward(LegacyController::class.'::index');
     }
 }

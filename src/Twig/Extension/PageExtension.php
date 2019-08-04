@@ -15,10 +15,12 @@ namespace App\Twig\Extension;
 
 use App\Entity\I18n;
 use App\Entity\Person;
+use App\Exception\MissingClassException;
 use App\Manager\ScriptManager;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use App\Twig\MainMenu;
+use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
 use App\Twig\Sidebar;
 use App\Util\Format;
@@ -26,6 +28,7 @@ use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
@@ -74,6 +77,11 @@ class PageExtension extends AbstractExtension
     private $moduleMenu;
 
     /**
+     * @var MinorLinks
+     */
+    private $minorLinks;
+
+    /**
      * PageExtension constructor.
      *
      * @param Sidebar $sidebar
@@ -93,7 +101,8 @@ class PageExtension extends AbstractExtension
         ModuleMenu $moduleMenu,
         ScriptManager $scriptManager,
         ProviderFactory $providerFactory,
-        Format $format
+        Format $format,
+        MinorLinks $minorLinks
     )  {
         $this->i18nProvider = $providerFactory::create(I18n::class);
         $this->session = $session;
@@ -104,6 +113,7 @@ class PageExtension extends AbstractExtension
         $this->moduleMenu = $moduleMenu;
         $this->scriptManager = $scriptManager;
         $this->format = $format;
+        $this->minorLinks = $minorLinks;
     }
 
     /**
@@ -131,6 +141,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getPageScripts', [$this->scriptManager, 'getPageScripts']),
             new TwigFunction('getPageStyles', [$this->scriptManager, 'getPageStyles']),
             new TwigFunction('getEncoreEntryCSSFiles', [$this->scriptManager, 'getEncoreEntryCSSFiles']),
+            new TwigFunction('pageManager', [$this, 'pageManager'])
         ];
     }
 
@@ -278,5 +289,19 @@ class PageExtension extends AbstractExtension
     public function getModuleMenu(): ModuleMenu
     {
         return $this->moduleMenu;
+    }
+
+
+    /**
+     * pageManager
+     * @param string $name
+     * @return mixed
+     * @throws MissingClassException
+     */
+    public function pageManager(string $name)
+    {
+        if (property_exists($this, $name))
+            return $this->$name;
+        throw new MissingClassException(sprintf('The class "%s" was not available to the "%s" twig extension.', $name, get_class($this)));
     }
 }

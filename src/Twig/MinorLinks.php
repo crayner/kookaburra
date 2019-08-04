@@ -12,7 +12,6 @@
 
 namespace App\Twig;
 
-
 use App\Util\SecurityHelper;
 use App\Util\UserHelper;
 use Symfony\Component\Routing\RouterInterface;
@@ -23,26 +22,53 @@ class MinorLinks implements ContentInterface
     use ContentTrait;
 
     /**
+     * @var array
+     */
+    private $content = [];
+
+    /**
+     * @var array
+     */
+    private $houseLogo = [];
+
+    /**
      * execute
      * @throws \Exception
      */
     public function execute(): void
     {
-        $return = '';
+        $link = [];
+        $languageLink = false;
         // Add a link to go back to the system/personal default language, if we're not using it
         if ($this->getSession()->has(['i18n','default','code']) && $this->getSession()->has(['i18n','code'])) {
             if ($this->getSession()->get(['i18n','code']) !== $this->getSession()->get(['i18n','default','code'])) {
                 $systemDefaultShortName = trim(strstr($this->getSession()->get(['i18n','default','name']), '-', true));
-                $languageLink = "<a class='link-white' href='".$this->getSession()->get('absoluteURL')."?i18n=".$this->getSession()->get(['i18n','default','code'])."'>".$systemDefaultShortName.'</a>';
+                $languageLink =
+                    [
+                        'url' => [
+                            'route' => 'locale_switch',
+                            'params' => ['i18n' => $this->getSession()->get(['i18n','default','code'])],
+                        ],
+                        'text' => $systemDefaultShortName,
+                        'class' => 'link-white',
+                        'translation_domain' => false,
+                    ];
             }
         }
 
         if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY')) {
-            $return .= !empty($languageLink) ? $languageLink : '';
+            if ($languageLink)
+                $links[] = $languageLink;
 
-            if ($this->getSession()->get('webLink') !== '') {
-                $return .= !empty($languageLink) ? ' . ' : '';
-                $return .= $this->getTranslator()->trans('Return to', [], 'gibbon')." <a class='link-white' style='margin-right: 12px' target='_blank' href='".$this->getSession()->get('webLink')."'>".$this->getSession()->get('organisationNameShort').' '.$this->getTranslator()->trans('Website', [], 'gibbon').'</a>';
+            if ($this->getSession()->get('webLink', '') !== '' || true) {
+                $links[] = [
+                    'url' => $this->getSession()->get('webLink', 'http://www.craigrayner.com'),
+                    'text' => ['organisation_website', ['%name%' => $this->getSession()->get('organisationNameShort')]],
+                    'translation_domain' => 'kookaburra',
+                    'target' => '_blank',
+                    'class' => 'link_white',
+                ];
+
             }
         } else {
             $name = $this->getSession()->get('preferredName').' '.$this->getSession()->get('surname');
@@ -50,83 +76,111 @@ class MinorLinks implements ContentInterface
                 if ($this->getSession()->get('gibbonRoleIDCurrentCategory') === 'Student') {
                     $highestAction = SecurityHelper::getHighestGroupedAction('/modules/Students/student_view_details.php');
                     if ($highestAction == 'View Student Profile_brief') {
-                        $name = "<a class='link-white' href='".$this->getSession()->get('absoluteURL').'/index.php?q=/modules/Students/student_view_details.php&gibbonPersonID='.$this->getSession()->get('gibbonPersonID')."'>".$name.'</a>';
+                        $name = [
+                            'class' => 'link-white',
+                            'text' => $name,
+                            'translation_domain' => false,
+                            'url' => $this->getSession()->get('absoluteURL').'/?q=/modules/Students/student_view_details.php&gibbonPersonID='.$this->getSession()->get('gibbonPersonID'),
+                        ];
                     }
                 }
             }
+            if (is_string($name)){
+                $name = [
+                    'text' => $name,
+                    'translation_domain' => false,
+                    'url' => '',
+                ];
+            }
+            $links[] = $name;
 
-            $return .= $name.' . ';
-            $return .= "<a class='link-white' href='".$this->getRouter()->generate('logout')."'>".$this->getTranslator()->trans('Logout', [],'gibbon')."</a> . <a class='link-white' href='".$this->getRouter()->generate('preferences')."'>".$this->getTranslator()->trans('Preferences', [],'gibbon').'</a>';
-            if ($this->getSession()->get('emailLink') !== '') {
-                $return .= "<span class='hidden sm:inline'> . <a class='link-white' target='_blank' href='".$this->getSession()->get('emailLink')."'>".$this->getTranslator()->trans('Email', [], 'gibbon').'</a></span>';
+            $links[] = [
+                'class' => 'link-white',
+                'text' => 'Logout',
+                'translation_domain' => 'gibbon',
+                'url' => ['route' => 'logout'],
+            ];
+            $links[] = [
+                'class' => 'link-white',
+                'text' => 'Preferences',
+                'translation_domain' => 'gibbon',
+                'url' => ['route' => 'preferences'],
+            ];
+            if ($this->getSession()->get('emailLink', '') !== '') {
+                $links[] = [
+                    'class' => 'link-white',
+                    'text' => 'Email',
+                    'translation_domain' => 'gibbon',
+                    'url' => $this->getSession()->get('emailLink'),
+                    'target' => '_blank',
+                    'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
+                ];
             }
-            if ($this->getSession()->get('webLink') !== '') {
-                $return .= "<span class='hidden sm:inline'>  . <a class='link-white' target='_blank' href='".$this->getSession()->get('webLink')."'>".$this->getSession()->get('organisationNameShort').' '.$this->getTranslator()->trans('Website', [],'gibbon').'</a></span>';
+            if ($this->getSession()->get('webLink', '') !== '') {
+                $links[] = [
+                    'url' => $this->getSession()->get('webLink', ''),
+                    'text' => ['organisation_website', ['%name%' => $this->getSession()->get('organisationNameShort')]],
+                    'translation_domain' => 'kookaburra',
+                    'target' => '_blank',
+                    'class' => 'link-white',
+                    'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
+                ];
             }
-            if ($this->getSession()->get('website') !== '') {
-                $return .= "<span class='hidden sm:inline'>  . <a class='link-white' target='_blank' href='".$this->getSession()->get('website')."'>".$this->getTranslator()->trans('My Website', [],'gibbon').'</a></span>';
+            if ($this->getSession()->get('website', '') !== '') {
+                $links[] = [
+                    'url' => $this->getSession()->get('website', ''),
+                    'text' => 'My Website',
+                    'translation_domain' => 'gibbon',
+                    'target' => '_blank',
+                    'class' => 'link-white',
+                    'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
+                ];
             }
 
-            $return .= !empty($languageLink) ? ' . '.$languageLink : '';
+            if ($languageLink)
+                $links[] = $languageLink;
 
             //Check for house logo (needed to get bubble, below, in right spot)
-            if ($this->getSession()->has('gibbonHouseIDLogo') and $this->getSession()->has('gibbonHouseIDName')) {
-                if ($this->getSession()->get('gibbonHouseIDLogo') !== '') {
-                    $return .= " . <img class='ml-1 w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16' title='".$this->getSession()->get('gibbonHouseIDName')."' style='vertical-align: -75%;' src='".$this->getSession()->get('absoluteURL').'/'.$this->getSession()->get('gibbonHouseIDLogo')."'/>";
+            if ($this->getSession()->has('gibbonHouseIDLogo') && $this->getSession()->has('gibbonHouseIDName')) {
+                if ($this->getSession()->get('gibbonHouseIDLogo', '') !== '') {
+                    $this->houseLogo = [
+                        'class' => 'ml-1 w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16',
+                        'title' => $this->getSession()->get('gibbonHouseIDName'),
+                        'style' => 'vertical-align: -75%;',
+                        'src' => '/'.$this->getSession()->get('gibbonHouseIDLogo'),
+                    ];
                 }
             }
         }
 
-        $this->addAttribute('minorLinks', $return);
+        $this->content = $links;
     }
 
     /**
-     * @var TranslatorInterface
+     * @return array
      */
-    private $translator;
-
-    /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator(): TranslatorInterface
+    public function getContent(): array
     {
-        return $this->translator;
+        return $this->content;
     }
 
     /**
-     * Translator.
+     * Content.
      *
-     * @param TranslatorInterface $translator
+     * @param array $content
      * @return MinorLinks
      */
-    public function setTranslator(TranslatorInterface $translator): MinorLinks
+    public function setContent(array $content): MinorLinks
     {
-        $this->translator = $translator;
+        $this->content = $content;
         return $this;
     }
 
     /**
-     * @var RouterInterface
+     * @return array
      */
-    private $router;
-
-    /**
-     * @return RouterInterface
-     */
-    public function getRouter(): RouterInterface
+    public function getHouseLogo(): array
     {
-        return $this->router;
-    }
-
-    /**
-     * Router.
-     *
-     * @param RouterInterface $router
-     * @return MinorLinks
-     */
-    public function setRouter(RouterInterface $router): MinorLinks
-    {
-        $this->router = $router;
-        return $this;
+        return $this->houseLogo;
     }
 }
