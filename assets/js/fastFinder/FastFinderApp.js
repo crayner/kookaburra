@@ -12,6 +12,7 @@ export default class FastFinderApp extends Component {
         this.state = {
             value: '',
             suggestions: [],
+            fastFinderClass: 'md:block absolute md:static top-0 right-0 w-full md:max-w-md p-2 sm:p-4 hidden',
         }
 
         this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
@@ -19,6 +20,7 @@ export default class FastFinderApp extends Component {
         this.onChange = this.onChange.bind(this)
         this.getSuggestionValue = this.getSuggestionValue.bind(this);
         this.renderSuggestion = this.renderSuggestion.bind(this);
+        this.toggleFastFinderClass = this.toggleFastFinderClass.bind(this);
     }
 
     // Autosuggest will call this function every time you need to update suggestions.
@@ -65,13 +67,15 @@ export default class FastFinderApp extends Component {
                 }
             })
         }
-        console.log(suggestions)
         return suggestions
     }
 
     getSuggestionValue(suggestion) {
         var url = "/finder/{id}/redirect/"
         url = url.replace('{id}', suggestion.id)
+        this.setState({
+            value: suggestion.id
+        })
         openPage(url, [], false)
     }
 
@@ -79,24 +83,33 @@ export default class FastFinderApp extends Component {
         return (<span>{suggestion.text}</span>)
     }
 
+    toggleFastFinderClass()
+    {
+        var fastFinderClass = 'md:block absolute md:static top-0 right-0 w-full md:max-w-md p-2 sm:p-4'
+        if (this.state.fastFinderClass === fastFinderClass) {
+            fastFinderClass = 'md:block absolute md:static top-0 right-0 w-full md:max-w-md p-2 sm:p-4 hidden'
+        }
+        this.setState({
+            fastFinderClass: fastFinderClass
+        })
+    }
+
     render () {
         return (
             <div>
                 <button data-toggle="#fastFinder"
-                        className="flex md:hidden items-center rounded bg-gray-300 mr-4 px-4 py-3 text-base active">
-                    <span className="hidden sm:inline text-gray-600 text-xs font-bold uppercase pr-2">{ this.props.trans_fastFind }</span>
-                    <img src={'http://gibbon.craigrayner.com/themes/' + this.props.themeName + '/img/search.png'} width="25" height="25"/>
+                        className="flex md:hidden items-center rounded bg-gray-300 mr-4 px-4 py-3 text-base active" onClick={this.toggleFastFinderClass}>
+                    <span className="hidden sm:inline text-gray-600 text-xs font-bold uppercase pr-2">{ this.props.trans_fastFind } </span>
+                    <span className={'fas fa-search fa-fw fa-2x text-gray-600'} title={ this.props.trans_fastFind }></span>
                 </button>
-                <div id="fastFinder" className="md:block absolute md:static top-0 left-0 w-full md:max-w-md p-2 sm:p-4 hidden">
+                <div id="fastFinder" className={ this.state.fastFinderClass } style={{maxWidth: '350px'}}>
                     <div className="z-10 rounded border border-solid border-gray-300" style={{backgroundColor: '#fbfbfb'}}>
-
-                        <a data-toggle="#fastFinder" className="p-2 pl-4 float-right text-xs underline md:hidden"
-                           href="#">close</a>
+                        <a data-toggle="#fastFinder" className="p-2 pl-4 float-right text-xs underline md:hidden text-gray-600 "
+                           href="#" onClick={this.toggleFastFinderClass}><span className={'far fa-times-circle fa-fw'} title={ this.props.trans_close }></span></a>
 
                         <div className="py-2 md:py-1 px-2 border-solid border-0 border-b border-gray-300 md:text-right text-gray-700 text-xxs font-bold uppercase">
                             { this.props.trans_fastFind }: { this.props.trans_fastFindActions }
                         </div>
-
 
                         <div className="w-full px-2 sm:py-2">
                             <div className="flex-1 relative">
@@ -120,7 +133,7 @@ export default class FastFinderApp extends Component {
                             <div className="py-1 px-2 text-right text-gray-500 text-xxs font-normal italic">
                                 { this.props.trans_enrolmentCount }
                             </div>
-                            :''}
+                            : ''}
                     </div>
                 </div>
             </div>

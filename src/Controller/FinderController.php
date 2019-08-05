@@ -59,4 +59,15 @@ class FinderController extends AbstractController
 
         return new JsonResponse($data, 200);
     }
+
+    /**
+     * finderLegacy
+     * @param Request $request
+     * @Route("/finder/legacy/", name="finder_redirect_legacy", methods={"GET"})
+     */
+    public function finderLegacy(Request $request)
+    {
+        $id = $request->query->get('fastFinderSearch');
+        return $this->forward(FinderController::class.'::finderRedirect', ['id' => $id]);
+    }
 }

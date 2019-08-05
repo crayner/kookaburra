@@ -133,7 +133,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('content', [$this, 'content']),
             new TwigFunction('alerts', [$this, 'alerts']),
             new TwigFunction('getThemeName', [$this, 'getThemeName']),
-            new TwigFunction('checkURL', [$this, 'checkURL']),
+            new TwigFunction('checkURL', [$this->moduleMenu, 'checkURL']),
             new TwigFunction('getEncoreEntryScriptTags', [$this->scriptManager, 'getEncoreEntryScriptTags']),
             new TwigFunction('getAppProps', [$this->scriptManager, 'getAppProps']),
             new TwigFunction('formatUsing', [$this, 'formatUsing']),

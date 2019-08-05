@@ -22,6 +22,7 @@ use App\Twig\Sidebar;
 use App\Util\CacheHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -83,6 +84,7 @@ class PageListener implements EventSubscriberInterface
         $this->sideBar = $sideBar;
         $this->mainMenu = $mainMenu;
         $this->moduleMenu = $moduleMenu;
+        $this->moduleMenu->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
         $this->minorLinks = $minorLinks;
         $this->fastFinder = $fastFinder;
         $this->fastFinder->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
@@ -111,8 +113,8 @@ class PageListener implements EventSubscriberInterface
         $this->cacheHelper::setSession($event->getRequest()->getSession());
         $this->sideBar->execute();
         $this->mainMenu->execute();
-        $this->moduleMenu->execute();
         $this->minorLinks->execute();
+        $this->moduleMenu->execute();
         $this->fastFinder->setToken($this->token)->execute();
     }
 }

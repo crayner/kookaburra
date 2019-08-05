@@ -36,7 +36,7 @@ class ActionRepository extends ServiceEntityRepository
     public function findOneByURLListModuleNameRoleID(string $URLList, string $moduleName, string $roleID = null)
     {
         if ('' === $moduleName)
-            throw new Exception(sprintf('The module "%s" has not been defined correctly.', $moduleName));
+            return [];
         return $this->createQueryBuilder('a')
             ->leftJoin('a.module', 'm')
             ->leftJoin('a.permissions', 'p')

@@ -80,6 +80,7 @@ class FastFinder implements ContentInterface
         $templateData['trans_enrolmentCount'] = $templateData['roleCategory'] === 'Staff' ? $this->getTranslator()->trans('Total Student Enrolment:', [], 'gibbon') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('gibbonSchoolYearID')) : '';
         $templateData['themeName'] = $this->getSession()->get('gibbonThemeName');
         $templateData['trans_placeholder'] = $this->getTranslator()->trans('Start typing a name...', [], 'gibbon');
+        $templateData['trans_close'] = $this->getTranslator()->trans('Close', [], 'gibbon');
 
         $actions = $this->getFastFinderActions($this->getSession()->get('gibbonRoleIDCurrent'));
 

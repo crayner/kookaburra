@@ -17,9 +17,10 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
+    .addEntry('fastFinder', './assets/js/fastFinder.js')
+    .addEntry('menuModule', './assets/js/menuModule.js')
     .addEntry('app', './assets/js/app.js')
     .addEntry('Default', './assets/themes/default/default.js')
-    .addEntry('fastFinder', './assets/js/fastFinder.js')
     .addStyleEntry('css/theme', './assets/css/theme.scss')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .splitEntryChunks()

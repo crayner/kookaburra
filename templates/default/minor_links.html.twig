@@ -4,7 +4,7 @@
     {% for link in links %}
         {% set url = link.url %}
         {% if url is iterable %}
-            {% set url = '/' ~ path(url.route, url.params|default({})) %}
+            {% set url = path(url.route, url.params|default({})) %}
         {% endif %}
         {% if link.text is iterable %}
             {% set text = link.text[0]|trans(link.text[1], link.translation_domain) %}
