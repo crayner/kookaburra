@@ -10,7 +10,7 @@
  * Time: 16:07
  */
 
-namespace App\Controller;
+namespace App\Controller\Modules;
 
 use App\Entity\I18n;
 use App\Manager\SystemAdmin\LanguageManager;

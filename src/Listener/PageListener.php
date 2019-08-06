@@ -110,11 +110,14 @@ class PageListener implements EventSubscriberInterface
      */
     public function buildPageContent(ControllerEvent $event)
     {
-        $this->cacheHelper::setSession($event->getRequest()->getSession());
-        $this->sideBar->execute();
-        $this->mainMenu->execute();
-        $this->minorLinks->execute();
-        $this->moduleMenu->execute();
-        $this->fastFinder->setToken($this->token)->execute();
+        if ($event->getRequest()->attributes->get('_route') !== 'legacy') {
+            $this->cacheHelper::setSession($event->getRequest()->getSession());
+            $this->sideBar->execute();
+            $this->mainMenu->execute();
+            $this->minorLinks->execute();
+            $this->moduleMenu->execute();
+            $this->fastFinder->setToken($this->token)->execute();
+            $this->fastFinder->getScriptManager()->addEncoreEntryScriptTag('notificationTray');
+        }
     }
 }

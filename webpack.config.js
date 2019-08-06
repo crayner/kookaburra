@@ -19,6 +19,7 @@ Encore
      */
     .addEntry('fastFinder', './assets/js/fastFinder.js')
     .addEntry('menuModule', './assets/js/menuModule.js')
+    .addEntry('notificationTray', './assets/js/notificationTray.js')
     .addEntry('app', './assets/js/app.js')
     .addEntry('Default', './assets/themes/default/default.js')
     .addStyleEntry('css/theme', './assets/css/theme.scss')

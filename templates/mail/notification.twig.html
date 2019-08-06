@@ -13,12 +13,12 @@ For info about editing, see: https://twig.symfony.com/doc/2.x/
 
 {% block bodyBottom %}
     <span style="font-size: 12px; line-height: 18px;">
-        {{ __('Login to %1$s and use the notification icon to check your new notification, or %2$sclick here%3$s.')|format(systemName, '<a href="' ~ absoluteURL ~ '/index.php?q=notifications.php" style="' ~ linkStyle ~ '">', '</a>')|raw }}
+        {{ __('Login to %1$s and use the notification icon to check your new notification, or %2$sclick here%3$s.')|format(systemName, '<a href="' ~ absoluteURL ~ '/notifications/manage/" style="' ~ linkStyle ~ '">', '</a>')|raw }}
     </span>
 {% endblock %}
 
 {% block footer %}
-    {{ __('If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:')|format(systemName, '<a href="' ~ absoluteURL ~ '/index.php?q=preferences.php" style="' ~ linkStyle ~ '">', '</a>')|raw }}
+    {{ __('If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:')|format(systemName, '<a href="' ~ absoluteURL ~ '/preferences/" style="' ~ linkStyle ~ '">', '</a>')|raw }}
 
     <br/><br/>
 
