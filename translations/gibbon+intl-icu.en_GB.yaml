@@ -133,3 +133,15 @@ Class: Class
 Student: Student
 My Website: My Website
 Close: Close
+return:
+    error1: 'Your request failed because your inputs were invalid.'
+    error2: 'Your request failed due to a database error.'
+    success0: 'Your request was completed successfully.'
+Delete All Notifications: Delete All Notifications
+New Notifications: New Notifications
+Source: Source
+Date: Date
+Message: Message
+Count: Count
+There are no records to display.: There are no records to display.
+Archived Notifications: Archived Notifications

@@ -79,7 +79,7 @@ class NotificationTrayManager
     {
         $notifications = [];
         if ($user instanceof SecurityUser)
-            $notifications = ProviderFactory::getRepository(Notification::class)->findByPerson($user->getPerson());
+            $notifications = ProviderFactory::getRepository(Notification::class)->findByPersonStatus($user->getPerson());
 
         if (count($notifications) === 0)
             return [

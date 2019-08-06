@@ -33,22 +33,28 @@ class NotificationRepository extends ServiceEntityRepository
         parent::__construct($registry, Notification::class);
     }
 
-    public function findByPerson(Person $person)
+    /**
+     * findByPersonStatus
+     * @param Person $person
+     * @param string $status
+     * @return array
+     */
+    public function findByPersonStatus(Person $person, string $status = 'New')
     {
         $results = $this->createQueryBuilder('n')
-            ->select(['n', 'm.name AS source'])
+            ->select(['n.id', 'n.text', 'n.timestamp', 'n.count', 'n.actionLink', 'm.name AS source'])
             ->join('n.module', 'm')
             ->where('n.status = :new')
             ->andWhere('n.person = :person')
-            ->setParameters(['new' => 'New', 'person' => $person])
+            ->setParameters(['new' => $status, 'person' => $person])
             ->getQuery()
             ->getResult();
        $results = array_merge($results, $this->createQueryBuilder('n')
-            ->select(['n', "'System' AS source"])
+            ->select(['n.id', 'n.text', 'n.timestamp', 'n.count', 'n.actionLink', "'System' AS source"])
             ->where('n.status = :new')
             ->andWhere('n.person = :person')
             ->andWhere('n.module IS NULL')
-            ->setParameters(['new' => 'New', 'person' => $person])
+            ->setParameters(['new' => $status, 'person' => $person])
             ->getQuery()
             ->getResult());
         $results = new ArrayCollection($results);
@@ -56,7 +62,7 @@ class NotificationRepository extends ServiceEntityRepository
         $iterator = $results->getIterator();
         $iterator->uasort(
             function ($a, $b) {
-                return $a['timeStamp']->getTimeStamp() . $a['source'] . $a['text'] < $b['timestamp']->getTimeStamp() . $b['source'] . $b['text'] ? -1 : 1 ;
+                return $b['timeStamp']->getTimeStamp() . $a['source'] . $a['text'] < $a['timestamp']->getTimeStamp() . $b['source'] . $b['text'] ? -1 : 1 ;
             }
         );
         $results  = new ArrayCollection(iterator_to_array($iterator, false));

@@ -92,7 +92,6 @@ class PageListener implements EventSubscriberInterface
         $this->token = $token;
     }
 
-
     /**
      * getSubscribedEvents
      * @return array

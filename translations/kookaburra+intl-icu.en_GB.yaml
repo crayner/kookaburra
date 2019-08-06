@@ -15,3 +15,4 @@ behaviour_alert_level: "{highest_level, select,
     }"
 medical_alert_level: 'Medical alerts are set, up to a maximum of {name}'
 privacy_alert_level: 'Privacy is required: {message}'
+Are you sure you want to delete these records.: Are you sure you want to delete these records.

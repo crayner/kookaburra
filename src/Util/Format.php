@@ -12,6 +12,8 @@
 
 namespace App\Util;
 
+use DateTime;
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class Format
@@ -25,6 +27,15 @@ class Format
         'timeFormatPHP'     => 'H:i',
     ];
 
+    /**
+     * getSetting
+     * @param string $name
+     * @return mixed
+     */
+    public static function getSetting(string $name)
+    {
+        return static::$settings[$name];
+    }
 
     /**
      * Sets the formatting options from session i18n and database settings.
@@ -118,5 +129,36 @@ class Format
         }
 
         return trim($output, ' ');
+    }
+
+    /**
+     * Formats a YYYY-MM-DD date with the language-specific format. Optionally provide a format string to use instead.
+     *
+     * @param DateTime|string $dateString
+     * @param string $format
+     * @return string
+     */
+    public static function date($dateString, $format = false)
+    {
+        if (empty($dateString)) return '';
+        $date = static::createDateTime($dateString);
+        return $date ? $date->format($format ? $format : static::$settings['dateFormatPHP']) : $dateString;
+    }
+
+    /**
+     * createDateTime
+     * @param $dateOriginal
+     * @param null $expectedFormat
+     * @param null $timezone
+     * @return DateTimeImmutable
+     * @throws \Exception
+     */
+    private static function createDateTime($dateOriginal, $expectedFormat = null, $timezone = null): DateTime
+    {
+        if ($dateOriginal instanceof DateTime || $dateOriginal instanceof DateTimeImmutable) return $dateOriginal;
+
+        return !empty($expectedFormat)
+            ? DateTime::createFromFormat($expectedFormat, $dateOriginal, $timezone)
+            : new DateTime($dateOriginal, $timezone);
     }
 }
