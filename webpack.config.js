@@ -18,6 +18,7 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('fastFinder', './assets/js/fastFinder.js')
+    .addEntry('idleTimeout', './assets/js/idleTimeout.js')
     .addEntry('menuModule', './assets/js/menuModule.js')
     .addEntry('notificationTray', './assets/js/notificationTray.js')
     .addEntry('app', './assets/js/app.js')

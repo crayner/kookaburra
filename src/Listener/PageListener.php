@@ -15,6 +15,7 @@ namespace App\Listener;
 
 use App\Manager\ScriptManager;
 use App\Twig\FastFinder;
+use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
@@ -75,6 +76,7 @@ class PageListener implements EventSubscriberInterface
         ModuleMenu $moduleMenu,
         MinorLinks $minorLinks,
         FastFinder $fastFinder,
+        IdleTimeout $idleTimeout,
         TranslatorInterface $trans,
         RouterInterface $router,
         ScriptManager $scriptManager,
@@ -87,9 +89,12 @@ class PageListener implements EventSubscriberInterface
         $this->moduleMenu->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
         $this->minorLinks = $minorLinks;
         $this->fastFinder = $fastFinder;
+        $this->idleTimeout = $idleTimeout;
         $this->fastFinder->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
+        $this->idleTimeout->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
         $this->cacheHelper = $cacheHelper;
         $this->token = $token;
+        $scriptManager->addEncoreEntryScriptTag('idleTimeout');
     }
 
     /**
@@ -117,6 +122,7 @@ class PageListener implements EventSubscriberInterface
             $this->moduleMenu->execute();
             $this->fastFinder->setToken($this->token)->execute();
             $this->fastFinder->getScriptManager()->addEncoreEntryScriptTag('notificationTray');
+            $this->idleTimeout->execute();
         }
     }
 }

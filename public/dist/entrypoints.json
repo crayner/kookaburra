@@ -3,19 +3,33 @@
     "fastFinder": {
       "js": [
         "/build/runtime.e59078a6.js",
-        "/build/0.2de12986.js",
-        "/build/1.6e380bb4.js",
-        "/build/fastFinder.31c5f923.js"
+        "/build/0.041e2071.js",
+        "/build/1.2fa0fbcf.js",
+        "/build/fastFinder.05ea5556.js"
       ],
       "css": [
         "/build/fastFinder.09f43b10.css"
       ]
     },
+    "idleTimeout": {
+      "js": [
+        "/build/runtime.e59078a6.js",
+        "/build/0.041e2071.js",
+        "/build/idleTimeout.c5fd2b2a.js"
+      ]
+    },
     "menuModule": {
       "js": [
         "/build/runtime.e59078a6.js",
-        "/build/0.2de12986.js",
-        "/build/menuModule.8934e6b5.js"
+        "/build/0.041e2071.js",
+        "/build/menuModule.a888f94b.js"
+      ]
+    },
+    "notificationTray": {
+      "js": [
+        "/build/runtime.e59078a6.js",
+        "/build/0.041e2071.js",
+        "/build/notificationTray.a94a09f9.js"
       ]
     },
     "app": {
@@ -50,7 +64,7 @@
         "/build/runtime.e59078a6.js"
       ],
       "css": [
-        "/build/css/app.4d28e3ff.css"
+        "/build/css/app.a7ebb94a.css"
       ]
     }
   }

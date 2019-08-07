@@ -59,7 +59,7 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
      * @param bool $large
      * @return string
      */
-    function getAlertBar(Person $person, string $divExtras = '', bool $div = true, bool $large = false)
+    public function getAlertBar(Person $person, string $divExtras = '', bool $div = true, bool $large = false)
     {
         $output = '';
         $alerts = [];

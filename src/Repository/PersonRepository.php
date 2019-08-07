@@ -16,6 +16,7 @@
 namespace App\Repository;
 
 use App\Entity\Person;
+use App\Entity\RollGroup;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -78,6 +79,13 @@ class PersonRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * findStudentsForFastFinder
+     * @param SchoolYear $schoolYear
+     * @param string $studentTitle
+     * @return array|null
+     * @throws \Exception
+     */
     public function findStudentsForFastFinder(SchoolYear $schoolYear, string $studentTitle): ?array
     {
         return $this->createQueryBuilder('p')
@@ -96,19 +104,40 @@ class PersonRepository extends ServiceEntityRepository
             ->orderBy('text')
             ->getQuery()
             ->getResult();
+    }
 
-        /*
-         *             $sql = "SELECT gibbonPerson.gibbonPersonID AS id,
-                    (CASE WHEN gibbonPerson.username LIKE :search THEN concat(surname, ', ', preferredName, ' (', gibbonRollGroup.name, ', ', gibbonPerson.username, ')')
-                        WHEN gibbonPerson.studentID LIKE :search THEN concat(surname, ', ', preferredName, ' (', gibbonRollGroup.name, ', ', gibbonPerson.studentID, ')')
-                        WHEN gibbonPerson.firstName LIKE :search AND firstName<>preferredName THEN concat(surname, ', ', firstName, ' \"', preferredName, '\" (', gibbonRollGroup.name, ')' )
-                        ELSE concat(surname, ', ', preferredName, ' (', gibbonRollGroup.name, ')') END) AS name,
-                    NULL as type
-                    FROM gibbonPerson, gibbonStudentEnrolment, gibbonRollGroup
-                    WHERE gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID
-                    AND gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID
-                    AND status='Full'";
-*/
+    /**
+     * findStudentsByRollGroup
+     * @param RollGroup $rollGroup
+     * @return mixed
+     */
+    public function findStudentsByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
+    {
+        $query = $this->createQueryBuilder('p')
+            ->join('p.studentEnrolments', 'se')
+            ->leftJoin('p.staff', 's')
+            ->where('se.rollGroup = :rollGroup')
+            ->setParameter('rollGroup', $rollGroup)
+            ->andWhere('p.status = :full')
+            ->setParameter('full', 'Full');
 
+        switch (substr($sortBy, 0, 4)) {
+            case 'roll':
+                $query->orderBy('se.rollOrder', 'ASC')
+                    ->addOrderBy('p.surname', 'ASC')
+                    ->addOrderBy('p.preferredName', 'ASC');
+                break;
+            case 'surn':
+                $query->orderBy('p.surname', 'ASC')
+                    ->addOrderBy('p.preferredName', 'ASC');
+                break;
+            case 'pref':
+                $query->orderBy('p.preferredName', 'ASC')
+                    ->addOrderBy('p.surname', 'ASC');
+                break;
+        }
+
+        return $query->getQuery()
+            ->getResult();
     }
 }

@@ -12,7 +12,6 @@
 
 namespace App\Twig;
 
-
 use App\Entity\Module;
 use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
@@ -20,6 +19,10 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Class ModuleMenu
+ * @package App\Twig
+ */
 class ModuleMenu implements ContentInterface
 {
     use ContentTrait;

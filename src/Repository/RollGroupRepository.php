@@ -15,7 +15,6 @@ namespace App\Repository;
 use App\Entity\Person;
 use App\Entity\RollGroup;
 use App\Entity\SchoolYear;
-use App\Util\SchoolYearHelper;
 use App\Util\UserHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -47,25 +46,6 @@ class RollGroupRepository extends ServiceEntityRepository
             ->select('rg')
             ->where('rg.tutor = :person OR rg.tutor2 = :person OR rg.tutor3 = :person OR rg.assistant = :person OR rg.assistant2 = :person OR rg.assistant3 = :person')
             ->setParameter('person', $tutor)
-            ->andWhere('rg.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', $schoolYear)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * findByStudent
-     * @param Person $person
-     * @return array
-     */
-    public function findByStudent(Person $person, ?SchoolYear $schoolYear): array
-    {
-        $schoolYear = $schoolYear ?: SchoolYearHelper::getCurrentSchoolYear();
-        return $this->createQueryBuilder('rg')
-            ->select('rg')
-            ->leftJoin('rg.studentEnrolments', 'se')
-            ->where('se.person = :person')
-            ->setParameter('person', $person)
             ->andWhere('rg.schoolYear = :schoolYear')
             ->setParameter('schoolYear', $schoolYear)
             ->getQuery()

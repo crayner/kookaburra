@@ -12,6 +12,7 @@
 
 namespace App\Controller\Modules;
 
+use App\Entity\Person;
 use App\Entity\RollGroup;
 use App\Entity\SchoolYear;
 use App\Form\Modules\RollGroups\DetailStudentSortType;
@@ -55,7 +56,7 @@ class RollGroupsController extends AbstractController
             $table->addColumn('studentCount', 'Students')->setHeadClass('column hidden md:table-cell')->setBodyClass('p-2 sm:p-3 hidden md:table-cell');
         }
         $table->addColumn('website', 'Website')->setHeadClass('column hidden md:table-cell')->setBodyClass('p-2 sm:p-3 hidden md:table-cell');
-        $table->addColumn('actionColumn', 'Actions')->setStyle("width: '1%'")->addAction('View', 'view', 'roll_groups__detail', ['rollGroup' => 'Id']);
+        $table->addColumn('actionColumn', 'Actions')->setBodyClass('content-centre')->setHeadClass('content-centre')->setStyle("width: '1%'")->addAction('View', 'view', 'roll_groups__detail', ['rollGroup' => 'Id']);
 
         return $this->render('modules/roll_groups/list.html.twig',
             [
@@ -76,7 +77,8 @@ class RollGroupsController extends AbstractController
      */
     public function detail(RollGroup $rollGroup, Request $request, Sidebar $sidebar)
     {
-        $softError = (!$rollGroup instanceof RollGroup) ? 'The selected record does not exist, or you do not have access to it.' : '';
+        if (!$rollGroup instanceof RollGroup)
+            $this->addFlash('error', 'The selected record does not exist, or you do not have access to it.');
 
         if ($rollGroup->getTutor())
             $sidebar->addExtra('image', $rollGroup->getTutor()->photo('lg'));
@@ -95,13 +97,13 @@ class RollGroupsController extends AbstractController
 
         return $this->render('modules/roll_groups/details.html.twig',
             [
-                'softError' => $softError,
                 'rollGroup' => $rollGroup,
                 'staffView' => SecurityHelper::isActionAccessible('/modules/Staff/staff_view_details.php'),
                 'sortBy' => $sortBy,
                 'form' => $form->createView(),
                 'canPrint' => $canPrint,
                 'canViewStudents' => $canViewStudents,
+                'students' => ProviderFactory::getRepository(Person::class)->findStudentsByRollGroup($rollGroup, $sortBy->sortBy),
             ]
         );
     }
