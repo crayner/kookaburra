@@ -14,6 +14,7 @@ namespace App\Listener;
 
 
 use App\Manager\ScriptManager;
+use App\Security\SecurityUser;
 use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
@@ -94,7 +95,6 @@ class PageListener implements EventSubscriberInterface
         $this->idleTimeout->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
         $this->cacheHelper = $cacheHelper;
         $this->token = $token;
-        $scriptManager->addEncoreEntryScriptTag('idleTimeout');
     }
 
     /**
@@ -121,7 +121,8 @@ class PageListener implements EventSubscriberInterface
             $this->minorLinks->execute();
             $this->moduleMenu->execute();
             $this->fastFinder->setToken($this->token)->execute();
-            $this->fastFinder->getScriptManager()->addEncoreEntryScriptTag('notificationTray');
+            if ($this->token->getToken() && $this->token->getToken()->getUser() instanceof SecurityUser)
+                $this->fastFinder->getScriptManager()->addEncoreEntryScriptTag('notificationTray');
             $this->idleTimeout->execute();
         }
     }
