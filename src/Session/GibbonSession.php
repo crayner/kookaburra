@@ -422,4 +422,13 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
         return $actions;
     }
 
+    /**
+     * addFlash
+     * @param string $type
+     * @param string $message
+     */
+    public function addFlash(string $type, string $message)
+    {
+        $this->getFlashBag()->add($type, $message);
+    }
 }

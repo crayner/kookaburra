@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

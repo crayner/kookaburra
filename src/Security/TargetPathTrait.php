@@ -57,8 +57,8 @@ trait TargetPathTrait
         if (strpos($path, '_') === 0)
             $path = '';
 
-        if (null !== $address && $address !== '/publicRegistration.php')
-                $path .= '/?q=' . $address;
+        if (null !== $address && $address !== '/registration/public/')
+                $path = '/registration/public/';
 
         return $path;
     }

@@ -20,11 +20,18 @@ use App\Exception\RouteConfigurationException;
 use App\Provider\ActionProvider;
 use App\Provider\ModuleProvider;
 use App\Provider\ProviderFactory;
+use App\Security\MD5PasswordEncoder;
+use App\Security\SecurityUser;
+use App\Security\SHA256PasswordEncoder;
 use Doctrine\DBAL\Driver\PDOException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
+/**
+ * Class SecurityHelper
+ * @package App\Util
+ */
 class SecurityHelper
 {
     /**
@@ -182,7 +189,7 @@ class SecurityHelper
         return $route['action'];
     }
 
-    public  static function splitRoute(string $route): array
+    public static function splitRoute(string $route): array
     {
         $route = explode('__', $route);
         if (count($route) !== 2)
@@ -350,4 +357,45 @@ class SecurityHelper
         }
     }
 
+    /**
+     * encodeAndSetPassword
+     * @param SecurityUser $user
+     * @param string $raw
+     */
+    public static function encodeAndSetPassword(SecurityUser $user, string $raw)
+    {
+        switch ($user->getEncoderName()) {
+            case 'md5':
+                $encoder = new MD5PasswordEncoder();
+                $salt = '';
+                break;
+            case 'sha256':
+                $encoder = new SHA256PasswordEncoder();
+                if (($salt = $user->getSalt()) === '')
+                    $salt = $user->createSalt();
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('The type of password encoder "(%s)" is not supported!', $user->getEncoderName()));
+        }
+
+        $password = $encoder->encodePassword($raw, $salt);
+
+        $person = $user->getPerson();
+
+        switch ($user->getEncoderName()) {
+            case 'md5':
+                $person->setMD5Password($password);
+                $person->setPasswordStrong('');
+                $person->setPasswordStrongSalt('');
+                break;
+            case 'sha256':
+                $person->setMD5Password('');
+                $person->setPasswordStrong($password);
+                $person->setPasswordStrongSalt($salt);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('The type of password encoder "(%s)" is not supported!', $user->getEncoderName()));
+        }
+
+    }
 }

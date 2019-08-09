@@ -147,3 +147,33 @@ There are no records to display.: There are no records to display.
 Archived Notifications: Archived Notifications
 'Your session is about to expire: you will be logged out shortly.': 'Your session is about to expire: you will be logged out shortly.'
 Stay Connected: Stay Connected
+Account Details: Account Details
+First Name: First Name
+Email: Email
+Gender: Gender
+Please select...: Please select...
+Female: Female
+Male: Male
+Unspecified: Unspecified
+Date of Birth: Date of Birth
+date_format: 'Format: %format%'
+Username: Username
+Must be unique: Must be unique
+'The password policy stipulates that passwords must:':  'The password policy stipulates that passwords must:'
+Contain at least one lowercase letter, and one uppercase letter.: Contain at least one lowercase letter, and one uppercase letter.
+Contain at least one number.: Contain at least one number.
+'Must be at least %1$s characters in length.': 'Must be at least %1$s characters in length.'
+Password: Password
+Privacy Statement: Privacy Statement
+Agreement: Agreement
+Do you agree to the above?: Do you agree to the above?
+Yes: Yes
+Submit: Submit
+Other Information: Other Information
+'An new public registration, for %1$s, is pending approval.': 'A new public registration, for %1$s, is pending approval.'
+Notification: Notification
+'Notification - {name}': 'Notification - {name}'
+'Login to %1$s and use the notification icon to check your new notification, or %2$sclick here%3$s.': 'Login to %1$s and use the notification icon to check your new notification, or %2$sclick here%3$s.'
+'If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:': 'If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:'
+'Email sent via %1$s at %2$s.': 'Email sent via %1$s at %2$s.'
+'Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.': Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.'

@@ -253,4 +253,27 @@ class SettingProvider implements EntityProviderInterface
 
         return $this->settings->get($scope)->containskey($name) ? $this->settings->get($scope)->get($name) : null;
     }
+
+    /**
+     * hasSettingByScope
+     * @param string $scope
+     * @param string $name
+     * @param bool $testForEmpty
+     * @return bool
+     * @throws \Exception
+     */
+    public function hasSettingByScope(string $scope, string $name, bool $testForEmpty = true): bool
+    {
+        if (!($setting = $this->getSettingByScope($scope, $name, true)) instanceof Setting)
+            return false;
+        if (! $testForEmpty)
+            return true;
+
+        if (null === $setting->getValue() || '' === $setting->getValue())
+            return false;
+        else
+            return true;
+
+        return true;
+    }
 }

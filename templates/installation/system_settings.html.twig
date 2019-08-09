@@ -23,22 +23,7 @@
             <tr id="" class=" flex flex-col sm:flex-row justify-between content-center p-0">
                 <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
                     <div class="warning">
-                        {% set lineCount = 0 %}
-                        {% for name, line in manager.getPasswordPolicy() %}
-                            {% if name is not same as('minLength') %}
-                                {% if lineCount is same as (0) %}
-                                    {{ line|trans({'%1$s': manager.getPasswordPolicy()['minLength']}) }}
-                                    <br/>
-                                    <ul>
-                                {% else %}
-                                    <li>
-                                        {{ line|trans({'%1$s': manager.getPasswordPolicy()['minLength']}) }}
-                                    </li>
-                                {% endif %}
-                                {% set lineCount = lineCount + 1 %}
-                            {% endif %}
-                        {% endfor %}
-                        </ul>
+                        {% include 'components/password_policy.html.twig' with {passwordPolicy:  manager.getPasswordPolicy()} %}
                     </div>
                 </td>
             </tr>

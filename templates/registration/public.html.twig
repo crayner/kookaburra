@@ -1,0 +1,71 @@
+{% trans_default_domain 'gibbon' %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% form_theme form
+    'form/kookaburra_form.html.twig'
+%}
+
+{% block content %}
+    {{form_start(form)}}
+    <table class="smallIntBorder fullWidth standardForm relative" cellspacing="0">
+        <tbody>
+            <tr class="break flex flex-col sm:flex-row justify-between content-center p-0">
+                <td colspan="2" class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0">
+                    <h3>{{ 'Account Details'|trans }}</h3>
+                </td>
+            </tr>
+            {{ form_row(form.surname) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.gender) }}
+            {{ form_row(form.dob) }}
+            {{ form_row(form.username) }}
+
+            <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
+                <div class="warning">
+                    {% include 'components/password_policy.html.twig' %}
+                </div>
+            </td>
+            {{ form_row(form.passwordNew) }}
+
+            {% if form.vars.customFields|length > 0 %}
+                <tr class="break flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td colspan="2" class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0">
+                        <h3>{{ 'Other Information'|trans }}</h3>
+                    </td>
+                </tr>
+                {% include 'components/custom_fields.html.twig' with {form: form.fields} %}
+            {% endif %}
+
+            {% if hasSettingByScope('User Admin', 'publicRegistrationPrivacyStatement') %}
+                <tr class="break flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td colspan="2" class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0">
+                        <h3>{{ 'Privacy Statement'|trans }}</h3>
+                    </td>
+                </tr>
+                <tr id="" class=" flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
+                        {{ getSettingByScope('User Admin', 'publicRegistrationPrivacyStatement') }}
+                    </td>
+                </tr>
+            {% endif %}
+            {% if hasSettingByScope('User Admin', 'publicRegistrationAgreement') %}
+                <tr class="break flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td colspan="2" class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0">
+                        <h3>{{ 'Agreement'|trans }}</h3>
+                    </td>
+                </tr>
+                <tr id="" class=" flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
+                        {{ getSettingByScope('User Admin', 'publicRegistrationAgreement') }}
+                    </td>
+                </tr>
+                {{ form_row(form.agreement) }}
+                {{ form_row(form.submit) }}
+            {% endif %}
+        </tbody>
+    </table>
+    {{form_end(form)}}
+
+{% endblock content %}

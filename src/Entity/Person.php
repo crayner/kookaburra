@@ -38,6 +38,15 @@ class Person implements EntityInterface
 {
     use BooleanList;
 
+    public function __construct()
+    {
+        $this->adults = new ArrayCollection();
+        $this->courseClassPerson = new ArrayCollection();
+        $this->children = new ArrayCollection();
+        $this->studentEnrolments = new ArrayCollection();
+        $this->primaryRole = new Role();
+    }
+
     /**
      * @var integer|null
      * @ORM\Id
@@ -97,7 +106,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=5)
      */
-    private $title;
+    private $title = '';
 
     /**
      * @var array
@@ -115,7 +124,7 @@ class Person implements EntityInterface
      */
     public function getTitle(): ?string
     {
-        return rtrim($this->title,'.');
+        return $this->title = in_array(rtrim($this->title,'.'), self::$titleList) ? rtrim($this->title,'.') : '';
     }
 
     /**
@@ -124,7 +133,7 @@ class Person implements EntityInterface
      */
     public function setTitle(?string $title): Person
     {
-        $this->title = in_array($title, self::getTitleList()) ? $title : null;
+        $this->title = in_array($title, self::getTitleList()) ? $title : '';
         return $this;
     }
 
@@ -173,6 +182,10 @@ class Person implements EntityInterface
     public function setFirstName(?string $firstName): Person
     {
         $this->firstName = mb_substr($firstName, 0, 60);
+
+        if (null === $this->getPreferredName())
+            return $this->setPreferredName($firstName);
+
         return $this;
     }
 
@@ -197,6 +210,10 @@ class Person implements EntityInterface
     public function setPreferredName(?string $preferredName): Person
     {
         $this->preferredName = mb_substr($preferredName, 0, 60);
+
+        if (null === $this->getFirstName())
+            return $this->setFirstName($preferredName);
+
         return $this;
     }
 
@@ -204,7 +221,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=150, name="officialName")
      */
-    private $officialName;
+    private $officialName = '';
 
     /**
      * @return null|string
@@ -258,10 +275,10 @@ class Person implements EntityInterface
      * @var array
      */
     private static $genderList = [
-        'M',
-        'F',
-        'Other',
-        'Unspecified',
+        'Female' => 'F',
+        'Male' => 'M',
+        'Other' => 'Other',
+        'Unspecified' => 'Unspecified',
     ];
 
     /**
@@ -334,7 +351,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="passwordStrong")
      */
-    private $passwordStrong;
+    private $passwordStrong = '';
 
     /**
      * @return null|string
@@ -358,7 +375,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=255, name="passwordStrongSalt")
      */
-    private $passwordStrongSalt;
+    private $passwordStrongSalt = '';
 
     /**
      * @return null|string
@@ -415,7 +432,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=16, options={"default": "Full"})
      */
-    private $status;
+    private $status = 'Full';
 
     /**
      * @var array
@@ -449,7 +466,7 @@ class Person implements EntityInterface
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"}, name="canLogin")
      */
-    private $canLogin;
+    private $canLogin = 'Y';
 
     /**
      * isCanLogin
@@ -505,7 +522,7 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(name="gibbonRoleIDAll", length=255)
+     * @ORM\Column(name="gibbonRoleIDAll")
      */
     private $allRoles = '';
 
@@ -2510,33 +2527,55 @@ class Person implements EntityInterface
 
     /**
      * @var string
-     * @ORM\Column(type="text", options={"comment": "Serialised array of custom field values"})
+     * @ORM\Column(type="array", options={"comment": "Serialised array of custom field values"}, nullable=true)
      * Gibbon does not support NULL for this field.
      */
-    private $fields = '';
+    private $fields = [];
 
     /**
      * @return array
      */
     public function getFields(): array
     {
-        if (is_array($this->fields))
-            $this->fields = implode(',', $this->fields);
-        if (empty($this->fields))
-            $this->fields = '';
-
-        return explode(',', $this->fields);
+        return $this->fields = $this->fields ?: [];
     }
 
     /**
      * @param string|array $fields
      * @return Person
      */
-    public function setFields($fields): Person
+    public function setFields(array $fields): Person
     {
-        $fields = is_array($fields) ? implode(',', $fields) : $fields ;
-        $fields = empty($fields) ? '' : $fields ;
         $this->fields = $fields;
+        return $this;
+    }
+
+    /**
+     * addField
+     * @param $field
+     * @param $value
+     * @return Person
+     */
+    public function addField($key, $value): Person
+    {
+        $this->getFields();
+
+        $this->fields[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * mergeFields
+     * @param array $fields
+     * @return Person
+     */
+    public function mergeFields(array $fields): Person
+    {
+        foreach($fields as $field)
+            if (! isset($this->getFields()[$field->getId()]))
+                $this->fields[$field->getId()] = null;
+        ksort($this->fields);
+
         return $this;
     }
 

@@ -49,7 +49,7 @@ class NotificationRepository extends ServiceEntityRepository
             ->setParameters(['new' => $status, 'person' => $person])
             ->getQuery()
             ->getResult();
-       $results = array_merge($results, $this->createQueryBuilder('n')
+        $results = array_merge($results, $this->createQueryBuilder('n')
             ->select(['n.id', 'n.text', 'n.timestamp', 'n.count', 'n.actionLink', "'System' AS source"])
             ->where('n.status = :new')
             ->andWhere('n.person = :person')
@@ -62,7 +62,7 @@ class NotificationRepository extends ServiceEntityRepository
         $iterator = $results->getIterator();
         $iterator->uasort(
             function ($a, $b) {
-                return $b['timeStamp']->getTimeStamp() . $a['source'] . $a['text'] < $a['timestamp']->getTimeStamp() . $b['source'] . $b['text'] ? -1 : 1 ;
+                return $b['timestamp']->getTimestamp() . $a['source'] . $a['text'] < $a['timestamp']->getTimestamp() . $b['source'] . $b['text'] ? -1 : 1 ;
             }
         );
         $results  = new ArrayCollection(iterator_to_array($iterator, false));

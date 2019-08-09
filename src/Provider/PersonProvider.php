@@ -18,11 +18,14 @@ use App\Entity\INPersonDescriptor;
 use App\Entity\MarkbookEntry;
 use App\Entity\Person;
 use App\Entity\PersonMedical;
+use App\Entity\Role;
 use App\Entity\Setting;
 use App\Manager\Traits\EntityTrait;
 use App\Security\SecurityUser;
 use App\Util\SecurityHelper;
+use App\Entity\NotificationEvent;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -238,5 +241,45 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
         $resolver->setAllowedTypes('title', ['string']);
         $resolver->setAllowedTypes('link', ['string']);
         return $resolver->resolve($alert);
+    }
+
+    public function handleRegistration(FormInterface $form)
+    {
+        $person = new Person();
+        $person = $form->getData();
+        $this->setEntity($person);
+
+        $person->setOfficialName($person->getFirstName() . ' ' . $person->getSurname());
+
+        $raw = $form->get('passwordNew')->getData();
+        $user = new SecurityUser($person);
+        SecurityHelper::encodeAndSetPassword($user, $raw);
+        $person->setStatus(ProviderFactory::create(Setting::class)->getSettingByScope('User Admin', 'publicRegistrationDefaultStatus'));
+        $role = ProviderFactory::create(Setting::class)->getSettingByScope('User Admin', 'publicRegistrationDefaultRole');
+        $person->setPrimaryRole($role = ProviderFactory::getRepository(Role::class)->find($role));
+        $person->setAllRoles($role->getId());
+
+
+        foreach($form->get('fields')->getData() as $key=>$value)
+        {
+            $value = $form->get('fields')->get($key)->get('value')->getData();
+            $person->addField($key,$value);
+        }
+
+        $this->saveEntity();
+        if ($person->getStatus() === 'Pending Approval') {
+            // Raise a new notification event
+            $event = ProviderFactory::create(NotificationEvent::class)->createEvent('User Admin', 'New Public Registration');
+
+            $event->addRecipient($this->getSession()->get('organisationAdmissions'));
+            $event->setNotificationText('An new public registration, for %1$s, is pending approval.')->setNotificationTextOptions(['%1$s' => $person->formatName()]);
+            $event->setActionLink("/?q=/modules/User Admin/user_manage_edit.php&gibbonPersonID=". $person->getId()."&search=");
+
+            $event->sendNotifications();
+
+            $this->getSession()->addFlash('success', 'Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.');
+        } else {
+            $this->getSession()->addFlash('success', 'Your registration was successfully submitted, and you may now log into the system using your new username and password.');
+        }
     }
 }

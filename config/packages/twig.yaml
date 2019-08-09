@@ -5,3 +5,5 @@ twig:
     globals:
         absoluteURL: '%absoluteURL%'
         version: '%version%'
+    paths:
+        '%kernel.project_dir%/public': images

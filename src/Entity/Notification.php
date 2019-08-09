@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\NotificationRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Notification")
+ * @ORM\HasLifecycleCallbacks()
  * */
 class Notification implements EntityInterface
 {
@@ -189,6 +190,26 @@ class Notification implements EntityInterface
     }
 
     /**
+     * @return array|null
+     */
+    public function getTextOptions(): ?string
+    {
+        return $this->textOptions = $this->textOptions ?: [];
+    }
+
+    /**
+     * TextOptions.
+     *
+     * @param array|null $textOptions
+     * @return Notification
+     */
+    public function setTextOptions(?string $textOptions): Notification
+    {
+        $this->textOptions = $textOptions;
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getActionLink(): ?string
@@ -230,5 +251,15 @@ class Notification implements EntityInterface
     public static function getStatusList(): array
     {
         return self::$statusList;
+    }
+
+    /**
+     * createTimestamp
+     * @ORM\PrePersist()
+     */
+    public function createTimestamp()
+    {
+        if (null === $this->getTimestamp())
+            $this->timestamp = new \DateTime();
     }
 }

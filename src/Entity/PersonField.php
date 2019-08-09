@@ -79,43 +79,48 @@ class PersonField
      * @var boolean|null
      * @ORM\Column(type="boolean", name="activePersonStudent", options={"default": "0"})
      */
-    private $activePersonStudent = 0;
+    private $activePersonStudent = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean", name="activePersonStaff", options={"default": "0"})
      */
-    private $activePersonStaff = 0;
+    private $activePersonStaff = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean", name="activePersonParent", options={"default": "0"})
      */
-    private $activePersonParent = 0;
+    private $activePersonParent = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean", name="activePersonOther", options={"default": "0"})
      */
-    private $activePersonOther = 0;
+    private $activePersonOther = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean", name="activeApplicationForm", options={"default": "0"})
      */
-    private $activeApplicationForm = 0;
+    private $activeApplicationForm = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean", name="activeDataUpdater", options={"default": "0"})
      */
-    private $activeDataUpdater = 0;
+    private $activeDataUpdater = false;
 
     /**
      * @var boolean|null
      * @ORM\Column(type="boolean", name="activePublicRegistration", options={"default": "0"})
      */
-    private $activePublicRegistration = 0;
+    private $activePublicRegistration = false;
+
+    /**
+     * @var mixed
+     */
+    private $value;
 
     /**
      * @return int|null
@@ -375,5 +380,25 @@ class PersonField
     public static function getTypeList(): array
     {
         return self::$typeList;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Value.
+     *
+     * @param mixed $value
+     * @return PersonField
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+        return $this;
     }
 }

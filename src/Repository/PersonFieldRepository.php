@@ -30,4 +30,26 @@ class PersonFieldRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PersonField::class);
     }
+
+    /**
+     * getCustomFields
+     * @param array $where
+     * @param array $data
+     * @return array
+     */
+    public function getCustomFields(array $where, array $data): array
+    {
+        $query = $this->createQueryBuilder('pf')
+            ->where('pf.active = :yes');
+
+        foreach($where as $search)
+            $query = $query->andWhere($search);
+
+        $query = $query->setParameters($data)
+            ->setParameter('yes', 'Y')
+            ->getQuery();
+
+        return $query
+            ->getResult();
+    }
 }

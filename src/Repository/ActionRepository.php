@@ -16,6 +16,7 @@ use App\Entity\Action;
 use App\Entity\Module;
 use App\Exception\Exception;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -57,12 +58,19 @@ class ActionRepository extends ServiceEntityRepository
      */
     public function findOneByModuleContainsURL(Module $module, string $address): ?Action
     {
-        return $this->createQueryBuilder('a')
-            ->where('a.module = :module')
-            ->setParameter('module', $module)
-            ->andWhere('a.URLList LIKE :route')
-            ->setParameter('route', '%'.$address.'%')
-            ->getQuery()
-            ->getOneOrNullResult();
+        try {
+            return $this->createQueryBuilder('a')
+                ->where('a.module = :module')
+                ->setParameter('module', $module)
+                ->andWhere('a.URLList LIKE :route')
+                ->setParameter('route', '%' . $address . '%')
+                ->orderBy('a.precedence')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            dd($module, $address);
+            throw $e;
+        }
     }
 }

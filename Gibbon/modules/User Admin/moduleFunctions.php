@@ -18,6 +18,21 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 //$student, $staff, $parent, $other, $applicationForm, $dataUpdater should all be TRUE/FALSE/NULL
 //Returns query result
+
+/**
+ * getCustomFields
+ * @param $connection2
+ * @param $guid
+ * @param null $student
+ * @param null $staff
+ * @param null $parent
+ * @param null $other
+ * @param null $applicationForm
+ * @param null $dataUpdater
+ * @param null $publicRegistration
+ * @return bool
+ * @deprecated use PersonFieldProvider::getCustomFields
+ */
 function getCustomFields($connection2, $guid, $student = null, $staff = null, $parent = null, $other = null, $applicationForm = null, $dataUpdater = null, $publicRegistration = null)
 {
     $return = false;

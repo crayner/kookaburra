@@ -126,8 +126,9 @@ class AddressModuleActionListener implements EventSubscriberInterface
      */
     private function setAction(string $address, Module $module, Request $request)
     {
-        $action = ProviderFactory::getRepository(Action::class)->findOneByModuleContainsURL($module, explode('__', $address)[1]);
+        $address = strpos($address, '__') !== false ? explode('__', $address)[1] : basename($address);
+        $action = ProviderFactory::getRepository(Action::class)->findOneByModuleContainsURL($module, $address);
         $request->attributes->set('action', $action);
-        $request->getSession()->set('action', $action ? explode('__', $address)[1] : '');
+        $request->getSession()->set('action', $action ? $address : '');
     }
 }

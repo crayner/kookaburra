@@ -31,6 +31,7 @@ use Gibbon\Domain\System\NotificationGateway;
  *
  * @version v14
  * @since   v14
+ * @deprecated Use NotificationEventProvider
  */
 class NotificationEvent
 {

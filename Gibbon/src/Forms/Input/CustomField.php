@@ -22,7 +22,7 @@ namespace Gibbon\Forms\Input;
 use Gibbon\Forms\FormFactoryInterface;
 
 /**
- * CustomField
+ * CustomFieldType
  *
  * Turn an array of dynamic field information into a custom field
  *

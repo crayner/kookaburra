@@ -57,7 +57,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Library/library_manage_cat
             $fieldsValues = ($result->rowCount() == 1)? unserialize($result->fetchColumn(0)) : array();
         }
 
-        // Transform the library field types to CustomField compatable types
+        // Transform the library field types to CustomFieldType compatable types
         $fields = array_map(function($item){
             switch($item['type']) {
                 case 'Text':        $item['type'] = 'varchar'; break;

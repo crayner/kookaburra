@@ -35,7 +35,7 @@ class NotificationListener
      * @ORM\ManyToOne(targetEntity="NotificationEvent")
      * @ORM\JoinColumn(name="gibbonNotificationEventID", referencedColumnName="gibbonNotificationEventID", nullable=true)
      */
-    private $notification;
+    private $event;
     
     /**
      * @var Person|null
@@ -77,18 +77,18 @@ class NotificationListener
     /**
      * @return NotificationEvent|null
      */
-    public function getNotification(): ?NotificationEvent
+    public function getEvent(): ?NotificationEvent
     {
-        return $this->notification;
+        return $this->event;
     }
 
     /**
      * @param NotificationEvent|null $notification
      * @return NotificationListener
      */
-    public function setNotification(?NotificationEvent $notification): NotificationListener
+    public function setEvent(?NotificationEvent $event): NotificationListener
     {
-        $this->notification = $notification;
+        $this->event = $event;
         return $this;
     }
 

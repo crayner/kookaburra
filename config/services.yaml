@@ -127,3 +127,6 @@ services:
 
     Gibbon\Tables\Prefab\ClassGroupTable:
         public: true
+
+    App\Translation\Translator:
+        decorates: translator

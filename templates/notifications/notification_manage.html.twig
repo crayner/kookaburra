@@ -58,8 +58,8 @@
                         {{ note.count }}
                     </td>
                     <td class="content-centre">
-                        <a href="{{ path('notifications_action', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-plus-circle fa-fw fa-lg"></span></a>
-                        <a href="{{ path('notifications_delete', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
+                        <a href="{{ path('notification_action', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-plus-circle fa-fw fa-lg"></span></a>
+                        <a href="{{ path('notification_delete', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
                     </td>
                 </tr>
                 {% dump(note) %}
@@ -116,8 +116,8 @@
                         {{ note.count }}
                     </td>
                     <td class="content-centre">
-                        <a href="{{ path('notifications_action', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-plus-circle fa-fw fa-lg"></span></a>
-                        <a href="{{ path('notifications_delete', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
+                        <a href="{{ path('notification_action', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-plus-circle fa-fw fa-lg"></span></a>
+                        <a href="{{ path('notification_delete', {notification: note.id}) }}" class="text-gray-600"><span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
                     </td>
                 </tr>
                 {% dump(note) %}
