@@ -38,6 +38,7 @@ use App\Util\RelationshipHelper;
 use App\Util\SchoolYearHelper;
 use App\Util\SecurityHelper;
 use App\Util\TimetableHelper;
+use App\Util\UrlGeneratorHelper;
 use App\Util\UserHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -98,6 +99,7 @@ class HelperListener implements EventSubscriberInterface
         Environment $twig,
         ContainerInterface $container,
         LoggerInterface $logger,
+        UrlGeneratorHelper $urlGeneratorHelper,
         GibbonManager $gibbonManager
     ) {
         if ($container->hasParameter('installed') && $container->getParameter('installed')) {

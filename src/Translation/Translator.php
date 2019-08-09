@@ -73,7 +73,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorBagInterface, T
             }
         }
 
-        return $trans;
+        return str_replace(array_keys($parameters), array_values($parameters), $trans);
     }
 
     /**
