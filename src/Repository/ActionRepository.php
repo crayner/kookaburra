@@ -58,19 +58,14 @@ class ActionRepository extends ServiceEntityRepository
      */
     public function findOneByModuleContainsURL(Module $module, string $address): ?Action
     {
-        try {
-            return $this->createQueryBuilder('a')
-                ->where('a.module = :module')
-                ->setParameter('module', $module)
-                ->andWhere('a.URLList LIKE :route')
-                ->setParameter('route', '%' . $address . '%')
-                ->orderBy('a.precedence')
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getOneOrNullResult();
-        } catch (NonUniqueResultException $e) {
-            dd($module, $address);
-            throw $e;
-        }
+        return $this->createQueryBuilder('a')
+            ->where('a.module = :module')
+            ->setParameter('module', $module)
+            ->andWhere('a.URLList LIKE :route')
+            ->setParameter('route', '%' . $address . '%')
+            ->orderBy('a.precedence', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

@@ -292,8 +292,8 @@ if (isActionAccessible($guid, $connection2, '/modules/User Admin/user_manage_edi
                 $dateEnd = dateConvert($guid, $dateEnd);
             }
             $gibbonSchoolYearIDClassOf = null;
-            if (isset($_POST['gibbonSchoolYearIDClassOf'])) {
-                $gibbonSchoolYearIDClassOf = $_POST['gibbonSchoolYearIDClassOf'];
+            if (isset($_POST['gibbonSchoolYearIDClassOf']) && intval($_POST['gibbonSchoolYearIDClassOf']) > 0) {
+                $gibbonSchoolYearIDClassOf = $_POST['gibbonSchoolYearIDClassOf'] ;
             }
             $lastSchool = null;
             if (isset($_POST['lastSchool'])) {
