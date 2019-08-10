@@ -51,13 +51,31 @@ class FinderController extends AbstractController
 
     /**
      * loadFastFinderOptions
-     * @Route("/api/finder/{serach}/search/", name="api_finder_options")
+     * @Route("/api/finder/search/legacy/", name="api_finder_options_legacy")
      */
-    public function loadFastFinderOptions(string $search, FastFinder $fastFinder)
+    public function loadFastFinderOptions(FastFinder $fastFinder, Request $request)
     {
-        dd($search);
+        $fastFinder->execute();
+        $search = $request->query->get('q');
+        $content = $fastFinder->getScriptManager()->getAppProps();
+        $results = [];
+        foreach($content['fastFinder']['fastFindChoices'] as $choice)
+        {
+            foreach($choice['suggestions'] as $suggestion)
+            {
+                if (stripos($suggestion['text'], $search) !== false || stripos($suggestion['search'], $search) !== false)
+                {
+                    $result = [];
+                    $result['id'] = $suggestion['id'];
+                    $result['name'] = $suggestion['text'];
+                    if (strpos($suggestion['id'], 'Act-') === 0)
+                        $result['name'] = $suggestion['search'] . ': ' .$suggestion['text'];
+                    $results[] = $result;
+                }
+            }
+        }
 
-        return new JsonResponse($data, 200);
+        return new JsonResponse($results, 200);
     }
 
     /**

@@ -192,7 +192,7 @@ class Finder extends TextField
         $output .= ');';
         $output .= '});';
         $output .= '</script>';
-
+dump($output, $this);
         return $output;
     }
 }

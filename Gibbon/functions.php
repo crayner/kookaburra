@@ -504,7 +504,7 @@ function getFastFinder($connection2, $guid)
 
     $row = $form->addRow();
         $row->addFinder('fastFinderSearch')
-            ->fromAjax($_SESSION[$guid]['absoluteURL'].'/index_fastFinder_ajax.php')
+            ->fromAjax(\App\Util\UrlGeneratorHelper::getUrl('api_finder_options_legacy'))
             ->setClass('w-full text-white')
             ->setParameter('hintText', __('Start typing a name...'))
             ->setParameter('noResultsText', __('No results'))
