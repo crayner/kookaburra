@@ -1,0 +1,32 @@
+{% trans_default_domain 'gibbon' %}
+
+<!DOCTYPE html>
+<html {{ rightToLeft() ? 'dir="rtl"' : '' }}>
+    <head>
+        {{ include('default/head.html.twig') }}
+    </head>
+    <body class="print">
+        <div id="wrap-report" class="mx-auto max-w-3xl">
+            <div id="header-report" class="flex items-center w-full my-6">
+    {% dump(getSettingByScope('System', 'organisationLogo')) %}
+                <div id="header-logo" class="leading-none">
+                    <img class="block max-w-full" alt="{{ getSettingByScope('System', 'organisationName') }}" src="{{ asset(getSettingByScope('System', 'organisationLogo')|default("/themes/Default/img/logo.png"), null, true) }}" width="400"/>
+                </div>
+
+                <div id="header-text" class="w-3/4 text-xs leading-tight pl-10">
+                    {{ 'This printout contains information that is the property of %1$s. If you find this report, and do not have permission to read it, please return it to %2$s (%3$s). In the event that it cannot be returned, please destroy it.'|trans({'%1$s': getSettingByScope('System', 'organisationName'), '%2$s': getSettingByScope('System', 'organisationAdministratorName'), '%3$s': getSettingByScope('System', 'organisationAdministratorEmail')}) }}
+                </div>
+            </div>
+
+            <div id="content-wrap-report" class="w-full max-w-full">
+                {% if app.user %}
+                    {{ content|join("\n")|raw }}
+                {% endif %}
+            </div>
+
+            <div id="footer-report" class="pt-8 text-xs text-right italic">
+                {{ 'Created by %1$s (%2$s) at %3$s on %4$s.'|trans({'%1$s': app.user.username, '%2$s': getSettingByScope('System', 'organisationNameShort'), '%3$s': date()|date('H:i:s'), '%4$s': date()|date('jS M/Y')}) }}
+            </div>
+        </div>
+    </body>
+</html>

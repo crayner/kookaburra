@@ -90,7 +90,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/report_students_b
         }
 
         echo "<div class='linkTop'>";
-        echo "<a href='javascript:window.print()'>".__('Print')."<img style='margin-left: 5px' title='".__('Print')."' src='./themes/".$_SESSION[$guid]['gibbonThemeName']."/img/print.png'/></a>";
+        echo "<a href='javascript:window.print()'>".__('Print')."<span title=\"".__('Print')."\" class=\"fa-fw fa-2x fas fa-print ml-1 text-gray-800\"></span></a>";
         echo '</div>';
 
         echo "<table class='mini' cellspacing='0' style='width: 100%'>";

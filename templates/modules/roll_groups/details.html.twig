@@ -71,7 +71,7 @@
 
             <h3>{{ 'Students'|trans }}</h3>
             <div class="linkTop">
-                <a target="_blank" href="{{ absoluteURL }}/report.php?q=/modules/Students/report_students_byRollGroup_print.php&gibbonRollGroupID=00145&view=Basic"><span title="{{ 'Print'|trans }}" class="fa-fw fa-2x fas fa-print ml-1 text-gray-800"></span></a>
+                <a target="_blank" href="{{ path('report_generate', {forwardTo: '/modules/Students/report_students_byRollGroup_print.php'|url_encode, view: 'Basic', idName: 'gibbonRollGroupID', id: rollGroup.id }) }}"><span title="{{ 'Print'|trans }}" class="fa-fw fa-2x fas fa-print ml-1 text-gray-800"></span></a>
             </div>
             <div class="flex flex-wrap rounded-sm bg-blue-100 border">
                 <div class="w-full">

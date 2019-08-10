@@ -32,3 +32,4 @@ Contain at least one non-alphanumeric character (e.g. a punctuation mark or spac
 'Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.': 'Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.'
 Unknown: Unknown
 organisation_website: '%name% Website'
+'The file "{path}" does not exist in the "{dir}" directory!': 'The file "{path}" does not exist in the "{dir}" directory!'
