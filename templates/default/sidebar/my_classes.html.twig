@@ -1,0 +1,13 @@
+{% trans_default_domain 'gibbon' %}
+
+
+<div class="column-no-break">
+    <h2 class='sidebar'>
+        {{ 'My Classes'|trans }}
+    </h2>
+    <ul>
+        {% for row in content %}
+            <li><a href='{{ path('legacy', {q: '/modules/Departments/department_course_class.php', gibbonCourseClassID: row.gibbonCourseClassID}) }}'>{{ row.course ~ '.' ~ row.class }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

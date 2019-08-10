@@ -4,4 +4,9 @@
             {% include 'default/display_image.html.twig' with {image: extra.content} %}
         </div>
     {% endif %}
+
+    {% if extra.type is same as('myClasses') %}
+            {% include 'default/sidebar/my_classes.html.twig' with {content: extra.content} %}
+    {% endif %}
+
 {% endfor %}

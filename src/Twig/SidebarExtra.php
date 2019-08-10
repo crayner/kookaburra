@@ -30,7 +30,8 @@ class SidebarExtra
      * @var array
      */
     private static $typeList = [
-        'image'
+        'image',
+        'myClasses',
     ];
 
     /**

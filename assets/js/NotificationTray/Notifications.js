@@ -21,7 +21,6 @@ export default function Notifications(props) {
                     <span className={'far fa-sticky-note text-gray-500'}>
                     </span>
                     :
-
                     <span className={'fas fa-sticky-note text-gray-800'}>
                     <span className={'fa-layers-counter'} style={{
                         color: colour,
