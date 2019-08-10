@@ -81,7 +81,7 @@ class NotificationController extends AbstractController
 
     /**
      * delete
-     * @Route("/notifications/{notification}/delete/", name="notification_delete")
+     * @Route("/notification/{notification}/delete/", name="notification_delete")
      * @IsGranted("ROLE_USER")
      */
     public function delete(Notification $notification)
@@ -104,7 +104,7 @@ class NotificationController extends AbstractController
      * action
      * @param Notification $notification
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @Route("/notifications/{notification}/action/", name="notification_action")
+     * @Route("/notification/{notification}/action/", name="notification_action")
      * @IsGranted("ROLE_USER")
      */
     public function action(Notification $notification)
@@ -123,5 +123,18 @@ class NotificationController extends AbstractController
         $this->addFlash('error', 'return.error2');
 
         return $this->forward(NotificationController::class.'::manage');
+    }
+
+    /**
+     * ajax
+     * @Route("/api/notifcations/refresh/legacy/", name="notifications_refresh_legacy"))
+     */
+    public function refreshLegacy(NotificationTrayManager $manager)
+    {
+        return $this->render('legacy/components/notification_tray.html.twig',
+            [
+                'content' => $manager->execute($this->getUser()),
+            ]
+        );
     }
 }

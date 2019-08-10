@@ -27,7 +27,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorBagInterface, T
     /**
      * {@inheritdoc}
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null)
+    public function trans($id, array $parameters = [], $domain = 'gibbon', $locale = null)
     {
         $id = $this->translator->trans($id, $parameters, $domain, $locale);
 

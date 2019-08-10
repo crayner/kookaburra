@@ -80,6 +80,7 @@ function getMessages($guid, $connection2, $mode = '', $date = '')
 {
     $return = '';
     $dataPosts = array();
+    $sqlPosts = '';
 
     if ($date == '') {
         $date = date('Y-m-d');

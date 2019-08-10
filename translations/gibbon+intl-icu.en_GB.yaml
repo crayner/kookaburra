@@ -178,3 +178,8 @@ Notification: Notification
 'Email sent via %1$s at %2$s.': 'Email sent via %1$s at %2$s.'
 'Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.': Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.'
 View Details: View Details
+There is no information for the date specified.: There is no information for the date specified.
+Your request failed because you do not have access to this action.: Your request failed because you do not have access to this action.
+'Parents of students interested in study at %1$s may use our %2$s online form%3$s to initiate the application process.': 'Parents of students interested in study at %1$s may use our %2$s online form%3$s to initiate the application process.'
+'Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.': 'Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.'
+'Notifications': Notifications

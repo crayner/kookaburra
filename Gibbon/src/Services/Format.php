@@ -91,6 +91,7 @@ class Format
      *
      * @param DateTime|string $dateString
      * @return string
+     * @deprecated Moved to Util\Format::dateConvert
      */
     public static function dateConvert($dateString)
     {
@@ -249,6 +250,7 @@ class Format
      * @param DateTime|string $dateString
      * @param string $timezone
      * @return int
+     * @deprecated Moved to Util\Format::timestamp
      */
     public static function timestamp($dateString, $timezone = null)
     {

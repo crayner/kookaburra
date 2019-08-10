@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\UI\Components;
 
+use App\Util\UrlGeneratorHelper;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Contracts\Database\Connection;
 
@@ -205,7 +206,7 @@ class Header
             $return .= '<script type="text/javascript">
                 $(document).ready(function(){
                     setInterval(function() {
-                        $("#notifications").load("/index_notification_ajax.php");
+                        $("#notifications").load("'.UrlGeneratorHelper::getPath('notifications_refresh_legacy').'");
                     }, '.$interval.');
                 });
             </script>';
@@ -224,7 +225,7 @@ class Header
                             }
                             $return .= "<script>
                                 $(document).ready(function() {
-                                    $('#notifications').load('index_notification_ajax.php');
+                                    $('#notifications').load('".UrlGeneratorHelper::getPath('notifications_refresh_legacy')."');
                                 }) ;
                             </script>";
                         }

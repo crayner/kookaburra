@@ -161,4 +161,31 @@ class Format
             ? DateTime::createFromFormat($expectedFormat, $dateOriginal, $timezone)
             : new DateTime($dateOriginal, $timezone);
     }
+
+    /**
+     * Converts a date in the language-specific format to YYYY-MM-DD.
+     *
+     * @param DateTime|string $dateString
+     * @return string
+     */
+    public static function dateConvert($dateString)
+    {
+        if (empty($dateString)) return '';
+        $date = static::createDateTime($dateString, static::$settings['dateFormatPHP']);
+        return $date ? $date->format('Y-m-d') : $dateString;
+    }
+
+    /**
+     * Converts a YYYY-MM-DD date to a Unix timestamp.
+     *
+     * @param DateTime|string $dateString
+     * @param string $timezone
+     * @return int
+     */
+    public static function timestamp($dateString, $timezone = null)
+    {
+        if (strlen($dateString) == 10) $dateString .= ' 00:00:00';
+        $date = static::createDateTime($dateString, 'Y-m-d H:i:s', $timezone);
+        return $date ? $date->getTimestamp() : 0;
+    }
 }
