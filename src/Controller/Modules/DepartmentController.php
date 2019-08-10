@@ -14,9 +14,9 @@ namespace App\Controller\Modules;
 
 use App\Entity\CourseClassPerson;
 use App\Entity\Department;
+use App\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -29,10 +29,14 @@ class DepartmentController extends AbstractController
     /**
      * list
      * @Route("/departments/list/", name="departments__list")
-     * @Security("is_granted(['ROLE_ROUTE','ROLE_DEPARTMENT'])")
      */
     public function list(Sidebar $sidebar)
     {
+        if (!$this->isGranted('ROLE_ROUTE') && !ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('Departments', 'makeDepartmentsPublic')) {
+            $this->addFlash('error', 'You do not have access to this action.');
+            return $this->redirectToRoute('home');
+        }
+
         ProviderFactory::create(CourseClassPerson::class)->getMyClasses($this->getUser(), $sidebar);
         return $this->render('modules/departments/list.html.twig',
             [

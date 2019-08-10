@@ -58,7 +58,20 @@ TODO: add template variable details.
 
                         {% block page %}
 
-                        {% if content and not sidebar %}
+                            {% block soft_error %}
+                                {% if softError is defined and softError|length > 0 %}
+                                    <div class="error">{{ softError|trans(softErrorParams|default({})) }}</div>
+                                {% endif %}
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="{{ label }}">
+                                            {{ message|trans }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endblock soft_error %}
+
+                            {% if content and not sidebar %}
                             {{ include('legacy/navigation.html.twig') }}
                         {% endif %}
 

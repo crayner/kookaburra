@@ -31,8 +31,8 @@ For info about editing, see: https://twig.symfony.com/doc/2.x/
 {% if makeDepartmentsPublic %}
     <h2 style='margin-top: 30px'>{{ 'Departments'|trans }}</h2>
     <p>
-        {% set url = absoluteURL ~ "/?q=/modules/Departments/departments.php" %}
-        {{ 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'|trans|format('<a href="' ~ url ~ '">', '</a>', organisationName)|raw }}
+        {% set url = path('departments__list') %}
+        {{ 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'|trans({'%1$s': '<a href="' ~ url ~ '">', '%2$s': '</a>', '%3$s': organisationName})|raw }}
     </p>
 {% endif %}
 

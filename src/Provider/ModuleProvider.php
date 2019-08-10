@@ -69,15 +69,18 @@ class ModuleProvider implements EntityProviderInterface
      * @return array
      * @throws \Exception
      */
-    public function selectModuleActionsByRole($moduleID, $roleID)
+    public function selectModuleActionsByRole($module, $role)
     {
-        if ($moduleID instanceof Module)
-            $moduleID = $moduleID->getId();
+        if (null === $role || '' === $role || 0 === $role)
+            return [];
 
-        if ($roleID instanceof Role)
-            $roleID = $roleID->getId();
+        if (!$module instanceof Module)
+            $module = $this->getRepository()->find($module);
 
-        $result = $this->getRepository()->findModuleActionsByRole($moduleID, $roleID);
+        if (!$role instanceof Role)
+            $role = $this->getRepository(Role::class)->find($role);
+
+        $result = $this->getRepository()->findModuleActionsByRole($module, $role);
 
         $categories = [];
 

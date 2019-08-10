@@ -59,21 +59,20 @@ class ModuleRepository extends ServiceEntityRepository
 
     /**
      * findModuleActionsByRole
-     * @param int $moduleID
-     * @param int $roleID
-     * @return array
+     * @param Module $module
+     * @param Role $role
+     * @return mixed
      */
-    public function findModuleActionsByRole(int $moduleID, int $roleID)
+    public function findModuleActionsByRole(Module $module, Role $role)
     {
         $result = $this->createQueryBuilder('m')
             ->select(['a.category', 'm.name AS moduleName', 'a.name AS actionName', 'm.type', 'a.precedence', 'm.entryURL AS moduleEntry', 'a.entryURL', 'a.URLList', 'a.name AS name'])
             ->join('m.actions', 'a')
             ->join('a.permissions', 'p')
-            ->join('p.role', 'r')
             ->where('m.id = :module_id')
-            ->setParameter('module_id', intval($moduleID))
-            ->andWhere('r.id = :role_id')
-            ->setParameter('role_id', intval($roleID))
+            ->setParameter('module_id', intval($module->getId()))
+            ->andWhere('p.role = :role')
+            ->setParameter('role', $role)
             ->andWhere('a.entryURL != :empty')
             ->setParameter('empty', '')
             ->andWhere('a.menuShow = :yes')

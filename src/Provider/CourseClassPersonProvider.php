@@ -42,7 +42,8 @@ class CourseClassPersonProvider implements EntityProviderInterface
         elseif ($person instanceof Person)
             $result = $this->getRepository()->getMyClasses($this->getSession()->get('schoolYear'), $person);
 
-        $sidebar->addExtra('myClasses', $result);
+        if (count($result) > 0)
+            $sidebar->addExtra('myClasses', $result);
 
         return $result ?: [];
     }

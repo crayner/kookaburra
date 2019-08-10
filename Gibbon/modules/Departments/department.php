@@ -63,8 +63,8 @@ if (isActionAccessible($guid, $connection2, '/modules/Departments/department.php
             $urlParams = ['gibbonDepartmentID' => $gibbonDepartmentID];
             
             $page->breadcrumbs
-                ->add(__('View All'), 'departments.php')
-                ->add($row['name'], 'departments.php', $urlParams);
+                ->add(__('View All'), \App\Util\UrlGeneratorHelper::getPath('departments__list'))
+                ->add($row['name'], \App\Util\UrlGeneratorHelper::getPath('departments__list'), $urlParams);
 
             //Print overview
             if ($row['blurb'] != '' or $role == 'Coordinator' or $role == 'Assistant Coordinator' or $role == 'Teacher (Curriculum)' or $role == 'Director' or $role == 'Manager') {
