@@ -1,0 +1,177 @@
+{% trans_default_domain 'gibbon' %}
+
+{% if app.user is null %}
+    {% if getSettingByScope('System', 'googleOAuth') is same as('Y') %}
+        <div class="column-no-break">
+            <h2>{{'Login with Google'|trans}}</h2>
+            <div style="background-color: #edf7ff">
+                <form action="#" method="post" autocomplete="on" enctype="multipart/form-data" class="blank fullWidth loginTableGoogle" id="loginFormGoogle">
+                    <table class="noIntBorder fullWidth loginTableGoogle relative" cellspacing="0">
+                        <tbody>
+                            <tr class="flex flex-col sm:flex-row justify-between content-center p-0">
+                                <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth" colspan="2">
+                                    <a class="login" id="googleConnect" onclick="window.open(addGoogleLoginParams('{{ app.request.pathInfo }}'),'_self'); return false;">
+                                        <button class="w-full bg-white rounded shadow border border-gray-400 flex items-center px-2 py-1 mb-2 text-gray-600 hover:shadow-md hover:border-blue-600 hover:text-blue-600"><img class="w-10 h-10" src="{{ asset('/themes/' ~ getThemeName() ~ '/img/google-login.svg') }}"><span class="flex-grow text-lg">{{'Sign in with Google'|trans}}</span>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="loginOptionsGoogle flex flex-col sm:flex-row justify-between content-center p-0" style="display: none;" id="googleOptions">
+                                <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 ">
+                                    <span class="fa-calendar fas fa-fw text-gray-600" title="{{'School Year'|trans}}" style="width:20px;height:20px;margin:5px 0 0 2px; font-size: 15px; display: block;"></span>
+                                </td>
+                                <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth">
+                                    <div class="flex-1 relative">
+                                        <select id="gibbonSchoolYearIDGoogle" name="gibbonSchoolYearIDGoogle" class="fullWidth">
+                                            {% for schoolYear in getSchoolYears() %}
+                                                <option value="{{ schoolYear.id }}"{{ schoolYear.status is same as('Current') ? ' selected' : '' }}>{{ schoolYear.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="loginOptionsGoogle flex flex-col sm:flex-row justify-between content-center p-0" style="display: none;">
+                                <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 ">
+                                    <span class="fas fa-globe fa-fw text-gray-600" style="width:20px; height:20px; margin:5px 0 0 2px; font-size: 15px; display: block;"></span>
+                                </td>
+                                <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth">
+                                    <div class="flex-1 relative">
+                                        <select id="gibboni18nIDGoogle" name="gibboni18nIDGoogle" class="fullWidth">
+                                            {% for lang in getActiveLanguages() %}
+                                                <option value="{{ lang.id }}"{{ lang.systemDefault is same as('Y') ? ' selected' : '' }}>{{ lang.name }}{{ lang.systemDefault is same as('Y') ? ' (' ~ 'System Default'|trans ~ ')' : '' }}</option>
+                                            {% endfor %}
+                                        </select></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class=" px-2 border-b-0 sm:border-b border-t-0 right" colspan="2">
+                                    <span class="small"><a class="showGoogleOptions" onclick="return showHideGoogleOptions()" href="#">{{'Options'|trans}}</a></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <script>
+                function showHideGoogleOptions() {
+                    var x = document.getElementsByClassName("loginOptionsGoogle");
+                    for(var z in x) {
+                        var y = x[z]
+                        if (y.style.display == "none") {
+                            y.style.display = "flex";
+                        } else {
+                            y.style.display = "none";
+                        }
+                    }
+                    return false;
+                }
+
+                function addGoogleLoginParams(q)
+                {
+                    var x = document.getElementById('googleOptions')
+                    var href = '{{ url('google_oauth') }}'
+                    if (x.style.display == 'flex') {
+                        var googleSchoolYear = document.getElementById('gibbonSchoolYearIDGoogle').value
+                        var googleLanguage = document.getElementById('gibboni18nIDGoogle').value
+                        href = href + '?state=' + googleSchoolYear+':'+googleLanguage+':'+q
+                    } else {
+                        href = href + '?state=0:0:'+q
+                    }
+                    return href;
+                }
+            </script>
+        </div>
+    {% endif %}
+
+
+    <div class="column-no-break">
+        <h2>{{ 'Login'|trans }}</h2>
+        <form action="{{ path('login') }}" method="post" autocomplete="off" enctype="multipart/form-data" renderstyle="flex" id="loginForm" class="noIntBorder fullWidth" onsubmit="gibbonFormSubmitted(this)">
+            <table class="noIntBorder fullWidth relative" cellspacing="0">
+                <tbody>
+                    <tr class=" flex flex-col sm:flex-row justify-between content-center p-0">
+                        <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 ">
+                            <span class="fas fa-users fa-fw text-gray-600" style="width:20px;height:20px;margin:5px 0 0 2px; font-size: 15px; display: block;" title="{{'Username or email'|trans}}"></span>
+                    </td>
+                    <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth">
+                        <div class="flex-1 relative">
+                            <input type="text" id="username" name="username" class="fullWidth" maxlength="50" placeholder="{{'Username or email'|trans}}" autocomplete="off" style="cursor: auto;" />
+                        </div>
+                    </td>
+                </tr>
+                <tr class=" flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 ">
+                        <span class="fas fa-fw fa-user-lock text-gray-600" style="width:20px;height:20px;margin:5px 0 0 2px; font-size: 15px; display: block;" title="{{'Password'|trans}}"></span>
+                    </td>
+                    <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth">
+                        <div class="flex-1 relative">
+                            <input type="password" id="password" name="password" class="fullWidth" maxlength="30" placeholder="{{'Password'|trans}}" autocomplete="off" style="cursor: auto;" />
+                        </div>
+                    </td>
+                </tr>
+
+                <tr class="loginOptions flex flex-col sm:flex-row justify-between content-center p-0" style="display: none;">
+                    <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 ">
+                        <span class="fa-calendar fas fa-fw text-gray-600" title="{{'School Year'|trans}}" style="width:20px;height:20px;margin:5px 0 0 2px; font-size: 15px; display: block;"></span>
+                    </td>
+                    <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth">
+                        <div class="flex-1 relative">
+                            <select id="gibbonSchoolYearID" name="gibbonSchoolYearID" class="fullWidth">
+                                {% for schoolYear in getSchoolYears() %}
+                                    <option value="{{ schoolYear.id }}"{{ schoolYear.status is same as('Current') ? ' selected' : '' }}>{{ schoolYear.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr class="loginOptions flex flex-col sm:flex-row justify-between content-center p-0" style="display: none;">
+                    <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 ">
+                        <span class="fas fa-globe fa-fw text-gray-600" style="width:20px; height:20px; margin:5px 0 0 2px; font-size: 15px; display: block;"></span>
+                    </td>
+                    <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth">
+                        <div class="flex-1 relative">
+                            <select id="gibboni18nID" name="gibboni18nID" class="fullWidth">
+                                {% for lang in getActiveLanguages() %}
+                                    <option value="lang.id"{{ lang.systemDefault is same as('Y') ? ' selected' : '' }}>{{ lang.name }}{{ lang.systemDefault is same as('Y') ? ' (' ~ 'System Default'|trans ~ ')' : '' }}</option>
+                                {% endfor %}
+                            </select></div>
+                    </td>
+                </tr>
+                <tr class=" flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 right" colspan="2">
+                        <span class="small">
+                            <a class="show_hide" onclick="return showHide()" href="#">{{ 'Options'|trans }}</a> . <a href="{{ path('legacy', {q: 'passwordReset.php'}) }}">{{ 'Forgot Password'|trans }}?</a></span>
+                    </td>
+                </tr>
+                <tr class=" flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 right" colspan="2">
+                        <input type="submit" value="Login">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <script>
+            function showHide() {
+                var x = document.getElementsByClassName("loginOptions");
+                for(var z in x) {
+                    var y = x[z]
+                    if (y.style.display == "none") {
+                        y.style.display = "flex";
+                    } else {
+                        y.style.display = "none";
+                    }
+                }
+                return false;
+            }
+        </script>
+    </div>
+
+    {% if getSettingByScope('User Admin', 'enablePublicRegistration') is same as('Y') %}
+        <div class="column-no-break">
+            <h2>{{'Register'|trans}}</h2>
+            <p><a href="{{ path('registration_public') }}">{{ 'Join our learning community.'|trans }}</a> {{ "It's free!"|trans }}</p>
+        </div>
+    {% endif %}
+{% endif %}

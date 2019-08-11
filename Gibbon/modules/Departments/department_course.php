@@ -61,11 +61,11 @@ if (isActionAccessible($guid, $connection2, '/modules/Departments/department_cou
                 $extra = ' '.$row['year'];
             }
 
-            $urlParams = ['gibbonDepartmentID' => $gibbonDepartmentID];
+            $urlParams = ['department' => $gibbonDepartmentID];
 
             $page->breadcrumbs
                 ->add(__('View All'), \App\Util\UrlGeneratorHelper::getPath('departments__list'))
-                ->add($row['department'], 'department.php', $urlParams)
+                ->add($row['department'], \App\Util\UrlGeneratorHelper::getPath('departments__details', $urlParams))
                 ->add($row['name'].$extra);
 
             //Print overview

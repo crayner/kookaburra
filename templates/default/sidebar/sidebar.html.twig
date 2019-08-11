@@ -1,6 +1,19 @@
 {% set sidebar = getSidebar() %}
-{% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'top'} %}
-{% include 'default/sidebar/role_switcher.html.twig' %}
 
-{% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'bottom'} %}
-{% include 'default/sidebar/module_menu.html.twig' %}
+{% if sidebar.isValid() %}
+    <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-6">
+    {% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'top'} %}
+    {% include 'default/sidebar/role_switcher.html.twig' %}
+    {% include 'default/sidebar/login.html.twig' %}
+    {% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'bottom'} %}
+    {% include 'default/sidebar/module_menu.html.twig' %}
+    </div>
+{% endif %}
+
+{% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+    <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-6">
+        {% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'top'} %}
+        {% include 'default/sidebar/login.html.twig' %}
+        {% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'bottom'} %}
+    </div>
+{% endif %}

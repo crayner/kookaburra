@@ -73,10 +73,10 @@ if (isActionAccessible($guid, $connection2, '/modules/Departments/department_cou
             }
             if ($gibbonDepartmentID != '') {
                 
-                $urlParams = ['gibbonDepartmentID' => $gibbonDepartmentID, 'gibbonCourseID' => $gibbonCourseID];
+                $urlParams = ['gibbonDepartmentID' => $gibbonDepartmentID, 'gibbonCourseID' => $gibbonCourseID, 'department' => $gibbonDepartmentID];
                 $page->breadcrumbs
                     ->add(__('View All'), \App\Util\UrlGeneratorHelper::getPath('departments__list'))
-                    ->add($row['department'], 'department.php', $urlParams)
+                    ->add($row['department'], \App\Util\UrlGeneratorHelper::getPath('departments__details', $urlParams))
                     ->add($row['courseLong'].$extra, 'department_course.php', $urlParams)
                     ->add(Format::courseClassName($row['course'], $row['class']));
             } else {

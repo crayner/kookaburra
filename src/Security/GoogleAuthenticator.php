@@ -239,7 +239,10 @@ class GoogleAuthenticator implements AuthenticatorInterface
 
             LoginFormAuthenticator::setLanguage($request, $i18nID);
             if (null !== $q)
-                return new RedirectResponse('/?q=' . $q);
+                if (strpos($q, '.php') === false) {
+                    return new RedirectResponse($q);
+                } else
+                    return new RedirectResponse('/?q=' . $q);
         }
 
 

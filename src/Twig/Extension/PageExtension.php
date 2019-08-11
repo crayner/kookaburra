@@ -15,6 +15,7 @@ namespace App\Twig\Extension;
 
 use App\Entity\I18n;
 use App\Entity\Person;
+use App\Entity\SchoolYear;
 use App\Exception\MissingClassException;
 use App\Manager\ScriptManager;
 use App\Provider\I18nProvider;
@@ -141,7 +142,9 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getPageScripts', [$this->scriptManager, 'getPageScripts']),
             new TwigFunction('getPageStyles', [$this->scriptManager, 'getPageStyles']),
             new TwigFunction('getEncoreEntryCSSFiles', [$this->scriptManager, 'getEncoreEntryCSSFiles']),
-            new TwigFunction('pageManager', [$this, 'pageManager'])
+            new TwigFunction('pageManager', [$this, 'pageManager']),
+            new TwigFunction('getSchoolYears', [$this, 'getSchoolYears']),
+            new TwigFunction('getActiveLanguages', [$this, 'getActiveLanguages']),
         ];
     }
 
@@ -303,5 +306,23 @@ class PageExtension extends AbstractExtension
         if (property_exists($this, $name))
             return $this->$name;
         throw new MissingClassException(sprintf('The class "%s" was not available to the "%s" twig extension.', $name, get_class($this)));
+    }
+
+    /**
+     * getSchoolYears
+     * @return SchoolYear[]|object[]
+     */
+    public function getSchoolYears(): array
+    {
+        return ProviderFactory::getRepository(SchoolYear::class)->findBy([],['firstDay' => 'ASC', 'lastDay' => 'ASC']);
+    }
+
+    /**
+     * getActiveLangauges
+     * @return array
+     */
+    public function getActiveLanguages(): array
+    {
+        return ProviderFactory::getRepository(I18n::class)->findByActive();
     }
 }

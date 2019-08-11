@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Hook;
 use App\Entity\I18n;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
 use App\Provider\ProviderFactory;
+use App\Security\SecurityUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +22,14 @@ class LegacyController extends AbstractController
      */
     public function index(Request $request, LegacyManager $manager, GibbonManager $gibbonManager)
     {
+        if (! $this->getUser() instanceof SecurityUser) {
+            return $this->render('default/welcome.html.twig',
+                [
+                    'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
+                ]
+            );
+        }
+
         $error = $gibbonManager->execute();
         if ($error instanceof Response){
             return $error;

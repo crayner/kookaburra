@@ -32,6 +32,8 @@ class SidebarExtra
     private static $typeList = [
         'image',
         'myClasses',
+        'subjectList',
+        'courseList',
     ];
 
     /**

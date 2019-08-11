@@ -58,7 +58,7 @@ trait TargetPathTrait
             $path = '';
 
         if (null !== $address && $address !== '/registration/public/')
-                $path = '/registration/public/';
+                $path = $address;
 
         return $path;
     }

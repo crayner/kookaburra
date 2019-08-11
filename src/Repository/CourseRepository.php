@@ -13,7 +13,9 @@
 namespace App\Repository;
 
 use App\Entity\Course;
+use App\Entity\Department;
 use App\Entity\Person;
+use App\Entity\SchoolYear;
 use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -48,5 +50,36 @@ class CourseRepository extends ServiceEntityRepository
             ->setParameter('schoolYear', SchoolYearHelper::getCurrentSchoolYear())
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * findByDepartment
+     * @param Department $department
+     * @return array
+     */
+    public function findByDepartment(Department $department, SchoolYear $schoolYear): array
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.courseClasses', 'cc')
+            ->where('c.department = :department')
+            ->setParameter('department', $department)
+            ->andWhere('c.yearGroupList != :empty')
+            ->setParameter('empty', '')
+            ->andWhere('c.schoolYear = :schoolYear')
+            ->setParameter('schoolYear', $schoolYear)
+            ->groupBy('c.id')
+            ->orderBy('c.nameShort', 'ASC')
+            ->addOrderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    /*
+                    $sqlCourse = "SELECT gibbonCourse.* FROM gibbonCourse
+                        JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID)
+                        WHERE gibbonDepartmentID=:gibbonDepartmentID
+                        AND gibbonYearGroupIDList <> ''
+                        AND gibbonSchoolYearID=(SELECT gibbonSchoolYearID FROM gibbonSchoolYear WHERE status='Current')
+                        GROUP BY gibbonCourse.gibbonCourseID
+                        ORDER BY nameShort, name";
+    */
     }
 }

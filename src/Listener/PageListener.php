@@ -22,6 +22,7 @@ use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
 use App\Twig\Sidebar;
 use App\Util\CacheHelper;
+use App\Util\UrlGeneratorHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -114,9 +115,9 @@ class PageListener implements EventSubscriberInterface
      */
     public function buildPageContent(ControllerEvent $event)
     {
+        $this->sideBar->execute();
         if ($event->getRequest()->attributes->get('_route') !== 'legacy') {
             $this->cacheHelper::setSession($event->getRequest()->getSession());
-            $this->sideBar->execute();
             $this->mainMenu->execute();
             $this->minorLinks->execute();
             $this->moduleMenu->execute();
@@ -125,6 +126,10 @@ class PageListener implements EventSubscriberInterface
                 $this->fastFinder->getScriptManager()->addEncoreEntryScriptTag('notificationTray');
                 $this->idleTimeout->execute();
             }
+        }
+
+        if(!$this->token->getToken() || !$this->token->getToken()->getUser() instanceof SecurityUser) {
+            $event->getRequest()->getSession()->set('address', UrlGeneratorHelper::getPath($event->getRequest()->attributes->get('_route'), $event->getRequest()->attributes->get('_route_params')));
         }
     }
 }

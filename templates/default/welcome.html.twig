@@ -1,0 +1,49 @@
+{% trans_default_domain "gibbon" %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% set organisationName = getSettingByScope('System', 'organisationName') %}
+
+{% block content %}
+    <h2>{{ 'Welcome'|trans }}</h2>
+    <p>{{ getSettingByScope('System', 'indexText')| raw }}</p>
+
+    {% if getSettingByScope('Application Form', 'publicApplications') is same as('Y') %}
+        <h2 style='margin-top: 30px'>{{ 'Student Applications'|trans }}</h2>
+        <p>
+            {% set url = path('legacy', {q: '/modules/Students/applicationForm.php'}) %}
+            {{ 'Parents of students interested in study at %1$s may use our %2$s online form%3$s to initiate the application process.'|trans({'%1$s': organisationName, '%2$s': '<a href="' ~ url ~ '">', '%3$s': '</a>'})|raw }}
+        </p>
+    {% endif %}
+
+    {% if getSettingByScope('Staff Application Form', 'staffApplicationFormPublicApplications') is same as('Y') %}
+        <h2 style='margin-top: 30px'>{{ 'Staff Applications'|trans }}</h2>
+        <p>
+            {% set url = path('legacy', {q: '/modules/Staff/applicationForm_jobOpenings_view.php'}) %}
+            {{ 'Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.'|trans({'%1$s': organisationName, '%2$s': '<a href="' ~ url ~ '">', '%3$s': '</a>'})|raw }}
+        </p>
+    {% endif %}
+
+    {% if getSettingByScope('Departments', 'makeDepartmentsPublic') is same as('Y') %}
+        <h2 style='margin-top: 30px'>{{ 'Departments'|trans }}</h2>
+        <p>
+            {% set url = path('departments__list') %}
+            {{ 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'|trans({'%1$s': '<a href="' ~ url ~ '">', '%2$s': '</a>', '%3$s': organisationName})|raw }}
+        </p>
+    {% endif %}
+
+    {% if getSettingByScope('Planner', 'makeUnitsPublic') is same as('Y') %}
+        <h2 style='margin-top: 30px'>{{ 'Learn With Us'|trans }}</h2>
+        <p>
+            {% set url = absoluteURL ~ "/?q=/modules/Planner/units_public.php&sidebar=false" %}
+            {{ 'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.'|trans({'%1$s': '<a href="' ~ url ~ '">', '%2$s': '</a>', '%3$s': organisationName})|raw }}
+        </p>
+    {% endif %}
+
+    {% for hook in hooks %}
+        <h2 style='margin-top: 30px'>{{ hook.title }}</h2>
+        <p>
+            {{ hook.text|raw }}
+        </p>
+    {% endfor %}
+{% endblock content %}

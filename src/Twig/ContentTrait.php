@@ -132,13 +132,34 @@ trait ContentTrait
     /**
      * @var bool
      */
-    private $valid;
+    private $valid = true;
 
     /**
      * @return bool
      */
     public function isValid(): bool
     {
-        return $this->valid = $this->getAttributes()->count() > 0;
+        return $this->valid && $this->getAttributes()->count() > 0;
+    }
+
+    /**
+     * getValid
+     * @return bool
+     */
+    public function getValid(): bool
+    {
+        return $this->valid;
+    }
+
+    /**
+     * Valid.
+     *
+     * @param bool $valid
+     * @return ContentTrait
+     */
+    public function setValid(bool $valid): ContentTrait
+    {
+        $this->valid = $valid;
+        return $this;
     }
 }

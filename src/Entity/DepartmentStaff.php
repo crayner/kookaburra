@@ -32,7 +32,7 @@ class DepartmentStaff
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="Department")
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="staff")
      * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="gibbonDepartmentID", nullable=false)
      */
     private $department;
@@ -43,7 +43,6 @@ class DepartmentStaff
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
      */
     private $person;
-
 
     /**
      * @var string|null

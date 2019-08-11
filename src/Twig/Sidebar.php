@@ -33,6 +33,8 @@ class Sidebar implements ContentInterface
 
                 $this->addAttribute('role_switcher', true);
             }
+        } else {
+
         }
     }
 
@@ -84,5 +86,14 @@ class Sidebar implements ContentInterface
         $this->getExtras()->add($extra);
 
         return $extra->setPriority($this->getExtras()->count());
+    }
+
+    /**
+     * isValid
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        return $this->getValid() && (count($this->getExtras()) > 0 || count($this->getAttributes()) > 0);
     }
 }

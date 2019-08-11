@@ -51,11 +51,11 @@ if (isActionAccessible($guid, $connection2, '/modules/Departments/department_edi
         } else {
             $values = $result->fetch();
 
-            $urlParams = ['gibbonDepartmentID' => $gibbonDepartmentID];
+            $urlParams = ['department' => $gibbonDepartmentID];
             
             $page->breadcrumbs
                 ->add(__('View All'), \App\Util\UrlGeneratorHelper::getPath('departments__list'))
-                ->add($values['name'], 'department.php', $urlParams)
+                ->add($values['name'], \App\Util\UrlGeneratorHelper::getPath('departments__details', $urlParams))
                 ->add(__('Edit Department'));            
 
             if (isset($_GET['return'])) {

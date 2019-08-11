@@ -1,0 +1,10 @@
+{% trans_default_domain 'gibbon' %}
+
+<div class="column-no-break">
+    <h4>{{ 'Subject List'|trans }}</h4>
+    <ul style="margin-left: 0; list-style: none;">
+        {% for subject in content %}
+            <li>{{ subject }}</li>
+        {% endfor %}
+    </ul>
+</div>

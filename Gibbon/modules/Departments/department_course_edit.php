@@ -61,11 +61,11 @@ if (isActionAccessible($guid, $connection2, '/modules/Departments/department_cou
                 $extra = ' '.$values['year'];
             }
             
-            $urlParams = ['gibbonDepartmentID' => $gibbonDepartmentID, 'gibbonCourseID' => $gibbonCourseID];
+            $urlParams = ['gibbonDepartmentID' => $gibbonDepartmentID, 'gibbonCourseID' => $gibbonCourseID, 'department' => $gibbonDepartmentID];
             
             $page->breadcrumbs
                 ->add(__('View All'), \App\Util\UrlGeneratorHelper::getPath('departments__list'))
-                ->add($values['department'], 'department.php', $urlParams)
+                ->add($values['department'], \App\Util\UrlGeneratorHelper::getPath('departments__details', $urlParams))
                 ->add($values['course'].$extra, 'department_course.php', $urlParams)
                 ->add(__('Edit Course'));
 

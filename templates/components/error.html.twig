@@ -1,0 +1,9 @@
+{% trans_default_domain "gibbon" %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% block content %}
+    <div class="error">
+        {{ error|trans }}
+    </div>
+{% endblock content %}

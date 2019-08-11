@@ -6,7 +6,15 @@
     {% endif %}
 
     {% if extra.type is same as('myClasses') %}
-            {% include 'default/sidebar/my_classes.html.twig' with {content: extra.content} %}
+        {% include 'default/sidebar/my_classes.html.twig' with {content: extra.content} %}
+    {% endif %}
+
+    {% if extra.type is same as('subjectList') %}
+        {% include 'default/sidebar/subject_list.html.twig' with {content: extra.content} %}
+    {% endif %}
+
+    {% if extra.type is same as('courseList') %}
+        {% include 'default/sidebar/course_list.html.twig' with {content: extra.content} %}
     {% endif %}
 
 {% endfor %}

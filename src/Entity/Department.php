@@ -12,7 +12,10 @@
  */
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * Class Department
@@ -70,6 +73,12 @@ class Department
      * @ORM\Column()
      */
     private $logo;
+
+    /**
+     * @var DepartmentStaff|null
+     * @ORM\OneToMany(targetEntity="DepartmentStaff", mappedBy="department")
+     */
+    private $staff;
 
     /**
      * @return int|null
@@ -203,5 +212,32 @@ class Department
     public static function getTypeList(): array
     {
         return self::$typeList;
+    }
+
+    /**
+     * getStaff
+     * @return Collection|null
+     */
+    public function getStaff(): ?Collection
+    {
+        if (null === $this->staff)
+            $this->staff = new ArrayCollection();
+
+        if ($this->staff instanceof PersistentCollection)
+            $this->staff->initialize();
+
+        return $this->staff;
+    }
+
+    /**
+     * Staff.
+     *
+     * @param DepartmentStaff|null $staff
+     * @return Department
+     */
+    public function setStaff(?Collection $staff): Department
+    {
+        $this->staff = $staff;
+        return $this;
     }
 }

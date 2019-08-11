@@ -64,4 +64,21 @@ class I18nRepository extends ServiceEntityRepository
 
         return $lang ? $lang->isRtl() : false;
     }
+
+    /**
+     * findByActive
+     * @return array
+     */
+    public function findByActive(): array
+    {
+        return $this->createQueryBuilder('i')
+            ->where('i.active = :yes')
+            ->andWhere('i.installed = :yes')
+            ->orWhere('i.systemDefault = :yes')
+            ->orderby('i.systemDefault', 'DESC')
+            ->addOrderBy('i.name', 'ASC')
+            ->setParameter('yes', 'Y')
+            ->getQuery()
+            ->getResult();
+    }
 }
