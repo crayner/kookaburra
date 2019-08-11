@@ -91,6 +91,7 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
                     $id = $this->getAttributeBag()->get('gibbonSchoolYearID', 0);
                     $schoolYear = ProviderFactory::getRepository(SchoolYear::class)->find($id) ?: ProviderFactory::getRepository(SchoolYear::class)->findOneByStatus('Current');
                     $this->set('schoolYear', $schoolYear);
+                    $this->set('gibbonSchoolYearID', $schoolYear->getId());
                     return $this->getAttributeBag()->get($name, null);
                 }
                 break;
