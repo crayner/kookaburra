@@ -42,13 +42,13 @@
         "/build/2.9bd7c479.css"
       ]
     },
-    "Default": {
+    "default": {
       "js": [
         "/build/runtime.e59078a6.js",
-        "/build/Default.34479aab.js"
+        "/build/default.c0014ee3.js"
       ],
       "css": [
-        "/build/Default.3e68cf6b.css"
+        "/build/default.3e68cf6b.css"
       ]
     },
     "css/theme": {
