@@ -554,36 +554,7 @@ class LegacyManager
         if (!$session->has('address')) {
 
             // Welcome message
-            if (!$isLoggedIn) {
-                // Create auto timeout message
-                if ($request->query->has('timeout') && $request->query->get('timeout') === 'true') {
-                    $page->addWarning(__('Your session expired, so you were automatically logged out of the system.'));
-                }
-
-                $templateData = [
-                    'indexText'                 => $session->get('indexText'),
-                    'organisationName'          => $session->get('organisationName'),
-                    'publicStudentApplications' => getSettingByScope($connection2, 'Application Form', 'publicApplications') == 'Y',
-                    'publicStaffApplications'   => getSettingByScope($connection2, 'Staff Application Form', 'staffApplicationFormPublicApplications') == 'Y',
-                    'makeDepartmentsPublic'     => getSettingByScope($connection2, 'Departments', 'makeDepartmentsPublic') == 'Y',
-                    'makeUnitsPublic'           => getSettingByScope($connection2, 'Planner', 'makeUnitsPublic') == 'Y',
-                ];
-
-                // Get any elements hooked into public home page, checking if they are turned on
-                $hooks = $this->providerFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']);
-                $templateData['indexHooks'] = [];
-
-                foreach ($hooks as $hook) {
-                    $options = unserialize(str_replace("'", "\'", $hook->getOptions()));
-                    $check = $this->providerFactory->getProvider(Setting::class)->getSettingByScope($options['toggleSettingScope'], $options['toggleSettingName']);
-                    if ($check == $options['toggleSettingValue']) { // If its turned on, display it
-                        $options['text'] = stripslashes($options['text']);
-                        $templateData['indexHooks'][] = $options;
-                    }
-                }
-
-                $page->writeFromTemplate('legacy\welcome.html.twig', $templateData);
-            } else {
+            if ( $isLoggedIn) {
                 // Custom content loader
                 if (!$session->exists('index_custom.php')) {
                     $globals = [
