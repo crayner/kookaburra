@@ -6,7 +6,7 @@
     'form/kookaburra_form.html.twig'
 %}
 
-{% set module = {'baseURL': '/roll/groups', 'crumbs': [{uri: '/list/', name: 'Roll Groups'},{uri: '/list/', name: 'View Roll Groups'}],  'title': rollGroup.name|default('Unknown'|trans({},'kookaburra'))} %}
+{% set module = {'baseURL': 'roll_groups', 'crumbs': [{uri: 'roll_groups__list', name: 'Roll Groups'},{uri: 'roll_groups__list', name: 'View Roll Groups'}],  'title': rollGroup.name|default('Unknown'|trans({},'kookaburra'))} %}
 {% set breadcrumbs = 'new' %}
 {% set moduleName = 'Roll Groups' %}
 

@@ -69,9 +69,9 @@
                                             {% if loop.last %}
                                                 <span class="trailEnd">{{ crumb.name }}</span>
                                             {% elseif loop.revindex > 5 and loop.index != 1 %}
-                                                <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ crumb.uri }}">...</a> >
+                                                <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.params) }}">...</a> >
                                             {% else %}
-                                                <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ crumb.uri }}">{{ crumb.name }}</a> >
+                                                <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.params) }}">{{ crumb.name }}</a> >
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}
@@ -79,9 +79,9 @@
                                             {% if loop.last %}
                                                 <span class="trailEnd">{{ title }}</span>
                                             {% elseif loop.revindex > 5 and loop.index != 1 %}
-                                                <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ src }}">...</a> >
+                                                <a class="text-blue-700 underline" href="/{{ src }}">...</a> >
                                             {% else %}
-                                                <a class="text-blue-700 underline" href="{{ absoluteURL }}/{{ src }}">{{ title }}</a> >
+                                                <a class="text-blue-700 underline" href="{{ src }}">{{ title }}</a> >
                                             {% endif %}
                                         {% endfor %}
                                     {% endif %}

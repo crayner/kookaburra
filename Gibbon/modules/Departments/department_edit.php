@@ -54,8 +54,8 @@ if (isActionAccessible($guid, $connection2, '/modules/Departments/department_edi
             $urlParams = ['department' => $gibbonDepartmentID];
             
             $page->breadcrumbs
-                ->add(__('View All'), \App\Util\UrlGeneratorHelper::getPath('departments__list'))
-                ->add($values['name'], \App\Util\UrlGeneratorHelper::getPath('departments__details', $urlParams))
+                ->add(__('View All'), 'departments__list')
+                ->add($values['name'], 'departments__details', $urlParams)
                 ->add(__('Edit Department'));            
 
             if (isset($_GET['return'])) {

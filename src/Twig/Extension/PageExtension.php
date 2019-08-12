@@ -215,7 +215,7 @@ class PageExtension extends AbstractExtension
      */
     public function getThemeName(): string
     {
-        return $this->session->get('gibbonThemeName', 'default');
+        return strtolower($this->session->get('gibbonThemeName', 'default'));
     }
 
     /**

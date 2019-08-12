@@ -61,7 +61,7 @@ class Page extends View
     {
         parent::__construct($templateEngine);
         
-        $this->breadcrumbs = new Breadcrumbs();
+        $this->breadcrumbs = new \App\Manager\Entity\BreadCrumbs();
         $this->stylesheets = new AssetBundle();
         $this->scripts = new AssetBundle();
 

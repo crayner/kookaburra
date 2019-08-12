@@ -26,13 +26,18 @@ class BreadCrumbItem
     private $uri;
 
     /**
+     * @var array
+     */
+    private $params = [];
+
+    /**
      * BreadCrumbItem constructor.
      * @param array $crumb
      */
     public function __construct(array $crumb = [])
     {
         if ([] !== $crumb)
-            $this->setName($crumb['name'])->setUri($crumb['uri']);
+            $this->setName($crumb['name'])->setUri($crumb['uri'])->setParams(isset($crumb['params']) ? $crumb['params'] : []);
     }
 
     /**
@@ -72,6 +77,26 @@ class BreadCrumbItem
     public function setUri(?string $uri): BreadCrumbItem
     {
         $this->uri = $uri;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    /**
+     * Params.
+     *
+     * @param array $params
+     * @return BreadCrumbItem
+     */
+    public function setParams(array $params): BreadCrumbItem
+    {
+        $this->params = $params;
         return $this;
     }
 }

@@ -12,11 +12,14 @@
 
 namespace App\Twig\Extension;
 
-
 use App\Manager\Entity\BreadCrumbs;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * Class BreadCrumbExtension
+ * @package App\Twig\Extension
+ */
 class BreadCrumbExtension extends AbstractExtension
 {
 
