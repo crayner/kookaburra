@@ -39,9 +39,9 @@ class UrlGeneratorHelper
      *
      * @return string
      */
-    public static function getPath($name, $parameters = [], $relative = false)
+    public static function getPath($route, $parameters = [], $relative = false)
     {
-        return self::$generator->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        return self::$generator->generate($route, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
 
     /**

@@ -21,6 +21,7 @@ namespace Gibbon\Tables;
 
 use App\Manager\GibbonManager;
 use Gibbon\Forms\Layout\WebLink;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Action
@@ -235,6 +236,8 @@ class Action extends WebLink
 
         if ($this->external) {
             $this->setAttribute('href', $this->url);
+        } elseif (is_array($this->url)) {
+            $this->setAttribute('href', $_SESSION[$guid]['absoluteURL'].$this->newRouting($queryParams));
         } else if ($this->direct) {
             $this->setAttribute('href', $_SESSION[$guid]['absoluteURL'].$this->url.'?'.http_build_query($queryParams));
         } else if ($this->modal) {
@@ -244,5 +247,33 @@ class Action extends WebLink
         }
 
         return parent::getOutput();
+    }
+
+    /**
+     * newRouting
+     *
+     * The route should appear as the pathInfo for the route.
+     *
+     * Wrap replacement in {} to highlight what is being replaced.
+     * Params need a key to equal the replacement string without the {}.
+     *
+     * @param $queryParams
+     * @return string
+     * @author Craig Rayner
+     */
+    private function newRouting($queryParams): string
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired([
+            'route',
+            'params',
+        ]);
+        $this->url = $resolver->resolve($this->url);
+        $url = $this->url['route'];
+        $params = $this->url['params'];
+        foreach($params as $q=>$w)
+            $url = str_replace('{'.$q.'}', $queryParams[$w], $url);
+
+        return $url;
     }
 }

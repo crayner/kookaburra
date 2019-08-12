@@ -5,9 +5,9 @@
     <h2 class='sidebar'>
         {{ 'My Classes'|trans }}
     </h2>
-    <ul>
+    <ul style="list-style: none; margin-left: 0">
         {% for row in content %}
-            <li><a href='{{ path('legacy', {q: '/modules/Departments/department_course_class.php', gibbonCourseClassID: row.gibbonCourseClassID}) }}'>{{ row.course ~ '.' ~ row.class }}</a></li>
+            <li><a href='{{ path('departments__course_class_details', {class: row.id, course: row.course.id, department: row.course.department.id}) }}'>{{ row.course.nameShort ~ '.' ~ row.nameShort }}</a></li>
         {% endfor %}
     </ul>
 </div>

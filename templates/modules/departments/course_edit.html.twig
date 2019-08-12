@@ -9,7 +9,6 @@
 {% set moduleName = 'Departments' %}
 {% set module = {'baseURL': 'departments', 'crumbs': [
     {uri: 'departments__list', name: 'Departments'},
-    {uri: 'departments__list', name: 'View All'},
     {uri: 'departments__details', params: {department: department.id}, name: department.name},
     {uri: 'departments__course_details', params: {department: department.id, course: course.id}, name: course.nameShort}
 ], title: 'Edit Course'|trans } %}

@@ -128,7 +128,7 @@ class CoverageTodayView
                     }
 
                     $actions->addAction('view', __('View Details'))
-                        ->setURL('/modules/Departments/department_course_class.php');
+                        ->setURL(['route' => '/departments/0/course/0/class/{class}/details/', 'params' => ['class' => 'gibbonCourseClassID']]);
                 });
 
             $page->write($table->render($timetable).'<br/>');

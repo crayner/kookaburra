@@ -73,4 +73,27 @@ class CourseClassRepository extends ServiceEntityRepository
             ->getResult();
         return $result;
     }
+
+    /**
+     * findByPersonSchoolYear
+     * @param SchoolYear $schoolYear
+     * @param Person $person
+     * @return mixed
+     */
+    public function findByPersonSchoolYear(SchoolYear $schoolYear, Person $person)
+    {
+        return $this->createQueryBuilder('cc')
+            ->distinct()
+            ->leftJoin('cc.course', 'c')
+            ->leftjoin('cc.courseClassPeople', 'ccp', 'with', 'ccp.person = :person')
+            ->where('c.schoolYear = :schoolYear')
+            ->setParameter('schoolYear', $schoolYear)
+            ->setParameter('person', $person)
+            ->andWhere('ccp.role NOT LIKE :role')
+            ->setParameter('role', '% - Left%')
+            ->orderBy('c.nameShort', 'ASC')
+            ->addOrderBy('cc.nameShort', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

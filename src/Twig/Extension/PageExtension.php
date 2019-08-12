@@ -268,10 +268,10 @@ class PageExtension extends AbstractExtension
     }
 
     /**
-     * getSideBar
+     * getSidebar
      * @return Sidebar
      */
-    public function getSideBar(): Sidebar
+    public function getSidebar(): Sidebar
     {
         return $this->sidebar;
     }

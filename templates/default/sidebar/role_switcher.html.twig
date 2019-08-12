@@ -1,6 +1,6 @@
 {% trans_default_domain 'gibbon' %}
 
-{% if sidebar.hasAttribute('role_switcher') %}
+{% if getSidebar().hasAttribute('role_switcher') %}
 <div class="column-no-break">
     <h2 style='margin-bottom: 10px' class='sidebar'>{{ 'Role Switcher'|trans }}</h2>
     <p>{{ 'You have multiple roles within the system. Use the list below to switch role:'|trans }}</p>

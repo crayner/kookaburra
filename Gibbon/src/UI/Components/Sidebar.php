@@ -596,7 +596,7 @@ class Sidebar implements OutputableInterface
                     //COLOR ROW BY STATUS!
                     echo "<tr class=$rowNum>";
                     echo "<td style='word-wrap: break-word'>";
-                    echo "<a href='".$this->session->get('absoluteURL').'/index.php?q=/modules/Departments/department_course_class.php&gibbonCourseClassID='.$row['gibbonCourseClassID']."'>".$row['course'].'.'.$row['class'].'</a>';
+                    echo "<a href='".$this->session->get('absoluteURL')."/departments/0/course/0/class/".$row['gibbonCourseClassID']."/details/'>".$row['course'].'.'.$row['class'].'</a>';
                     echo '</td>';
                     if (isActionAccessible($guid, $connection2, '/modules/Planner/planner.php')) {
                         echo "<td style='text-align: center'>";
@@ -612,7 +612,7 @@ class Sidebar implements OutputableInterface
                     if (isActionAccessible($guid, $connection2, '/modules/Attendance/attendance_take_byCourseClass.php') && $row['attendance'] == 'Y') {
                         echo "<a href='index.php?q=/modules/Attendance/attendance_take_byCourseClass.php&gibbonCourseClassID=".$row['gibbonCourseClassID']."'><img title='".__('Take Attendance')."' src='./themes/".$this->session->get('gibbonThemeName', 'Default')."/img/attendance.png'/></a>";
                     } else {
-                        echo "<a href='index.php?q=/modules/Departments/department_course_class.php&gibbonCourseClassID=".$row['gibbonCourseClassID']."#participants'><img title='".__('Participants')."' src='./themes/".$this->session->get('gibbonThemeName', 'Default')."/img/attendance.png'/></a>";
+                        echo "<a href='".$this->session->get('absoluteURL')."/departments/0/course/0/class/".$row['gibbonCourseClassID']."/details/#participants'><img title='".__('Participants')."' src='./themes/".$this->session->get('gibbonThemeName', 'Default')."/img/attendance.png'/></a>";
                     }
                     echo '</td>';
                     if (isActionAccessible($guid, $connection2, '/modules/Planner/planner.php')) {

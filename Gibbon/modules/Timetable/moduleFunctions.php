@@ -1339,8 +1339,8 @@ function renderTTDay($guid, $connection2, $gibbonTTID, $schoolOpen, $startDaySta
                             $output .= '<i>'.substr($effectiveStart, 0, 5).' - '.substr($effectiveEnd, 0, 5).'</i><br/>';
                         }
 
-                        if (isActionAccessible($guid, $connection2, '/modules/Departments/department_course_class.php') and $edit == false) {
-                            $output .= "<a style='text-decoration: none; font-weight: bold; font-size: 120%' href='".$_SESSION[$guid]['absoluteURL'].'/index.php?q=/modules/Departments/department_course_class.php&gibbonCourseClassID='.$rowPeriods['gibbonCourseClassID']."'>".$rowPeriods['course'].'.'.$rowPeriods['class'].'</a><br/>';
+                        if (\App\Util\SecurityHelper::isRouteAccessible('departments__course_class_details') and $edit == false) {
+                            $output .= "<a style='text-decoration: none; font-weight: bold; font-size: 120%' href='/departments/0/course/0/class/".$rowPeriods['gibbonCourseClassID']."/details/'>" . $rowPeriods['course'].'.'.$rowPeriods['class'].'</a><br/>';
                         } elseif (isActionAccessible($guid, $connection2, '/modules/Timetable Admin/courseEnrolment_manage_class_edit.php') and $edit == true) {
                             $output .= "<a style='text-decoration: none; font-weight: bold; font-size: 120%' href='".$_SESSION[$guid]['absoluteURL'].'/index.php?q=/modules/Timetable Admin/courseEnrolment_manage_class_edit.php&gibbonCourseClassID='.$rowPeriods['gibbonCourseClassID'].'&gibbonSchoolYearID='.$_SESSION[$guid]['gibbonSchoolYearID'].'&gibbonCourseID='.$rowPeriods['gibbonCourseID']."'>".$rowPeriods['course'].'.'.$rowPeriods['class'].'</a><br/>';
                         } else {
@@ -2225,8 +2225,8 @@ function renderTTSpaceDay($guid, $connection2, $gibbonTTID, $startDayStamp, $cou
                         $output .= '<i>'.substr($effectiveStart, 0, 5).' - '.substr($effectiveEnd, 0, 5).'</i><br/>';
                     }
 
-                    if (isActionAccessible($guid, $connection2, '/modules/Departments/department_course_class.php')) {
-                        $output .= "<a style='text-decoration: none; font-weight: bold; font-size: 120%' href='".$_SESSION[$guid]['absoluteURL'].'/index.php?q=/modules/Departments/department_course_class.php&gibbonCourseClassID='.$rowPeriods['gibbonCourseClassID']."'>".$rowPeriods['course'].'.'.$rowPeriods['class'].'</a><br/>';
+                    if (\App\Util\SecurityHelper::isRouteAccessible('departments__course_class_details')) {
+                        $output .= "<a style='text-decoration: none; font-weight: bold; font-size: 120%' href='/depatments/0/course/0/class/".$rowPeriods['gibbonCourseClassID']."/details/'>".$rowPeriods['course'].'.'.$rowPeriods['class'].'</a><br/>';
                     } else {
                         $output .= "<span style='font-size: 120%'><b>".$rowPeriods['course'].'.'.$rowPeriods['class'].'</b></span><br/>';
                     }

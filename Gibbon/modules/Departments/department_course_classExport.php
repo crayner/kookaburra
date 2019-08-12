@@ -23,9 +23,9 @@ include '../../gibbon.php';
 include './moduleFunctions.php';
 
 $gibbonCourseClassID = $_GET['gibbonCourseClassID'];
-$URL = $_SESSION[$guid]['absoluteURL'].'/index.php?q=/modules/'.getModuleName($_GET['address'])."/department_course_class.php&gibbonCourseClassID=$gibbonCourseClassID";
+$URL = $_SESSION[$guid]['absoluteURL'].'/0/course/0/class/'.$gibbonCourseClassID.'/details/';
 
-if (isActionAccessible($guid, $connection2, '/modules/Departments/department_course_class.php') == false or getHighestGroupedAction($guid, '/modules/Students/student_view_details.php', $connection2) != 'View Student Profile_full') {
+if (\App\Util\SecurityHelper::isRouteAccessible('departments__course_class_details') == false or getHighestGroupedAction($guid, '/modules/Students/student_view_details.php', $connection2) != 'View Student Profile_full') {
     $URL .= '&return=error0';
     header("Location: {$URL}");
 } else {

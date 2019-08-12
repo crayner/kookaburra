@@ -385,7 +385,7 @@ if (isset($_SESSION[$guid]["username"])) {
                 $row['currentDate'] = Format::date($currentDate);
 
                 // render group link variables
-                $row['groupQuery'] = '/modules/Departments/department_course_class.php';
+                $row['groupQuery'] = '/departments/0/course/0/class/gibbonCourseClassID/details/';
                 $row['groupName'] = $row["course"] . "." . $row["class"];
 
                 // render recentHistory into the row

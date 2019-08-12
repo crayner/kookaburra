@@ -2660,14 +2660,23 @@ class Person implements EntityInterface
 
     /**
      * formatName
-     * @param bool $preferredName
+     * @param bool|array $preferredName
      * @param bool $reverse
      * @param bool $informal
      * @param bool $initial
      * @return string
      */
-    public function formatName(bool $preferredName = true, bool $reverse = false, bool $informal = false, bool $initial = false, bool $title = false)
+    public function formatName($preferredName = true, bool $reverse = false, bool $informal = false, bool $initial = false, bool $title = false)
     {
+        if (is_array($preferredName))
+        {
+            $format = $preferredName;
+            $preferredName = isset($format['preferredName']) ? (bool) $format['preferredName'] : true;
+            $reverse = isset($format['reverse']) ? (bool) $format['reverse'] : false;
+            $informal = isset($format['informal']) ? (bool) $format['informal'] : false;
+            $initial = isset($format['initial']) ? (bool) $format['initial'] : false;
+            $title = isset($format['title']) ? (bool) $format['title'] : false;
+        }
         $name = $preferredName ? $this->getPreferredName() : $this->getFirstName();
         $name = $initial ? substr($name, 0, 1): $name;
         return Format::name($title ? $this->getTitle() : '', $name, $this->getSurname(),$this->getPrimaryRole() ? $this->getPrimaryRole()->getCategory() : 'Staff', $reverse, $informal);

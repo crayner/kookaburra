@@ -12,6 +12,8 @@
 
 namespace App\Controller;
 
+use App\Entity\CourseClass;
+use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
 use Gibbon\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,7 +44,8 @@ class FinderController extends AbstractController
                 return $this->redirectToRoute('home', ['q' => '/modules/Staff/staff_view_details.php', 'gibbonPersonID' => $id]);
                 break;
             case 'Cla':
-                return $this->redirectToRoute('home', ['q' => '/modules/Departments/department_course_class.php', 'gibbonCourseClassID' => $id]);
+                $class = ProviderFactory::getRepository(CourseClass::class)->find($id);
+                return $this->redirectToRoute('departments__course_class_details', ['class' => $class->getId(), 'course' => $class->getCourse()->getId(), 'department' => $class->getCourse()->getDepartment()->getId()]);
                 break;
             default:
                 throw new Exception(sprintf('The finder search failed for the unknown type of "%s".', $type));

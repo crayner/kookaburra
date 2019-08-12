@@ -128,9 +128,10 @@ class PageListener implements EventSubscriberInterface
                 $this->idleTimeout->execute();
             }
         }
-
         if(!$this->token->getToken() || !$this->token->getToken()->getUser() instanceof SecurityUser) {
-            $event->getRequest()->getSession()->set('address', UrlGeneratorHelper::getPath($event->getRequest()->attributes->get('_route'), $event->getRequest()->attributes->get('_route_params')));
+            $route = $event->getRequest()->attributes->get('_route') ?: 'legacy';
+            $routeParams = $event->getRequest()->attributes->get('_route_params') ?: [];
+            $event->getRequest()->getSession()->set('address', UrlGeneratorHelper::getPath($route,$routeParams));
         }
     }
 }

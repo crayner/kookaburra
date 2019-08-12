@@ -612,6 +612,7 @@ class Format
      * @param string $courseName
      * @param string $className
      * @return string
+     * @deprecated Use CourseCLass->courseClassName
      */
     public static function courseClassName($courseName, $className)
     {

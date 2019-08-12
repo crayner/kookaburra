@@ -187,11 +187,19 @@ class CourseClass implements EntityInterface
     }
 
     /**
-     * @return string|null
+     * @return boolean
      */
-    public function getAttendance(): ?string
+    public function isAttendance(): bool
     {
-        return $this->attendance;
+        return $this->getAttendance() === 'Y';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttendance(): string
+    {
+        return $this->attendance = self::checkBoolean($this->attendance);
     }
 
     /**
@@ -304,6 +312,36 @@ class CourseClass implements EntityInterface
     }
 
     /**
+     * @var Collection
+     */
+    private $staff;
+
+    /**
+     * getStudents
+     * @return Collection
+     */
+    public function getStaff(): Collection
+    {
+        if (! $this->staff instanceof Collection || $this->staff->count() === 0)
+        {
+            $this->staff = $this->getCourseClassPeople()->filter(function($entry) {
+                return in_array($entry->getRole(), ['Teacher','Assistant','Technician']);
+            });
+        }
+
+        $iterator = $this->staff->getIterator();
+        $iterator->uasort(
+            function ($a, $b) {
+                return $a->getPerson()->getFullName() < $b->getPerson()->getFullName() ? -1 : 1 ;
+            }
+        );
+
+        $this->staff  = new ArrayCollection(iterator_to_array($iterator, false));
+
+        return $this->staff;
+    }
+
+    /**
      * __toArray
      * @param array $ignore
      * @return array
@@ -311,5 +349,15 @@ class CourseClass implements EntityInterface
     public function __toArray(array $ignore = []): array
     {
         return EntityHelper::__toArray(CourseClass::class, $this, $ignore);
+    }
+
+    /**
+     * courseClassName
+     * @param bool $short
+     * @return string
+     */
+    public function courseClassName(bool $short = false): string
+    {
+        return $short ? $this->getCourse()->getNameShort() . '.' . $this->getNameShort() : $this->getCourse()->getName() . '.' . $this->getName();
     }
 }

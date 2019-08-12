@@ -1,4 +1,4 @@
-{% for extra in sidebar.getExtras(position) %}
+{% for extra in getSidebar().getExtras(position) %}
     <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-6">
         {% if extra.type is same as('image') %}
             <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-6">

@@ -13,6 +13,7 @@
 namespace App\Controller\Modules;
 
 use App\Entity\Course;
+use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
 use App\Entity\Department;
 use App\Entity\DepartmentStaff;
@@ -23,7 +24,6 @@ use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
 use App\Util\SecurityHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -47,7 +47,7 @@ class DepartmentController extends AbstractController
             ]);
         }
 
-        ProviderFactory::create(CourseClassPerson::class)->getMyClasses($this->getUser(), $sidebar);
+        ProviderFactory::create(CourseClass::class)->getMyClasses($this->getUser(), $sidebar);
         return $this->render('modules/departments/list.html.twig',
             [
                 'departments' => ProviderFactory::getRepository(Department::class)->findBy([],['name' => 'ASC']),
@@ -132,7 +132,7 @@ class DepartmentController extends AbstractController
 
         $units = ProviderFactory::getRepository(Unit::class)->findBy(['active' => 'Y', 'course' => $course],['ordering' => 'ASC', 'name' => 'ASC']);
 
-        if ($this->isGranted('ROLE_ACTION', ['/modules/Departments/department_course_class.php']))
+        if ($this->isGranted('ROLE_ROUTE', ['departments__course_class_details']))
             $sidebar->addExtra('courseClasses', ['course' => $course, 'department' => $department]);
 
         return $this->render('modules/departments/course.html.twig',
@@ -190,6 +190,93 @@ class DepartmentController extends AbstractController
                 'department' => $department,
                 'course' => $course,
                 'form' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
+     * courseClass
+     * @Route("/{department}/course/{course}/class/{class}/details", name="course_class_details")
+     */
+    public function courseClass(CourseClass $class, Sidebar $sidebar, Request $request, ?Department $department = null, ?Course $course = null)
+    {
+        if(!$class instanceof CourseClass) {
+            return $this->render('components/error.html.twig', [
+                'error' => 'The specified record does not exist.',
+            ]);
+        }
+
+        if(null === $course || $class->getCourse() !== $course) {
+            $course = $class->getCourse();
+        }
+
+        if (null === $department || $department !== $course->getDepartment()) {
+            $department = $course->getDepartment();
+        }
+
+        $role = ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser());
+
+        $extra = '';
+        if (in_array($role, ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher']) && $course->getSchoolYear()->getId() !== $request->getSession()->get('schoolYear')->getId()) {
+            $extra = ' '.$course->getSchoolYear()->getName();
+        }
+
+        $classActions = [];
+        // Attendance
+        if ($class->isAttendance() && $this->isGranted('ROLE_ACTION', ["/modules/Attendance/attendance_take_byCourseClass.php"])) {
+            $classActions[] = [
+                'name' => 'Attendance',
+                'url'  => 'legacy',
+                'params' => ['q' => '/modules/Attendance/attendance_take_byCourseClass.php', 'gibbonCourseClassID' => $class->getId()],
+                'icon' => 'fas fa-user-friends text-gray-600 fa-fw fa-4x',
+            ];
+        }
+        // Planner
+        if ($this->isGranted('ROLE_ACTION', ['/modules/Planner/planner.php'])) {
+            $classActions[] = [
+                'name' => 'Planner',
+                'url'  => 'legacy',
+                'params' => ['q' => '/modules/Planner/planner.php', 'gibbonCourseClassID' => $class->getId(), 'viewBy' => 'class'],
+                'icon' =>  'far fa-calendar-alt text-gray-600 fa-fw fa-4x',
+            ];
+        }
+        // Markbook
+        if (SecurityHelper::getHighestGroupedAction('/modules/Markbook/markbook_view.php') === 'View Markbook_allClassesAllData') {
+            $classActions[] = [
+                'name' => 'Markbook',
+                'url'  => 'legacy',
+                'params' => ['q' => '/modules/Markbook/markbook_view.php', 'gibbonCourseClassID' => $class->getId()],
+                'icon' => 'fas fa-th fa-fw text-gray-600 fa-4x',
+            ];
+        }
+        // Homework
+        if ($this->isGranted('ROLE_ACTION', ['/modules/Planner/planner_deadlines.php'])) {
+            $classActions[] = [
+                'name' => 'Homework',
+                'url'  => 'legacy',
+                'params' => ['q' => '/modules/Planner/planner_deadlines.php', 'gibbonCourseClassIDFilter' => $class->getId()],
+                'icon' => 'fas fa-clipboard-check text-gray-600 fa-fw fa-4x',
+            ];
+        }
+        // Internal Assessment
+        if ($this->isGranted('ROLE_ACTION', ['/modules/Formal Assessment/internalAssessment_write.php'])) {
+            $classActions[] = [
+                'name' => 'Internal Assessment',
+                'url'  => 'legacy',
+                'params' => ['q' => '/modules/Formal Assessment/internalAssessment_write.php', 'gibbonCourseClassID' => $class->getId()],
+                'icon' => 'fas fa-file-alt text-gray-600 fa-fw fa-4x',
+            ];
+        }
+
+
+
+        return $this->render('modules/departments/course_class.html.twig',
+            [
+                'department' => $department,
+                'course' => $course,
+                'class' => $class,
+                'extra' => $extra,
+                'classAction' => $classActions,
             ]
         );
     }
