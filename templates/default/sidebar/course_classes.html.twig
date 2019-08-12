@@ -1,0 +1,10 @@
+{% trans_default_domain 'gibbon' %}
+
+<div class="column-no-break">
+    <h4>{{ 'Class List'|trans }}</h4>
+    <ul style="list-style: none; margin-left: 0">
+        {% for class in content.course.courseClasses %}
+            <li><a href='{{ path('legacy', {q: '/modules/Departments/department_course_class.php', gibbonDepartmentID: content.department.id, gibbonCourseID: content.course.id, gibbonCourseClassID: class.id }) }}'>{{ content.course.nameShort }}.{{ class.nameShort }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

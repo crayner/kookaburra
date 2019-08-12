@@ -34,6 +34,7 @@ class SidebarExtra
         'myClasses',
         'subjectList',
         'courseList',
+        'courseClasses',
     ];
 
     /**

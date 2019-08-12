@@ -17,4 +17,8 @@
         {% include 'default/sidebar/course_list.html.twig' with {content: extra.content} %}
     {% endif %}
 
+    {% if extra.type is same as('courseClasses') %}
+        {% include 'default/sidebar/course_classes.html.twig' with {content: extra.content} %}
+    {% endif %}
+
 {% endfor %}

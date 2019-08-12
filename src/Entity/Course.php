@@ -91,6 +91,7 @@ class Course implements EntityInterface
     /**
      * @var Collection|null
      * @ORM\OneToMany(targetEntity="App\Entity\CourseClass", mappedBy="course")
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $courseClasses;
 

@@ -17,22 +17,25 @@ use App\Entity\CourseClassPerson;
 use App\Entity\Department;
 use App\Entity\DepartmentStaff;
 use App\Entity\Setting;
+use App\Entity\Unit;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
 use App\Util\SecurityHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class DepartmentController
  * @package App\Controller\Modules
+ * @Route("/departments", name="departments__")
  */
 class DepartmentController extends AbstractController
 {
     /**
      * list
-     * @Route("/departments/list/", name="departments__list")
+     * @Route("/list/", name="list")
      */
     public function list(Sidebar $sidebar)
     {
@@ -55,7 +58,7 @@ class DepartmentController extends AbstractController
      * @param Department $department
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
-     * @Route("/departments/{department}/details/", name="departments__details")
+     * @Route("/{department}/details/", name="details")
      */
     public function details(Department $department, Sidebar $sidebar)
     {
@@ -86,6 +89,57 @@ class DepartmentController extends AbstractController
                 'department' => $department,
                 'role' => $role,
                 'canViewProfile' => SecurityHelper::isActionAccessible('/modules/Staff/staff_view_details.php'),
+            ]
+        );
+    }
+
+    /**
+     * course
+     * @param Department $department
+     * @param Course $course
+     * @param Sidebar $sidebar
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/{department}/course/{course}/details/", name="course_details")
+     */
+    public function course(Department $department, Course $course, Sidebar $sidebar, Request $request)
+    {
+        if (!$this->isGranted('ROLE_ROUTE') && !ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('Departments', 'makeDepartmentsPublic')) {
+            return $this->render('components/error.html.twig', [
+                'error' => 'You do not have access to this action.',
+            ]);
+        }
+
+        if (!$department instanceof Department) {
+            return $this->render('components/error.html.twig', [
+                'error' => 'The specified record does not exist.',
+            ]);
+        }
+
+        if(!$course instanceof Course) {
+            return $this->render('components/error.html.twig', [
+                'error' => 'The specified record does not exist.',
+            ]);
+        }
+
+        $role = ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser());
+
+        $extra = '';
+        if (in_array($role, ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher']) && $course->getSchoolYear()->getId() !== $request->getSession()->get('schoolYear')->getId()) {
+            $extra = ' '.$course->getSchoolYear()->getName();
+        }
+
+        $units = ProviderFactory::getRepository(Unit::class)->findBy(['active' => 'Y', 'course' => $course],['ordering' => 'ASC', 'name' => 'ASC']);
+
+        if ($this->isGranted('ROLE_ACTION', ['/modules/Departments/department_course_class.php']))
+            $sidebar->addExtra('courseClasses', ['course' => $course, 'department' => $department]);
+
+        return $this->render('modules/departments/course.html.twig',
+            [
+                'department' => $department,
+                'course' => $course,
+                'extra' => $extra,
+                'role' => $role,
+                'units' => $units,
             ]
         );
     }

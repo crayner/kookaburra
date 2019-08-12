@@ -160,13 +160,13 @@ class BreadCrumbs
     {
         if (count($this->getCrumbs()) === 0 && $title !== 'Home')
             $this->add('Home', 'home', []);
-//{'baseURL': '/departments', 'crumbs': [{uri: '/list/', name: 'Departments'},{uri: '/list/', name: 'View All'}], title: department.name}
 
         if ($title === 'Home')
         {
             $this->crumbs = ['baseURL' => $this->getBaseURL(), 'crumbs' => ['Home' => UrlGeneratorHelper::getPath('home')], 'title' => $title];
             return $this;
         }
+        dump($title,$route,$params);
 
         $this->addCrumb($title, $route, $params);
 
