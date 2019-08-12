@@ -18,10 +18,12 @@ use App\Entity\Department;
 use App\Entity\DepartmentStaff;
 use App\Entity\Setting;
 use App\Entity\Unit;
+use App\Form\Modules\Departments\CourseOverviewType;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
 use App\Util\SecurityHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -140,6 +142,54 @@ class DepartmentController extends AbstractController
                 'extra' => $extra,
                 'role' => $role,
                 'units' => $units,
+            ]
+        );
+    }
+
+    /**
+     * courseEdit
+     * @param Request $request
+     * @param Department $department
+     * @param Course $course
+     * @Route("/{department}/course/{course}/edit/", name="course_edit")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function courseEdit(Request $request, Department $department, Course $course)
+    {
+        if (!$department instanceof Department) {
+            return $this->render('components/error.html.twig', [
+                'error' => 'The specified record does not exist.',
+            ]);
+        }
+
+        if(!$course instanceof Course) {
+            return $this->render('components/error.html.twig', [
+                'error' => 'The specified record does not exist.',
+            ]);
+        }
+
+        $role = ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser());
+
+        if (!in_array($role, ['Coordinator','Assistant Coordinator','Teacher (Curriculum)'])) {
+            return $this->render('components/error.html.twig', [
+                'error' => 'The selected record does not exist, or you do not have access to it.',
+            ]);
+        }
+
+        $form = $this->createForm(CourseOverviewType::class, $course);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $provider = ProviderFactory::create(Course::class);
+            $provider->setEntity($course);
+            $provider->saveEntity();
+        }
+
+        return $this->render('modules/departments/course_edit.html.twig',
+            [
+                'department' => $department,
+                'course' => $course,
+                'form' => $form->createView(),
             ]
         );
     }

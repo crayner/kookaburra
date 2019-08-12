@@ -10,15 +10,15 @@
     {% if course.description is not same as('') or role in ['Coordinator','Assistant Coordinator','Teacher (Curriculum)'] %}
         <h2>{{ 'Overview'|trans }}
         {% if role in ['Coordinator','Assistant Coordinator','Teacher (Curriculum)'] %}
-            <a href='{{ path('legacy', {q: '/modules/departments/department_course_edit.php', gibbonCourseID: course.id, gibbonDepartmentID: department.id}) }}'title='{{ 'Edit'|trans }}'><span class="text-gray-600 far fa-edit" style="float:right;"></span></a>
+            <a href='{{ path('departments__course_edit', {course: course.id, department: department.id}) }}' title='{{ 'Edit'|trans }}'><span class="text-gray-600 far fa-edit" style="float:right;"></span></a>
         {% endif %}
         </h2>
-        <p>{{ course.description }}</p>
+        {{ course.description|raw }}
     {% endif %}
 
     <h2>{{ 'Units'|trans }}</h2>
     {% for unit in units %}
         <h4>{{ unit.name }}</h4>
-        <p>{{ unit.description }}{{ unit.attachment is not same as('') ? '<br /><br /><a href="' ~ asset(unit.attachment) ~ '">' ~ 'Download Unit Outline'|trans ~ '</a>' : '' }}</p>
+        {{ unit.description|raw }}{{ unit.attachment is not same as('') ? '<br /><br /><a href="' ~ asset(unit.attachment) ~ '">' ~ 'Download Unit Outline'|trans ~ '</a>' : '' }}
     {% endfor %}
 {% endblock content %}

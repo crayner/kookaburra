@@ -122,6 +122,7 @@ Room: Room
 Sort By: Sort By
 Roll Order: Roll Order
 Surname: Surname
+Edit Course: Edit Course
 Preferred Name: Preferred Name
 Return to: Return to
 Formal Assessment: Formal Assessment
@@ -201,3 +202,5 @@ Coordinator: Coordinator
 Login with Google: Login with Google
 Sign in with Google: Sign in with Google
 Register: Register
+'The selected record does not exist, or you do not have access to it.': 'The selected record does not exist, or you do not have access to it.'
+Overview: Overview

@@ -94,6 +94,31 @@ class Sidebar implements ContentInterface
      */
     public function isValid(): bool
     {
-        return $this->getValid() && (count($this->getExtras()) > 0 || count($this->getAttributes()) > 0);
+        return $this->getValid() && (count($this->getExtras()) > 0 || count($this->getAttributes()) > 0) || $this->getModuleMenu()->isValid();
+    }
+
+    /**
+     * @var null|ModuleMenu
+     */
+    private $moduleMenu;
+
+    /**
+     * @return ModuleMenu|null
+     */
+    public function getModuleMenu(): ?ModuleMenu
+    {
+        return $this->moduleMenu;
+    }
+
+    /**
+     * ModuleMenu.
+     *
+     * @param ModuleMenu|null $moduleMenu
+     * @return Sidebar
+     */
+    public function setModuleMenu(?ModuleMenu $moduleMenu): Sidebar
+    {
+        $this->moduleMenu = $moduleMenu;
+        return $this;
     }
 }

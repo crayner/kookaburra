@@ -66,7 +66,7 @@ class Course implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 

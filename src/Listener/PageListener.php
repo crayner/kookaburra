@@ -121,6 +121,7 @@ class PageListener implements EventSubscriberInterface
             $this->mainMenu->execute();
             $this->minorLinks->execute();
             $this->moduleMenu->execute();
+            $this->sideBar->setModuleMenu($this->moduleMenu);
             $this->fastFinder->setToken($this->token)->execute();
             if ($this->token->getToken() && $this->token->getToken()->getUser() instanceof SecurityUser) {
                 $this->fastFinder->getScriptManager()->addEncoreEntryScriptTag('notificationTray');
