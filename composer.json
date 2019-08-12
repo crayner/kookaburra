@@ -10,6 +10,7 @@
         "aura/sqlquery": "3.*-dev",
         "crayner/doctrine-bundle": "^1.0",
         "doctrine/doctrine-migrations-bundle": "^2.0",
+        "friendsofsymfony/ckeditor-bundle": "^2.1",
         "google/apiclient": "^2.2",
         "matthewbdaly/sms-client": "^1.0",
         "phpoffice/phpspreadsheet": "^1.8",
