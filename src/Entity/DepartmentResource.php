@@ -32,7 +32,7 @@ class DepartmentResource
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="Department")
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="resources")
      * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="gibbonDepartmentID", nullable=false)
      */
     private $department;
@@ -156,5 +156,38 @@ class DepartmentResource
     public static function getTypeList(): array
     {
         return self::$typeList;
+    }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'type' => $this->getType(),
+            'department' => $this->getDepartment() ? $this->getDepartment()->getId(): null,
+            'url' => $this->getUrl(),
+        ];
+    }
+
+    /**
+     * getUrlLink
+     * @return string|null
+     */
+    public function getUrlLink(): ?string
+    {
+        return $this->getUrl();
+    }
+
+    /**
+     * getUrlLink
+     * @return string|null
+     */
+    public function getUrlFile(): ?string
+    {
+        return $this->getUrl();
     }
 }

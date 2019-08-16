@@ -7,13 +7,13 @@
     {%- if help is not empty -%}
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
     {%- endif -%}
-    <tr{% if row_class is not same as(false) %} class="{{ row_class|default('flex flex-col sm:flex-row justify-between content-center p-0') }}"{% endif %}>
+    <tr{% if row_class is not same as(false) %} class="{{ row_class|default('flex flex-col sm:flex-row justify-between content-center p-0') }}"{% endif %}{% if row_id is not same as(false) %} id="{{ row_id }}"{% endif %}{{ errors|length > 0 ? ' errors' : '' }}>
         <td class="{{ label_class|default('flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0') }}"{% if label_colspan > '1' %} colspan="{{ label_colspan }}"{% endif %}>
             {{- form_label(form) -}}
             {{- form_help(form) -}}
         </td>
         <td class="{{ widget_class|default('w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0') }}"{% if widget_colspan > '1' %} colspan="{{ widget_colspan }}"{% endif %}>
-            <div class="{{ div_class|default('flex-1 relative') }}{% if 'checkbox' in block_prefixes %} right{% endif %}{{ errors|length > 0 ? ' errors' : '' }}">
+            <div class="{{ div_class|default('flex-1 relative') }}{% if 'checkbox' in block_prefixes %} right{% endif %}">
                 {{- form_widget(form, widget_attr) -}}
                 {{- form_errors(form) -}}
             </div>
@@ -22,7 +22,7 @@
 {%- endblock form_row -%}
 
 {%- block header_row -%}
-    <tr{% if row_class is not same as(false) %} class="{{ row_class|default("break") }}{% endif %}">
+    <tr{% if row_class is not same as(false) %} class="{{ row_class|default("break") }}{% endif %}"{% if row_id is not same as(false) %} id="{{ row_id }}"{% endif %}>
         <td{% if label_class is not same as(false) %} class="{{ label_class|default("px-2 border-b-0 sm:border-b border-t-0") }}"{% endif %}{% if label_colspan > 1 %} colspan="{{ label_colspan }}"{% endif %}>
             <h3>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</h3>
         </td>
@@ -50,7 +50,7 @@
 {%- endblock choice_widget_collapsed -%}
 
 {%- block button_row -%}
-    <tr{% if row_class is not same as(false) %} class="{{ row_class|default('flex flex-col sm:flex-row justify-between content-center p-0') }}"{% endif %}>
+    <tr{% if row_class is not same as(false) %} class="{{ row_class|default('flex flex-col sm:flex-row justify-between content-center p-0') }}"{% endif %}{% if row_id is not same as(false) %} id="{{ row_id }}"{% endif %}>
         <td class="{{ label_class|default('flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0') }}"{% if label_colspan > '1' %} colspan="{{ label_colspan }}"{% endif %}>{% if name is same as ('submit') %}<span class="emphasis small">* {{ 'denotes a required field'|trans }}</span>{% endif %}</td>
         <td class="{{ widget_class|default('w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0') }}"{% if widget_colspan > '1' %} colspan="{{ widget_colspan }}"{% endif %}>
             {{- form_widget(form) -}}

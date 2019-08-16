@@ -23,6 +23,7 @@ Encore
     .addEntry('notificationTray', './assets/js/notificationTray.js')
     .addEntry('app', './assets/js/app.js')
     .addEntry('default', './assets/themes/default/default.js')
+    .addEntry('collections','./assets/js/collection.js')
     .addStyleEntry('css/theme', './assets/css/theme.scss')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .splitEntryChunks()

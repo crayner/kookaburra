@@ -64,7 +64,7 @@ class Department
 
     /**
      * @var string|null
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $blurb;
 
@@ -79,6 +79,12 @@ class Department
      * @ORM\OneToMany(targetEntity="DepartmentStaff", mappedBy="department")
      */
     private $staff;
+
+    /**
+     * @var Collection|null
+     * @ORM\OneToMany(targetEntity="DepartmentResource", mappedBy="department")
+     */
+    private $resources;
 
     /**
      * @return int|null
@@ -238,6 +244,32 @@ class Department
     public function setStaff(?Collection $staff): Department
     {
         $this->staff = $staff;
+        return $this;
+    }
+
+    /**
+     * getResources
+     * @return Collection
+     */
+    public function getResources(): Collection
+    {
+        if (null === $this->resources)
+            $this->resources = new ArrayCollection();
+        if ($this->resources instanceof PersistentCollection)
+            $this->resources->initialize();
+
+        return $this->resources;
+    }
+
+    /**
+     * Resources.
+     *
+     * @param Collection|null $resources
+     * @return Department
+     */
+    public function setResources(?Collection $resources): Department
+    {
+        $this->resources = $resources;
         return $this;
     }
 }

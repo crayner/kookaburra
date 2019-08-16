@@ -10,7 +10,7 @@
     {% if department.blurb is not same as ('') or role in ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Director','Manager'] %}
         <h2>{{ 'Overview'|trans }}
         {% if role in ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Director','Manager'] %}
-            <a href='{{ path('legacy', {q: '/modules/departments/department_edit.php', gibbonDepartmentID: department.id}) }}'><img style='float: right; margin-left: 5px' title='{{ 'Edit'|trans }}' src='{{ asset('/themes/' ~ getThemeName() ~ '/img/config.png') }}' /></a>
+            <a href='{{ path('departments__edit', { department: department.id}) }}' title="{{ 'Edit Department'|trans }}" class="float-right"><span class="text-gray-600 fas fa-pencil-alt fa-fw"></span></a>
         {% endif %}
         </h2>
         <p>{{ department.blurb }}</p>

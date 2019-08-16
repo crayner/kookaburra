@@ -43,6 +43,7 @@ class TableTypeExtension extends AbstractTypeExtension
         $view->vars['label_class'] = $options['label_class'];
         $view->vars['widget_class'] = $options['widget_class'];
         $view->vars['row_class'] = $options['row_class'];
+        $view->vars['row_id'] = $options['row_id'];
         $view->vars['div_class'] = $options['div_class'];
         $view->vars['sub_label'] = $options['sub_label'];
     }
@@ -61,6 +62,7 @@ class TableTypeExtension extends AbstractTypeExtension
                 'label_class' => null,
                 'widget_class' => null,
                 'row_class' => null,
+                'row_id' => false,
                 'help_attr' => [
                     'class' =>'text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0',
                 ],

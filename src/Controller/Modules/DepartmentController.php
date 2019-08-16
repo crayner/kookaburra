@@ -20,6 +20,8 @@ use App\Entity\DepartmentStaff;
 use App\Entity\Setting;
 use App\Entity\Unit;
 use App\Form\Modules\Departments\CourseOverviewType;
+use App\Form\Modules\Departments\EditType;
+use App\Form\Modules\Departments\ResourceTypeManager;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
 use App\Util\SecurityHelper;
@@ -277,6 +279,35 @@ class DepartmentController extends AbstractController
                 'class' => $class,
                 'extra' => $extra,
                 'classAction' => $classActions,
+            ]
+        );
+    }
+
+    /**
+     * edit
+     * @param Department $department
+     * @Route("/{department}/edit/", name="edit")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function edit(Request $request, ResourceTypeManager $resourceTypeManager, ?Department $department = null)
+    {
+        $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager]);
+
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            dd($department);
+            ProviderFactory::create(Department::class)
+                ->setEntity($department)
+                ->saveEntity();
+        }
+
+        return $this->render('modules/departments/edit.html.twig',
+            [
+                'department' => $department,
+                'form' => $form->createView(),
             ]
         );
     }

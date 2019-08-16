@@ -291,6 +291,13 @@ table.smallIntBorder {
     margin: 5px 0px;
     position: relative;
 }
+div.smallIntBorder {
+    background-color: #fafafa;
+    margin: 5px 0px;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+
 table.smallIntBorder td {
     border-left: none !important ;
     padding: 5px !important ;
