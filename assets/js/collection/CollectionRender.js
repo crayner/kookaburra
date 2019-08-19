@@ -8,9 +8,10 @@ export default function CollectionRender(props) {
     const {
         template,
         form,
+        formData,
     } = props
 
-    if (!form.block_prefixes.includes('react_collection'))
+    if (! form.block_prefixes.includes('react_collection'))
     {
         return (
             <div className={'error'}>The form handed to the Collection Render class is not a React Collection.</div>
@@ -21,10 +22,8 @@ export default function CollectionRender(props) {
             <div className={'error'}><p>The form handed to the Collection Render does not contain any content.</p></div>
         )
     }
-
-    const elements = form.value.map((value,key) => {
-
-        return (<CollectionElementRender key={key} template={template} values={value} children={form.prototype.children} name={form.id + '_' + key} />)
+    const elements = formData.map((item,key) => {
+        return (<CollectionElementRender {...props} key={key} elementKey={key} template={template} formData={item} name={form.id + '_' + key} />)
     })
 
 
@@ -34,4 +33,6 @@ export default function CollectionRender(props) {
 CollectionRender.propTypes = {
     template: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
+    formData: PropTypes.array.isRequired,
+    value: PropTypes.array
 }

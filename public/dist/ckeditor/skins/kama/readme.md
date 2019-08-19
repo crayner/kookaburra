@@ -15,8 +15,8 @@ CSS parts:
 - **mainui.css**: the file contains styles of entire editor outline structures,
 - **toolbar.css**: the file contains styles of the editor toolbar space (top),
 - **richcombo.css**: the file contains styles of the rich combo ui elements on toolbar,
-- **panel.css**: the file contains styles of the rich combo drop-down, it's not loaded
-until the first panel open up,
+- **panels.css**: the file contains styles of the rich combo drop-down, it's not loaded
+until the first panels open up,
 - **elementspath.css**: the file contains styles of the editor elements path bar (bottom),
 - **menu.css**: the file contains styles of all editor menus including context menu and button drop-down,
 it's not loaded until the first menu open up,

@@ -81,7 +81,11 @@ class CollectionTemplate implements CollectionTemplateInterface
     {
         $x = new ArrayCollection();
         $x->set('input-text', $this->inputText());
+        $x->set('input-url', $this->inputUrl());
+        $x->set('input-file', $this->inputFile());
         $x->set('defaults', $this->formDefaults());
+        $x->set('input-hidden', $this->inputHidden());
+        $x->set('choice', $this->choice());
         return $x;
     }
 
@@ -138,9 +142,61 @@ class CollectionTemplate implements CollectionTemplateInterface
             'input' => [
                 'class' => 'w-full',
             ],
+            'select' => [
+                'class' => 'w-full',
+            ],
             'wrapper' => [
                 'class' => 'flex-1 relative',
             ],
         ];
     }
+
+    /**
+     * inputUrl
+     * @return array
+     */
+    private function inputUrl()
+    {
+        $template = $this->inputText();
+        $template['type'] = 'url';
+        return $template;
+    }
+
+    /**
+     * inputUrl
+     * @return array
+     */
+    private function inputFile()
+    {
+        $template = $this->inputText();
+        $template['type'] = 'file';
+        $template['existingFile'] = $this->translate('Current', [], 'kookaburra');
+        return $template;
+    }
+
+    /**
+     * inputText
+     * @return array
+     */
+    private function inputHidden(): array
+    {
+        return [
+            'element' => 'input',
+            'type' => 'hidden',
+            'style' => 'widget',
+            'wrapper' => false,
+        ];
+    }
+
+    /**
+     * inputText
+     * @return array
+     */
+    private function choice(): array
+    {
+        $template = $this->inputText();
+        $template['element'] = 'select';
+        unset($template['type']);
+        return $template;
+;    }
 }

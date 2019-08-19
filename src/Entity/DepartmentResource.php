@@ -147,6 +147,7 @@ class DepartmentResource
     public function setUrl(?string $url): DepartmentResource
     {
         $this->url = $url;
+        $this->setUrlFile($url)->setUrlLink($url);
         return $this;
     }
 
@@ -174,6 +175,11 @@ class DepartmentResource
     }
 
     /**
+     * @var string|null
+     */
+    private $urlLink;
+
+    /**
      * getUrlLink
      * @return string|null
      */
@@ -183,11 +189,40 @@ class DepartmentResource
     }
 
     /**
+     * UrlLink.
+     *
+     * @param string|null $urlLink
+     * @return DepartmentResource
+     */
+    public function setUrlLink(?string $urlLink): DepartmentResource
+    {
+        $this->urlLink = $urlLink;
+        return $this;
+    }
+
+    /**
+     * @var string|null
+     */
+    private $urlFile;
+
+    /**
      * getUrlLink
      * @return string|null
      */
     public function getUrlFile(): ?string
     {
         return $this->getUrl();
+    }
+
+    /**
+     * UrlFile.
+     *
+     * @param string|null $urlFile
+     * @return DepartmentResource
+     */
+    public function setUrlFile(?string $urlFile): DepartmentResource
+    {
+        $this->urlFile = $urlFile;
+        return $this;
     }
 }

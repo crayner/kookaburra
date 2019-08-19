@@ -16,10 +16,14 @@ namespace App\Security;
 use App\Entity\Person;
 use App\Entity\Role;
 use App\Entity\Setting;
+use App\Exception\MissingClassException;
 use App\Provider\ProviderFactory;
 use App\Util\EntityHelper;
+use App\Util\SecurityHelper;
 use App\Util\UserHelper;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -556,5 +560,55 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
             $this->person = $this->__construct(ProviderFactory::getRepository(Person::class)->find($this->getId()));
         }
         return $this->person;
+    }
+
+    /**
+     * getEncoder
+     * @return PasswordEncoderInterface
+     * @throws MissingClassException
+     */
+    private function getEncoder(): PasswordEncoderInterface
+    {
+        switch ($this->getEncoderName()) {
+            case 'md5':
+                return new MD5PasswordEncoder();
+                break;
+            case 'sha256':
+                return new SHA256PasswordEncoder();
+                break;
+            default:
+                throw new MissingClassException(sprintf('No encoder matches %s', $this->getEncoderName()));
+        }
+    }
+
+    /**
+     * isPasswordValid
+     * @param $raw
+     * @return bool
+     */
+    public function isPasswordValid($raw): bool
+    {
+        return $this->getEncoder()->isPasswordValid($this->getPassword(), $raw, $this->getSalt());
+    }
+
+    /**
+     * changePassword
+     * @param string $raw
+     * @throws MissingClassException
+     */
+    public function changePassword(string $raw)
+    {
+        $salt = $this->createSalt();
+        $password = $this->getEncoder()->encodePassword($raw, $salt);
+        $person = $this->getPerson();
+        $em = ProviderFactory::create(Person::class)->getEntityManager();
+        $em->refresh($person);
+        $person->setPasswordStrongSalt($salt);
+        $person->setPasswordStrong($password);
+        $person->setMD5Password('');
+        $em->persist($person);
+        $em->flush();
+        $this->setSalt($salt);
+        $this->setPassword($password);
     }
 }

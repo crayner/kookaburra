@@ -16,5 +16,8 @@ use Symfony\Component\Validator\Constraint;
 
 class Password extends Constraint
 {
-
+    /**
+     * @var bool
+     */
+    public $assumeCurrentUser = true;
 }

@@ -348,6 +348,7 @@ textarea {
 
 input[type="text"],
 input[type="email"],
+input[type="url"],
 input[type="password"],
 input[type="file"] {
     border-width: 1px;
@@ -359,6 +360,7 @@ input[type="file"] {
 
 input[type="text"],
 input[type="email"],
+input[type="url"],
 input[type="password"] {
     padding-left: 4px;
 }
@@ -1281,8 +1283,11 @@ table.smallIntBorder td.noPadding {
     border-radius: .25rem;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
-div.errors input, div.errors select, div.errors checkbox {
+.errors  {
     border: 1px solid red;
+}
+.errors ul {
+    margin: 0;
 }
 .errors li {
     color: red;
@@ -1292,4 +1297,26 @@ div.errors input, div.errors select, div.errors checkbox {
 .fa-grey {
     color: grey;
     background-color: transparent;
+}
+
+/* COLLECTION DIV */
+.collectionList {
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+}
+.collectionRow {
+    border: none;
+}
+.collectionRow div:first-child {
+    text-align: left;
+}
+.collectionElement {
+    padding: 0 0 15px 15px;
+    background-color: #efefef;
+}
+.collectionList .collectionElement:nth-of-type(odd) {
+    background-color: #CCCCCC;
+}
+.fileName {
+    font-size: 0.75rem;
 }

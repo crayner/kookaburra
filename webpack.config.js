@@ -24,6 +24,7 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('default', './assets/themes/default/default.js')
     .addEntry('collections','./assets/js/collection.js')
+    .addEntry('container','./assets/js/container.js')
     .addStyleEntry('css/theme', './assets/css/theme.scss')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .splitEntryChunks()

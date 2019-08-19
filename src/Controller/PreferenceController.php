@@ -12,20 +12,24 @@
 
 namespace App\Controller;
 
+use App\Container\Container;
+use App\Container\ContainerManager;
+use App\Container\Panel;
 use App\Entity\Person;
 use App\Entity\SchoolYear;
+use App\Form\Entity\ResetPassword;
+use App\Form\Security\ResetPasswordType;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
 use App\Manager\PreferencesManager;
 use App\Provider\ProviderFactory;
 use App\Security\PasswordManager;
+use App\Util\SecurityHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class PreferenceController
@@ -38,21 +42,34 @@ class PreferenceController extends AbstractController
      * @Route("/preferences/", name="preferences")
      * @IsGranted("ROLE_USER")
      */
-    public function preferences(Request $request, GibbonManager $gibbonManager, LegacyManager $manager)
+    public function preferences(Request $request, ContainerManager $manager)
     {
-        $error = $gibbonManager->execute();
-        if ($error instanceof Response) {
-            return $error;
+        $rp = new ResetPassword();
+        $passwordForm = $this->createForm(ResetPasswordType::class, $rp);
+
+        $passwordForm->handleRequest($request);
+        if ($passwordForm->isSubmitted() && $passwordForm->isValid())
+        {
+            $user = $this->getUser();
+            $user->changePassword($rp->getRaw());
+            $this->addFlash('success', 'Your account has been successfully updated. You can now continue to use the system as per normal.');
         }
 
-        $gibbonManager->injectAddress('preferences.php');
-        $result = $manager->execute($request, $gibbonManager->getPage());
+        $manager->setTranslationDomain('gibbon');
+        $container = new Container();
+        $passwordPanel = new Panel();
+        $passwordPanel->setName('Reset Password')->setContent($this->renderView('modules/core/preferences_reset_password.html.twig',
+            [
+                'form' => $passwordForm->createView(),
+                'passwordPolicy' => SecurityHelper::getPasswordPolicy(),
+            ]
+        ));
+        $settingsPanel = new Panel();
+        $settingsPanel->setName('Settings')->setContent('stuff');
+        $container->addPanel($passwordPanel)->addPanel($settingsPanel)->setTarget('preferences');
+        $manager->addContainer($container)->buildContainers();
 
-        if ($result instanceof Response){
-            return $result;
-        }
-
-        return $this->render('legacy/index.html.twig');
+        return $this->render('modules/core/preferences.html.twig');
     }
 
     /**

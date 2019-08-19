@@ -40,11 +40,6 @@ class ResourceType extends AbstractType
             ->add('name', TextType::class,
                 [
                     'label' => 'Resource Name',
-                    'attr' => [
-                        'class' => 'w-full',
-                        'data-value' => 'name',
-                        'onChange' => 'onChange(e)',
-                    ],
                 ]
             )
             ->add('type', ChoiceType::class,
@@ -56,12 +51,11 @@ class ResourceType extends AbstractType
                     ],
                     'empty_data' => 'Link',
                     'attr' => [
-                        'class' => 'w-full',
-                        'onChange' => 'onChange',
+                        'onChange' => true,
                     ],
                     'choice_attr' => [
-                        'Link' => ['data-choice' => 'type.Link'],
-                        'File' => ['data-choice' => 'type.File'],
+                        'Link' => ['dataChoice' => 'type.Link'],
+                        'File' => ['dataChoice' => 'type.File'],
                     ],
                 ]
             )
@@ -69,32 +63,24 @@ class ResourceType extends AbstractType
                 [
                     'label' => 'Resource Location',
                     'attr' => [
-                        'class' => 'w-full',
-                        'data-value' => 'url',
-                        'onChange' => 'onChange(e)',
+                        'dataValue' => 'url',
                     ],
-                    'row_id' => 'link__name__'
+                    'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 link__name__ hidden',
                 ]
             )
-/*            ->add('urlFile', FilePathType::class,
+            ->add('urlFile', FilePathType::class,
                 [
                     'label' => 'Resource Location',
                     'attr' => [
-                        'class' => 'w-full',
-                        'data-value' => 'url',
-                        'onChange' => 'onChange(e)',
+                        'dataValue' => 'url',
                     ],
-                    'row_id' => 'file__name__',
                     'fileName' => 'resource_',
+                    'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 file__name__ hidden',
                 ]
             )
-*/            ->add('department', HiddenEntityType::class,
+            ->add('department', HiddenEntityType::class,
                 [
                     'class' => Department::class,
-                    'attr' => [
-                        'data-value' => 'department',
-                        'onChange' => 'onChange(e)',
-                    ],
                 ]
             )
         ;

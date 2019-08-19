@@ -33,3 +33,4 @@ Contain at least one non-alphanumeric character (e.g. a punctuation mark or spac
 Unknown: Unknown
 organisation_website: '%name% Website'
 'The file "{path}" does not exist in the "{dir}" directory!': 'The file "{path}" does not exist in the "{dir}" directory!'
+Current: Current

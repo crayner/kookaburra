@@ -1,0 +1,11 @@
+{% trans_default_domain "gibbon" %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% set moduleName = 'Departments' %}
+{% set module = {'baseURL': 'core', 'crumbs': [], title: 'Preferences'|trans } %}
+{% set breadcrumbs = 'new' %}
+
+{% block content %}
+    <div id="preferences"></div>
+{% endblock content %}

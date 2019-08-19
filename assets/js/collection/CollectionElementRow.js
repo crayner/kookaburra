@@ -13,6 +13,7 @@ export default function CollectionElementRow(props) {
         form,
         defaults,
         elementKey,
+        formData,
     } = props
 
     var columns = ''
@@ -22,11 +23,11 @@ export default function CollectionElementRow(props) {
         columns = template.columns.map((column,key) => {
             var content = column.content.map((style, key) => {
                 if (style === 'label') {
-                    return <FormLabel template={template} defaults={defaults} form={form} key={key} />
+                    return <FormLabel template={template} defaults={defaults} formData={formData} key={key} elementKey={elementKey} />
                 } else if (style === 'errors') {
                     return <FormErrors template={template} form={form} defaults={defaults} key={key} />
                 } else if (style === 'widget') {
-                    return <FormWidget template={template} form={form} defaults={defaults} elementKey={elementKey} key={key} value={value}/>
+                    return <FormWidget {...props} template={template} form={form} defaults={defaults} elementKey={elementKey} key={key} value={value} formData={formData} />
                 }
                 return null
             })
@@ -35,8 +36,21 @@ export default function CollectionElementRow(props) {
         })
     }
 
+    if (template.style === 'widget') {
+        columns = (<FormWidget {...props} template={template} form={form} defaults={defaults} elementKey={elementKey} value={value} formData={formData} />)
+    }
+
+    if (form.errors.length > 0){
+        template.row.class = template.row.class + ' errors'
+    }
+
+    var rowClass = template.row.class;
+
+    if (formData.row_class !== null) {
+        rowClass = formData.row_class
+    }
     if (template.style === 'row')
-        return (<div className={template.row.class}>
+        return (<div className={'collectionRow ' + rowClass.replace('__name__', elementKey)} id={'row_' + form.id.replace('__name__', elementKey)}>
             {columns}
         </div>)
 
@@ -47,4 +61,5 @@ CollectionElementRow.propTypes = {
     template: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
     defaults: PropTypes.object.isRequired,
+    formData: PropTypes.object.isRequired,
 }

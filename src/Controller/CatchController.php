@@ -12,11 +12,16 @@
 
 namespace App\Controller;
 
+use App\Container\Container;
+use App\Container\ContainerManager;
+use App\Container\Panel;
 use App\Manager\GibbonManager;
+use App\Manager\ScriptManager;
 use Gibbon\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class CatchController
@@ -24,6 +29,29 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CatchController extends AbstractController
 {
+    /**
+     * container
+     * @Route("/container/")
+     */
+    public function container(ContainerManager $manager)
+    {
+        $container = new Container();
+        $manager->setTranslationDomain('gibbon');
+
+        $panel = new Panel();
+        $panel->setName('One')->setContent($this->renderView('container_test.html.twig'));
+        $container
+            ->setTarget('containerTest')
+            ->addPanel($panel)
+        ;
+        $panel = new Panel();
+        $panel->setName('Two')->setContent($this->renderView('container_panel2.html.twig'));
+
+        $manager->addContainer($container->addPanel($panel))->buildContainers();
+
+        return $this->render('container.html.twig');
+    }
+
     /**
      * index
      * @param Request $request

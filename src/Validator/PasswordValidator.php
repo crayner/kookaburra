@@ -14,11 +14,22 @@ namespace App\Validator;
 
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
+use App\Security\SecurityUser;
+use App\Util\UserHelper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * Class PasswordValidator
+ * @package App\Validator
+ */
 class PasswordValidator extends ConstraintValidator
 {
+    /**
+     * validate
+     * @param mixed $value
+     * @param Constraint $constraint
+     */
     public function validate($value, Constraint $constraint)
     {
         $settingProvider = ProviderFactory::create(Setting::class);
@@ -48,5 +59,16 @@ class PasswordValidator extends ConstraintValidator
                 ->setParameter('%{minLength}', $minLength)
                 ->setTranslationDomain('kookaburra')
                 ->addViolation();
+
+        if ($constraint->assumeCurrentUser) {
+            $user = UserHelper::getCurrentSecurityUser();
+            if ($user instanceof SecurityUser) {
+                if ($user->isPasswordValid($value)) {
+                    $this->context->buildViolation('Your request failed because your new password is the same as your current password.')
+                        ->setTranslationDomain('gibbon')
+                        ->addViolation();
+                }
+            }
+        }
     }
 }

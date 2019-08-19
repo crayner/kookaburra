@@ -13,17 +13,11 @@
 namespace App\Form\Modules\Departments;
 
 use App\Form\CollectionTemplate;
-use App\Form\Entity\Template;
 
+/**
+ * Class ResourceTypeManager
+ * @package App\Form\Modules\Departments
+ */
 class ResourceTypeManager extends CollectionTemplate
 {
-    /**
-     * HeaderRow
-     * @param Template $template
-     * @return ResourceTypeManager
-     */
-    public function HeaderRow(Template $template): ResourceTypeManager
-    {
-
-    }
 }

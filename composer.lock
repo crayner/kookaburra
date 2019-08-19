@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9f12437c07f9e5e680efbaa64668d62",
+    "content-hash": "7fd2e8c1218fb0ba31deefb99ca33032",
     "packages": [
         {
             "name": "aura/sqlquery",
@@ -113,6 +113,57 @@
                 "doctrine"
             ],
             "time": "2019-03-29T23:37:38+00:00"
+        },
+        {
+            "name": "crayner/react-form-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crayner/react-form-bundle.git",
+                "reference": "56ed4bf2c2fe6c5755ca1d227f3a352878196626"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/crayner/react-form-bundle/zipball/56ed4bf2c2fe6c5755ca1d227f3a352878196626",
+                "reference": "56ed4bf2c2fe6c5755ca1d227f3a352878196626",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "symfony/framework-bundle": "^4.3"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "symfony": {
+                    "allow-contrib": "true"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Crayner\\ReactForm\\": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Rayner",
+                    "email": "craig@craigrayner.com"
+                }
+            ],
+            "description": "Symfony 4+ React16+ Content Renderer and Manager for Symfony Forms",
+            "homepage": "http://www.craigrayner.com",
+            "keywords": [
+                "form",
+                "react",
+                "symfony"
+            ],
+            "time": "2019-08-18T23:45:22+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -7203,6 +7254,62 @@
             "time": "2019-06-20T12:18:19+00:00"
         },
         {
+            "name": "symfony/polyfill-apcu",
+            "version": "v1.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-apcu.git",
+                "reference": "71ce80635d5dcd67772b4dda00b86068595f64d5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/71ce80635d5dcd67772b4dda00b86068595f64d5",
+                "reference": "71ce80635d5dcd67772b4dda00b86068595f64d5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.12-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Apcu\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nicolas Grekas",
+                    "email": "p@tchwork.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony polyfill backporting apcu_* functions to lower PHP versions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "apcu",
+                "compatibility",
+                "polyfill",
+                "portable",
+                "shim"
+            ],
+            "time": "2019-08-06T08:03:45+00:00"
+        },
+        {
             "name": "symfony/profiler-pack",
             "version": "v1.0.4",
             "source": {
@@ -7376,7 +7483,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "aura/sqlquery": 20
+        "aura/sqlquery": 20,
+        "crayner/react-form-bundle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
