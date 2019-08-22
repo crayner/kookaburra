@@ -1,70 +1,90 @@
 {
   "entrypoints": {
+    "default": {
+      "js": [
+        "/build/runtime.b82e9a70.js",
+        "/build/default.fe9aadad.js"
+      ],
+      "css": [
+        "/build/default.d2e02879.css"
+      ]
+    },
     "fastFinder": {
       "js": [
-        "/build/runtime.e59078a6.js",
-        "/build/0.041e2071.js",
-        "/build/2.2f94cccc.js",
-        "/build/fastFinder.3c8a1332.js"
+        "/build/runtime.b82e9a70.js",
+        "/build/0.2396e3ae.js",
+        "/build/2.320878cd.js",
+        "/build/fastFinder.1e7a92d1.js"
       ],
       "css": [
         "/build/fastFinder.09f43b10.css"
       ]
     },
-    "idleTimeout": {
-      "js": [
-        "/build/runtime.e59078a6.js",
-        "/build/0.041e2071.js",
-        "/build/idleTimeout.c5fd2b2a.js"
-      ]
-    },
     "menuModule": {
       "js": [
-        "/build/runtime.e59078a6.js",
-        "/build/0.041e2071.js",
-        "/build/menuModule.a888f94b.js"
+        "/build/runtime.b82e9a70.js",
+        "/build/0.2396e3ae.js",
+        "/build/menuModule.6d7f2eaa.js"
       ]
     },
     "notificationTray": {
       "js": [
-        "/build/runtime.e59078a6.js",
-        "/build/0.041e2071.js",
-        "/build/notificationTray.f0703852.js"
+        "/build/runtime.b82e9a70.js",
+        "/build/0.2396e3ae.js",
+        "/build/4.5bc00bd6.js",
+        "/build/notificationTray.f5f5c019.js"
       ]
     },
     "app": {
       "js": [
-        "/build/runtime.e59078a6.js",
-        "/build/3.579f2d3f.js",
-        "/build/app.807e7976.js"
+        "/build/runtime.b82e9a70.js",
+        "/build/6.0073be89.js",
+        "/build/app.f5ea4359.js"
       ],
       "css": [
-        "/build/3.9bd7c479.css"
+        "/build/6.5f957273.css"
       ]
     },
-    "default": {
+    "idleTimeout": {
       "js": [
-        "/build/runtime.e59078a6.js",
-        "/build/default.c0014ee3.js"
+        "/build/runtime.b82e9a70.js",
+        "/build/0.2396e3ae.js",
+        "/build/idleTimeout.29474ba9.js"
+      ]
+    },
+    "collections": {
+      "js": [
+        "/build/runtime.b82e9a70.js",
+        "/build/0.2396e3ae.js",
+        "/build/5.e07d74f2.js",
+        "/build/collections.da36faea.js"
+      ]
+    },
+    "container": {
+      "js": [
+        "/build/runtime.b82e9a70.js",
+        "/build/0.2396e3ae.js",
+        "/build/3.656d2fbe.js",
+        "/build/container.6f214ef7.js"
       ],
       "css": [
-        "/build/default.3e68cf6b.css"
+        "/build/container.15569a13.css"
       ]
     },
     "css/theme": {
       "js": [
-        "/build/runtime.e59078a6.js"
+        "/build/runtime.b82e9a70.js"
       ],
       "css": [
-        "/build/css/theme.4829ec7b.css"
+        "/build/css/theme.d1cb98c0.css"
       ]
     },
     "css/app": {
       "js": [
-        "/build/runtime.e59078a6.js"
+        "/build/runtime.b82e9a70.js"
       ],
       "css": [
-        "/build/css/app.a7ebb94a.css"
+        "/build/css/app.4d4d3556.css"
       ]
     }
   }
