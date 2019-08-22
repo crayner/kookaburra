@@ -9259,7 +9259,7 @@ VALUES
 	(0000002771,'Mr.','Battle','Rajah','Rajah','Battle, Rajah','','M','2771','fb1af004f72adef53162a93cb915c360','','','N','Full','Y',004,'004',NULL,'2771@gibbon.localhost','','','',NULL,'',NULL,0,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',NULL,'','','','','','','','','','','',NULL,'',NULL,NULL,NULL,'','','','','','','Y','Y','Y',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','','Y',''),
 	(0000002772,'Ms.','Armstrong','Darrel','Darrel','Armstrong, Darrel','','F','2772','fb1af004f72adef53162a93cb915c360','','','N','Full','Y',004,'004',NULL,'2772@gibbon.localhost','','','',NULL,'',NULL,0,'','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',NULL,'','','','','','','','','','','',NULL,'',NULL,NULL,NULL,'','','','','','','Y','Y','Y',NULL,'','','',NULL,NULL,NULL,NULL,NULL,'','','Y','');
 
-
+UPDATE `gibbonperson` SET `fields` = null WHERE `fields` = '';
 ALTER TABLE `gibbonPerson` ENABLE KEYS;
 UNLOCK TABLES;
 

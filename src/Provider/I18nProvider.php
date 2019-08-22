@@ -31,7 +31,7 @@ class I18nProvider implements EntityProviderInterface
      * @param bool $defaultLanguage
      * @throws \Exception
      */
-    function setLanguageSession(Session $session, array $criteria = ['systemDefault' => 'Y'], $defaultLanguage = true)
+    public function setLanguageSession(Session $session, array $criteria = ['systemDefault' => 'Y'], $defaultLanguage = true)
     {
         $result = $this->getRepository()->findOneBy($criteria);
         if (!$result instanceof I18n)
@@ -53,5 +53,20 @@ class I18nProvider implements EntityProviderInterface
         }
         
         $session->set('i18n', $data);
+    }
+
+    /**
+     * selectI18n
+     * @return array
+     * @throws \Exception
+     */
+    public function selectI18n(): array
+    {
+        $result = [];
+        foreach($this->findBy(['active' => 'Y'],['code' => 'ASC']) as $i18n)
+            if ($i18n->isInstalled())
+                $result[$i18n->getName()] = $i18n->getId();
+
+        return $result;
     }
 }

@@ -12,6 +12,9 @@
 
 namespace App\Container;
 
+use Symfony\Component\Form\FormErrorIterator;
+use Symfony\Component\Form\FormView;
+
 /**
  * Class Panel
  * @package App\Container
@@ -39,9 +42,19 @@ class Panel
     private $content;
 
     /**
+     * @var FormView
+     */
+    private $form;
+
+    /**
      * @var null|string
      */
     private $translationDomain;
+
+    /**
+     * @var null|integer
+     */
+    private $index;
 
     /**
      * @return string
@@ -115,13 +128,39 @@ class Panel
             'disabled' => $this->isDisabled(),
             'content' => $this->getContent(),
             'translationDomain' => $this->getTranslationDomain(),
+            'index' => $this->getIndex(),
+            'form' => $this->formToArray($this->getForm()),
         ];
     }
 
     /**
-     * @return string
+     * formToArray
+     * @param FormView|null $view
+     * @return array|null
      */
-    public function getContent(): string
+    private function formToArray(?FormView $view): ?array
+    {
+        if (null === $view)
+            return null;
+        $result = [];
+        foreach($view->children as $name=>$child) {
+            $result['children'][$name] = $this->formToArray($child);
+        }
+
+        $vars = $view->vars;
+        unset($vars['form']);
+        if (isset($vars['errors']) && $vars['errors'] instanceof FormErrorIterator && $vars['errors']->count() > 0) {
+            $vars['errors'] = explode("\n", str_replace('ERROR: ', '', trim($vars['errors']->__toString())));
+        } else {
+            $vars['errors'] = [];
+        }
+        return array_merge($vars, $result);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -155,6 +194,46 @@ class Panel
     public function setTranslationDomain(?string $translationDomain): Panel
     {
         $this->translationDomain = $translationDomain;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getIndex(): ?int
+    {
+        return $this->index;
+    }
+
+    /**
+     * Index.
+     *
+     * @param int|null $index
+     * @return Panel
+     */
+    public function setIndex(?int $index): Panel
+    {
+        $this->index = $index;
+        return $this;
+    }
+
+    /**
+     * @return null|FormView
+     */
+    public function getForm(): ?FormView
+    {
+        return $this->form;
+    }
+
+    /**
+     * Form.
+     *
+     * @param FormView $form
+     * @return Panel
+     */
+    public function setForm(FormView $form): Panel
+    {
+        $this->form = $form;
         return $this;
     }
 }

@@ -46,6 +46,11 @@ class ScriptManager
     private $pageStyles;
 
     /**
+     * @var array
+     */
+    private $toggleScripts = [];
+
+    /**
      * @return ArrayCollection
      */
     public function getEncoreEntryCSSFiles(): ArrayCollection
@@ -228,6 +233,41 @@ class ScriptManager
             return $this;
 
         $this->pageStyles->add($style);
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getToggleScripts(): array
+    {
+        if (! is_array($this->toggleScripts))
+            $this->toggleScripts = [];
+
+        return $this->toggleScripts;
+    }
+
+    /**
+     * ToggleScripts.
+     *
+     * @param array $toggleScripts
+     * @return ScriptManager
+     */
+    public function setToggleScripts(array $toggleScripts): ScriptManager
+    {
+        $this->toggleScripts = $toggleScripts;
+        return $this;
+    }
+
+    /**
+     * addToggleScript
+     * @param string $idName
+     */
+    public function addToggleScript(string $idName): ScriptManager
+    {
+        if (!in_array($idName, $this->getToggleScripts()))
+            $this->toggleScripts[] = $idName;
+
         return $this;
     }
 }

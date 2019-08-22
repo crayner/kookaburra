@@ -63,9 +63,7 @@ class TableTypeExtension extends AbstractTypeExtension
                 'widget_class' => null,
                 'row_class' => null,
                 'row_id' => false,
-                'help_attr' => [
-                    'class' =>'text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0',
-                ],
+                'help_attr' => [],
                 'div_class' => null,
                 'sub_label' => '',
             ]

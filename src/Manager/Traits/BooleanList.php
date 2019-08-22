@@ -53,8 +53,6 @@ trait BooleanList
      */
     private function isTrueOrFalse(string $yesOrNo): bool
     {
-        if ($yesOrNo === 'Y')
-            return true;
-        return false;
+        return $yesOrNo === 'Y';
     }
 }

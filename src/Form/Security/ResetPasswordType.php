@@ -64,6 +64,7 @@ class ResetPasswordType extends AbstractType
                 ]
             )
             ->add('submit', SubmitType::class)
+            ->setAction($options['action'])
         ;
     }
 
@@ -73,6 +74,11 @@ class ResetPasswordType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setRequired(
+            [
+                'action'
+            ]
+        );
         $resolver->setDefaults(
             [
                 'data_class' => ResetPassword::class,

@@ -1,3 +1,22 @@
+<script type="text/javascript">
+
+    document.onLoad = function()
+    {
+        var classname = document.getElementsByClassName("slider_input");
+        console.log(classname)
+        var myFunction = function () {
+            var attribute = this.getAttribute("id");
+            var element = document.getElementById(attribute)
+            console.log(element)
+        };
+
+        for (var i = 0; i < classname.length; i++) {
+            classname[i].addEventListener('click', myFunction, false);
+        }
+    }
+</script>
+
+
 {% for style in getEncoreEntryCSSFiles() %}
     <script type="application/javascript" lang="js">
         function cssLinks() {

@@ -142,6 +142,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getPageScripts', [$this->scriptManager, 'getPageScripts']),
             new TwigFunction('getPageStyles', [$this->scriptManager, 'getPageStyles']),
             new TwigFunction('getEncoreEntryCSSFiles', [$this->scriptManager, 'getEncoreEntryCSSFiles']),
+            new TwigFunction('getToggleScripts', [$this->scriptManager, 'getToggleScripts']),
             new TwigFunction('pageManager', [$this, 'pageManager']),
             new TwigFunction('getSchoolYears', [$this, 'getSchoolYears']),
             new TwigFunction('getActiveLanguages', [$this, 'getActiveLanguages']),

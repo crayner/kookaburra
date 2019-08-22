@@ -17,7 +17,9 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Entity\Person;
 use App\Entity\SchoolYear;
+use App\Form\Entity\PreferenceSettings;
 use App\Form\Entity\ResetPassword;
+use App\Form\Modules\UserAdmin\PreferenceSettingsType;
 use App\Form\Security\ResetPasswordType;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
@@ -39,13 +41,13 @@ class PreferenceController extends AbstractController
 {
     /**
      * preference
-     * @Route("/preferences/", name="preferences")
+     * @Route("/preferences/{tabName}", name="preferences")
      * @IsGranted("ROLE_USER")
      */
-    public function preferences(Request $request, ContainerManager $manager)
+    public function preferences(Request $request, ContainerManager $manager, string $tabName = 'Settings')
     {
         $rp = new ResetPassword();
-        $passwordForm = $this->createForm(ResetPasswordType::class, $rp);
+        $passwordForm = $this->createForm(ResetPasswordType::class, $rp, ['action' => $this->generateUrl('preferences', ['tabName' => 'Reset Password'])]);
 
         $passwordForm->handleRequest($request);
         if ($passwordForm->isSubmitted() && $passwordForm->isValid())
@@ -57,6 +59,7 @@ class PreferenceController extends AbstractController
 
         $manager->setTranslationDomain('gibbon');
         $container = new Container();
+        $container->setSelectedPanel($tabName);
         $passwordPanel = new Panel();
         $passwordPanel->setName('Reset Password')->setContent($this->renderView('modules/core/preferences_reset_password.html.twig',
             [
@@ -64,8 +67,22 @@ class PreferenceController extends AbstractController
                 'passwordPolicy' => SecurityHelper::getPasswordPolicy(),
             ]
         ));
+
+        $person = $this->getUser()->getPerson();
+        $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
+
+        $settingsForm->handleRequest($request);
+
+        if ($settingsForm->isSubmitted() && $settingsForm->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($person);
+            $em->flush();
+            $this->addFlash('success', 'Your request was completed successfully.');
+        }
+
         $settingsPanel = new Panel();
-        $settingsPanel->setName('Settings')->setContent('stuff');
+        $settingsPanel->setName('Settings')->setForm($settingsForm->createView());
         $container->addPanel($passwordPanel)->addPanel($settingsPanel)->setTarget('preferences');
         $manager->addContainer($container)->buildContainers();
 

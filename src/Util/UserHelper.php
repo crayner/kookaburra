@@ -16,6 +16,7 @@
 namespace App\Util;
 
 use App\Entity\Person;
+use App\Entity\Staff;
 use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
 use App\Security\SecurityUser;
@@ -122,20 +123,22 @@ class UserHelper
      * isStaff
      * @return bool
      */
-    public static function isStaff(): bool
+    public static function isStaff(Person $person = null): bool
     {
-        self::$provider->setEntity(self::getCurrentUser());
-        return self::$provider->isStaff();
+        $person = $person ?: self::getCurrentUser();
+
+        return $person instanceof Person && $person->getStaff() instanceof Staff;
     }
 
     /**
      * isParent
      * @return bool
      */
-    public static function isStudent(): bool
+    public static function isStudent(Person $person = null): bool
     {
-        self::$provider->setEntity(self::getCurrentUser());
-        return self::$provider->isStudent();
+        $person = $person ?: self::getCurrentUser();
+
+        return $person instanceof Person && self::$provider->isStudent($person);
     }
 
     /**
@@ -144,8 +147,9 @@ class UserHelper
      */
     public static function isParent(Person $person = null): bool
     {
-        self::$provider->setEntity($person ?: self::getCurrentUser());
-        return self::$provider->isParent();
+        $person = $person ?: self::getCurrentUser();
+
+        return $person instanceof Person && self::$provider->isParent($person);
     }
 
     /**

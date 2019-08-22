@@ -1,0 +1,15 @@
+{% trans_default_domain "gibbon" %}
+
+{% form_theme form
+    'form/kookaburra_form.html.twig'
+%}
+
+{{ form_start(form) }}
+    <table class="smallIntBorder fullWidth standardForm relative" cellspacing="0">
+        <tbody>
+            {% for child in form.children %}
+                {{ form_row(child) }}
+            {% endfor %}
+        </tbody>
+    </table>
+{{ form_end(form) }}

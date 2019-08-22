@@ -44,7 +44,6 @@ class FileSubscriber implements EventSubscriberInterface
 		$data = $event->getData();
 		if ((null !== $data) && !file_exists(__DIR__.'/../../../public'.$data))
 		{
-            dump($data);
 			$data = null;
 			$event->setData($data);
 		}

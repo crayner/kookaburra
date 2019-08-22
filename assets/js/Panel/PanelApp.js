@@ -9,7 +9,23 @@ export default class PanelApp extends Component {
     constructor (props) {
         super(props)
         this.panels = props.panels
+        this.selectedPanel = props.selectedPanel
+
+        this.state = {
+            tabIndex: this.panels[this.selectedPanel].index,
+        }
+
+        this.onSelectTab = this.onSelectTab.bind(this)
+
     }
+
+    onSelectTab(tabIndex)
+    {
+        this.setState({
+            tabIndex: tabIndex,
+        })
+    }
+
     render() {
         if (Object.keys(this.panels).length === 1) {
             const key = Object.keys(this.panels)[0]
@@ -21,7 +37,7 @@ export default class PanelApp extends Component {
             }
         }
         return (
-            <Panels panels={this.panels} selectedPanel={this.selectedPanel} />
+            <Panels panels={this.panels} selectedIndex={this.state.tabIndex} onSelectTab={this.onSelectTab} />
         )
     }
 }

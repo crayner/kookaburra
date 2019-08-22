@@ -16,10 +16,10 @@
     list-style: none;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    color: #007bff;
+    color: #444444;
 
     &--selected {
-      background: #007bff;
+      background: #444444;
       color: white;
     }
 
@@ -30,8 +30,8 @@
     }
 
     &:focus {
-      box-shadow: 0 0 5px hsl(208, 99%, 50%);
-      border-color: hsl(208, 99%, 50%);
+      box-shadow: 0 0 5px #d7d6d6;
+      border-color: #252323;
       outline: none;
 
       &:after {
@@ -41,13 +41,13 @@
         left: -4px;
         right: -4px;
         bottom: -5px;
-        background: #fff;
+        background: #ffffff;
       }
     }
     &:hover {
-      border: 1px solid #007bff;
-      background-color: #e0f0ff;
-      color: #007bff;
+      border: 1px solid #444444;
+      background-color: #d7d6d6;
+      color: #444444;
     }
   }
 

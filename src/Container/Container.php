@@ -134,6 +134,7 @@ class Container
         if (null === $panel->getTranslationDomain())
             $panel->setTranslationDomain($this->getTranslationDomain());
 
+        $panel->setIndex($this->getPanels()->count());
         $panel = $this->resolvePanel($panel);
 
         $this->getPanels()->set($panel->getName(), $panel->toArray());
@@ -154,6 +155,7 @@ class Container
             [
                 'name',
                 'label',
+                'index',
             ]
         );
 
@@ -162,6 +164,7 @@ class Container
                 'disabled' => false,
                 'content' => null,
                 'translationDomain' => null,
+                'form' => null,
             ]
         );
 
@@ -169,6 +172,7 @@ class Container
         $resolver->setAllowedTypes('label', 'string');
         $resolver->setAllowedTypes('disabled', 'boolean');
         $resolver->setAllowedTypes('content', ['string', 'null']);
+        $resolver->setAllowedTypes('index', 'integer');
         $resolver->setAllowedTypes('translationDomain', ['string', 'null']);
 
         $resolver->resolve($panel->toArray());

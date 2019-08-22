@@ -13,6 +13,7 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -31,7 +32,17 @@ class HeaderType extends AbstractType
             [
                 'mapped' => false,
                 'label_colspan' => 2,
+                'row_style' => 'header',
             ]
         );
+    }
+
+    /**
+     * getParent
+     * @return string|null
+     */
+    public function getParent()
+    {
+        return FormType::class;
     }
 }

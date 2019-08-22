@@ -70,7 +70,7 @@ class Staff implements EntityInterface
      * @var string|null
      * @ORM\Column(length=1, name="firstAidQualified")
      */
-    private $firstAidQualified;
+    private $firstAidQualified = 'N';
 
     /**
      * @var \DateTime|null
@@ -203,11 +203,19 @@ class Staff implements EntityInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isSmartWorkflowHelp(): bool
+    {
+        return $this->getSmartWorkflowHelp() === 'Y';
+    }
+
+    /**
      * @return string|null
      */
     public function getSmartWorkflowHelp(): ?string
     {
-        return $this->smartWorkflowHelp;
+        return $this->smartWorkflowHelp = self::checkBoolean($this->smartWorkflowHelp);
     }
 
     /**

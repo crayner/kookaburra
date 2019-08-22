@@ -2508,11 +2508,19 @@ class Person implements EntityInterface
     private $receiveNotificationEmails = 'Y';
 
     /**
+     * @return bool
+     */
+    public function isReceiveNotificationEmails(): bool
+    {
+        return $this->getReceiveNotificationEmails() === 'Y';
+    }
+
+    /**
      * @return null|string
      */
     public function getReceiveNotificationEmails(): ?string
     {
-        return $this->receiveNotificationEmails;
+        return $this->receiveNotificationEmails = self::checkBoolean($this->receiveNotificationEmails);
     }
 
     /**
@@ -2521,7 +2529,7 @@ class Person implements EntityInterface
      */
     public function setReceiveNotificationEmails(?string $receiveNotificationEmails): Person
     {
-        $this->receiveNotificationEmails = in_array($receiveNotificationEmails, self::getBooleanList()) ? $receiveNotificationEmails : 'Y';
+        $this->receiveNotificationEmails = self::checkBoolean($receiveNotificationEmails);
         return $this;
     }
 
@@ -2537,7 +2545,7 @@ class Person implements EntityInterface
      */
     public function getFields(): array
     {
-        return $this->fields = $this->fields ?: [];
+        return $this->fields = is_array($this->fields) ? $this->fields : [];
     }
 
     /**

@@ -5,20 +5,18 @@ import PropTypes from 'prop-types'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../css/react-tabs.scss';
 import Parser from "html-react-parser"
+import FormApp from "../Form/FormApp"
 
 export default function Panels(props) {
     const {
         panels,
+        onSelectTab,
+        selectedIndex,
     } = props
-
-    var selectedPanel = props.selectedPanel
 
 
     const tabTags = Object.keys(panels).map(name => {
         const tab = panels[name]
-        if (null === selectedPanel) {
-            selectedPanel = name
-        }
         return (
             <Tab
                 key={tab.name}
@@ -39,7 +37,7 @@ export default function Panels(props) {
     })
 
     return (
-        <Tabs defaultIndex={selectedPanel}>
+        <Tabs selectedIndex={selectedIndex} onSelect={tabIndex => onSelectTab(tabIndex)}>
             <TabList>
                 {tabTags}
             </TabList>
@@ -51,7 +49,8 @@ export default function Panels(props) {
 
 Panels.propTypes = {
     panels: PropTypes.object.isRequired,
-    selectedPanel: PropTypes.string,
+    selectedIndex: PropTypes.number.isRequired,
+    onSelectTab: PropTypes.func.isRequired,
 }
 
 function renderPanelContent(panel){
@@ -59,6 +58,9 @@ function renderPanelContent(panel){
     if (null !== panel.content){
         return Parser(panel.content)
     }
-    console.log(panel)
+
+    if (null !== panel.form){
+        return <FormApp form={panel.form} />
+    }
 }
 

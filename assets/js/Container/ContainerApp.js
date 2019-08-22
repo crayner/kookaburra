@@ -18,8 +18,6 @@ export default class ContainerApp extends Component {
             this.panels.default['disabled'] = true
             this.panels.default['content'] = this.content
         }
-
-        console.log(this)
     }
 
     render() {
