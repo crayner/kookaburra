@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import FormColumn from "./FormColumn"
 import Parser from "html-react-parser"
+import FormGeneratePassword from "./FormGeneratePassword"
 
 export default class FormTableRow extends Component {
     constructor (props) {
@@ -152,6 +153,11 @@ export default class FormTableRow extends Component {
                     {columns}
                 </tr>
             )
+        }
+
+        // generate_password
+        if (this.form.block_prefixes.includes('generate_password')) {
+            return (<FormGeneratePassword form={this.form} row={row} />)
         }
 
         // choices

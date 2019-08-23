@@ -54,12 +54,14 @@ class ReactFormExtension extends AbstractTypeExtension
         $resolver->setDefault('row_style', 'standard');
         $resolver->setDefault('column_count', 2);
         $resolver->setDefault('wrapper', []);
+        $resolver->setDefault('row_merge', []);
 
         $resolver->setAllowedValues('use_react', [true,false]);
         $resolver->setAllowedValues('template_style', ['table']);
         $resolver->setAllowedValues('row_style', ['standard','header','paragraph']);
 
         $resolver->setAllowedTypes('wrapper', 'array');
+        $resolver->setAllowedTypes('row_merge', 'array');
     }
 
     /**
@@ -74,6 +76,7 @@ class ReactFormExtension extends AbstractTypeExtension
         $view->vars['row_style'] = $options['row_style'];
         $view->vars['column_count'] = $options['column_count'];
         $view->vars['wrapper'] = $options['wrapper'];
+        $view->vars['row_merge'] = $options['row_merge'];
         parent::finishView($view, $form, $options);
         if ($form->isRoot() && $options['use_react']) {
             $this->setTranslationDomain($view->vars['translation_domain']);
@@ -140,6 +143,7 @@ class ReactFormExtension extends AbstractTypeExtension
         if (in_array('crsf_token', $view->vars['block_prefixes']))
             $view->vars['row_style'] = 'widget';
         $view->vars['row'] = $this->getTemplateRow($view->vars['row_style']);
+        $view->vars['row'] = array_merge($view->vars['row'], isset($view->vars['row_merge'] )? $view->vars['row_merge'] : []);
 
         // Translation
 
@@ -155,6 +159,16 @@ class ReactFormExtension extends AbstractTypeExtension
 
         if (isset($view->vars['placeholder']) && !(null === $view->vars['placeholder'] || false === $view->vars['placeholder']))
             $view->vars['placeholder'] = $this->translate($view->vars['placeholder'], [], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+
+        if (isset($view->vars['row']['title']) && !(null === $view->vars['row']['title'] || false === $view->vars['row']['title']))
+            $view->vars['row']['title'] = $this->translate($view->vars['row']['title'], [], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+
+        if (isset($view->vars['row']['title']) && !(null === $view->vars['row']['title'] || false === $view->vars['row']['title']))
+            $view->vars['row']['title'] = $this->translate($view->vars['row']['title'], [], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+
+        if (isset($view->vars['row']['translate']))
+            foreach($view->vars['row']['translate'] as $id=>$params)
+                $view->vars['row']['translate'][$id] = $this->translate($id, $params, $view->vars['translation_domain'] ?: $this->getTranslationDomain());
 
         if (isset($view->vars['choices']) && false !== $view->vars['choice_translation_domain']) {
             dd('@todo: Translate the Choices',$view);
@@ -176,7 +190,6 @@ class ReactFormExtension extends AbstractTypeExtension
                 }
             }
         }
-
     }
 
     /**

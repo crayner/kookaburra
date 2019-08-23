@@ -12,16 +12,17 @@
 
 namespace App\Form\Security;
 
+use App\Entity\Setting;
 use App\Form\Entity\ResetPassword;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ParagraphType;
+use App\Provider\ProviderFactory;
 use App\Validator\CurrentPassword;
 use App\Validator\Password;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Validator\Type\RepeatedTypeValidatorExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -38,6 +39,7 @@ class ResetPasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $provider = ProviderFactory::create(Setting::class);
         $builder
             ->add('resetPassword', HeaderType::class,
                 [
@@ -63,11 +65,26 @@ class ResetPasswordType extends AbstractType
                     ],
                 ]
             )
-            ->add('raw', RepeatedType::class,
+            ->add('raw', GeneratePasswordType::class,
                 [
                     'type' => PasswordType::class,
                     'first_options' => [
                         'label' => 'New Password',
+                        'row_merge' => [
+                            'title' => 'Generate',
+                            'translate' => [
+                                'Copy this password if required' => [],
+                            ],
+                            'button' => [
+                                'class' => 'button generatePassword -ml-px button-right',
+                            ],
+                            'passwordPolicy' => [
+                                'alpha' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyAlpha'),
+                                'numeric' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNumeric'),
+                                'punctuation' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyNonAlphaNumeric'),
+                                "minLength" => $provider->getSettingByScopeAsInteger('System', 'passwordPolicyMinLength'),
+                            ],
+                        ],
                     ],
                     'second_options' => [
                         'label' => 'Confirm New Password',
