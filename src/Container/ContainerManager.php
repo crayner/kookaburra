@@ -36,6 +36,11 @@ class ContainerManager
     private $translationDomain;
 
     /**
+     * @var bool
+     */
+    private $globalForm = false;
+
+    /**
      * ContainerManager constructor.
      * @param ScriptManager $scriptManager
      */
@@ -140,9 +145,18 @@ class ContainerManager
                 $container['panels'][$q] = $panel;
             }
             $container['panels'] = $container['panels']->toArray();
+            $container['globalForm'] = $this->isGlobalForm();
+            $container['form'] = $this->isGlobalForm();
+            if ($this->isGlobalForm() || true)
+            {
+                $panel = reset($container['panels']);
+                $container['form'] = $panel['form'];
+            }
+
             $containers[$target] = $container;
         }
 
+        dump($containers);
         $this->scriptManager->addAppProp('container', $containers);
         $this->scriptManager->addEncoreEntryCSSFile('container');
         return $this;
@@ -177,6 +191,26 @@ class ContainerManager
     public function setDefaultPanel(?string $defaultPanel): ContainerManager
     {
         $this->defaultPanel = $defaultPanel;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGlobalForm(): bool
+    {
+        return $this->globalForm;
+    }
+
+    /**
+     * GlobalForm.
+     *
+     * @param bool $globalForm
+     * @return ContainerManager
+     */
+    public function setGlobalForm(bool $globalForm): ContainerManager
+    {
+        $this->globalForm = $globalForm;
         return $this;
     }
 }

@@ -10,6 +10,7 @@ export default class PanelApp extends Component {
         super(props)
         this.panels = props.panels
         this.selectedPanel = props.selectedPanel
+        this.globalForm = props.globalForm
 
         this.state = {
             tabIndex: this.panels[this.selectedPanel].index,
@@ -37,7 +38,7 @@ export default class PanelApp extends Component {
             }
         }
         return (
-            <Panels panels={this.panels} selectedIndex={this.state.tabIndex} onSelectTab={this.onSelectTab} />
+            <Panels panels={this.panels} selectedIndex={this.state.tabIndex} onSelectTab={this.onSelectTab} globalForm={this.globalForm} />
         )
     }
 }
@@ -45,4 +46,5 @@ export default class PanelApp extends Component {
 PanelApp.propTypes = {
     panels: PropTypes.object.isRequired,
     selectedPanel: PropTypes.string,
+    globalForm: PropTypes.bool.isRequired,
 }

@@ -12,6 +12,7 @@ export default function Panels(props) {
         panels,
         onSelectTab,
         selectedIndex,
+        globalForm,
     } = props
 
 
@@ -27,7 +28,7 @@ export default function Panels(props) {
     })
 
     const content = Object.keys(panels).map(name => {
-        const panelContent = renderPanelContent(panels[name])
+        const panelContent = renderPanelContent(panels[name], globalForm)
 
         return (
             <TabPanel key={name}>
@@ -51,16 +52,17 @@ Panels.propTypes = {
     panels: PropTypes.object.isRequired,
     selectedIndex: PropTypes.number.isRequired,
     onSelectTab: PropTypes.func.isRequired,
+    globalForm: PropTypes.bool.isRequired,
 }
 
-function renderPanelContent(panel){
+function renderPanelContent(panel, globalForm){
 
     if (null !== panel.content){
         return Parser(panel.content)
     }
 
     if (null !== panel.form){
-        return <FormApp form={panel.form} />
+        return <FormApp form={panel.form} globalForm={globalForm}  />
     }
 }
 

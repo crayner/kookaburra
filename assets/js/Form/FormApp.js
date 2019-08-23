@@ -9,6 +9,7 @@ export default class FormApp extends Component {
         super(props)
         this.form = props.form
         this.columnCount = props.form.column_count
+        this.globalForm = props.globalForm
     }
 
     render() {
@@ -19,14 +20,25 @@ export default class FormApp extends Component {
                 return (<FormTableRow form={form} key={key} columnCount={this.columnCount} />)
             })
 
-            return (
-                <form action={this.form.action} className={row.form.class} id={this.form.id} encType={row.form.enctype} method={this.form.method !== undefined ? this.form.method : row.form.method }>
-                    <table className={row.table.class} cellSpacing={row.table.cellspacing}>
-                        <tbody>
+            if (this.globalForm) {
+                return (<table className={row.table.class} cellSpacing={row.table.cellspacing}>
+                    <tbody>
+                    {rows}
+                    </tbody>
+                </table>)
+            }
+
+            return (<form action={this.form.action}
+                          className={row.form.class}
+                          id={this.form.id}
+                          encType={row.form.enctype}
+                          method={this.form.method !== undefined ? this.form.method : row.form.method}>
+                        <table className={row.table.class} cellSpacing={row.table.cellspacing}>
+                            <tbody>
                             {rows}
-                        </tbody>
-                    </table>
-                </form>
+                            </tbody>
+                        </table>
+                    </form>
             )
         }
         return ''
@@ -35,4 +47,5 @@ export default class FormApp extends Component {
 
 FormApp.propTypes = {
     form: PropTypes.object.isRequired,
+    globalForm: PropTypes.bool.isRequired,
 }

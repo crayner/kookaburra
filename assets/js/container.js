@@ -19,6 +19,7 @@ if (window.CONTAINER_PROPS !== 'undefined') {
                     content={container.content}
                     panels={container.panels}
                     selectedPanel={container.selectedPanel}
+                    globalForm={container.globalForm}
                 />,
                 target
             )
