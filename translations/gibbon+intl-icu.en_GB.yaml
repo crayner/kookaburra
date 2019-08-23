@@ -207,3 +207,22 @@ Overview: Overview
 Edit Department: Edit Department
 Current Resources: Current Resources
 Resources: Resources
+Reset Password: Reset Password
+Current Password: Current Password
+New Password: New Password
+Generate: Generate
+Copy this password if required: Copy this password if required
+Confirm New Password: Confirm New Password
+Settings: Settings
+Personal Google Calendar ID: Personal Google Calendar ID
+'Google Calendar ID for your personal calendar.<br/>Only enables timetable integration when logging in via Google.': 'Google Calendar ID for your personal calendar.<br/>Only enables timetable integration when logging in via Google.'
+Personal Background: Personal Background
+'Set your own custom background image.<br/>Please provide URL to image.': 'Set your own custom background image.<br/>Please provide URL to image.'
+Personal Theme: Personal Theme
+Override the system theme.: Override the system theme.
+Personal Language: Personal Language
+Override the system default language.: Override the system default language.
+Receive Email Notifications?: Receive Email Notifications?
+Notifications can always be viewed on screen.: Notifications can always be viewed on screen.
+Enable Smart Workflow Help?: Enable Smart Workflow Help?
+Your request failed due to incorrect current password.: Your request failed due to incorrect current password.
