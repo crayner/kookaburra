@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import FormColumn from "./FormColumn"
+import Parser from "html-react-parser"
 
 export default class FormTableRow extends Component {
     constructor (props) {
@@ -21,6 +22,21 @@ export default class FormTableRow extends Component {
                 const columnStyle = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={columnStyle} key={key}>
                     <h3>{this.form.label}</h3>
+                </td> )
+            })
+            return (
+                <tr className={row.class} style={row.style}>
+                    {columns}
+                </tr>
+            )
+        }
+
+        // paragraph
+        if (this.form.block_prefixes.includes('paragraph')) {
+            const columns = row.columns.map((column,key) => {
+                const columnStyle = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
+                return (<td className={column.class} style={columnStyle} key={key}>
+                    <div className={column.wrapper.class}>{Parser(this.form.help)}</div>
                 </td> )
             })
             return (
@@ -62,6 +78,22 @@ export default class FormTableRow extends Component {
         // url
         if (this.form.block_prefixes.includes('url')) {
             this.form.type = 'url'
+            const columns = row.columns.map((column,key) => {
+                column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
+                return (<td className={column.class} style={column.style} key={key}>
+                    <FormColumn form={this.form} column={column} />
+                </td> )
+            })
+            return (
+                <tr className={row.class} style={row.style}>
+                    {columns}
+                </tr>
+            )
+        }
+
+        // password
+        if (this.form.block_prefixes.includes('password')) {
+            this.form.type = 'password'
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>

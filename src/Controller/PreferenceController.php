@@ -15,16 +15,10 @@ namespace App\Controller;
 use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
-use App\Entity\Person;
-use App\Entity\SchoolYear;
-use App\Form\Entity\PreferenceSettings;
 use App\Form\Entity\ResetPassword;
 use App\Form\Modules\UserAdmin\PreferenceSettingsType;
 use App\Form\Security\ResetPasswordType;
-use App\Manager\GibbonManager;
-use App\Manager\LegacyManager;
 use App\Manager\PreferencesManager;
-use App\Provider\ProviderFactory;
 use App\Security\PasswordManager;
 use App\Util\SecurityHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -47,7 +41,12 @@ class PreferenceController extends AbstractController
     public function preferences(Request $request, ContainerManager $manager, string $tabName = 'Settings')
     {
         $rp = new ResetPassword();
-        $passwordForm = $this->createForm(ResetPasswordType::class, $rp, ['action' => $this->generateUrl('preferences', ['tabName' => 'Reset Password'])]);
+        $passwordForm = $this->createForm(ResetPasswordType::class, $rp,
+            [
+                'action' => $this->generateUrl('preferences', ['tabName' => 'Reset Password']),
+                'policy' => $this->renderView('components/password_policy.html.twig', ['passwordPolicy' => SecurityHelper::getPasswordPolicy()])
+            ]
+        );
 
         $passwordForm->handleRequest($request);
         if ($passwordForm->isSubmitted() && $passwordForm->isValid())
@@ -61,12 +60,7 @@ class PreferenceController extends AbstractController
         $container = new Container();
         $container->setSelectedPanel($tabName);
         $passwordPanel = new Panel();
-        $passwordPanel->setName('Reset Password')->setContent($this->renderView('modules/core/preferences_reset_password.html.twig',
-            [
-                'form' => $passwordForm->createView(),
-                'passwordPolicy' => SecurityHelper::getPasswordPolicy(),
-            ]
-        ));
+        $passwordPanel->setName('Reset Password')->setForm($passwordForm->createView());
 
         $person = $this->getUser()->getPerson();
         $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);

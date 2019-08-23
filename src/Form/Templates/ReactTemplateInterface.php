@@ -28,6 +28,12 @@ interface ReactTemplateInterface
     public function getHeaderRow(): array;
 
     /**
+     * getParagraphRow
+     * @return array
+     */
+    public function getParagraphRow(): array;
+
+    /**
      * getSubmitRow
      * @return array
      */

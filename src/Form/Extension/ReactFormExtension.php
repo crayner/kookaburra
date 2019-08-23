@@ -53,10 +53,13 @@ class ReactFormExtension extends AbstractTypeExtension
         $resolver->setDefault('template_style', 'table');
         $resolver->setDefault('row_style', 'standard');
         $resolver->setDefault('column_count', 2);
+        $resolver->setDefault('wrapper', []);
 
         $resolver->setAllowedValues('use_react', [true,false]);
         $resolver->setAllowedValues('template_style', ['table']);
-        $resolver->setAllowedValues('row_style', ['standard','header']);
+        $resolver->setAllowedValues('row_style', ['standard','header','paragraph']);
+
+        $resolver->setAllowedTypes('wrapper', 'array');
     }
 
     /**
@@ -70,6 +73,7 @@ class ReactFormExtension extends AbstractTypeExtension
         $view->vars['template_style'] = $options['template_style'];
         $view->vars['row_style'] = $options['row_style'];
         $view->vars['column_count'] = $options['column_count'];
+        $view->vars['wrapper'] = $options['wrapper'];
         parent::finishView($view, $form, $options);
         if ($form->isRoot() && $options['use_react']) {
             $this->setTranslationDomain($view->vars['translation_domain']);
@@ -163,6 +167,14 @@ class ReactFormExtension extends AbstractTypeExtension
         {
             $view->vars['help'] = $this->translate('denotes a required field', [], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
             $view->vars['attr']['class'] = '';
+        }
+
+        if (isset($view->vars['wrapper']) && [] !== $view->vars['wrapper']) {
+            foreach($view->vars['row']['columns'] as $q=>$column){
+                if (isset($column['wrapper'])) {
+                    $view->vars['row']['columns'][$q]['wrapper'] = array_merge($column['wrapper'], $view->vars['wrapper']);
+                }
+            }
         }
 
     }

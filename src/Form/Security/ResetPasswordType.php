@@ -13,6 +13,8 @@
 namespace App\Form\Security;
 
 use App\Form\Entity\ResetPassword;
+use App\Form\Type\HeaderType;
+use App\Form\Type\ParagraphType;
 use App\Validator\CurrentPassword;
 use App\Validator\Password;
 use Symfony\Component\Form\AbstractType;
@@ -37,6 +39,19 @@ class ResetPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('resetPassword', HeaderType::class,
+                [
+                    'label' => 'Reset Password',
+                ]
+            )
+            ->add('policy', ParagraphType::class,
+                [
+                    'help' => $options['policy'],
+                    'wrapper' => [
+                        'class' => 'warning',
+                    ],
+                ]
+            )
             ->add('current', PasswordType::class,
                 [
                     'label' => 'Current Password',
@@ -76,13 +91,15 @@ class ResetPasswordType extends AbstractType
     {
         $resolver->setRequired(
             [
-                'action'
+                'action',
+                'policy',
             ]
         );
         $resolver->setDefaults(
             [
                 'data_class' => ResetPassword::class,
                 'translation_domain' => 'gibbon',
+                'use_react' => true,
             ]
         );
     }

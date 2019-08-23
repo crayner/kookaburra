@@ -65,6 +65,7 @@ export default function FormColumn(props) {
         return (<div className={column.wrapper.class}>
             <input type={form.type} className={form.attr.class} style={form.attr.style} id={form.id}
                    name={form.full_name} defaultValue={form.value} {...attr} aria-describedby={form.id + '_help'} />
+            {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
         </div>)
     } else if (column.formElements.includes('widget')) {
         return (<div className={column.wrapper.class}>

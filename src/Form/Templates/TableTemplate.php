@@ -81,6 +81,31 @@ class TableTemplate implements ReactTemplateInterface
     }
 
     /**
+     * getParagraphRow
+     * @return array
+     */
+    public function getParagraphRow(): array
+    {
+        return [
+            'class' => 'flex flex-col sm:flex-row justify-between content-center p-0',
+            'style' => false,
+            'columns' => [
+                [
+                    'class' => 'flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0',
+                    'style' => false,
+                    'colspan' => 2,
+                    'formElements' => [
+                        'help',
+                    ],
+                    'wrapper' => [
+                        'class' => '',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * getSubmitRow
      * @return array
      */
