@@ -166,7 +166,6 @@ class BreadCrumbs
             $this->crumbs = ['baseURL' => $this->getBaseURL(), 'crumbs' => ['Home' => UrlGeneratorHelper::getPath('home')], 'title' => $title];
             return $this;
         }
-        dump($title,$route,$params);
 
         $this->addCrumb($title, $route, $params);
 

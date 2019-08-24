@@ -26,7 +26,6 @@ use Gibbon\Tables\DataTable;
 
 //Module includes
 require_once __DIR__ . '/moduleFunctions.php';
-require_once __DIR__ . '/src/AttendanceView.php';
 
 // set page breadcrumb
 $page->breadcrumbs->add(__('Take Attendance by Person'));

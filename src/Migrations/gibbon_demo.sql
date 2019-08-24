@@ -1,3 +1,5 @@
+# noinspection SqlNoDataSourceInspectionForFile
+
 SET FOREIGN_KEY_CHECKS = 0;
 
 LOCK TABLES `gibbonActivity` WRITE;
@@ -11832,6 +11834,21 @@ VALUES
 	(00000000062229,000000005430,00000000000005,000000039686,'Raster vs. Vector','Teacher Talk','20','<ul>\r\n<li>To finish this unit, let\'s consider the ideas of <span style=\"text-decoration: underline;\"><strong>raster</strong></span> and <span style=\"text-decoration: underline;\"><strong>vector</strong></span> graphics.</li>\r\n<li>See <em>Teachers Notes</em> for details.</li>\r\n</ul>','<ul>\r\n<li>Teacher to introduce students to how graphics are represented, stored and displayed on computers.</li>\r\n<li>Most graphics programs store graphics as raster images. <br />\r\n<ul>\r\n<li>What is a raster?</li>\r\n<li>When are rasters good?</li>\r\n<li>Example raster formats? What are their strengths and weaknesses.</li>\r\n</ul>\r\n</li>\r\n<li>Some programs store graphics as vector images\r\n<ul>\r\n<li>What is a vector?</li>\r\n<li>When are vectors good?</li>\r\n<li>Example vector formats?</li>\r\n</ul>\r\n</li>\r\n<li>The Acorn file format (.acorn) uses raster for most elements, but some things (like text) are stored as vectors.</li>\r\n<li>Students should use the .acorn format whilst working on the box.</li>\r\n</ul>',19,'N');
 
 ALTER TABLE `gibbonUnitClassBlock` ENABLE KEYS;
+UNLOCK TABLES;
+
+
+LOCK TABLES `gibbonAttendanceCode` WRITE;
+ALTER TABLE `gibbonAttendanceCode` DISABLE KEYS;
+
+INSERT INTO `gibbonAttendanceCode` (`gibbonAttendanceCodeID`, `name`, `nameShort`, `type`, `direction`, `scope`, `active`, `reportable`, `future`, `gibbonRoleIDAll`, `sequenceNumber`) VALUES
+(001, 'Present', 'P', 'Core', 'In', 'Onsite', 'Y', 'Y', 'N', '001,002,006', 1),
+(002, 'Present - Late', 'PL', 'Core', 'In', 'Onsite - Late', 'Y', 'Y', 'N', '001,002,006', 2),
+(003, 'Present - Offsite', 'PS', 'Core', 'In', 'Offsite', 'Y', 'Y', 'Y', '001,002,006', 3),
+(004, 'Absent', 'A', 'Core', 'Out', 'Offsite', 'Y', 'Y', 'Y', '001,002,006', 4),
+(005, 'Left', 'L', 'Core', 'Out', 'Offsite - Left', 'Y', 'Y', 'N', '001,002,006', 5),
+(006, 'Left - Early', 'LE', 'Core', 'Out', 'Offsite - Left', 'Y', 'Y', 'N', '001,002,006', 6);
+
+ALTER TABLE `gibbonAttendanceCode` ENABLE KEYS;
 UNLOCK TABLES;
 
 

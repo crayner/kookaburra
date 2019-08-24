@@ -393,7 +393,6 @@ function rubricView($guid, $connection2, $gibbonRubricID, $mark, $gibbonPersonID
                 $output .= "</p>";
 
                 $visualise = $container->get(Visualise::class);
-                //require_once __DIR__ . '/src/Visualise.php';
                 //$visualise = new Visualise($gibbon->session->get('absoluteURL'), $page, $gibbonPersonID, $columns, $rows, $cells, $contexts);
 
                 $output .= $visualise->setColumns($columns)
