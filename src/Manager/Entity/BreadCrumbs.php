@@ -202,7 +202,10 @@ class BreadCrumbs
      */
     public function getCrumbs(): ArrayCollection
     {
-        return new ArrayCollection(isset($this->crumbs['crumbs']) ? $this->crumbs['crumbs'] : []);
+        $result = new ArrayCollection(isset($this->crumbs['crumbs']) ? $this->crumbs['crumbs'] : []);
+        if (isset($this->crumbs['title']))
+            $result->set($this->crumbs['title'], '');
+        return $result;
     }
 
     /**
