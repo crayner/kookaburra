@@ -60,7 +60,7 @@ class ResourceType extends AbstractType
                             'class' => 'button -ml-px button-right',
                         ],
                         'security' => 'departments__edit',
-                        'title' => 'Download Resource',
+                        'title' => 'Open Resource',
                     ],
                 ]
             )

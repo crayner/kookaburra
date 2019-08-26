@@ -301,6 +301,7 @@ class DepartmentController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->persist($department);
             $em->flush();
+            $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager]);
         }
 
         $manager->singlePanel($form->createView(), 'DepartmentEdit');
