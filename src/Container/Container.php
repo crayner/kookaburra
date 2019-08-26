@@ -47,6 +47,11 @@ class Container
     private $selectedPanel;
 
     /**
+     * @var null|string
+     */
+    private $application;
+
+    /**
      * @return string
      */
     public function getTarget(): string
@@ -78,6 +83,7 @@ class Container
             'panels' => $this->getPanels(),
             'translationDomain' => $this->getTranslationDomain(),
             'selectedPanel' => $this->getSelectedPanel(),
+            'application' => $this->getApplication(),
         ];
     }
 
@@ -220,6 +226,26 @@ class Container
     public function setSelectedPanel(?string $selectedPanel): Container
     {
         $this->selectedPanel = $selectedPanel;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getApplication(): ?string
+    {
+        return $this->application;
+    }
+
+    /**
+     * Application.
+     *
+     * @param string|null $application
+     * @return Container
+     */
+    public function setApplication(?string $application): Container
+    {
+        $this->application = $application;
         return $this;
     }
 }

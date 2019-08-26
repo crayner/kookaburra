@@ -12,13 +12,17 @@
  */
 namespace App\Entity;
 
+use App\Util\FileHelper;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Class DepartmentResource
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\DepartmentResourceRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="DepartmentResource")
+ * @ORM\HasLifecycleCallbacks()
  */
 class DepartmentResource
 {
@@ -59,6 +63,11 @@ class DepartmentResource
      * @ORM\Column()
      */
     private $url;
+
+    /**
+     * @var string|null
+     */
+    private $oldUrl;
 
     /**
      * @return int|null
@@ -146,8 +155,28 @@ class DepartmentResource
      */
     public function setUrl(?string $url): DepartmentResource
     {
+        $this->setOldUrl($this->getUrl());
         $this->url = $url;
-        $this->setUrlFile($url)->setUrlLink($url);
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOldUrl(): ?string
+    {
+        return $this->oldUrl;
+    }
+
+    /**
+     * OldUrl.
+     *
+     * @param string|null $oldUrl
+     * @return DepartmentResource
+     */
+    public function setOldUrl(?string $oldUrl): DepartmentResource
+    {
+        $this->oldUrl = $oldUrl;
         return $this;
     }
 
@@ -175,54 +204,16 @@ class DepartmentResource
     }
 
     /**
-     * @var string|null
+     * onPersist
+     * @ORM\PreUpdate()
      */
-    private $urlLink;
-
-    /**
-     * getUrlLink
-     * @return string|null
-     */
-    public function getUrlLink(): ?string
+    public function removeOldFiles(): DepartmentResource
     {
-        return $this->getUrl();
-    }
+        if ($this->getOldUrl() && is_file($this->getOldUrl()))
+        {
+            unlink($this->getOldUrl());
+        }
 
-    /**
-     * UrlLink.
-     *
-     * @param string|null $urlLink
-     * @return DepartmentResource
-     */
-    public function setUrlLink(?string $urlLink): DepartmentResource
-    {
-        $this->urlLink = $urlLink;
-        return $this;
-    }
-
-    /**
-     * @var string|null
-     */
-    private $urlFile;
-
-    /**
-     * getUrlLink
-     * @return string|null
-     */
-    public function getUrlFile(): ?string
-    {
-        return $this->getUrl();
-    }
-
-    /**
-     * UrlFile.
-     *
-     * @param string|null $urlFile
-     * @return DepartmentResource
-     */
-    public function setUrlFile(?string $urlFile): DepartmentResource
-    {
-        $this->urlFile = $urlFile;
         return $this;
     }
 }

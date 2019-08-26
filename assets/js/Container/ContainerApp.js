@@ -3,8 +3,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import PanelApp from "../Panel/PanelApp"
-import Panels from "../Panel/Panels"
-
 
 export default class ContainerApp extends Component {
     constructor (props) {
@@ -21,6 +19,8 @@ export default class ContainerApp extends Component {
             this.panels.default['disabled'] = true
             this.panels.default['content'] = this.content
         }
+
+        this.functions = {}
     }
 
     render() {
@@ -30,13 +30,14 @@ export default class ContainerApp extends Component {
                         className={this.form.row.form.class}
                         id={this.form.id}
                         encType={this.form.row.form.enctype}
-                        method={this.form.method !== undefined ? this.form.method : this.form.row.form.method}>
-                    <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} globalForm={this.globalForm} />
+                        method={this.form.method !== undefined ? this.form.method : this.form.row.form.method}
+                >
+                    <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} globalForm={this.globalForm} functions={this.functions} />
                 </form>
             )
         }
         return (
-            <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} globalForm={this.globalForm} />
+            <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} globalForm={this.globalForm} functions={this.functions} />
         )
     }
 }

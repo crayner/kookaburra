@@ -5,12 +5,14 @@ import PropTypes from 'prop-types'
 import FormColumn from "./FormColumn"
 import Parser from "html-react-parser"
 import FormGeneratePassword from "./FormGeneratePassword"
+import FormTextArea from "./FormTextArea"
 
 export default class FormTableRow extends Component {
     constructor (props) {
         super(props)
         this.form = props.form
         this.columnCount = props.columnCount
+        this.functions = props.functions
     }
 
     render() {
@@ -53,7 +55,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormColumn form={this.form} column={column} />
+                    <FormColumn functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
@@ -63,8 +65,8 @@ export default class FormTableRow extends Component {
             )
         }
 
-        // csrf_token
-        if (this.form.block_prefixes.includes('csrf_token')) {
+        // hidden
+        if (this.form.block_prefixes.includes('hidden')) {
             this.form.type = 'hidden'
             row.style.display = 'none'
             return (
@@ -82,7 +84,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormColumn form={this.form} column={column} />
+                    <FormColumn functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
@@ -98,7 +100,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormColumn form={this.form} column={column} />
+                    <FormColumn functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
@@ -108,13 +110,34 @@ export default class FormTableRow extends Component {
             )
         }
 
+        // file
+        if (this.form.block_prefixes.includes('file')) {
+            this.form.type = 'file'
+            const columns = row.columns.map((column,key) => {
+                column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
+                return (<td className={column.class} style={column.style} key={key}>
+                    <FormColumn functions={this.functions} form={this.form} column={column} />
+                </td> )
+            })
+            return (
+                <tr className={row.class} style={row.style}>
+                    {columns}
+                </tr>
+            )
+        }
+
+        // textarea
+        if (this.form.block_prefixes.includes('textarea')) {
+            return (<FormTextArea form={this.form} row={row} />)
+        }
+
         // text
         if (this.form.block_prefixes.includes('text')) {
             this.form.type = 'text'
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormColumn form={this.form} column={column} />
+                    <FormColumn functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
@@ -130,7 +153,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormColumn form={this.form} column={column} />
+                    <FormColumn functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
@@ -145,7 +168,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormColumn form={this.form} column={column} />
+                    <FormColumn functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
@@ -165,7 +188,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormColumn form={this.form} column={column} />
+                    <FormColumn functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
@@ -180,7 +203,7 @@ export default class FormTableRow extends Component {
         {
             return Object.keys(this.form.children).map(key => {
                 let child = this.form.children[key]
-                return (<FormTableRow form={child} key={key} columnCount={this.columnCount} />)
+                return (<FormTableRow form={child} key={key} columnCount={this.columnCount} functions={this.functions} />)
             })
         }
 
@@ -195,5 +218,6 @@ export default class FormTableRow extends Component {
 
 FormTableRow.propTypes = {
     form: PropTypes.object.isRequired,
+    functions: PropTypes.object.isRequired,
     columnCount: PropTypes.number.isRequired,
 }

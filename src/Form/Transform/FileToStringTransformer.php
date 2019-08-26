@@ -13,20 +13,18 @@ class FileToStringTransformer implements DataTransformerInterface
 	/**
 	 * Transforms an string to File
 	 *
-	 * @param  File|null $data
+	 * @param  string|null $data
 	 *
 	 * @return string
 	 */
-	public function transform($data): File
+	public function transform($data): ?File
 	{
-
-	    $relative = __DIR__ . '/../../../public';
-		$file = is_file($relative.$data) ? realpath($relative.$data) : null;
-		$data = new File('', false);
-		if ($file = realpath($relative.$data) && is_file($relative.$data))
-		    $data = new File($file, true);
-
-        return $data;
+	    if (null === $data)
+	        return $data;
+        $relative = __DIR__ . '/../../../public';
+        $file = is_file($relative.$data) ? realpath($relative.$data) : null;
+        $data = new File($file, true);
+        return $data ?: null;
 	}
 
 	/**

@@ -14,12 +14,10 @@ namespace App\Form\Modules\Departments;
 
 use App\Entity\Department;
 use App\Entity\DepartmentResource;
-use App\Form\Type\FilePathType;
 use App\Form\Type\HiddenEntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -50,32 +48,13 @@ class ResourceType extends AbstractType
                         'File' => 'File',
                     ],
                     'empty_data' => 'Link',
-                    'attr' => [
-                        'onChange' => true,
-                    ],
-                    'choice_attr' => [
-                        'Link' => ['dataChoice' => 'type.Link'],
-                        'File' => ['dataChoice' => 'type.File'],
-                    ],
+                    'on_change' => 'manageLinkOrFile'
                 ]
             )
-            ->add('urlLink', UrlType::class,
+            ->add('url', FileURLType::class,
                 [
                     'label' => 'Resource Location',
-                    'attr' => [
-                        'dataValue' => 'url',
-                    ],
-                    'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 link__name__ hidden',
-                ]
-            )
-            ->add('urlFile', FilePathType::class,
-                [
-                    'label' => 'Resource Location',
-                    'attr' => [
-                        'dataValue' => 'url',
-                    ],
-                    'fileName' => 'resource_',
-                    'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 file__name__ hidden',
+                    'file_prefix' => 'resource',
                 ]
             )
             ->add('department', HiddenEntityType::class,
@@ -86,12 +65,17 @@ class ResourceType extends AbstractType
         ;
     }
 
+    /**
+     * configureOptions
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
                 'data_class' => DepartmentResource::class,
                 'translation_domain' => 'gibbon',
+                'basic_to_array' => true,
             ]
         );
     }

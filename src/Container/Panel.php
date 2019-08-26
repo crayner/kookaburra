@@ -117,12 +117,17 @@ class Panel
     }
 
     /**
+     * @var array|null
+     */
+    private $toArrayResult;
+
+    /**
      * toArray
      * @return array
      */
-    public function toArray(): array
+    public function toArray(bool $refresh = false): array
     {
-        return [
+        return $this->toArrayResult = $this->toArrayResult ?: [
             'name' => $this->getName(),
             'label' => $this->getLabel(),
             'disabled' => $this->isDisabled(),
@@ -143,6 +148,19 @@ class Panel
         if (null === $view)
             return null;
         $result = [];
+
+        if(isset($view->vars['basic_to_array']) && $view->vars['basic_to_array']) {
+            $vars = [];
+            $vars['id'] = $view->vars['id'];
+            $vars['name'] = $view->vars['name'];
+            $vars['full_name'] = $view->vars['full_name'];
+            $vars['block_prefixes'] = $view->vars['block_prefixes'];
+            $vars['errors'] = $view->vars['errors'];
+            $vars['row'] = $view->vars['row'];
+            $vars['template_style'] = $view->vars['template_style'];
+            $vars['column_count'] = $view->vars['column_count'];
+            $view->vars = $vars;
+        }
         foreach($view->children as $name=>$child) {
             $result['children'][$name] = $this->formToArray($child);
         }

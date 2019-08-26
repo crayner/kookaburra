@@ -50,18 +50,22 @@ class ReactFormExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('use_react', false);
+        $resolver->setDefault('basic_to_array', false);
         $resolver->setDefault('template_style', 'table');
         $resolver->setDefault('row_style', 'standard');
         $resolver->setDefault('column_count', 2);
         $resolver->setDefault('wrapper', []);
         $resolver->setDefault('row_merge', []);
+        $resolver->setDefault('on_change', null);
 
         $resolver->setAllowedValues('use_react', [true,false]);
+        $resolver->setAllowedValues('basic_to_array', [true,false]);
         $resolver->setAllowedValues('template_style', ['table']);
         $resolver->setAllowedValues('row_style', ['standard','header','paragraph']);
 
         $resolver->setAllowedTypes('wrapper', 'array');
         $resolver->setAllowedTypes('row_merge', 'array');
+        $resolver->setAllowedTypes('on_change', ['null','string']);
     }
 
     /**
@@ -77,6 +81,8 @@ class ReactFormExtension extends AbstractTypeExtension
         $view->vars['column_count'] = $options['column_count'];
         $view->vars['wrapper'] = $options['wrapper'];
         $view->vars['row_merge'] = $options['row_merge'];
+        $view->vars['basic_to_array'] = $options['basic_to_array'];
+        $view->vars['on_change'] = $options['on_change'];
         parent::finishView($view, $form, $options);
         if ($form->isRoot() && $options['use_react']) {
             $this->setTranslationDomain($view->vars['translation_domain']);
@@ -148,30 +154,32 @@ class ReactFormExtension extends AbstractTypeExtension
         // Translation
 
         if (!(null === $view->vars['label'] || false === $view->vars['label']))
-            $view->vars['label'] = $this->translate($view->vars['label'], $view->vars['label_translation_parameters'], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+            $view->vars['label'] = $this->translate($view->vars['label'], $view->vars['label_translation_parameters'], $this->getTranslationDomain($view->vars['translation_domain']));
 
         if (isset($view->vars['help']) && !(null === $view->vars['help'] || false === $view->vars['help']))
-            $view->vars['help'] = $this->translate($view->vars['help'], $view->vars['help_translation_parameters'], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+            $view->vars['help'] = $this->translate($view->vars['help'], $view->vars['help_translation_parameters'], $this->getTranslationDomain($view->vars['translation_domain']));
 
         foreach($view->vars['attr'] as $attrName=>$attr)
             if (in_array($attrName, ['title', 'placeholder']))
-                $view->vars['attr'][$attrName] = $this->translate($view->vars['attr'][$attrName], $view->vars['attr_translation_parameters'], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+                $view->vars['attr'][$attrName] = $this->translate($view->vars['attr'][$attrName], $view->vars['attr_translation_parameters'], $this->getTranslationDomain($view->vars['translation_domain']));
 
         if (isset($view->vars['placeholder']) && !(null === $view->vars['placeholder'] || false === $view->vars['placeholder']))
-            $view->vars['placeholder'] = $this->translate($view->vars['placeholder'], [], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+            $view->vars['placeholder'] = $this->translate($view->vars['placeholder'], [], $this->getTranslationDomain($view->vars['translation_domain']));
 
         if (isset($view->vars['row']['title']) && !(null === $view->vars['row']['title'] || false === $view->vars['row']['title']))
-            $view->vars['row']['title'] = $this->translate($view->vars['row']['title'], [], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+            $view->vars['row']['title'] = $this->translate($view->vars['row']['title'], [], $this->getTranslationDomain($view->vars['translation_domain']));
 
         if (isset($view->vars['row']['title']) && !(null === $view->vars['row']['title'] || false === $view->vars['row']['title']))
-            $view->vars['row']['title'] = $this->translate($view->vars['row']['title'], [], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+            $view->vars['row']['title'] = $this->translate($view->vars['row']['title'], [],  $this->getTranslationDomain($view->vars['translation_domain']));
 
         if (isset($view->vars['row']['translate']))
             foreach($view->vars['row']['translate'] as $id=>$params)
-                $view->vars['row']['translate'][$id] = $this->translate($id, $params, $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+                $view->vars['row']['translate'][$id] = $this->translate($id, $params, $this->getTranslationDomain($view->vars['translation_domain']));
 
         if (isset($view->vars['choices']) && false !== $view->vars['choice_translation_domain']) {
-            dd('@todo: Translate the Choices',$view);
+            foreach($view->vars['choices'] as $q=>$choice)
+                $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+            $view->vars['choice_translation_domain'] = false;
         }
 
         if (! isset($view->vars['attr']['class']))
@@ -179,7 +187,7 @@ class ReactFormExtension extends AbstractTypeExtension
 
         if (in_array('submit', $view->vars['block_prefixes']))
         {
-            $view->vars['help'] = $this->translate('denotes a required field', [], $view->vars['translation_domain'] ?: $this->getTranslationDomain());
+            $view->vars['help'] = $this->translate('denotes a required field', [], $this->getTranslationDomain($view->vars['translation_domain']));
             $view->vars['attr']['class'] = '';
         }
 
@@ -221,11 +229,13 @@ class ReactFormExtension extends AbstractTypeExtension
     }
 
     /**
+     * getTranslationDomain
+     * @param string|null $domain
      * @return string|null
      */
-    public function getTranslationDomain(): ?string
+    public function getTranslationDomain(?string $domain = null): ?string
     {
-        return $this->translationDomain;
+        return $domain !== null && $domain !== $this->translationDomain ? $domain : $this->translationDomain;
     }
 
     /**

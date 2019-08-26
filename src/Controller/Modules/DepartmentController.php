@@ -12,6 +12,7 @@
 
 namespace App\Controller\Modules;
 
+use App\Container\ContainerManager;
 use App\Entity\Course;
 use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
@@ -289,26 +290,23 @@ class DepartmentController extends AbstractController
      * @Route("/{department}/edit/", name="edit")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function edit(Request $request, ResourceTypeManager $resourceTypeManager, ?Department $department = null)
+    public function edit(Request $request, ResourceTypeManager $resourceTypeManager, ContainerManager $manager, ?Department $department = null)
     {
         $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager]);
 
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid())
         {
-            dd($department);
-            ProviderFactory::create(Department::class)
-                ->setEntity($department)
-                ->saveEntity();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($department);
+            $em->flush();
         }
 
-        return $this->render('modules/departments/edit.html.twig',
-            [
-                'department' => $department,
-                'form' => $form->createView(),
-            ]
-        );
+        $manager->singlePanel($form->createView(), 'DepartmentEdit');
+
+        return $this->render('modules/departments/edit.html.twig', [
+            'department' => $department,
+        ]);
     }
 }

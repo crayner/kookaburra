@@ -30,6 +30,7 @@ use App\Provider\TimetableProvider;
 use App\Util\CacheHelper;
 use App\Util\EntityHelper;
 use App\Util\ErrorHelper;
+use App\Util\FileHelper;
 use App\Util\Format;
 use App\Util\FormatHelper;
 use App\Util\GlobalHelper;
@@ -110,6 +111,7 @@ class HelperListener implements EventSubscriberInterface
             $gh = new GlobalHelper($stack);
             $sh = new SecurityHelper($logger, $authorizationChecker);
             $uh = new UserHelper($tokenStorage);
+            new FileHelper($container->getParameter('absoluteURL'), $container->getParameter('upload_path'), $container->get('kernel')->getPublicDir());
         }
         $this->container = $container;
         $this->router = $router;

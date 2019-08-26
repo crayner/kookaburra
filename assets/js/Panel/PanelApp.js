@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Parser from "html-react-parser"
 import Panels from "./Panels"
+import FormApp from "../Form/FormApp"
 
 export default class PanelApp extends Component {
     constructor (props) {
@@ -17,7 +18,6 @@ export default class PanelApp extends Component {
         }
 
         this.onSelectTab = this.onSelectTab.bind(this)
-
     }
 
     onSelectTab(tabIndex)
@@ -36,9 +36,10 @@ export default class PanelApp extends Component {
                     Parser(panel.content)
                 )
             }
+            return <FormApp {...this.props} form={panel.form} globalForm={this.globalForm} />
         }
         return (
-            <Panels panels={this.panels} selectedIndex={this.state.tabIndex} onSelectTab={this.onSelectTab} globalForm={this.globalForm} />
+            <Panels {...this.props} panels={this.panels} selectedIndex={this.state.tabIndex} onSelectTab={this.onSelectTab} globalForm={this.globalForm} />
         )
     }
 }

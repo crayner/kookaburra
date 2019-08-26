@@ -15,6 +15,7 @@ namespace App\Container;
 
 use App\Manager\ScriptManager;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -115,6 +116,7 @@ class ContainerManager
                 'panels' => null,
                 'translationDomain' => null,
                 'selectedPanel' => null,
+                'application' => null,
             ]
         );
 
@@ -123,6 +125,7 @@ class ContainerManager
         $resolver->setAllowedTypes('selectedPanel', ['string', 'null']);
         $resolver->setAllowedTypes('translationDomain', ['string', 'null']);
         $resolver->setAllowedTypes('panels', [ArrayCollection::class, 'null']);
+        $resolver->setAllowedTypes('application', ['string', 'null']);
 
         $resolver->resolve($container->toArray());
 
@@ -156,7 +159,6 @@ class ContainerManager
             $containers[$target] = $container;
         }
 
-        dump($containers);
         $this->scriptManager->addAppProp('container', $containers);
         $this->scriptManager->addEncoreEntryCSSFile('container');
         return $this;
@@ -212,5 +214,21 @@ class ContainerManager
     {
         $this->globalForm = $globalForm;
         return $this;
+    }
+
+    /**
+     * singlePanel
+     * @param FormView $view
+     * @param string|null $application
+     * @param string $target
+     * @param string $domain
+     */
+    public function singlePanel(FormView $view, ?string $application = null, string $target = 'formContent', string $domain = 'gibbon')
+    {
+        $container = new Container();
+        $panel = new Panel();
+        $panel->setForm($view)->setName('single');
+        $container->addPanel($panel)->setTarget($target)->setApplication($application);
+        $this->setGlobalForm(true)->setTranslationDomain($domain)->addContainer($container)->buildContainers();
     }
 }

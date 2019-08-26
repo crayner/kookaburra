@@ -10,6 +10,7 @@ export default function FormColumn(props) {
     const {
         column,
         form,
+        functions,
     } = props
 
     if (column.formElements.includes('label_help')) {
@@ -30,6 +31,12 @@ export default function FormColumn(props) {
         delete attr.inputmode
     }
 
+    if (form.on_change !== null){
+        let onChange = functions[form.on_change]
+        attr.onChange = (e) => onChange(e)
+    }
+
+
     if (column.formElements.includes('widget') && column.formElements.includes('errors')) {
         var errors = []
         if (form.errors.length > 0) {
@@ -45,8 +52,9 @@ export default function FormColumn(props) {
                 options.push(<option key={0} className={'text-gray-500'} value={''}>{form.placeholder}</option>)
             }
 
-            Object.keys(form.choices).map(value => {
-                const label = form.choices[value].label
+            Object.keys(form.choices).map(choice => {
+                const label = form.choices[choice].label
+                const value = form.choices[choice].value
                 options.push(<option value={value} key={value}>{label}</option>)
             })
 
@@ -80,4 +88,5 @@ export default function FormColumn(props) {
 FormColumn.propTypes = {
     form: PropTypes.object.isRequired,
     column: PropTypes.object.isRequired,
+    functions: PropTypes.object.isRequired,
 }

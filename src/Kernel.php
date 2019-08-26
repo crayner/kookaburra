@@ -30,10 +30,18 @@ class Kernel extends BaseKernel
         return \dirname(__DIR__);
     }
 
+    public function getPublicDir(): string
+    {
+        return $this->getProjectDir() . '/public';
+    }
+
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
         $container->setParameter('container.dumper.inline_class_loader', true);
+        $container->setParameter('current_year', date('Y'));
+        $container->setParameter('current_month', date('m'));
+        $container->setParameter('kernel.public_dir', $this->getPublicDir());
         $confDir = $this->getProjectDir().'/config';
 
         $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');
