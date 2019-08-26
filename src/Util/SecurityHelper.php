@@ -280,7 +280,7 @@ class SecurityHelper
                     } catch (PDOException $e) {
                     }
                 } else {
-                    self::$logger->warning(sprintf('No module was linked to the address "%s"', $address));
+                    self::$logger->warning(sprintf('No module was linked to the address "%s"', $module));
                 }
             }
         } else {

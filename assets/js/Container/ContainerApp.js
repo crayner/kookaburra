@@ -20,7 +20,13 @@ export default class ContainerApp extends Component {
             this.panels.default['content'] = this.content
         }
 
-        this.functions = {}
+        this.functions = {
+
+        }
+    }
+
+    fileDownload() {
+
     }
 
     render() {

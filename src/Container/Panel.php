@@ -14,6 +14,7 @@ namespace App\Container;
 
 use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Class Panel
@@ -172,6 +173,12 @@ class Panel
         } else {
             $vars['errors'] = [];
         }
+
+        if (isset( $vars['value']) && $vars['value'] instanceof File) {
+         dump($vars['value']);
+            $vars['value'] = $vars['value']->getRealPath();
+        }
+
         return array_merge($vars, $result);
     }
 

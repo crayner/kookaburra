@@ -6,6 +6,7 @@ import FormColumn from "./FormColumn"
 import Parser from "html-react-parser"
 import FormGeneratePassword from "./FormGeneratePassword"
 import FormTextArea from "./FormTextArea"
+import FormFile from "./FormFile"
 
 export default class FormTableRow extends Component {
     constructor (props) {
@@ -116,7 +117,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormColumn functions={this.functions} form={this.form} column={column} />
+                    <FormFile functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (

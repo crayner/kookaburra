@@ -55,6 +55,13 @@ class ResourceType extends AbstractType
                 [
                     'label' => 'Resource Location',
                     'file_prefix' => 'resource',
+                    'row_merge' => [
+                        'button' => [
+                            'class' => 'button -ml-px button-right',
+                        ],
+                        'security' => 'departments__edit',
+                        'title' => 'Download Resource',
+                    ],
                 ]
             )
             ->add('department', HiddenEntityType::class,
