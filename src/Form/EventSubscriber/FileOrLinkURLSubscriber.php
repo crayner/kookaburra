@@ -71,13 +71,13 @@ class FileOrLinkURLSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
         foreach($data as $q=>$w) {
-            if ($w['url'] instanceof UploadedFile) {
+            if ($w['url'] instanceof UploadedFile)
                 $w['url'] = $w['url']->move($this->targetDir, $w['url']->getClientOriginalName());
-                $data[$q] = $w;
-            }
-            if ('' === $w['url'] || null === $w['url']) {
+
+            if ($w['type'] === 'File' && ('' === $w['url'] || null === $w['url']))
                 $w['url'] = $event->getForm()->get($q)->get('url')->getData();
-            }
+
+            $data[$q] = $w;
         }
         $event->setData($data);
     }
