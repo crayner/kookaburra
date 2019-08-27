@@ -3,6 +3,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import PanelApp from "../Panel/PanelApp"
+import ContainerApp from "../Container/ContainerApp"
 
 
 export default class DepartmentEditApp extends Component {
@@ -47,6 +48,7 @@ export default class DepartmentEditApp extends Component {
         this.setState({
             values: values
         })
+        console.log(this)
     }
 
     toggleRowClass(child, value) {
@@ -54,7 +56,7 @@ export default class DepartmentEditApp extends Component {
         if (value === 'File') {
             child.children.url.block_prefixes = ["form", "file", "file_path", "_edit_resources_entry_url"]
         } else {
-            child.children.url.block_prefixes = ["form", "text", "url", "_edit_resources_entry_url"]
+            child.children.url.block_prefixes = ["form", "url", "file_path", "_edit_resources_entry_url"]
         }
         return child
     }
@@ -73,20 +75,7 @@ export default class DepartmentEditApp extends Component {
     }
 
     render() {
-        if (this.globalForm) {
-            return (
-                <form   action={this.form.action}
-                        className={this.form.row.form.class}
-                        id={this.form.id}
-                        encType={this.form.row.form.enctype}
-                        method={this.form.method !== undefined ? this.form.method : this.form.row.form.method}>
-                    <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} globalForm={this.globalForm} functions={this.functions} />
-                </form>
-            )
-        }
-        return (
-            <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} globalForm={this.globalForm} functions={this.functions} />
-        )
+        return (<ContainerApp {...this.props} functions={this.functions} form={{...this.form}} />)
     }
 }
 

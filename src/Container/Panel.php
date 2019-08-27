@@ -158,8 +158,18 @@ class Panel
             $vars['block_prefixes'] = $view->vars['block_prefixes'];
             $vars['errors'] = $view->vars['errors'];
             $vars['row'] = $view->vars['row'];
+            $vars['row_style'] = $view->vars['row_style'];
+            $vars['column'] = $view->vars['column'];
+            $vars['column_style'] = $view->vars['column_style'];
             $vars['template_style'] = $view->vars['template_style'];
             $vars['column_count'] = $view->vars['column_count'];
+            if (in_array('collection', $vars['block_prefixes'])) {
+                $vars['allow_add'] = $view->vars['allow_add'];
+                $vars['allow_delete'] = $view->vars['allow_delete'];
+                $vars['element_delete_route'] = $view->vars['element_delete_route'];
+                $vars['element_delete_options'] = $view->vars['element_delete_options'];
+            }
+
             $view->vars = $vars;
         }
         foreach($view->children as $name=>$child) {

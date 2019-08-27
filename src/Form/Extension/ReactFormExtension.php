@@ -53,15 +53,18 @@ class ReactFormExtension extends AbstractTypeExtension
         $resolver->setDefault('basic_to_array', false);
         $resolver->setDefault('template_style', 'table');
         $resolver->setDefault('row_style', 'standard');
+        $resolver->setDefault('column_style', null);
         $resolver->setDefault('column_count', 2);
         $resolver->setDefault('wrapper', []);
         $resolver->setDefault('row_merge', []);
+        $resolver->setDefault('column_merge', []);
         $resolver->setDefault('on_change', null);
 
         $resolver->setAllowedValues('use_react', [true,false]);
         $resolver->setAllowedValues('basic_to_array', [true,false]);
         $resolver->setAllowedValues('template_style', ['table']);
-        $resolver->setAllowedValues('row_style', ['standard','header','paragraph']);
+        $resolver->setAllowedValues('row_style', ['standard','header','paragraph', 'collection']);
+        $resolver->setAllowedValues('column_style', [null, 'collection']);
 
         $resolver->setAllowedTypes('wrapper', 'array');
         $resolver->setAllowedTypes('row_merge', 'array');
@@ -79,6 +82,8 @@ class ReactFormExtension extends AbstractTypeExtension
         $view->vars['template_style'] = $options['template_style'];
         $view->vars['row_style'] = $options['row_style'];
         $view->vars['column_count'] = $options['column_count'];
+        $view->vars['column_style'] = $options['column_style'];
+        $view->vars['column_merge'] = $options['column_merge'];
         $view->vars['wrapper'] = $options['wrapper'];
         $view->vars['row_merge'] = $options['row_merge'];
         $view->vars['basic_to_array'] = $options['basic_to_array'];
@@ -149,6 +154,7 @@ class ReactFormExtension extends AbstractTypeExtension
         if (in_array('crsf_token', $view->vars['block_prefixes']))
             $view->vars['row_style'] = 'widget';
         $view->vars['row'] = $this->getTemplateRow($view->vars['row_style']);
+        $view->vars['column'] = isset($view->vars['column_style']) ? $this->getTemplateColumn($view->vars['column_style']) : null;
         $view->vars['row'] = array_merge($view->vars['row'], isset($view->vars['row_merge'] )? $view->vars['row_merge'] : []);
 
         // Translation
@@ -213,6 +219,19 @@ class ReactFormExtension extends AbstractTypeExtension
             $name = 'get' . ucfirst($name) . 'Style';
         else
             $name = 'get' . ucfirst($name) . 'Row';
+        return $this->template->$name();
+    }
+
+    /**
+     * getTemplateColumn
+     * @param string|null $name
+     * @return array|null
+     */
+    private function getTemplateColumn(?string $name): ?array
+    {
+        if ($name === null)
+            return null;
+            $name = 'get' . ucfirst($name) . 'Column';
         return $this->template->$name();
     }
 

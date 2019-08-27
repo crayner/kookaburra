@@ -159,4 +159,51 @@ class TableTemplate implements ReactTemplateInterface
             ],
         ];
     }
+
+    /**
+     * getCollectionRow
+     * @return array
+     */
+    public function getCollectionRow(): array
+    {
+        return [
+            'class' => 'break flex flex-col sm:flex-row justify-between content-center p-0',
+            'style' => false,
+            'table' => [
+                'class' => 'leftIndent standardForm striped',
+            ],
+            'thead' => [],
+            'tbody' => [],
+            'columns' => [
+                [
+                    'class' => 'flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0',
+                    'style' => false,
+                    'colspan' => 2,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * getCollectionRow
+     * @return array
+     */
+    public function getCollectionColumn(): array
+    {
+        return [
+            'actions' => [
+                'class' => 'shortWidth text-xxs sm:text-xs p-2 sm:py-3 textCenter',
+            ],
+            'element' => [
+                'class' => 'text-xxs sm:text-xs p-2 sm:py-3',
+                'formElements' => [
+                    'widget',
+                    'errors',
+                ],
+                'wrapper' => [
+                    'class' => 'flex-1 relative',
+                ],
+            ],
+        ];
+    }
 }

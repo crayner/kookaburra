@@ -102,9 +102,30 @@ class EditType extends AbstractType
                     'allow_delete' => true,
                     'entry_type' => ResourceType::class,
                     'prototype' => true,
-                    'collection_manager' => $options['resource_manager'],
-                    'collection_template' => 'modules/departments/resource_element.html.twig',
-                    'basic_to_array' => true,
+                    'element_delete_route' => $options['resource_delete_route'],
+                    'row_merge' => [
+                        'thead' => [
+                            'class' => '',
+                            'columns' => [
+                                [
+                                    'class' => 'text-xxs sm:text-xs p-2 sm:py-3',
+                                    'label' => 'Name',
+                                ],
+                                [
+                                    'class' => 'text-xxs sm:text-xs p-2 sm:py-3',
+                                    'label' => 'Type',
+                                ],
+                                [
+                                    'class' => 'text-xxs sm:text-xs p-2 sm:py-3',
+                                    'label' => 'Resource Location',
+                                ],
+                                [
+                                    'class' => 'shortWidth text-xxs sm:text-xs p-2 sm:py-3 textCenter',
+                                    'label' => 'Actions',
+                                ],
+                            ]
+                        ],
+                    ],
                 ]
             )
             ->add('submit', SubmitType::class)
@@ -128,6 +149,7 @@ class EditType extends AbstractType
         );
         $resolver->setRequired([
             'resource_manager',
+            'resource_delete_route',
         ]);
     }
 

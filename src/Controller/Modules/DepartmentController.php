@@ -17,6 +17,7 @@ use App\Entity\Course;
 use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
 use App\Entity\Department;
+use App\Entity\DepartmentResource;
 use App\Entity\DepartmentStaff;
 use App\Entity\Setting;
 use App\Entity\Unit;
@@ -27,7 +28,9 @@ use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
 use App\Util\SecurityHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -292,7 +295,7 @@ class DepartmentController extends AbstractController
      */
     public function edit(Request $request, ResourceTypeManager $resourceTypeManager, ContainerManager $manager, ?Department $department = null)
     {
-        $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager]);
+        $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager, 'resource_delete_route' => $this->generateUrl('departments__resource_delete', ['resource' => '__id__', 'department' => '__department__'])]);
 
         $form->handleRequest($request);
 
@@ -309,5 +312,19 @@ class DepartmentController extends AbstractController
         return $this->render('modules/departments/edit.html.twig', [
             'department' => $department,
         ]);
+    }
+
+    /**
+     * deleteResource
+     * @param DepartmentResource $departmentResource
+     * @Route("/{department}/resource/{resource}/delete/", name="resource_delete")
+     * @Security("is_granted('ROLE_ROUTE', ['departments__edit'])")
+     * @return JsonResponse
+     */
+    public function deleteResource(DepartmentResource $departmentResource, Department $department)
+    {
+        $department = $departmentResource->getDepartment();
+
+        //JSON Response required.
     }
 }

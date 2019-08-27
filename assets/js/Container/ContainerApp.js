@@ -12,6 +12,7 @@ export default class ContainerApp extends Component {
         this.selectedPanel = props.selectedPanel
         this.globalForm = props.globalForm
         this.form = props.form
+        this.functions = props.functions
 
         if (Object.keys(this.panels).length === 0 && this.content !== null) {
             this.panels['default'] = {}
@@ -19,14 +20,6 @@ export default class ContainerApp extends Component {
             this.panels.default['disabled'] = true
             this.panels.default['content'] = this.content
         }
-
-        this.functions = {
-
-        }
-    }
-
-    fileDownload() {
-
     }
 
     render() {
@@ -50,6 +43,7 @@ export default class ContainerApp extends Component {
 
 ContainerApp.propTypes = {
     panels: PropTypes.object,
+    functions: PropTypes.object,
     content: PropTypes.string,
     selectedPanel: PropTypes.string,
     globalForm: PropTypes.bool,
@@ -62,4 +56,5 @@ ContainerApp.propTypes = {
 ContainerApp.defaultProps = {
     globalForm: false,
     form: false,
+    functions: {}
 }

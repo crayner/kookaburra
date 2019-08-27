@@ -6,8 +6,7 @@ import FormColumn from "./FormColumn"
 import Parser from "html-react-parser"
 import FormGeneratePassword from "./FormGeneratePassword"
 import FormTextArea from "./FormTextArea"
-import FormFile from "./FormFile"
-import FormUrl from "./FormUrl"
+import FormCollection from "./FormCollection"
 
 export default class FormTableRow extends Component {
     constructor (props) {
@@ -20,6 +19,18 @@ export default class FormTableRow extends Component {
     render() {
         var row = this.form.row !== undefined ? this.form.row : {}
         row.style = row.style !== undefined && typeof(row.style) === 'object' ? row.style : {}
+
+        if (this.form.block_prefixes.includes('react_collection')) {
+            const colStyle = typeof row.columns[0].style === 'object' ? row.columns[0].style : {}
+            return (
+                <tr className={row.class} style={row.style}>
+                    <td className={row.columns[0].class} colSpan={row.columns[0].colspan} style={colStyle}>
+                        <FormCollection form={this.form} functions={this.functions} columnCount={this.columnCount} />
+                    </td>
+                </tr>
+            )
+        }
+
 
         // header
         if (this.form.block_prefixes.includes('header')) {
@@ -86,7 +97,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormUrl functions={this.functions} form={this.form} column={column} />
+                    <FormInput functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
@@ -118,7 +129,7 @@ export default class FormTableRow extends Component {
             const columns = row.columns.map((column,key) => {
                 column.style = column.style !== undefined && typeof(column.style) === 'object' ? column.style : {}
                 return (<td className={column.class} style={column.style} key={key}>
-                    <FormFile functions={this.functions} form={this.form} column={column} />
+                    <FormInput functions={this.functions} form={this.form} column={column} />
                 </td> )
             })
             return (
