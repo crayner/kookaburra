@@ -103,6 +103,7 @@ class EditType extends AbstractType
                     'entry_type' => ResourceType::class,
                     'prototype' => true,
                     'element_delete_route' => $options['resource_delete_route'],
+                    'element_delete_options' => ['__id__' => 'id', '__department__' => 'department'],
                     'row_merge' => [
                         'thead' => [
                             'class' => '',

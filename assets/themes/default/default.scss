@@ -1401,3 +1401,11 @@ button.button-right {
     position: relative;
     max-height: 28px;
 }
+.close {
+    margin-top: -7px;
+    border: none;
+    float: right;
+}
+.close > span {
+    font-size: 20px;
+}

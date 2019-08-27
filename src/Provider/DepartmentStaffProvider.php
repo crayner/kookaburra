@@ -38,7 +38,7 @@ class DepartmentStaffProvider implements EntityProviderInterface
      * @return bool
      * @throws \Exception
      */
-    public function getRole(Department $department, $person = null)
+    public function getRole(Department $department, $person = null): bool
     {
         if($person instanceof SecurityUser)
             $person = $person->getPerson();

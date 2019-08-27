@@ -28,7 +28,7 @@ export default class FormWidgetErrors extends Component {
                 <FormErrors form={this.form} />
             </div>)
         }
-console.log(this.form)
+
         return (<div className={wrapperClass}>
             <FormInput form={this.form} functions={this.functions} />
             <FormErrors form={this.form} />

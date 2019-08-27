@@ -233,3 +233,6 @@ File: File
 Resource Location: Resource Location
 Description: Description
 Open Resource: Open Resource
+'Your request failed because your inputs were invalid.': 'Your request failed because your inputs were invalid.'
+'Your request failed due to a database error.': 'Your request failed due to a database error.'
+'Your request was completed successfully.': 'Your request was completed successfully.'

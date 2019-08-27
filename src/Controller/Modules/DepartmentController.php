@@ -15,7 +15,6 @@ namespace App\Controller\Modules;
 use App\Container\ContainerManager;
 use App\Entity\Course;
 use App\Entity\CourseClass;
-use App\Entity\CourseClassPerson;
 use App\Entity\Department;
 use App\Entity\DepartmentResource;
 use App\Entity\DepartmentStaff;
@@ -27,12 +26,14 @@ use App\Form\Modules\Departments\ResourceTypeManager;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
 use App\Util\SecurityHelper;
+use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class DepartmentController
@@ -321,10 +322,38 @@ class DepartmentController extends AbstractController
      * @Security("is_granted('ROLE_ROUTE', ['departments__edit'])")
      * @return JsonResponse
      */
-    public function deleteResource(DepartmentResource $departmentResource, Department $department)
+    public function deleteResource(DepartmentResource $resource, Department $department, TranslatorInterface $translator, ContainerManager $manager, ResourceTypeManager $resourceTypeManager)
     {
-        $department = $departmentResource->getDepartment();
+        $data = [];
+        $data['errors'] = [];
+        $data['form'] = [];
+        if ($department !== $resource->getDepartment()) {
+            $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'gibbon')];
+            return JsonResponse::create($data, 200);
+        }
+        if (!ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser())) {
+            $data['errors'][] = ['class' => 'error', 'message' =>  $translator->trans('Your request failed because you do not have access to this action.', [], 'gibbon')];
+            return JsonResponse::create($data, 200);
+        } else {
+            try {
+                $em = $this->getDoctrine()->getManager();
+//                $em->remove($resource);
+  //              $em->flush();
+            } catch (PDOException $e) {
+                $data['errors'][] = ['class' => 'error', 'message' =>  $translator->trans('Your request failed due to a database error.', [], 'gibbon')];
+                return JsonResponse::create($data, 200);
+            }
+            $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager, 'resource_delete_route' => $this->generateUrl('departments__resource_delete', ['resource' => '__id__', 'department' => '__department__'])]);
+
+            $manager->singlePanel($form->createView(), 'DepartmentEdit');
+            $data['form'] = $manager->getContainers()->get('formContent')['panels']->get('single')['form']['children']['resources'];
+            if ($data['errors'] === []) {
+                $data['errors'][] = ['class' => 'success', 'message' =>  $translator->trans('Your request was completed successfully.', [], 'gibbon')];
+            }
+        }
 
         //JSON Response required.
+        return JsonResponse::create($data, 200);
+
     }
 }

@@ -48,7 +48,6 @@ export default class DepartmentEditApp extends Component {
         this.setState({
             values: values
         })
-        console.log(this)
     }
 
     toggleRowClass(child, value) {
