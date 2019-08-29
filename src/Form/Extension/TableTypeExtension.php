@@ -44,7 +44,7 @@ class TableTypeExtension extends AbstractTypeExtension
         $view->vars['widget_class'] = $options['widget_class'];
         $view->vars['row_class'] = $options['row_class'];
         $view->vars['row_id'] = $options['row_id'];
-        $view->vars['div_class'] = $options['div_class'];
+        $view->vars['wrapper_class'] = $options['wrapper_class'];
         $view->vars['sub_label'] = $options['sub_label'];
     }
 
@@ -64,7 +64,7 @@ class TableTypeExtension extends AbstractTypeExtension
                 'row_class' => null,
                 'row_id' => false,
                 'help_attr' => [],
-                'div_class' => null,
+                'wrapper_class' => null,
                 'sub_label' => '',
             ]
         );
@@ -77,7 +77,11 @@ class TableTypeExtension extends AbstractTypeExtension
     public static function getExtendedTypes(): iterable
     {
         return [
-            SubmitType::class,FormType::class,ChoiceType::class,CheckboxType::class,TextType::class,ButtonType::class
+            ButtonType::class,
+            FormType::class,
+            ChoiceType::class,
+            CheckboxType::class,
+            TextType::class,
         ];
     }
 }

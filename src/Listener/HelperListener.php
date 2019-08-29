@@ -39,6 +39,7 @@ use App\Util\RelationshipHelper;
 use App\Util\SchoolYearHelper;
 use App\Util\SecurityHelper;
 use App\Util\TimetableHelper;
+use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
 use App\Util\UserHelper;
 use Doctrine\ORM\EntityManagerInterface;
@@ -96,7 +97,7 @@ class HelperListener implements EventSubscriberInterface
         RouterInterface $router,
         TokenStorageInterface $tokenStorage,
         RequestStack $stack,
-//        TranslatorInterface $translator,
+        TranslatorInterface $translator,
         Environment $twig,
         ContainerInterface $container,
         LoggerInterface $logger,
@@ -111,6 +112,7 @@ class HelperListener implements EventSubscriberInterface
             $gh = new GlobalHelper($stack);
             $sh = new SecurityHelper($logger, $authorizationChecker);
             $uh = new UserHelper($tokenStorage);
+            new TranslationsHelper($translator);
             new FileHelper($container->getParameter('absoluteURL'), $container->getParameter('upload_path'), $container->get('kernel')->getPublicDir());
         }
         $this->container = $container;

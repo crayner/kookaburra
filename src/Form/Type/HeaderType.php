@@ -31,8 +31,7 @@ class HeaderType extends AbstractType
         $resolver->setDefaults(
             [
                 'mapped' => false,
-                'label_colspan' => 2,
-                'row_style' => 'header',
+                'row_style' => 'single',
             ]
         );
     }

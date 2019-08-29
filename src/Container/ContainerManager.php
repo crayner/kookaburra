@@ -14,8 +14,10 @@ namespace App\Container;
 
 
 use App\Manager\ScriptManager;
+use App\Util\TranslationsHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -42,13 +44,19 @@ class ContainerManager
     private $globalForm = false;
 
     /**
+     * @var RequestStack
+     */
+    private $stack;
+
+    /**
      * ContainerManager constructor.
      * @param ScriptManager $scriptManager
      */
-    public function __construct(ScriptManager $scriptManager, TranslatorInterface $translator)
+    public function __construct(ScriptManager $scriptManager, TranslatorInterface $translator, RequestStack $stack)
     {
         $this->scriptManager = $scriptManager;
         $this->translator = $translator;
+        $this->stack = $stack;
     }
 
     /**
@@ -114,7 +122,6 @@ class ContainerManager
             [
                 'content' => null,
                 'panels' => null,
-                'translationDomain' => null,
                 'selectedPanel' => null,
                 'application' => null,
             ]
@@ -123,7 +130,6 @@ class ContainerManager
         $resolver->setAllowedTypes('target', 'string');
         $resolver->setAllowedTypes('content', ['string', 'null']);
         $resolver->setAllowedTypes('selectedPanel', ['string', 'null']);
-        $resolver->setAllowedTypes('translationDomain', ['string', 'null']);
         $resolver->setAllowedTypes('panels', [ArrayCollection::class, 'null']);
         $resolver->setAllowedTypes('application', ['string', 'null']);
 
@@ -150,6 +156,8 @@ class ContainerManager
             $container['panels'] = $container['panels']->toArray();
             $container['globalForm'] = $this->isGlobalForm();
             $container['form'] = $this->isGlobalForm();
+            $container['translations'] = TranslationsHelper::getTranslations();
+            $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
             if ($this->isGlobalForm() || true)
             {
                 $panel = reset($container['panels']);

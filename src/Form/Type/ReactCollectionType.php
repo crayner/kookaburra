@@ -41,13 +41,13 @@ class ReactCollectionType extends AbstractType
         );
         $resolver->setDefaults(
             [
-                'row_style' => 'collection',
-                'column_style' => 'collection',
-                'basic_to_array' => true,
                 'element_id_name' => 'id',
                 'element_delete_options' => ['__id__' => 'id'],
+                'header_row' => false,
             ]
         );
+
+        $resolver->setAllowedTypes('header_row', ['boolean', 'array']);
     }
 
     /**
@@ -90,5 +90,6 @@ class ReactCollectionType extends AbstractType
         $view->vars['allow_delete'] = $options['allow_delete'];
         $view->vars['element_delete_route'] = $options['element_delete_route'];
         $view->vars['element_delete_options'] = $options['element_delete_options'];
+        $view->vars['header_row'] = $options['header_row'];
     }
 }

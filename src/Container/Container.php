@@ -81,7 +81,6 @@ class Container
             'target' => $this->getTarget(),
             'content' => $this->getContent(),
             'panels' => $this->getPanels(),
-            'translationDomain' => $this->getTranslationDomain(),
             'selectedPanel' => $this->getSelectedPanel(),
             'application' => $this->getApplication(),
         ];
@@ -169,7 +168,6 @@ class Container
             [
                 'disabled' => false,
                 'content' => null,
-                'translationDomain' => null,
                 'form' => null,
             ]
         );
@@ -179,7 +177,6 @@ class Container
         $resolver->setAllowedTypes('disabled', 'boolean');
         $resolver->setAllowedTypes('content', ['string', 'null']);
         $resolver->setAllowedTypes('index', 'integer');
-        $resolver->setAllowedTypes('translationDomain', ['string', 'null']);
 
         $resolver->resolve($panel->toArray());
 

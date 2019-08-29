@@ -13,7 +13,7 @@
             {{- form_help(form) -}}
         </td>
         <td class="{{ widget_class|default('w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0') }}"{% if widget_colspan > '1' %} colspan="{{ widget_colspan }}"{% endif %}>
-            <div class="{{ div_class|default('flex-1 relative') }}{% if 'checkbox' in block_prefixes %} right{% endif %}">
+            <div class="{{ wrapper_class|default('flex-1 relative') }}{% if 'checkbox' in block_prefixes %} right{% endif %}">
                 {{- form_widget(form, widget_attr) -}}
                 {{- form_errors(form) -}}
             </div>
@@ -82,7 +82,7 @@
             {{- form_help(form) -}}
         </td>
         <td class="{{ widget_class|default('w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0') }}"{% if widget_colspan > '1' %} colspan="{{ widget_colspan }}"{% endif %}>
-            <div class="{{ div_class|default('flex-1 relative') }}{% if 'checkbox' in block_prefixes %} right{% endif %}" id="{{ id }}_content">
+            <div class="{{ wrapper_class|default('flex-1 relative') }}{% if 'checkbox' in block_prefixes %} right{% endif %}" id="{{ id }}_content">
                 {{- form_widget(form, widget_attr) -}}
                 {{- form_errors(form) -}}
             </div>

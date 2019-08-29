@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import FormTableRow from "./FormTableRow"
+import Row from "./Template/Table/Row"
 
 export default class FormApp extends Component {
     constructor (props) {
@@ -11,18 +11,22 @@ export default class FormApp extends Component {
         this.columnCount = props.form.column_count
         this.globalForm = props.globalForm
         this.functions = props.functions
+        this.columns = props.form.columns
     }
 
     render() {
-        if (this.form.template_style === 'table'){
-            const row = this.form.row
+        if (this.form.template === 'table'){
             const rows = Object.keys(this.form.children).map(key => {
                 const form = this.form.children[key]
-                return (<FormTableRow form={form} key={key} columnCount={this.columnCount} functions={this.functions} />)
+                return (<Row key={key} form={form} functions={this.functions} columns={this.columns}/>)
             })
 
+            let table_attr = {}
+            table_attr.className = 'smallIntBorder fullWidth standardForm relative'
+            if (this.form.row_class !== null) table_attr.className = this.form.row_class
+
             if (this.globalForm) {
-                return (<table className={row.table.class}>
+                return (<table {...table_attr}>
                     <tbody>
                     {rows}
                     </tbody>
@@ -30,12 +34,10 @@ export default class FormApp extends Component {
             }
 
             return (<form action={this.form.action}
-                          className={row.form.class}
                           id={this.form.id}
-                          encType={row.form.enctype}
-                          noValidate={'novalidate'}
-                          method={this.form.method !== undefined ? this.form.method : row.form.method}>
-                        <table className={row.table.class}>
+                          {...this.form.attr}
+                          method={this.form.method !== undefined ? this.form.method : 'POST'}>
+                        <table {...table_attr}>
                             <tbody>
                             {rows}
                             </tbody>
@@ -43,6 +45,7 @@ export default class FormApp extends Component {
                     </form>
             )
         }
+        // Future Expansion for grid not table
         return ''
     }
 }

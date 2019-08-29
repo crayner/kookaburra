@@ -128,15 +128,16 @@ class Panel
      */
     public function toArray(bool $refresh = false): array
     {
-        return $this->toArrayResult = $this->toArrayResult ?: [
+        $result =  $this->toArrayResult = $this->toArrayResult ?: [
             'name' => $this->getName(),
             'label' => $this->getLabel(),
             'disabled' => $this->isDisabled(),
             'content' => $this->getContent(),
-            'translationDomain' => $this->getTranslationDomain(),
             'index' => $this->getIndex(),
-            'form' => $this->formToArray($this->getForm()),
+            'form' => $this->getForm()->vars['toArray'],
         ];
+
+        return $result;
     }
 
     /**
@@ -150,31 +151,8 @@ class Panel
             return null;
         $result = [];
 
-        if(isset($view->vars['basic_to_array']) && $view->vars['basic_to_array']) {
-            $vars = [];
-            $vars['id'] = $view->vars['id'];
-            $vars['name'] = $view->vars['name'];
-            $vars['full_name'] = $view->vars['full_name'];
-            $vars['block_prefixes'] = $view->vars['block_prefixes'];
-            $vars['errors'] = $view->vars['errors'];
-            $vars['row'] = $view->vars['row'];
-            $vars['row_style'] = $view->vars['row_style'];
-            $vars['column'] = $view->vars['column'];
-            $vars['column_style'] = $view->vars['column_style'];
-            $vars['template_style'] = $view->vars['template_style'];
-            $vars['column_count'] = $view->vars['column_count'];
-            if (in_array('collection', $vars['block_prefixes'])) {
-                $vars['allow_add'] = $view->vars['allow_add'];
-                $vars['allow_delete'] = $view->vars['allow_delete'];
-                $vars['element_delete_route'] = $view->vars['element_delete_route'];
-                $vars['element_delete_options'] = $view->vars['element_delete_options'];
-            }
-
-            $view->vars = $vars;
-        }
-        foreach($view->children as $name=>$child) {
+        foreach($view->children as $name=>$child)
             $result['children'][$name] = $this->formToArray($child);
-        }
 
         $vars = $view->vars;
         unset($vars['form']);
@@ -270,5 +248,15 @@ class Panel
     {
         $this->form = $form;
         return $this;
+    }
+
+    /**
+     * prototypeToArray
+     * @param $view
+     * @return array|null
+     */
+    public function prototypeToArray($view)
+    {
+        return $this->formToArray($view);
     }
 }

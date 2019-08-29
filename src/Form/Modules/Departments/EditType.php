@@ -16,6 +16,7 @@ use App\Entity\Department;
 use App\Form\EventSubscriber\FileOrLinkURLSubscriber;
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactCollectionType;
+use App\Form\Type\ReactFormType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -61,38 +62,23 @@ class EditType extends AbstractType
             ->add('overview', HeaderType::class,
                 [
                     'label' => 'Overview',
+                    'row_style' => 'header',
+                    'attr' => [
+                        'class' => 'w-full'
+                    ],
                 ]
             )
             ->add('blurb', CKEditorType::class,
                 [
                     'label' => 'Description',
                     'required' => false,
-                    'attr' => [
-                        'rows' => 6,
-                    ],
-                    'row_merge' => [
-                        'class' => 'flex flex-col sm:flex-row justify-between content-center p-0',
-                        'style' => false,
-                        'columns' => [
-                            [
-                                'class' => 'flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0',
-                                'style' => false,
-                                'colspan' => 2,
-                                'formElements' => [
-                                    'widget',
-                                    'errors',
-                                ],
-                                'wrapper' => [
-                                    'class' => 'flex-1 relative',
-                                ],
-                            ],
-                        ],
-                    ],
+                    'row_style' => 'single',
                 ]
             )
             ->add('resource_header', HeaderType::class,
                 [
                     'label' => 'Resources',
+                    'row_style' => 'header',
                 ]
             )
             ->add('resources', ReactCollectionType::class,
@@ -102,34 +88,17 @@ class EditType extends AbstractType
                     'allow_delete' => true,
                     'entry_type' => ResourceType::class,
                     'prototype' => true,
+                    'header_row' => true,
+                    'row_style' => 'single',
                     'element_delete_route' => $options['resource_delete_route'],
                     'element_delete_options' => ['__id__' => 'id', '__department__' => 'department'],
-                    'row_merge' => [
-                        'thead' => [
-                            'class' => '',
-                            'columns' => [
-                                [
-                                    'class' => 'text-xxs sm:text-xs p-2 sm:py-3',
-                                    'label' => 'Name',
-                                ],
-                                [
-                                    'class' => 'text-xxs sm:text-xs p-2 sm:py-3',
-                                    'label' => 'Type',
-                                ],
-                                [
-                                    'class' => 'text-xxs sm:text-xs p-2 sm:py-3',
-                                    'label' => 'Resource Location',
-                                ],
-                                [
-                                    'class' => 'shortWidth text-xxs sm:text-xs p-2 sm:py-3 textCenter',
-                                    'label' => 'Actions',
-                                ],
-                            ]
-                        ],
-                    ],
                 ]
             )
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class,
+                [
+                    'row_style' => 'single',
+                ]
+            )
         ;
         $builder->get('resources')->addEventSubscriber(new FileOrLinkURLSubscriber($this->stack, $this->targetDir));
     }
@@ -144,8 +113,13 @@ class EditType extends AbstractType
             [
                 'data_class' => Department::class,
                 'translation_domain' => 'gibbon',
-                'use_react' => true,
-                'basic_to_array' => true,
+                'columns' => 1,
+                'target' => 'formContent',
+                'attr' => [
+                    'autoComplete' => 'on',
+                    'encType' => 'multipart/form-data',
+                    'className' => 'smallIntBorder fullWidth standardForm',
+                ]
             ]
         );
         $resolver->setRequired([
@@ -154,8 +128,21 @@ class EditType extends AbstractType
         ]);
     }
 
+    /**
+     * getBlockPrefix
+     * @return string
+     */
     public function getBlockPrefix()
     {
         return 'department_edit';
+    }
+
+    /**
+     * getParent
+     * @return string|null
+     */
+    public function getParent()
+    {
+        return ReactFormType::class;
     }
 }

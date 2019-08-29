@@ -39,6 +39,7 @@ class ResourceType extends AbstractType
             ->add('name', TextType::class,
                 [
                     'label' => 'Resource Name',
+                    'row_style' => 'collection_column',
                 ]
             )
             ->add('type', ChoiceType::class,
@@ -49,28 +50,24 @@ class ResourceType extends AbstractType
                         'File' => 'File',
                     ],
                     'empty_data' => 'Link',
-                    'on_change' => 'manageLinkOrFile'
+                    'on_change' => 'manageLinkOrFile',
+                    'row_style' => 'collection_column',
                 ]
             )
             ->add('url', FileURLType::class,
                 [
                     'label' => 'Resource Location',
                     'file_prefix' => 'resource',
-                    'row_merge' => [
-                        'button' => [
-                            'class' => 'button -ml-px button-right',
-                        ],
-                        'security' => 'departments__edit',
-                        'title' => 'Open Resource',
-                    ],
                     'constraints' => [
                         new NotBlank(),
                     ],
+                    'row_style' => 'collection_column',
                 ]
             )
             ->add('department', HiddenEntityType::class,
                 [
                     'class' => Department::class,
+                    'row_style' => 'hidden',
                 ]
             )
         ;
@@ -86,7 +83,6 @@ class ResourceType extends AbstractType
             [
                 'data_class' => DepartmentResource::class,
                 'translation_domain' => 'gibbon',
-                'basic_to_array' => true,
             ]
         );
     }

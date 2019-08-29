@@ -296,7 +296,13 @@ class DepartmentController extends AbstractController
      */
     public function edit(Request $request, ResourceTypeManager $resourceTypeManager, ContainerManager $manager, ?Department $department = null)
     {
-        $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager, 'resource_delete_route' => $this->generateUrl('departments__resource_delete', ['resource' => '__id__', 'department' => '__department__'])]);
+        $form = $this->createForm(EditType::class, $department,
+            [
+                'resource_manager' => $resourceTypeManager,
+                'resource_delete_route' => $this->generateUrl('departments__resource_delete', ['resource' => '__id__', 'department' => '__department__']),
+                'action' => $this->generateUrl('departments__edit', ['department' => $department->getId()])
+            ]
+        );
 
         $form->handleRequest($request);
 
@@ -343,7 +349,13 @@ class DepartmentController extends AbstractController
                 $data['errors'][] = ['class' => 'error', 'message' =>  $translator->trans('Your request failed due to a database error.', [], 'gibbon')];
                 return JsonResponse::create($data, 200);
             }
-            $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager, 'resource_delete_route' => $this->generateUrl('departments__resource_delete', ['resource' => '__id__', 'department' => '__department__'])]);
+            $form = $this->createForm(EditType::class, $department,
+                [
+                    'resource_manager' => $resourceTypeManager,
+                    'resource_delete_route' => $this->generateUrl('departments__resource_delete', ['resource' => '__id__', 'department' => '__department__']),
+                    'action' => $this->generateUrl('departments__edit', ['department' => $department->getId()])
+                ]
+            );
 
             $manager->singlePanel($form->createView(), 'DepartmentEdit');
             $data['form'] = $manager->getContainers()->get('formContent')['panels']->get('single')['form']['children']['resources'];
