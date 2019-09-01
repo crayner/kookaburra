@@ -12,7 +12,6 @@
 
 namespace App\Form\Type;
 
-use App\Entity\StringReplacement;
 use App\Manager\ScriptManager;
 use App\Util\TranslationsHelper;
 use Symfony\Component\Form\AbstractType;

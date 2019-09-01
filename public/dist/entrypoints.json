@@ -1,71 +1,63 @@
 {
   "entrypoints": {
-    "default": {
-      "js": [
-        "/build/runtime.b82e9a70.js",
-        "/build/default.fe9aadad.js"
-      ],
-      "css": [
-        "/build/default.52c43786.css"
-      ]
-    },
     "fastFinder": {
       "js": [
-        "/build/runtime.b82e9a70.js",
-        "/build/0.2396e3ae.js",
-        "/build/2.320878cd.js",
-        "/build/fastFinder.1e7a92d1.js"
+        "/build/runtime.df9c463a.js",
+        "/build/0.ba0f77be.js",
+        "/build/3.258e0d92.js",
+        "/build/fastFinder.23fa9f99.js"
       ],
       "css": [
         "/build/fastFinder.09f43b10.css"
       ]
     },
+    "idleTimeout": {
+      "js": [
+        "/build/runtime.df9c463a.js",
+        "/build/0.ba0f77be.js",
+        "/build/idleTimeout.4fe782c1.js"
+      ]
+    },
     "menuModule": {
       "js": [
-        "/build/runtime.b82e9a70.js",
-        "/build/0.2396e3ae.js",
-        "/build/menuModule.6d7f2eaa.js"
+        "/build/runtime.df9c463a.js",
+        "/build/0.ba0f77be.js",
+        "/build/menuModule.8300263d.js"
       ]
     },
     "notificationTray": {
       "js": [
-        "/build/runtime.b82e9a70.js",
-        "/build/0.2396e3ae.js",
-        "/build/4.5bc00bd6.js",
-        "/build/notificationTray.f5f5c019.js"
+        "/build/runtime.df9c463a.js",
+        "/build/0.ba0f77be.js",
+        "/build/4.0b8c8589.js",
+        "/build/notificationTray.dd01d2a4.js"
       ]
     },
     "app": {
       "js": [
-        "/build/runtime.b82e9a70.js",
-        "/build/6.0073be89.js",
-        "/build/app.f5ea4359.js"
+        "/build/runtime.df9c463a.js",
+        "/build/5.60eeaa44.js",
+        "/build/app.6d2e9144.js"
       ],
       "css": [
-        "/build/6.5f957273.css"
+        "/build/5.ab211765.css"
       ]
     },
-    "idleTimeout": {
+    "default": {
       "js": [
-        "/build/runtime.b82e9a70.js",
-        "/build/0.2396e3ae.js",
-        "/build/idleTimeout.29474ba9.js"
-      ]
-    },
-    "collections": {
-      "js": [
-        "/build/runtime.b82e9a70.js",
-        "/build/0.2396e3ae.js",
-        "/build/5.e07d74f2.js",
-        "/build/collections.da36faea.js"
+        "/build/runtime.df9c463a.js",
+        "/build/default.0f9ed62b.js"
+      ],
+      "css": [
+        "/build/default.c1c59d5b.css"
       ]
     },
     "container": {
       "js": [
-        "/build/runtime.b82e9a70.js",
-        "/build/0.2396e3ae.js",
-        "/build/3.eaf17afd.js",
-        "/build/container.7930a013.js"
+        "/build/runtime.df9c463a.js",
+        "/build/0.ba0f77be.js",
+        "/build/2.f03b7e37.js",
+        "/build/container.ba606682.js"
       ],
       "css": [
         "/build/container.15569a13.css"
@@ -73,7 +65,7 @@
     },
     "css/theme": {
       "js": [
-        "/build/runtime.b82e9a70.js"
+        "/build/runtime.df9c463a.js"
       ],
       "css": [
         "/build/css/theme.d1cb98c0.css"
@@ -81,7 +73,7 @@
     },
     "css/app": {
       "js": [
-        "/build/runtime.b82e9a70.js"
+        "/build/runtime.df9c463a.js"
       ],
       "css": [
         "/build/css/app.4d4d3556.css"

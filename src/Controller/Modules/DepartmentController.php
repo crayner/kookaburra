@@ -309,6 +309,7 @@ class DepartmentController extends AbstractController
             $errors = [];
             $status = 'success';
             $content = json_decode($request->getContent(), true);
+            dump($content);
             $form->submit($content);
             $em = $this->getDoctrine()->getManager();
 

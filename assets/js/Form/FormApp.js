@@ -17,6 +17,7 @@ export default class FormApp extends Component {
         this.functions.onElementChange = this.onElementChange.bind(this)
         this.functions.deleteElement = this.deleteElement.bind(this)
         this.functions.addElement = this.addElement.bind(this)
+        this.functions.onCKEditorChange = this.onCKEditorChange.bind(this)
         this.replaceName = this.replaceName.bind(this)
         this.buildFormData = this.buildFormData.bind(this)
         this.replaceFormElement = this.replaceFormElement.bind(this)
@@ -35,6 +36,14 @@ export default class FormApp extends Component {
     componentDidMount() {
         this.setState({
             formCount: this.calcFormCount({...this.state.form}, 0)
+        })
+    }
+
+    onCKEditorChange(event, editor, form) {
+        const data = editor.getData()
+        this.setState({
+            errors: this.state.errors,
+            form: {...this.changeFormValue(this.state.form,form,data)},
         })
     }
 
@@ -77,9 +86,9 @@ export default class FormApp extends Component {
     }
 
     onElementChange(e, form) {
-        this.state.form = {...this.changeFormValue(this.state.form,form,e.target.value)}
         this.setState({
             errors: this.state.errors,
+            form: {...this.changeFormValue(this.state.form,form,e.target.value)},
         })
     }
 
@@ -114,8 +123,8 @@ export default class FormApp extends Component {
             .then(data => {
                 let errors = this.state.errors
                 errors = errors.concat(data.errors)
-                this.submit = false
                 let form = typeof this.functions.submitFormCallable === 'function' ? this.functions.submitFormCallable(data.form) : data.form
+                this.submit = false
                 this.setState({
                     errors: errors,
                     form: form,

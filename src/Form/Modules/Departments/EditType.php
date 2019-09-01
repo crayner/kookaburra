@@ -64,7 +64,7 @@ class EditType extends AbstractType
                     'label' => 'Overview',
                     'row_style' => 'header',
                     'attr' => [
-                        'class' => 'w-full'
+                        'class' => '',
                     ],
                 ]
             )
