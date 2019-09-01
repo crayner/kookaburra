@@ -82,7 +82,7 @@ class Department
 
     /**
      * @var Collection|null
-     * @ORM\OneToMany(targetEntity="DepartmentResource", mappedBy="department")
+     * @ORM\OneToMany(targetEntity="DepartmentResource", mappedBy="department", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $resources;
 

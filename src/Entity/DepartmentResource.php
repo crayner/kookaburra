@@ -45,7 +45,7 @@ class DepartmentResource
      * @var string
      * @ORM\Column(length=16)
      */
-    private $type;
+    private $type = 'Link';
 
     /**
      * @var array
@@ -106,9 +106,9 @@ class DepartmentResource
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
@@ -119,7 +119,7 @@ class DepartmentResource
      */
     public function setType(string $type): DepartmentResource
     {
-        $this->type = in_array($type, self::getTypeList()) ? $type : '';
+        $this->type = in_array($type, self::getTypeList()) ? $type : 'Link';
         return $this;
     }
 

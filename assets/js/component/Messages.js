@@ -21,7 +21,6 @@ export default class Messages extends Component {
 
     render() {
         let cells = this.props.messages.map((message,key) => {
-            console.log(message)
             message['id'] = key
             return <Message
                 message={message}
@@ -29,6 +28,8 @@ export default class Messages extends Component {
                 cancelMessage={this.cancelMessage}
             />
         })
+        if (cells.length === 0)
+            return null
 
         return (<div>{cells}</div>)
     }

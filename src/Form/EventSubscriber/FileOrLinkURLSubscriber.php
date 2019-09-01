@@ -70,12 +70,22 @@ class FileOrLinkURLSubscriber implements EventSubscriberInterface
     public function preSubmit(PreSubmitEvent $event)
     {
         $data = $event->getData();
+        $department = $event->getForm()->getParent()->getData();
         foreach($data as $q=>$w) {
             if ($w['url'] instanceof UploadedFile)
                 $w['url'] = $w['url']->move($this->targetDir, $w['url']->getClientOriginalName());
 
+            if ($w['type'] === '')
+                $w['type'] = 'Link';
+
             if ($w['type'] === 'File' && ('' === $w['url'] || null === $w['url']))
                 $w['url'] = $event->getForm()->get($q)->get('url')->getData();
+
+            if ($w['department'] === '')
+                $w['department'] = strval($department->getId());
+
+            if (isset($w['id']))
+                unset($w['id']);
 
             $data[$q] = $w;
         }

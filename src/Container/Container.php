@@ -13,6 +13,7 @@
 namespace App\Container;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -35,6 +36,11 @@ class Container
      * @var ArrayCollection|Panel[]
      */
     private $panels;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $forms;
 
     /**
      * @var null|string
@@ -81,6 +87,7 @@ class Container
             'target' => $this->getTarget(),
             'content' => $this->getContent(),
             'panels' => $this->getPanels(),
+            'forms' => $this->getForms(),
             'selectedPanel' => $this->getSelectedPanel(),
             'application' => $this->getApplication(),
         ];
@@ -168,7 +175,6 @@ class Container
             [
                 'disabled' => false,
                 'content' => null,
-                'form' => null,
             ]
         );
 
@@ -243,6 +249,38 @@ class Container
     public function setApplication(?string $application): Container
     {
         $this->application = $application;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getForms()
+    {
+        return $this->forms = $this->forms ?: new ArrayCollection();
+    }
+
+    /**
+     * Forms.
+     *
+     * @param ArrayCollection $forms
+     * @return Container
+     */
+    public function setForms(ArrayCollection $forms): Container
+    {
+        $this->forms = $forms;
+        return $this;
+    }
+
+    /**
+     * addForm
+     * @param string $name
+     * @param FormView $form
+     * @return Container
+     */
+    public function addForm(string $name, FormView $form): Container
+    {
+        $this->getForms()->set($name, $form->vars['toArray']);
         return $this;
     }
 }

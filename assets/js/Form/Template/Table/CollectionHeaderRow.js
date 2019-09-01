@@ -17,7 +17,7 @@ export default function CollectionHeaderRow(props) {
                 return <th className={'text-xxs sm:text-xs p-2 sm:py-3'} key={child.name}>{child.label}</th>
             }
         })
-        elements.push(<th className={'shortWidth text-xxs sm:text-xs p-2 sm:py-3'} key={'actions'}>{functions.translate('Actions')}</th>)
+        elements.push(<th className={'shortWidth text-xxs sm:text-xs p-2 sm:py-3 text-center'} key={'actions'}>{functions.translate('Actions')}</th>)
         return (
             <thead>
                 <tr>{elements}</tr>

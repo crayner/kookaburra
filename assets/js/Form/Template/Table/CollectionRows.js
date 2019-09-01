@@ -14,7 +14,7 @@ export default function CollectionRows(props) {
         errors,
     } = props
 
-    let table_attr = widgetAttr(form, 'fullWidth formTable fullWidth colorOddEven')
+    let table_attr = widgetAttr(form, 'leftIndent smallIntBorder standardForm striped', {})
     delete table_attr.name
 
     const header = (<CollectionHeaderRow
@@ -23,7 +23,8 @@ export default function CollectionRows(props) {
         )
 
     let rows = []
-    form.children.map((row, rowKey) => {
+    Object.keys(form.children).map(rowKey => {
+        let row = form.children[rowKey]
         let columns = []
         let hidden = []
         Object.keys(row.children).map(childKey => {
@@ -40,10 +41,17 @@ export default function CollectionRows(props) {
             buttons.push(<button onClick={() => functions.deleteElement(row)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'far fa-trash-alt fa-fw'}></span></button>)
         }
 
-        columns.push(<td key={'actions'}>{hidden}<div>{buttons}</div></td>)
+        columns.push(<td key={'actions'}>{hidden}<div className={'text-center'}>{buttons}</div></td>)
 
         rows.push(<tr key={rowKey}>{columns}</tr>)
     })
+
+    rows.push(<tr key={'addRow'}>
+        <td colSpan={functions.getColumnCount() - 1}></td>
+        <td><div className={'text-center'}>
+            <button onClick={() => functions.addElement(form)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'fas fa-plus-circle fa-fw'}></span></button>
+        </div></td>
+    </tr>)
 
     return (
         <div className={'collection'}>

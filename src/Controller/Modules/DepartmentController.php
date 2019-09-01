@@ -294,7 +294,7 @@ class DepartmentController extends AbstractController
      * @Route("/{department}/edit/", name="edit")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function edit(Request $request, ResourceTypeManager $resourceTypeManager, ContainerManager $manager, ?Department $department = null)
+    public function edit(Request $request, ResourceTypeManager $resourceTypeManager, ContainerManager $manager, TranslatorInterface $translator, ?Department $department = null)
     {
         $form = $this->createForm(EditType::class, $department,
             [
@@ -304,14 +304,39 @@ class DepartmentController extends AbstractController
             ]
         );
 
-        $form->handleRequest($request);
+        if ($request->getContentType() === 'json' && $request->getMethod() === 'POST') {
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+            $errors = [];
+            $status = 'success';
+            $content = json_decode($request->getContent(), true);
+            $form->submit($content);
             $em = $this->getDoctrine()->getManager();
-            $em->persist($department);
-            $em->flush();
-            $form = $this->createForm(EditType::class, $department, ['resource_manager' => $resourceTypeManager]);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em->persist($department);
+                $em->flush();
+                $em->refresh($department);
+                $form = $this->createForm(EditType::class, $department,
+                    [
+                        'resource_manager' => $resourceTypeManager,
+                        'resource_delete_route' => $this->generateUrl('departments__resource_delete', ['resource' => '__id__', 'department' => '__department__']),
+                        'action' => $this->generateUrl('departments__edit', ['department' => $department->getId()])
+                    ]
+                );
+                $errors[] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.', [], 'gibbon')];
+            } else {
+                $errors[] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'gibbon')];
+                $status = 'error';
+            }
+
+            $manager->singlePanel($form->createView(), 'DepartmentEdit');
+            return new JsonResponse(
+                [
+                    'form' => $manager->getFormFromContainer('formContent','single'),
+                    'errors' => $errors,
+                    'status' => $status,
+                ],
+                200);
         }
 
         $manager->singlePanel($form->createView(), 'DepartmentEdit');
@@ -333,22 +358,26 @@ class DepartmentController extends AbstractController
         $data = [];
         $data['errors'] = [];
         $data['form'] = [];
+        $em = $this->getDoctrine()->getManager();
         if ($department !== $resource->getDepartment()) {
             $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'gibbon')];
+            $data['status'] = 'error';
             return JsonResponse::create($data, 200);
         }
         if (!ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser())) {
             $data['errors'][] = ['class' => 'error', 'message' =>  $translator->trans('Your request failed because you do not have access to this action.', [], 'gibbon')];
-            return JsonResponse::create($data, 200);
+            $data['status'] = 'error';
+           return JsonResponse::create($data, 200);
         } else {
             try {
-                $em = $this->getDoctrine()->getManager();
-//                $em->remove($resource);
-  //              $em->flush();
+                $em->remove($resource);
+                $em->flush();
             } catch (PDOException $e) {
                 $data['errors'][] = ['class' => 'error', 'message' =>  $translator->trans('Your request failed due to a database error.', [], 'gibbon')];
-                return JsonResponse::create($data, 200);
+                $data['status'] = 'error';
+               return JsonResponse::create($data, 200);
             }
+            $em->refresh($department);
             $form = $this->createForm(EditType::class, $department,
                 [
                     'resource_manager' => $resourceTypeManager,
@@ -358,9 +387,10 @@ class DepartmentController extends AbstractController
             );
 
             $manager->singlePanel($form->createView(), 'DepartmentEdit');
-            $data['form'] = $manager->getContainers()->get('formContent')['panels']->get('single')['form']['children']['resources'];
+            $data['form'] = $manager->getFormFromContainer('formContent','single');
             if ($data['errors'] === []) {
                 $data['errors'][] = ['class' => 'success', 'message' =>  $translator->trans('Your request was completed successfully.', [], 'gibbon')];
+                $data['status'] = 'success';
             }
         }
 

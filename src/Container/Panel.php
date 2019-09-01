@@ -134,40 +134,9 @@ class Panel
             'disabled' => $this->isDisabled(),
             'content' => $this->getContent(),
             'index' => $this->getIndex(),
-            'form' => $this->getForm()->vars['toArray'],
         ];
 
         return $result;
-    }
-
-    /**
-     * formToArray
-     * @param FormView|null $view
-     * @return array|null
-     */
-    private function formToArray(?FormView $view): ?array
-    {
-        if (null === $view)
-            return null;
-        $result = [];
-
-        foreach($view->children as $name=>$child)
-            $result['children'][$name] = $this->formToArray($child);
-
-        $vars = $view->vars;
-        unset($vars['form']);
-        if (isset($vars['errors']) && $vars['errors'] instanceof FormErrorIterator && $vars['errors']->count() > 0) {
-            $vars['errors'] = explode("\n", str_replace('ERROR: ', '', trim($vars['errors']->__toString())));
-        } else {
-            $vars['errors'] = [];
-        }
-
-        if (isset( $vars['value']) && $vars['value'] instanceof File) {
-         dump($vars['value']);
-            $vars['value'] = $vars['value']->getRealPath();
-        }
-
-        return array_merge($vars, $result);
     }
 
     /**
@@ -248,15 +217,5 @@ class Panel
     {
         $this->form = $form;
         return $this;
-    }
-
-    /**
-     * prototypeToArray
-     * @param $view
-     * @return array|null
-     */
-    public function prototypeToArray($view)
-    {
-        return $this->formToArray($view);
     }
 }

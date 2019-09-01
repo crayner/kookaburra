@@ -38,6 +38,7 @@
         "react-idle-timer": "^4.2.8",
         "react-select": "^3.0.4",
         "react-tabs": "^3.0.0",
-        "tailwindcss": "^1.0.5"
+        "tailwindcss": "^1.0.5",
+        "uuid": "^3.3.3"
     }
 }

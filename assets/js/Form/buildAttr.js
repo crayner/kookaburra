@@ -37,8 +37,21 @@ export function widgetAttr(form, defaultClass, functions) {
 
     widget_attr.id = form.id
     widget_attr.name = form.full_name
-    if (form.on_change !== false) widget_attr.onChange = (e) => functions[form.on_change](e)
-    if (form.on_click !== false) widget_attr.onClick = (e) => functions[form.on_click](e)
+    widget_attr.onChange = null
+    if (form.on_change === false && typeof functions.onElementChange === 'function') {
+        widget_attr.onChange = (e) => functions.onElementChange(e,form)
+    } else if (typeof functions[form.on_change] === 'function') {
+        widget_attr.onChange = (e) => functions[form.on_change](e,form)
+    }
+    widget_attr.onClick = null
+    if (form.on_click === false && typeof functions.onElementClick === 'function') {
+        widget_attr.onClick = (e) => functions.onElementClick(e,form)
+    } else if (typeof functions[form.on_click] === 'function') {
+        widget_attr.onClick = (e) => functions[form.on_click](e,form)
+    }
+    if (form.multiple !== false) widget_attr.multiple = true
+
+    widget_attr['aria-describedby'] = form.id + '_help'
 
     return widget_attr
 }

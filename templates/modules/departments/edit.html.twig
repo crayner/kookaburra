@@ -2,7 +2,6 @@
 
 {% extends 'kookaburra.html.twig' %}
 
-
 {% set moduleName = 'Departments' %}
 {% set module = {
     baseURL: 'departments',
@@ -15,39 +14,4 @@
 
 {% block content %}
     <div id="formContent"></div>
-{#
-    {{ form_start(form) }}
-    <table class="smallIntBorder fullWidth standardForm relative" cellspacing="0">
-        <tbody>
-            <tr class="break flex flex-col sm:flex-row justify-between content-center p-0">
-                <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
-                    <h3>{{ 'Overview'|trans }}</h3>
-                </td>
-            </tr>
-            <tr class=" flex flex-col sm:flex-row justify-between content-center p-0">
-                <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
-                    <div class="flex-1 relative{{ form.blurb.vars.valid ? '' : ' errors' }}">
-                        {{ form_widget(form.blurb) }}
-                        {{ form_errors(form.blurb) }}
-                    </div>
-                </td>
-            </tr>
-            <tr class="break flex flex-col sm:flex-row justify-between content-center p-0">
-                <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 " colspan="2">
-                    <h3>{{ 'Resources'|trans }}</h3>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div id="collection_{{ form.resources.vars.id }}" class="flex-1 relative">
-        {% do form.resources.setRendered %}
-    </div>
-    <table class="smallIntBorder fullWidth standardForm relative" cellspacing="0">
-        <tbody>
-            {{ form_row(form.submit) }}
-        </tbody>
-    </table>
-
-    {{ form_end(form) }}
-    #}
 {% endblock content %}

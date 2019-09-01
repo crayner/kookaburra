@@ -40,6 +40,9 @@ class ResourceType extends AbstractType
                 [
                     'label' => 'Resource Name',
                     'row_style' => 'collection_column',
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
                 ]
             )
             ->add('type', ChoiceType::class,
@@ -52,6 +55,9 @@ class ResourceType extends AbstractType
                     'empty_data' => 'Link',
                     'on_change' => 'manageLinkOrFile',
                     'row_style' => 'collection_column',
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
                 ]
             )
             ->add('url', FileURLType::class,
@@ -62,6 +68,11 @@ class ResourceType extends AbstractType
                         new NotBlank(),
                     ],
                     'row_style' => 'collection_column',
+                    'attr' => [
+                        'style' => [
+                            'minWidth' => '15.5rem',
+                        ],
+                    ],
                 ]
             )
             ->add('department', HiddenEntityType::class,

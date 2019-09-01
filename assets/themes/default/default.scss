@@ -216,7 +216,7 @@ table .heading td:not(:first-child) {
 }
 
 .striped tbody tr:nth-of-type(even) {
-    background-color: #f9f9f9;
+    background-color: #e0e0e0;
 }
 .striped tbody tr:hover {
     background-color: #c0c0c0;
@@ -902,10 +902,12 @@ table.standardWidth {
 .fullWidth {
     width: 100%;
 }
-.leftIndent {
-    width: 100%;
+.collection {
     padding-left: 1.75rem;
     background-color: transparent;
+}
+.collection .standardForm {
+    width: 100%;
 }
 div.blockOuter {
     text-align: center;

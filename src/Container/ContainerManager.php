@@ -39,11 +39,6 @@ class ContainerManager
     private $translationDomain;
 
     /**
-     * @var bool
-     */
-    private $globalForm = false;
-
-    /**
      * @var RequestStack
      */
     private $stack;
@@ -122,6 +117,7 @@ class ContainerManager
             [
                 'content' => null,
                 'panels' => null,
+                'forms' => null,
                 'selectedPanel' => null,
                 'application' => null,
             ]
@@ -131,6 +127,7 @@ class ContainerManager
         $resolver->setAllowedTypes('content', ['string', 'null']);
         $resolver->setAllowedTypes('selectedPanel', ['string', 'null']);
         $resolver->setAllowedTypes('panels', [ArrayCollection::class, 'null']);
+        $resolver->setAllowedTypes('forms', [ArrayCollection::class, 'null']);
         $resolver->setAllowedTypes('application', ['string', 'null']);
 
         $resolver->resolve($container->toArray());
@@ -154,15 +151,9 @@ class ContainerManager
                 $container['panels'][$q] = $panel;
             }
             $container['panels'] = $container['panels']->toArray();
-            $container['globalForm'] = $this->isGlobalForm();
-            $container['form'] = $this->isGlobalForm();
+            $container['forms'] = $container['forms']->toArray();
             $container['translations'] = TranslationsHelper::getTranslations();
             $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
-            if ($this->isGlobalForm() || true)
-            {
-                $panel = reset($container['panels']);
-                $container['form'] = $panel['form'];
-            }
 
             $containers[$target] = $container;
         }
@@ -205,26 +196,6 @@ class ContainerManager
     }
 
     /**
-     * @return bool
-     */
-    public function isGlobalForm(): bool
-    {
-        return $this->globalForm;
-    }
-
-    /**
-     * GlobalForm.
-     *
-     * @param bool $globalForm
-     * @return ContainerManager
-     */
-    public function setGlobalForm(bool $globalForm): ContainerManager
-    {
-        $this->globalForm = $globalForm;
-        return $this;
-    }
-
-    /**
      * singlePanel
      * @param FormView $view
      * @param string|null $application
@@ -234,9 +205,22 @@ class ContainerManager
     public function singlePanel(FormView $view, ?string $application = null, string $target = 'formContent', string $domain = 'gibbon')
     {
         $container = new Container();
+        $container->addForm('single', $view);
         $panel = new Panel();
-        $panel->setForm($view)->setName('single');
+        $panel->setName('single');
         $container->addPanel($panel)->setTarget($target)->setApplication($application);
-        $this->setGlobalForm(true)->setTranslationDomain($domain)->addContainer($container)->buildContainers();
+        $this->setTranslationDomain($domain)->addContainer($container)->buildContainers();
     }
+
+    /**
+     * getFormFromContainer
+     * @param string $containerName
+     * @param string $panelName
+     * @return array
+     */
+    public function getFormFromContainer(string $containerName, string $panelName): array
+    {
+        $container = $this->getContainers()->get($containerName);
+        return $container['forms']->get($panelName);
+;    }
 }

@@ -20,7 +20,7 @@ export default function SingleRow(props) {
 
     return (<tr {...row_attr}>
         <td {...column_attr}>
-            <Widget form={{...form}} functions={functions} />
+            <Widget form={form} functions={functions} />
         </td>
     </tr>)
 

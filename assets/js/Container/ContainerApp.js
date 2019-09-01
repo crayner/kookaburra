@@ -12,11 +12,10 @@ export default class ContainerApp extends Component {
         this.panels = props.panels ? props.panels : {}
         this.content = props.content ? props.content : null
         this.selectedPanel = props.selectedPanel
-        this.globalForm = props.globalForm
-        this.form = props.form
         this.functions = props.functions
         this.translations = props.translations
         this.actionRoute = props.actionRoute
+        this.forms = props.forms
 
         if (Object.keys(this.panels).length === 0 && this.content !== null) {
             this.panels['default'] = {}
@@ -49,42 +48,25 @@ export default class ContainerApp extends Component {
         window.open(file, '_blank')
     }
 
-
     render() {
-        if (this.globalForm) {
-            return (
-                <form   action={this.form.action}
-                        id={this.form.id}
-                        {...this.form.attr}
-                        method={this.form.method !== undefined ? this.form.method : this.form.row.form.method}
-                >
-                    <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} globalForm={this.globalForm} functions={this.functions} />
-                </form>
-            )
-        }
         return (
-            <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} globalForm={this.globalForm} functions={this.functions} />
+            <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} functions={this.functions} forms={this.forms} />
         )
     }
 }
 
 ContainerApp.propTypes = {
     panels: PropTypes.object,
+    forms: PropTypes.object,
     functions: PropTypes.object,
     translations: PropTypes.object,
     content: PropTypes.string,
     actionRoutet: PropTypes.string,
     selectedPanel: PropTypes.string,
-    globalForm: PropTypes.bool,
-    form: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.object,
-    ]).isRequired,
 }
 
 ContainerApp.defaultProps = {
-    globalForm: false,
-    form: false,
     functions: {},
     translations: {},
+    forms: {},
 }

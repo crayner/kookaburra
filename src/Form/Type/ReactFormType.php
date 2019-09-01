@@ -12,6 +12,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\StringReplacement;
 use App\Manager\ScriptManager;
 use App\Util\TranslationsHelper;
 use Symfony\Component\Form\AbstractType;
@@ -95,6 +96,8 @@ class ReactFormType extends AbstractType
              $vars['method'] = $options['method'];
          }
          $this->addTranslation('Actions');
+         $this->addTranslation('File Download', [], 'kookaburra');
+         $this->addTranslation('Open Link', [], 'kookaburra');
          $view->vars['toArray'] = $vars;
      }
 
@@ -162,6 +165,7 @@ class ReactFormType extends AbstractType
         $vars['template'] = isset($view->vars['template']) ? $view->vars['template'] : null;
         $vars['panels'] = isset($view->vars['panels']) ?: 0;
         $vars['columns'] = isset($view->vars['columns']) ? $view->vars['columns'] : 0;
+        $vars['multiple'] = isset($view->vars['multiple']) ? $view->vars['multiple'] : false;
         $vars['label_colspan'] = $view->vars['label_colspan'];
         $vars['widget_colspan'] = $view->vars['widget_colspan'];
         $vars['label_class'] = $view->vars['label_class'];
@@ -177,6 +181,7 @@ class ReactFormType extends AbstractType
         }
         if (in_array($vars['type'], ['collection'])) {
             $vars['prototype'] = $this->buildTemplateView($view->vars['prototype']);
+            $vars['collection_key'] = uniqid('collection', true);
             $vars['header_row'] = $view->vars['header_row'];
             $vars['allow_delete'] = $view->vars['allow_delete'];
             $vars['allow_add'] = $view->vars['allow_add'];
@@ -210,6 +215,8 @@ class ReactFormType extends AbstractType
         {
             $vars['help'] = $this->translate('denotes a required field', [], $this->getTranslationDomain($view->vars['translation_domain']));
             $vars['attr']['class'] = '';
+            $vars['label'] = $this->translate(isset($view->vars['label']) ? $view->vars['label'] : 'Submit', [], $this->getTranslationDomain($view->vars['translation_domain']));
+
         }
 
         return $vars;
@@ -264,9 +271,9 @@ class ReactFormType extends AbstractType
      * addTranslation
      * @return ReactFormType
      */
-    public function addTranslation(string $id, array $options = []): ReactFormType
+    public function addTranslation(string $id, array $options = [], ?string $domain = null): ReactFormType
     {
-        TranslationsHelper::addTranslation($id, $options, $this->getTranslationDomain());
+        TranslationsHelper::addTranslation($id, $options, $this->getTranslationDomain($domain));
         return $this;
     }
 }

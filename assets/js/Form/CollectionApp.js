@@ -3,35 +3,46 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import CollectionRows from "./Template/Table/CollectionRows"
-import {fetchJson} from "../component/fetchJson"
 
 export default class CollectionApp extends Component {
     constructor (props) {
         super(props)
-        this.form = props.form
         this.functions = props.functions
+        this.form = props.form
 
-        this.functions.deleteElement = this.deleteElement.bind(this)
+        this.columnCount = 0
+
+        this.functions.incColumnCount = this.incColumnCount.bind(this)
+        this.functions.getColumnCount = this.getColumnCount.bind(this)
+
         this.state = {
             errors: [],
+            count: 0,
+            formCount: 0,
         }
     }
 
-    deleteElement(form) {
-        let route = this.form.element_delete_route
-        if (typeof this.form.element_delete_options !== 'object') this.form.element_delete_options = {}
-        Object.keys(this.form.element_delete_options).map(search => {
-            let replace = this.form.element_delete_options[search]
-            route = route.replace(search, form.children[replace].value)
+    componentDidMount() {
+        Object.keys(this.form.prototype.children).map(key => {
+            const child = this.form.prototype.children[key]
+            if (child.type !== 'hidden') {
+                this.functions.incColumnCount()
+            }
         })
-        fetchJson(route, [], false)
-            .then((data) => {
-                console.log(data)
-                this.form = data.form === [] ? this.form : data.form
-                this.setState({
-                    errors: data.errors,
-                })
-            })
+        this.functions.incColumnCount()
+
+        this.setState({
+            count: getChildCount(this.form),
+            formCount: this.functions.calcFormCount(this.form, 0),
+        })
+    }
+
+    incColumnCount(){
+        this.columnCount++
+    }
+
+    getColumnCount(){
+        return this.columnCount
     }
 
     render() {
@@ -43,3 +54,14 @@ CollectionApp.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
 }
+
+function getChildCount(form) {
+    let count = 0
+    Object.keys(form.children).map(key => {
+        const child = form.children[key]
+        if (typeof child === 'object')
+            count++
+    })
+    return count
+}
+

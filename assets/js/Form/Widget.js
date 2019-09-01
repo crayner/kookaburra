@@ -7,6 +7,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import DocumentEditor from '@ckeditor/ckeditor5-build-classic';
 import CollectionApp from "./CollectionApp"
 import {isEmpty} from "../component/isEmpty"
+import FormSelect from "./FormSelect"
 
 export default function Widget(props) {
     const {
@@ -36,12 +37,14 @@ export default function Widget(props) {
     }
 
     if (form.type === 'submit') {
-        widget_attr.type = 'submit'
+        widget_attr.type = 'button'
         widget_attr.style = {float: 'right'}
+        widget_attr.className = 'btn-gibbon'
+        widget_attr.onClick = () => functions.submitForm()
         return (
             <div {...wrapper_attr}>
                 <span className={'emphasis small'}>* {form.help}</span>
-                <input {...widget_attr} />
+                <button {...widget_attr} >{form.label}</button>
             </div>
         )
     }
@@ -70,7 +73,7 @@ export default function Widget(props) {
 
         return (
             <div {...wrapper_attr}>
-                <input {...widget_attr} />
+                <input {...widget_attr}  defaultValue={form.value} />
                 <button type={'button'} title={functions.translate('Open Link')} className={'button button-right'} {...button_attr} onClick={() => functions.openUrl(form.value)}><span className={'fa-fw fas fa-external-link-alt'}></span></button>
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
@@ -94,11 +97,15 @@ export default function Widget(props) {
     }
 
     if (form.type === 'collection') {
-        return (<CollectionApp form={{...form}} functions={functions} />)
+        return (<CollectionApp form={form} functions={functions} key={form.collection_key} />)
+    }
+
+    if (form.type === 'choice') {
+        return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr}/>)
     }
 
 
-console.log(form)
+    console.log(form)
     return (<div {...wrapper_attr}>
         {element}
     </div>)

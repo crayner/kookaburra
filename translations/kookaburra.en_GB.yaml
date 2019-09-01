@@ -35,3 +35,5 @@ organisation_website: '%name% Website'
 'The file "{path}" does not exist in the "{dir}" directory!': 'The file "{path}" does not exist in the "{dir}" directory!'
 Current: Current
 'The password must be a minimum of %{minLength} characters long.': 'The password must be a minimum of %{minLength} characters long.'
+Open Link: Open Link
+File Download: File Download

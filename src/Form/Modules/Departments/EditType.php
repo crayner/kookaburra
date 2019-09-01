@@ -97,6 +97,7 @@ class EditType extends AbstractType
             ->add('submit', SubmitType::class,
                 [
                     'row_style' => 'single',
+
                 ]
             )
         ;
