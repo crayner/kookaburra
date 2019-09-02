@@ -49,6 +49,7 @@ export default function Panels(props) {
 
 Panels.propTypes = {
     panels: PropTypes.object.isRequired,
+    forms: PropTypes.object.isRequired,
     selectedIndex: PropTypes.number.isRequired,
     onSelectTab: PropTypes.func.isRequired,
 }
@@ -59,10 +60,11 @@ function renderPanelContent(panel, props){
         return Parser(panel.content)
     }
 
+    let form = props.forms[panel.name]
     if (null !== panel.form){
         return <FormApp
             {...props}
-            form={panel.form} />
+            form={form} />
     }
 }
 

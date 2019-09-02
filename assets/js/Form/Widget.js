@@ -54,8 +54,31 @@ export default function Widget(props) {
         return (<input {...widget_attr} />)
     }
 
-    if (form.type === 'text') {
-        widget_attr.type = 'text'
+    if (form.type === 'email') {
+        widget_attr.type = 'email'
+        return (
+            <div {...wrapper_attr}>
+                <input {...widget_attr} defaultValue={form.value} />
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
+    if (form.type === 'password_generator') {
+        widget_attr.type = 'password'
+        let button_attr = {}
+
+        return (
+            <div {...wrapper_attr}>
+                <input {...widget_attr} defaultValue={form.value} />
+                <button type={'button'} title={form.generateButton.title} className={form.generateButton.class} {...button_attr} onClick={() => functions[form.generateButton.onClick](form)}>{form.generateButton.title}</button>
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
+    if (form.type === 'password') {
+        widget_attr.type = 'password'
         return (
             <div {...wrapper_attr}>
                 <input {...widget_attr} defaultValue={form.value} />
@@ -73,7 +96,7 @@ export default function Widget(props) {
 
         return (
             <div {...wrapper_attr}>
-                <input {...widget_attr}  defaultValue={form.value} />
+                <input {...widget_attr} defaultValue={form.value} />
                 <button type={'button'} title={functions.translate('Open Link')} className={'button button-right'} {...button_attr} onClick={() => functions.openUrl(form.value)}><span className={'fa-fw fas fa-external-link-alt'}></span></button>
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
@@ -96,6 +119,17 @@ export default function Widget(props) {
         )
     }
 
+    if (form.type === 'text') {
+        widget_attr.type = 'text'
+        return (
+            <div {...wrapper_attr}>
+                <input {...widget_attr} defaultValue={form.value} />
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
+
     if (form.type === 'collection') {
         return (<CollectionApp form={form} functions={functions} key={form.collection_key} />)
     }
@@ -104,6 +138,31 @@ export default function Widget(props) {
         return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr}/>)
     }
 
+    if (form.type === 'toggle') {
+        widget_attr.type = 'hidden'
+        wrapper_attr.className += ' right'
+        let button_attr = {}
+        button_attr.onClick = (e) => functions.onElementChange(e, form)
+        button_attr.className = 'button'
+        delete widget_attr.onChange
+        let span_attr = {}
+        span_attr.className = 'fa-fw far fa-thumbs-down'
+        if (form.value === 'Y' || form.value === '1') {
+            span_attr.className = 'fa-fw far fa-thumbs-up'
+            button_attr.className += ' success'
+            form.value = 'Y'
+        } else {
+            form.value = 'N'
+        }
+
+        return (
+            <div {...wrapper_attr}>
+                <input {...widget_attr}  defaultValue={form.value} />
+                <button type={'button'} title={functions.translate('Yes/No')} {...button_attr}><span {...span_attr}></span></button>
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
 
     console.log(form)
     return (<div {...wrapper_attr}>

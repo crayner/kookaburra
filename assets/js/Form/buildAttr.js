@@ -51,6 +51,11 @@ export function widgetAttr(form, defaultClass, functions) {
     }
     if (form.multiple !== false) widget_attr.multiple = true
 
+    if (typeof widget_attr.inputmode === 'string') {
+        widget_attr.inputMode = widget_attr.inputmode
+        delete widget_attr.inputmode
+    }
+
     widget_attr['aria-describedby'] = form.id + '_help'
 
     return widget_attr
@@ -67,4 +72,9 @@ export function wrapperAttr(form, defaultClass) {
     return wrapper_attr
 }
 
+export function labelAttr(form, defaultClass) {
+    let label_attr = {}
+    label_attr.className = defaultClass
+    return label_attr
+}
 

@@ -97,6 +97,7 @@ class ReactFormType extends AbstractType
          $this->addTranslation('Actions');
          $this->addTranslation('File Download', [], 'kookaburra');
          $this->addTranslation('Open Link', [], 'kookaburra');
+         $this->addTranslation('Yes/No', [], 'kookaburra');
          $view->vars['toArray'] = $vars;
      }
 
@@ -178,6 +179,12 @@ class ReactFormType extends AbstractType
         if (in_array($vars['type'], ['collection','unknown'])) {
             $vars['value'] = null;
         }
+        if (in_array($vars['type'], ['repeated'])) {
+            $vars['row_style'] = 'transparent';
+        }
+        if ($vars['type'] === 'password_generator') {
+            $vars['generateButton'] = $view->vars['generateButton'];
+        }
         if (in_array($vars['type'], ['collection'])) {
             $vars['prototype'] = $this->buildTemplateView($view->vars['prototype']);
             $vars['collection_key'] = uniqid('collection', true);
@@ -203,9 +210,11 @@ class ReactFormType extends AbstractType
         if (isset($view->vars['placeholder']) && !(null === $view->vars['placeholder'] || false === $view->vars['placeholder']))
             $vars['placeholder'] = $this->translate($view->vars['placeholder'], [], $this->getTranslationDomain($view->vars['translation_domain']));
 
-        if (isset($view->vars['choices']) && false !== $view->vars['choice_translation_domain']) {
-            foreach($view->vars['choices'] as $q=>$choice)
-                $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+        if (isset($view->vars['choices'])) {
+            if (false !== $view->vars['choice_translation_domain'])
+                foreach($view->vars['choices'] as $q=>$choice)
+                    $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+
             $vars['choice_translation_domain'] = false;
             $vars['choices'] = $view->vars['choices'];
         }
@@ -229,14 +238,24 @@ class ReactFormType extends AbstractType
     private function renderFormType(array $prefixes) {
         if (in_array('header', $prefixes))
             return 'header';
+        if (in_array('toggle', $prefixes))
+            return 'toggle';
+        if (in_array('paragraph', $prefixes))
+            return 'paragraph';
         if (in_array('ckeditor', $prefixes))
             return 'ckeditor';
         if (in_array('textarea', $prefixes))
             return 'textarea';
         if (in_array('url', $prefixes))
             return 'url';
+        if (in_array('password_generator', $prefixes))
+            return 'password_generator';
+        if (in_array('password', $prefixes))
+            return 'password';
         if (in_array('file', $prefixes))
             return 'file';
+        if (in_array('email', $prefixes))
+            return 'email';
         if (in_array('text', $prefixes))
             return 'text';
         if (in_array('choice', $prefixes))
@@ -249,6 +268,8 @@ class ReactFormType extends AbstractType
             return 'submit';
         if (in_array('button', $prefixes))
             return 'button';
+        if (in_array('repeated', $prefixes))
+            return 'repeated';
 
         return 'unknown';
     }

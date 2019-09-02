@@ -21,6 +21,7 @@ Miss: Miss
 Mr: Mr
 Mrs: Mrs
 Dr: Dr
+'Yes/No': 'Yes/No'
 'The value "%{value}" is not valid. Valid results are "[%{valid}]"': 'The value "%{value}" is not valid. Valid results are "[%{valid}]"'
 The password must contain both lower and uppercase characters.: The password must contain both lower and uppercase characters.
 The password must contain as least one number.: The password must contain as least one number.

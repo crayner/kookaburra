@@ -2,9 +2,10 @@
 
 import React from "react"
 import PropTypes from 'prop-types'
-import {rowAttr, columnAttr} from '../../buildAttr'
+import {rowAttr, columnAttr, wrapperAttr} from '../../buildAttr'
+import Parser from "html-react-parser"
 
-export default function HeaderRow(props) {
+export default function ParagraphRow(props) {
     const {
         form,
         functions,
@@ -16,16 +17,20 @@ export default function HeaderRow(props) {
     if (columns > 1) {
         column_attr.colSpan = columns
     }
+    let wrapper_attr = wrapperAttr(form, '')
+
 
     return (<tr {...row_attr}>
         <td {...column_attr}>
-            <h3>{form.label}</h3>
+            <div {...wrapper_attr}>
+            {Parser(form.help)}
+            </div>
         </td>
     </tr>)
 
 }
 
-HeaderRow.propTypes = {
+ParagraphRow.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
     columns: PropTypes.number.isRequired,

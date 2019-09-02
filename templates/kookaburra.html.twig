@@ -31,7 +31,7 @@
 
             <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
 
-                {% if getSidebar().isValid() or not is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% if getSidebar().isValid() or not is_granted('IS_AUTHENTICATED_FULLY') or sideBarOn is defined %}
                     <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
                         {% block sidebar %}
                             {% include 'default/sidebar/sidebar.html.twig' %}

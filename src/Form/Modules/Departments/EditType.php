@@ -62,10 +62,6 @@ class EditType extends AbstractType
             ->add('overview', HeaderType::class,
                 [
                     'label' => 'Overview',
-                    'row_style' => 'header',
-                    'attr' => [
-                        'class' => '',
-                    ],
                 ]
             )
             ->add('blurb', CKEditorType::class,
@@ -78,7 +74,6 @@ class EditType extends AbstractType
             ->add('resource_header', HeaderType::class,
                 [
                     'label' => 'Resources',
-                    'row_style' => 'header',
                 ]
             )
             ->add('resources', ReactCollectionType::class,

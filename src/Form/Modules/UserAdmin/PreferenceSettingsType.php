@@ -19,6 +19,7 @@ use App\Entity\Setting;
 use App\Entity\Theme;
 use App\Form\Transform\ToggleTransformer;
 use App\Form\Type\HeaderType;
+use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Provider\ProviderFactory;
 use App\Util\UserHelper;
@@ -29,6 +30,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Url;
 
 /**
  * Class PreferenceSettingsType
@@ -55,6 +58,9 @@ class PreferenceSettingsType extends AbstractType
                     'help' => 'Google Calendar ID for your personal calendar.<br/>Only enables timetable integration when logging in via Google.',
                     'help_html' => true,
                     'required' => false,
+                    'constraints' => [
+                        new Email(),
+                    ],
                 ]
             )
         ;
@@ -66,6 +72,9 @@ class PreferenceSettingsType extends AbstractType
                         'help' => 'Set your own custom background image.<br/>Please provide URL to image.',
                         'help_html' => true,
                         'required' => false,
+                        'constraints' => [
+                            new Url(),
+                        ],
                     ]
                 )
             ;
@@ -108,7 +117,9 @@ class PreferenceSettingsType extends AbstractType
             }
         }
         $builder
-            ->add('submit', SubmitType::class)
+            ->add('submit', SubmitType::class, [
+                'row_style' => 'single',
+            ])
             ->setAction($options['action'])
         ;
     }
@@ -128,8 +139,20 @@ class PreferenceSettingsType extends AbstractType
             [
                 'data_class' => Person::class,
                 'translation_domain' => 'gibbon',
-                'use_react' => true,
+                'attr' => [
+                    'className' => 'smallIntBorder fullWidth standardForm',
+                    'autoComplete' => 'on',
+                ],
             ]
         );
+    }
+
+    /**
+     * getParent
+     * @return string|null
+     */
+    public function getParent()
+    {
+        return ReactFormType::class;
     }
 }

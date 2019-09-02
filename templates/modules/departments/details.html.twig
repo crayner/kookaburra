@@ -13,7 +13,7 @@
             <a href='{{ path('departments__edit', { department: department.id}) }}' title="{{ 'Edit Department'|trans }}" class="float-right"><span class="text-gray-600 fas fa-pencil-alt fa-fw"></span></a>
         {% endif %}
         </h2>
-        <p>{{ department.blurb }}</p>
+        <p>{{ department.blurb|raw }}</p>
     {% endif %}
     <h2>{{ 'Staff'|trans }}</h2>
     <div class="flex flex-wrap rounded-sm bg-blue-100 border py-2">

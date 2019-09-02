@@ -48,7 +48,7 @@ class StaffPreferenceSettingsType extends AbstractType
             [
                 'data_class' => Staff::class,
                 'translation_domain' => 'gibbon',
-                'use_react' => true,
+                'row_style' => 'transparent',
             ]
         );
     }

@@ -43,11 +43,6 @@ class Panel
     private $content;
 
     /**
-     * @var FormView
-     */
-    private $form;
-
-    /**
      * @var null|string
      */
     private $translationDomain;
@@ -196,26 +191,6 @@ class Panel
     public function setIndex(?int $index): Panel
     {
         $this->index = $index;
-        return $this;
-    }
-
-    /**
-     * @return null|FormView
-     */
-    public function getForm(): ?FormView
-    {
-        return $this->form;
-    }
-
-    /**
-     * Form.
-     *
-     * @param FormView $form
-     * @return Panel
-     */
-    public function setForm(FormView $form): Panel
-    {
-        $this->form = $form;
         return $this;
     }
 }

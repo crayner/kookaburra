@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import Row from "./Template/Table/Row"
 import {fetchJson} from "../component/fetchJson"
 import Messages from "../component/Messages"
+import {createPassword} from "../component/createPassword"
 
 export default class FormApp extends Component {
     constructor (props) {
@@ -18,6 +19,7 @@ export default class FormApp extends Component {
         this.functions.deleteElement = this.deleteElement.bind(this)
         this.functions.addElement = this.addElement.bind(this)
         this.functions.onCKEditorChange = this.onCKEditorChange.bind(this)
+        this.functions.generateNewPassword = this.generateNewPassword.bind(this)
         this.replaceName = this.replaceName.bind(this)
         this.buildFormData = this.buildFormData.bind(this)
         this.replaceFormElement = this.replaceFormElement.bind(this)
@@ -36,6 +38,20 @@ export default class FormApp extends Component {
     componentDidMount() {
         this.setState({
             formCount: this.calcFormCount({...this.state.form}, 0)
+        })
+    }
+
+    generateNewPassword(form) {
+        const password = createPassword(form.generateButton.passwordPolicy)
+        let id = form.id.replace('first', 'second')
+        let fullForm = {...this.state.form}
+        fullForm = {...this.changeFormValue(fullForm,form,password)}
+        let second = this.findElementById(fullForm, id, {})
+        alert(form.generateButton.alertPrompt + ': ' + password)
+        fullForm = {...this.changeFormValue(fullForm,second,password)}
+        this.setState({
+            errors: this.state.errors,
+            form: fullForm,
         })
     }
 
@@ -86,6 +102,14 @@ export default class FormApp extends Component {
     }
 
     onElementChange(e, form) {
+        if (form.type === 'toggle') {
+            let value = form.value === 'Y' ? 'N' : 'Y'
+            this.setState({
+                errors: this.state.errors,
+                form: {...this.changeFormValue(this.state.form,form,value)},
+            })
+            return
+        }
         this.setState({
             errors: this.state.errors,
             form: {...this.changeFormValue(this.state.form,form,e.target.value)},
@@ -112,7 +136,7 @@ export default class FormApp extends Component {
         }
     }
 
-    submitForm(){
+    submitForm() {
         if (this.submit) return
         this.submit = true
         let data = this.buildFormData({}, this.state.form)
@@ -158,24 +182,25 @@ export default class FormApp extends Component {
     }
 
     findElementById(form, id, element) {
-        if (typeof element.id === 'string')
+        if (typeof element.id === 'string' && element.id === id)
             return element
         if (typeof form.children === 'object') {
             Object.keys(form.children).map(key => {
                 let child = form.children[key]
                 if (child.id === id)
                     element = child
-                this.findElementById(form.children[key],id,element)
+                element = this.findElementById(form.children[key],id,element)
             })
+            return element
         }
         if (typeof form.children === 'array') {
-            form.children.map((child,key) => {
+            form.children.map((child, key) => {
                 if (child.id === id)
                     element = child
-                this.findElementById(child,id,element)
+                element = this.findElementById(child,id,element)
             })
+            return element
         }
-
         return element
     }
 
@@ -265,6 +290,12 @@ export default class FormApp extends Component {
                 return (<Row key={key} form={form} functions={this.functions} columns={this.columns}/>)
             })
 
+            let columns = []
+            for (let i = 0; i < this.columns; i++) {
+                columns.push(<td key={i}/>)
+            }
+            let dummyRow = (<tr style={{display: 'none'}}>{columns}</tr>)
+
             let table_attr = {}
             table_attr.className = 'smallIntBorder fullWidth standardForm relative'
             if (this.state.form.row_class !== null) table_attr.className = this.state.form.row_class
@@ -277,6 +308,7 @@ export default class FormApp extends Component {
                         <Messages messages={this.state.errors} />
                         <table {...table_attr}>
                             <tbody>
+                                {dummyRow}
                                 {rows}
                             </tbody>
                         </table>

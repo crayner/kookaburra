@@ -31,8 +31,7 @@ class ParagraphType extends AbstractType
         $resolver->setDefaults(
             [
                 'mapped' => false,
-                'label_colspan' => 2,
-                'row_style' => 'paragraph',
+                'row_style' => 'single',
             ]
         );
     }

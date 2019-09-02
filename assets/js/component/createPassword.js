@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-export function generatePassword(policy) {
+export function createPassword(policy) {
 
     let source = 'abcdefghijklmnopqrstuvwxyz'
     source += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
