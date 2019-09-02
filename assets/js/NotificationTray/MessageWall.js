@@ -12,7 +12,7 @@ export default function MessageWall(props) {
 
     const y = messengerCount
 
-    const colour = y === 0 ? 'black' : 'white'
+    const colour = 'white'
 
     return (
         <div id="messageWall" className="relative">
@@ -21,7 +21,7 @@ export default function MessageWall(props) {
                     <span className={'far fa-comment-dots text-gray-500'}>
                     </span>
                     :
-                    <span className={'fas fa-comment-dots  text-gray-800'}>
+                    <span className={'fas fa-comment-dots  text-yellow-800'}>
                          <span className={'fa-layers-counter'} style={{color: colour, fontSize: '0.8rem', position: 'absolute', top: '18px', left: '6px'}}>{y}</span>
                     </span>}
             </a>

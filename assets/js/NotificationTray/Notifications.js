@@ -12,7 +12,7 @@ export default function Notifications(props) {
 
     const y = notificationCount
 
-    const colour = y === 0 ? 'black' : 'white'
+    const colour = 'white'
 
     return (
         <div id={'notifications'}>
@@ -21,7 +21,7 @@ export default function Notifications(props) {
                     <span className={'far fa-sticky-note text-gray-500'}>
                     </span>
                     :
-                    <span className={'fas fa-sticky-note text-gray-800'}>
+                    <span className={'fas fa-sticky-note text-yellow-500'}>
                     <span className={'fa-layers-counter'} style={{
                         color: colour,
                         fontSize: '0.8rem',

@@ -21,22 +21,42 @@ use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Component\Translation\TranslatorInterface as TranslatorInterfaceLegacy;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class Translator implements TranslatorInterfaceLegacy, TranslatorBagInterface, TranslatorInterface
+/**
+ * Class Translator
+ *
+ * This class is used to decorate the Translator Service
+ *
+ * @package App\Translation
+ */
+class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, TranslatorBagInterface
 {
-
     /**
-     * {@inheritdoc}
+     * trans
+     * @param string $id
+     * @param array $parameters
+     * @param string $domain
+     * @param null $locale
+     * @return string
      */
     public function trans($id, array $parameters = [], $domain = 'gibbon', $locale = null)
     {
+        if ($domain === 'gibbon')
+        {
+            trigger_error('The use of the Gibbon language domain is deprecated. Use null or messages.', E_USER_DEPRECATED);
+            $domain = null;
+        }
+
         $id = $this->translator->trans($id, $parameters, $domain, $locale);
 
         return $this->getInstituteTranslation($id, $parameters);
     }
 
     /**
+     * getInstituteTranslation
      * @param $trans
+     * @param array $parameters
      * @return string
+     * @throws \Exception
      */
     private function getInstituteTranslation($trans, array $parameters): string
     {
@@ -140,6 +160,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorBagInterface, T
      */
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
     {
+        trigger_error(sprintf('%s is deprecated since Symfony 4.2  Use trans with a %count%', __METHOD__), E_USER_DEPRECATED);
         if (is_array($number))
             $trans = $this->multipleTransChoice($id, $number, $parameters, $domain, $locale);
         else
