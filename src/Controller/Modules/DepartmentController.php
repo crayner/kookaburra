@@ -15,6 +15,7 @@ namespace App\Controller\Modules;
 use App\Container\ContainerManager;
 use App\Entity\Course;
 use App\Entity\CourseClass;
+use App\Entity\CourseClassPerson;
 use App\Entity\Department;
 use App\Entity\DepartmentResource;
 use App\Entity\DepartmentStaff;
@@ -23,10 +24,12 @@ use App\Entity\Unit;
 use App\Form\Modules\Departments\CourseOverviewType;
 use App\Form\Modules\Departments\EditType;
 use App\Form\Modules\Departments\ResourceTypeManager;
+use App\Manager\ExcelManager;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
 use App\Util\SecurityHelper;
 use Doctrine\DBAL\Driver\PDOException;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,6 +48,7 @@ class DepartmentController extends AbstractController
     /**
      * list
      * @Route("/list/", name="list")
+     * @IsGranted("ROLE_ROUTE")
      */
     public function list(Sidebar $sidebar)
     {
@@ -57,7 +61,7 @@ class DepartmentController extends AbstractController
         ProviderFactory::create(CourseClass::class)->getMyClasses($this->getUser(), $sidebar);
         return $this->render('modules/departments/list.html.twig',
             [
-                'departments' => ProviderFactory::getRepository(Department::class)->findBy([],['name' => 'ASC']),
+                'departments' => ProviderFactory::getRepository(Department::class)->findBy([], ['name' => 'ASC']),
             ]
         );
     }
@@ -68,6 +72,7 @@ class DepartmentController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      * @Route("/{department}/details/", name="details")
+     * @IsGranted("ROLE_ROUTE")
      */
     public function details(Department $department, Sidebar $sidebar)
     {
@@ -109,6 +114,7 @@ class DepartmentController extends AbstractController
      * @param Sidebar $sidebar
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/{department}/course/{course}/details/", name="course_details")
+     * @IsGranted("ROLE_ROUTE")
      */
     public function course(Department $department, Course $course, Sidebar $sidebar, Request $request)
     {
@@ -124,7 +130,7 @@ class DepartmentController extends AbstractController
             ]);
         }
 
-        if(!$course instanceof Course) {
+        if (!$course instanceof Course) {
             return $this->render('components/error.html.twig', [
                 'error' => 'The specified record does not exist.',
             ]);
@@ -133,11 +139,11 @@ class DepartmentController extends AbstractController
         $role = ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser());
 
         $extra = '';
-        if (in_array($role, ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher']) && $course->getSchoolYear()->getId() !== $request->getSession()->get('schoolYear')->getId()) {
-            $extra = ' '.$course->getSchoolYear()->getName();
+        if (in_array($role, ['Coordinator', 'Assistant Coordinator', 'Teacher (Curriculum)', 'Teacher']) && $course->getSchoolYear()->getId() !== $request->getSession()->get('schoolYear')->getId()) {
+            $extra = ' ' . $course->getSchoolYear()->getName();
         }
 
-        $units = ProviderFactory::getRepository(Unit::class)->findBy(['active' => 'Y', 'course' => $course],['ordering' => 'ASC', 'name' => 'ASC']);
+        $units = ProviderFactory::getRepository(Unit::class)->findBy(['active' => 'Y', 'course' => $course], ['ordering' => 'ASC', 'name' => 'ASC']);
 
         if ($this->isGranted('ROLE_ROUTE', ['departments__course_class_details']))
             $sidebar->addExtra('courseClasses', ['course' => $course, 'department' => $department]);
@@ -169,7 +175,7 @@ class DepartmentController extends AbstractController
             ]);
         }
 
-        if(!$course instanceof Course) {
+        if (!$course instanceof Course) {
             return $this->render('components/error.html.twig', [
                 'error' => 'The specified record does not exist.',
             ]);
@@ -177,7 +183,7 @@ class DepartmentController extends AbstractController
 
         $role = ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser());
 
-        if (!in_array($role, ['Coordinator','Assistant Coordinator','Teacher (Curriculum)'])) {
+        if (!in_array($role, ['Coordinator', 'Assistant Coordinator', 'Teacher (Curriculum)'])) {
             return $this->render('components/error.html.twig', [
                 'error' => 'The selected record does not exist, or you do not have access to it.',
             ]);
@@ -185,8 +191,7 @@ class DepartmentController extends AbstractController
 
         $form = $this->createForm(CourseOverviewType::class, $course);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $provider = ProviderFactory::create(Course::class);
             $provider->setEntity($course);
             $provider->saveEntity();
@@ -203,17 +208,18 @@ class DepartmentController extends AbstractController
 
     /**
      * courseClass
-     * @Route("/{department}/course/{course}/class/{class}/details", name="course_class_details")
+     * @Route("/{department}/course/{course}/class/{class}/details/", name="course_class_details")
+     * @IsGranted("ROLE_ROUTE")
      */
     public function courseClass(CourseClass $class, Sidebar $sidebar, Request $request, ?Department $department = null, ?Course $course = null)
     {
-        if(!$class instanceof CourseClass) {
+        if (!$class instanceof CourseClass) {
             return $this->render('components/error.html.twig', [
                 'error' => 'The specified record does not exist.',
             ]);
         }
 
-        if(null === $course || $class->getCourse() !== $course) {
+        if (null === $course || $class->getCourse() !== $course) {
             $course = $class->getCourse();
         }
 
@@ -224,8 +230,8 @@ class DepartmentController extends AbstractController
         $role = ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser());
 
         $extra = '';
-        if (in_array($role, ['Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher']) && $course->getSchoolYear()->getId() !== $request->getSession()->get('schoolYear')->getId()) {
-            $extra = ' '.$course->getSchoolYear()->getName();
+        if (in_array($role, ['Coordinator', 'Assistant Coordinator', 'Teacher (Curriculum)', 'Teacher']) && $course->getSchoolYear()->getId() !== $request->getSession()->get('schoolYear')->getId()) {
+            $extra = ' ' . $course->getSchoolYear()->getName();
         }
 
         $classActions = [];
@@ -233,7 +239,7 @@ class DepartmentController extends AbstractController
         if ($class->isAttendance() && $this->isGranted('ROLE_ACTION', ["/modules/Attendance/attendance_take_byCourseClass.php"])) {
             $classActions[] = [
                 'name' => 'Attendance',
-                'url'  => 'legacy',
+                'url' => 'legacy',
                 'params' => ['q' => '/modules/Attendance/attendance_take_byCourseClass.php', 'gibbonCourseClassID' => $class->getId()],
                 'icon' => 'fas fa-user-friends text-gray-600 fa-fw fa-4x',
             ];
@@ -242,16 +248,16 @@ class DepartmentController extends AbstractController
         if ($this->isGranted('ROLE_ACTION', ['/modules/Planner/planner.php'])) {
             $classActions[] = [
                 'name' => 'Planner',
-                'url'  => 'legacy',
+                'url' => 'legacy',
                 'params' => ['q' => '/modules/Planner/planner.php', 'gibbonCourseClassID' => $class->getId(), 'viewBy' => 'class'],
-                'icon' =>  'far fa-calendar-alt text-gray-600 fa-fw fa-4x',
+                'icon' => 'far fa-calendar-alt text-gray-600 fa-fw fa-4x',
             ];
         }
         // Markbook
         if (SecurityHelper::getHighestGroupedAction('/modules/Markbook/markbook_view.php') === 'View Markbook_allClassesAllData') {
             $classActions[] = [
                 'name' => 'Markbook',
-                'url'  => 'legacy',
+                'url' => 'legacy',
                 'params' => ['q' => '/modules/Markbook/markbook_view.php', 'gibbonCourseClassID' => $class->getId()],
                 'icon' => 'fas fa-th fa-fw text-gray-600 fa-4x',
             ];
@@ -260,7 +266,7 @@ class DepartmentController extends AbstractController
         if ($this->isGranted('ROLE_ACTION', ['/modules/Planner/planner_deadlines.php'])) {
             $classActions[] = [
                 'name' => 'Homework',
-                'url'  => 'legacy',
+                'url' => 'legacy',
                 'params' => ['q' => '/modules/Planner/planner_deadlines.php', 'gibbonCourseClassIDFilter' => $class->getId()],
                 'icon' => 'fas fa-clipboard-check text-gray-600 fa-fw fa-4x',
             ];
@@ -269,12 +275,11 @@ class DepartmentController extends AbstractController
         if ($this->isGranted('ROLE_ACTION', ['/modules/Formal Assessment/internalAssessment_write.php'])) {
             $classActions[] = [
                 'name' => 'Internal Assessment',
-                'url'  => 'legacy',
+                'url' => 'legacy',
                 'params' => ['q' => '/modules/Formal Assessment/internalAssessment_write.php', 'gibbonCourseClassID' => $class->getId()],
                 'icon' => 'fas fa-file-alt text-gray-600 fa-fw fa-4x',
             ];
         }
-
 
 
         return $this->render('modules/departments/course_class.html.twig',
@@ -333,7 +338,7 @@ class DepartmentController extends AbstractController
             $manager->singlePanel($form->createView(), 'DepartmentEdit');
             return new JsonResponse(
                 [
-                    'form' => $manager->getFormFromContainer('formContent','single'),
+                    'form' => $manager->getFormFromContainer('formContent', 'single'),
                     'errors' => $errors,
                     'status' => $status,
                 ],
@@ -366,17 +371,17 @@ class DepartmentController extends AbstractController
             return JsonResponse::create($data, 200);
         }
         if (!ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser())) {
-            $data['errors'][] = ['class' => 'error', 'message' =>  $translator->trans('Your request failed because you do not have access to this action.', [], 'gibbon')];
+            $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because you do not have access to this action.', [], 'gibbon')];
             $data['status'] = 'error';
-           return JsonResponse::create($data, 200);
+            return JsonResponse::create($data, 200);
         } else {
             try {
                 $em->remove($resource);
                 $em->flush();
             } catch (PDOException $e) {
-                $data['errors'][] = ['class' => 'error', 'message' =>  $translator->trans('Your request failed due to a database error.', [], 'gibbon')];
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.', [], 'gibbon')];
                 $data['status'] = 'error';
-               return JsonResponse::create($data, 200);
+                return JsonResponse::create($data, 200);
             }
             $em->refresh($department);
             $form = $this->createForm(EditType::class, $department,
@@ -388,9 +393,9 @@ class DepartmentController extends AbstractController
             );
 
             $manager->singlePanel($form->createView(), 'DepartmentEdit');
-            $data['form'] = $manager->getFormFromContainer('formContent','single');
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
             if ($data['errors'] === []) {
-                $data['errors'][] = ['class' => 'success', 'message' =>  $translator->trans('Your request was completed successfully.', [], 'gibbon')];
+                $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.', [], 'gibbon')];
                 $data['status'] = 'success';
             }
         }
@@ -398,5 +403,27 @@ class DepartmentController extends AbstractController
         //JSON Response required.
         return JsonResponse::create($data, 200);
 
+    }
+
+
+    /**
+     * courseClassExport
+     * @Route("/{department}/course/{course}/class/{class}/export/", name="course_class_export")
+     * @Security("is_granted('ROLE_HIGHEST', ['/modules/Students/student_view_details.php', 'View Student Profile_full', '!==']) or is_granted('ROLE_ROUTE', ['departments__course_class_details'])")
+     */
+    public function courseClassExport(CourseClass $class, Sidebar $sidebar, Request $request, ?Department $department = null, ?Course $course = null)
+    {
+        if ($course === null) {
+            $course = $class->getCourse();
+        }
+
+        if ($department === null) {
+            $department = $course->getDepartment();
+        }
+
+        $list = ProviderFactory::create(CourseClassPerson::class)->getClassStudentList($class);
+
+        $excelManager = new ExcelManager();
+        $excelManager->exportWithArray($list, sprintf('Class_Details_%s_%s.xlsx', $class->courseClassName(true), date('Ymd')));
     }
 }

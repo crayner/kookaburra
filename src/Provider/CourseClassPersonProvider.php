@@ -12,11 +12,10 @@
 
 namespace App\Provider;
 
+use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
-use App\Entity\Person;
 use App\Manager\Traits\EntityTrait;
-use App\Security\SecurityUser;
-use App\Twig\Sidebar;
+use App\Util\SchoolYearHelper;
 
 class CourseClassPersonProvider implements EntityProviderInterface
 {
@@ -26,4 +25,18 @@ class CourseClassPersonProvider implements EntityProviderInterface
      * @var string
      */
     private $entityName = CourseClassPerson::class;
+
+    /**
+     * getClassPeopleList
+     * @return array
+     */
+    public function getClassStudentList(CourseClass $class): array
+    {
+        $schoolYear = SchoolYearHelper::getCurrentSchoolYear();
+        $date = new \DateTime(date('Y-m-d'));
+
+        $list = $this->getRepository()->findStudentsInClass($class, $schoolYear, $date);
+
+        return $list;
+    }
 }

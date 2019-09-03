@@ -113,6 +113,7 @@ class HelperListener implements EventSubscriberInterface
             $sh = new SecurityHelper($logger, $authorizationChecker);
             $uh = new UserHelper($tokenStorage);
             new TranslationsHelper($translator);
+            new SchoolYearHelper($stack);
             new FileHelper($container->getParameter('absoluteURL'), $container->getParameter('upload_path'), $container->get('kernel')->getPublicDir());
         }
         $this->container = $container;

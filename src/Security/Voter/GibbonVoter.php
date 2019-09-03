@@ -83,8 +83,23 @@ class GibbonVoter implements VoterInterface
                     $this->logger->info(sprintf('The user "%s" attempted to access the route "%s" and was denied.', $token->getUser()->formatName(), $subject[0]), $subject);
                 return VoterInterface::ACCESS_DENIED;
             }
+        } elseif (in_array('ROLE_HIGHEST', $attributes)) {
+            $subject = $this->resolveHighestSubject($subject);
+            $highest = SecurityHelper::getHighestGroupedAction($subject[0]);
+            switch ($subject[2]) {
+                case '===':
+                    if ($highest = $subject[1])
+                        return VoterInterface::ACCESS_GRANTED;
+                    break;
+                case '!==':
+                    if ($highest != $subject[1])
+                        return VoterInterface::ACCESS_GRANTED;
+                    break;
+                default:
+                    dd($subject,$highest);
+            }
+            return VoterInterface::ACCESS_DENIED;
         }
-
         return VoterInterface::ACCESS_ABSTAIN;
     }
 
@@ -93,7 +108,7 @@ class GibbonVoter implements VoterInterface
      * @param array $subject
      * @return array
      */
-    private function resolveSubject(array$subject): array
+    private function resolveSubject(array $subject): array
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -101,7 +116,23 @@ class GibbonVoter implements VoterInterface
             1 => '%',
         ]);
         return $resolver->resolve($subject);
+    }
 
+    /**
+     * resolveHighestSubject
+     * @param array $subject
+     * @return array
+     */
+    private function resolveHighestSubject(array $subject): array
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults([
+            0 => 'You can never find this string in the action table.',
+            1 => 'do nothing',
+            2 => '===',
+        ]);
+        $resolver->setAllowedValues('2', ['===','!==','>','<','>=','<=']);
+        return $resolver->resolve($subject);
     }
 
     /**
