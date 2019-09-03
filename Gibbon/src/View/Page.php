@@ -19,10 +19,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\View;
 
+use App\Manager\Entity\BreadCrumbs;
 use App\Util\GlobalHelper;
 use Gibbon\Domain\System\Module;
 use Gibbon\Domain\System\Theme;
-use Gibbon\View\Components\Breadcrumbs;
 
 /**
  * Holds the details for rendering the current page.
@@ -61,7 +61,7 @@ class Page extends View
     {
         parent::__construct($templateEngine);
         
-        $this->breadcrumbs = new \App\Manager\Entity\BreadCrumbs();
+        $this->breadcrumbs = new BreadCrumbs();
         $this->stylesheets = new AssetBundle();
         $this->scripts = new AssetBundle();
 
