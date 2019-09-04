@@ -38,12 +38,12 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
      * @param null $locale
      * @return string
      */
-    public function trans($id, array $parameters = [], $domain = 'gibbon', $locale = null)
+    public function trans($id, array $parameters = [], $domain = 'messages', $locale = null)
     {
         if ($domain === 'gibbon')
         {
-            trigger_error('The use of the Gibbon language domain is deprecated. Use null or messages.', E_USER_DEPRECATED);
-            $domain = null;
+          //  trigger_error('The use of the Gibbon language domain is deprecated. Use null or messages.', E_USER_DEPRECATED);
+            $domain = 'messages';
         }
 
         $id = $this->translator->trans($id, $parameters, $domain, $locale);

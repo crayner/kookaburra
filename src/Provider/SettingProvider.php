@@ -16,11 +16,19 @@ use App\Entity\I18n;
 use App\Entity\Person;
 use App\Entity\Setting;
 use App\Exception\SettingNotFoundException;
+use App\Form\Type\SettingsType;
+use App\Manager\EntityInterface;
 use App\Manager\Traits\EntityTrait;
+use App\Validator\AlwaysInValid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Services\Format;
-use PDOException;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Validation;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SettingProvider implements EntityProviderInterface
 {
@@ -191,7 +199,7 @@ class SettingProvider implements EntityProviderInterface
      * @param string $value
      * @throws SettingNotFoundException
      */
-    public function setSettingByScope(string $scope, string $name, string $value)
+    public function setSettingByScope(string $scope, string $name, ?string $value)
     {
         $setting = $this->getSettingByScope($scope, $name, true);
         if (false === $setting)
@@ -275,5 +283,149 @@ class SettingProvider implements EntityProviderInterface
             return true;
 
         return true;
+    }
+
+    /**
+     * @var array
+     */
+    private $errors = [];
+
+    /**
+     * @return array
+     */
+    public function getErrors(): array
+    {
+        return $this->errors = $this->errors ?: [];
+    }
+
+    /**
+     * Errors.
+     *
+     * @param array $errors
+     * @return SettingProvider
+     */
+    public function addError(array $error): SettingProvider
+    {
+        $this->getErrors();
+        $this->errors[] = $error;
+        return $this;
+    }
+
+    /**
+     * handleSettingsForm
+     * @param FormInterface $form
+     * @param string|json $content
+     */
+    public function handleSettingsForm(FormInterface $form, Request $request, TranslatorInterface $translator): array
+    {
+        $content = json_decode($request->getContent(), true);
+
+        $form->submit($content);
+
+        if ($form->isValid()) {
+            $this->saveSettings($form, $content, $translator);
+            if (count($this->getErrors()) === 0)
+                return $this->addError(['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.')])->getErrors();
+            else
+                return $this->getErrors();
+        }
+
+        return  $this->addError(['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.')])->getErrors();
+    }
+
+    /**
+     * saveSettings
+     *
+     * Recursive
+     * @param FormInterface $form
+     */
+    private function saveSettings(FormInterface $form, array $content, TranslatorInterface $translator)
+    {
+        foreach($form->all() as $child)
+        {
+            if (get_class($child->getConfig()->getType()->getInnerType()) === SettingsType::class)
+            {
+                foreach($child->getConfig()->getOption('settings') as $setting) {
+                    $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
+                    $settingForm = $child->get($name);
+                    $data = $settingForm->getData();
+
+                    if ($data instanceof EntityInterface) {
+                        $data = $data->getId();
+                    }
+
+                    if ($settingForm->getConfig()->getOption('type') === 'file' && !$data instanceof File)
+                    {
+                        $value = $this->getContentValue($name, $content);
+                        if ($data !== $value && preg_match('#^data:[^;]*;base64,#', $value) === 1) {
+                            $target = realpath(__DIR__ . '/../../public/uploads') . DIRECTORY_SEPARATOR .date('Y') . DIRECTORY_SEPARATOR .date('m') . DIRECTORY_SEPARATOR . 'temp'.uniqid().'.txt';
+                            $value = explode(',', $value);
+                            if (!is_dir(realpath(__DIR__ . '/../../public/uploads') . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR .date('m')))
+                                mkdir(realpath(__DIR__ . '/../../public/uploads') . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR .date('m'), '0755', true);
+                            file_put_contents($target,base64_decode($value[1]));
+
+                            $file = new File($target, true);
+
+                            $fileName = substr(trim( $settingForm->getConfig()->getOption('fileName'), '_'). '_' . uniqid(), 0, 32) . '.' . $file->guessExtension();
+                            $target = realpath(__DIR__ . '/../../public/uploads') . DIRECTORY_SEPARATOR .date('Y') . DIRECTORY_SEPARATOR .date('m') . DIRECTORY_SEPARATOR . $fileName;
+                            $validator = Validation::createValidator();
+                            $file->move(dirname($target), $fileName);
+                            $file = new File(dirname($target) . '/' . $fileName, true);
+                            $x = $validator->validate($file, $settingForm->getConfig()->getOption('constraints'));
+                            if ($x->count() > 0) {
+                                unlink(dirname($target) . '/' . $fileName);
+                                foreach($x as $constraint) {
+                                    $settingForm->addError(new FormError($constraint->getMessage()));
+                                    $this->addError(['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.')]);
+                                }
+                                $data = null;
+                            } else {
+                                $data = str_replace($target = realpath(__DIR__ . '/../../public'),'', $file->getRealPath());
+                                dump($data);
+                                // Remove existing File...
+                                $file = $this->getSettingByScopeAsString($setting['scope'], $setting['name']);
+                                if (!in_array($file, [null, ''])) {
+                                    $file = realpath($file) ?: (realpath(__DIR__ . '/../../public' . $file) ?: false);
+                                    dump($file);
+                                    if (false !== $file)
+                                        unlink($file);
+                                }
+                            }
+                        }
+                    }
+
+                    if ($data instanceof File) {
+                        $data = str_replace(realpath(__DIR__ . '/../../public'), '', $data->getRealPath());
+                    }
+                    if (is_object($data))
+                        dump(get_class($data), $data);
+                    $this->setSettingByScope($setting['scope'], $setting['name'], $data);
+                }
+            }
+            $this->saveSettings($child, $content, $translator);
+        }
+    }
+
+    /**
+     * getContentValue
+     * @param string $name
+     * @param array $content
+     * @param null|mixed $value
+     * @return mixed|null
+     */
+    private function getContentValue(string $name, array $content, $value = null)
+    {
+        foreach($content as $q=>$w)
+        {
+            if ($q === $name)
+                $value = $w;
+
+            if (is_array($w) && $value === null)
+                $value = $this->getContentValue($name, $w, $value);
+
+            if (null !== $value)
+                break;
+        }
+        return $value;
     }
 }

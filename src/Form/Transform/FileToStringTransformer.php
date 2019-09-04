@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class FileToStringTransformer implements DataTransformerInterface
 {
-	/**
+    /**
 	 * Transforms an string to File
 	 *
 	 * @param  string|null $data
@@ -22,8 +22,9 @@ class FileToStringTransformer implements DataTransformerInterface
 	    if (null === $data)
 	        return $data;
         $relative = __DIR__ . '/../../../public';
-        $file = is_file($relative.$data) ? realpath($relative.$data) : null;
-        $data = new File($file, true);
+        $file = is_file($relative.$data) ? realpath($relative.$data) : '';
+
+        $data = new File($file, $file !== '' ? true : false);
         return $data ?: null;
 	}
 
@@ -37,6 +38,12 @@ class FileToStringTransformer implements DataTransformerInterface
 	 */
 	public function reverseTransform($data)
 	{
-		return $data;
+	    if (null === $data)
+	        return $data;
+        $relative = __DIR__ . '/../../../public';
+        $file = is_file($data) ? $data : (is_file($relative.$data) ? realpath($relative.$data) : '');
+
+        $data = new File($file, $file !== '' ? true : false);
+        return $data ?: null;
 	}
 }

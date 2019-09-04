@@ -33,7 +33,10 @@ class ResourceController extends AbstractController
     public function download(string $file, string $route)
     {
         $this->denyAccessUnlessGranted('ROLE_ROUTE', [$route]);
+        $file = base64_decode($file);
+        $public = realpath(__DIR__ . '/../../public');
+        $file = is_file($file) ? $file : (is_file($public.$file) ? $public.$file : '');
 
-        return new BinaryFileResponse(base64_decode($file));
+        return new BinaryFileResponse($file);
     }
 }

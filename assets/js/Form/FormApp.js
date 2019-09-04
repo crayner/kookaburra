@@ -110,6 +110,26 @@ export default class FormApp extends Component {
             })
             return
         }
+        if (form.type === 'file') {
+            let value = e.target.files[0]
+            let readFile = new FileReader()
+            readFile.readAsDataURL(value)
+            readFile.onerror = (e) => {
+                let errors = this.state.errors
+                errors.push({'class': 'error', 'message': this.functions.translations('A problem occurred loading the file.')})
+                this.setState({
+                    errors: errors,
+                })
+            }
+            readFile.onload = (e) => {
+                value = e.target.result
+                this.setState({
+                    errors: this.state.errors,
+                    form: {...this.changeFormValue(this.state.form,form,value)},
+                })
+            }
+            return
+        }
         this.setState({
             errors: this.state.errors,
             form: {...this.changeFormValue(this.state.form,form,e.target.value)},
@@ -140,6 +160,7 @@ export default class FormApp extends Component {
         if (this.submit) return
         this.submit = true
         let data = this.buildFormData({}, this.state.form)
+        console.log(data)
         fetchJson(
             this.state.form.action,
             {method: this.state.form.method, body: JSON.stringify(data)},

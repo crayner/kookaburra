@@ -182,9 +182,9 @@ class BreadCrumbs
     private function addCrumb(string $title, string $route = '', array $params = []): BreadCrumbs
     {
         if ('' !== $route) {
-            if (strpos($route, '.php') !== false)
-                $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath('legacy', array_merge(['q' => $this->getBaseURL() . $route], $params));
-            else {
+            if (strpos($route, '.php') !== false) {
+                $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath('legacy', array_merge(['q' => str_replace('index.php?q=','', $this->getBaseURL()) . '/' . $route], $params));
+            } else {
                 if (false === strpos($route, '__'))
                     $route = $this->getModule() . '__' . $route;
                 $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath($route, $params);

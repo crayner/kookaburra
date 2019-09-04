@@ -1,5 +1,3 @@
-{% trans_default_domain "gibbon" %}
-
 {% block full_document %}
     <!DOCTYPE html>
     <html {{ rightToLeft() ? 'dir="rtl"' : '' }}>
@@ -8,7 +6,9 @@
             {{ include('default/head.html.twig') }}
         {% endblock head %}
     </head>
-    <body style="background: url('{{ asset('build/static/backgroundPage.jpg') }}') repeat fixed center top olivedrab!important;">
+    {% dump(app.request.session) %}
+    {% dump(asset(getBackgroundImage())) %}
+    <body style="background: url('{{ asset(getBackgroundImage()) }}') repeat fixed center top olivedrab!important;">
     <div id="wrapOuter" class="sm:px-6">
         {% include 'default/minor_links.html.twig' %}
 

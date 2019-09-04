@@ -314,7 +314,7 @@ class DepartmentController extends AbstractController
             $errors = [];
             $status = 'success';
             $content = json_decode($request->getContent(), true);
-            dump($content);
+
             $form->submit($content);
             $em = $this->getDoctrine()->getManager();
 
@@ -329,9 +329,9 @@ class DepartmentController extends AbstractController
                         'action' => $this->generateUrl('departments__edit', ['department' => $department->getId()])
                     ]
                 );
-                $errors[] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.', [], 'gibbon')];
+                $errors[] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.', [], 'messages')];
             } else {
-                $errors[] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'gibbon')];
+                $errors[] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'messages')];
                 $status = 'error';
             }
 
@@ -366,12 +366,12 @@ class DepartmentController extends AbstractController
         $data['form'] = [];
         $em = $this->getDoctrine()->getManager();
         if ($department !== $resource->getDepartment()) {
-            $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'gibbon')];
+            $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'messages')];
             $data['status'] = 'error';
             return JsonResponse::create($data, 200);
         }
         if (!ProviderFactory::create(DepartmentStaff::class)->getRole($department, $this->getUser())) {
-            $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because you do not have access to this action.', [], 'gibbon')];
+            $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because you do not have access to this action.', [], 'messages')];
             $data['status'] = 'error';
             return JsonResponse::create($data, 200);
         } else {
@@ -379,7 +379,7 @@ class DepartmentController extends AbstractController
                 $em->remove($resource);
                 $em->flush();
             } catch (PDOException $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.', [], 'gibbon')];
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.', [], 'messages')];
                 $data['status'] = 'error';
                 return JsonResponse::create($data, 200);
             }
@@ -395,7 +395,7 @@ class DepartmentController extends AbstractController
             $manager->singlePanel($form->createView(), 'DepartmentEdit');
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
             if ($data['errors'] === []) {
-                $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.', [], 'gibbon')];
+                $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.', [], 'messages')];
                 $data['status'] = 'success';
             }
         }

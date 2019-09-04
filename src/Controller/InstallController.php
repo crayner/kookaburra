@@ -20,6 +20,7 @@ use App\Form\Installation\MySQLType;
 use App\Form\Installation\SystemType;
 use App\Manager\InstallationManager;
 use App\Util\LocaleHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -150,5 +151,16 @@ class InstallController extends AbstractController
     {
         $manager->setInstallationStatus('complete');
         return $this->render('installation/complete.html.twig');
+    }
+
+    /**
+     * installationComplete
+     * @param InstallationManager $manager
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/update/", name="update")
+     * @IsGranted("ROLE_SYSTEM_ADMIN")
+     */
+    public function update(){
+
     }
 }

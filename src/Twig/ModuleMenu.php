@@ -15,6 +15,7 @@ namespace App\Twig;
 use App\Entity\Module;
 use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
+use App\Util\UrlGeneratorHelper;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -31,11 +32,6 @@ class ModuleMenu implements ContentInterface
      * @var ScriptManager
      */
     private $scriptManager;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
 
     /**
      * @var TranslatorInterface
@@ -105,26 +101,6 @@ class ModuleMenu implements ContentInterface
     }
 
     /**
-     * @return RouterInterface
-     */
-    public function getRouter(): RouterInterface
-    {
-        return $this->router;
-    }
-
-    /**
-     * Router.
-     *
-     * @param RouterInterface $router
-     * @return ModuleMenu
-     */
-    public function setRouter(RouterInterface $router): ModuleMenu
-    {
-        $this->router = $router;
-        return $this;
-    }
-
-    /**
      * @return TranslatorInterface
      */
     public function getTranslator(): TranslatorInterface
@@ -165,7 +141,7 @@ class ModuleMenu implements ContentInterface
     {
         if (isset($link['route']) && false !== $link['route'])
         {
-            return $this->router->generate($link['route'], [], Router::ABSOLUTE_URL);
+            return UrlGeneratorHelper::getPath($link['route'], [], Router::ABSOLUTE_URL);
         }
 
         if (false === strpos($link['entryURL'], '.php')) {
@@ -174,9 +150,16 @@ class ModuleMenu implements ContentInterface
             if (count($route) !== 2)
                 return $link['url'];
             $route = strtolower(str_replace(' ', '_', substr($route[1], 0, strpos($route[1], '/')))) . '__' . $link['entryURL'];
-            $url = $this->router->generate($route, [], Router::ABSOLUTE_URL);
+            $url = UrlGeneratorHelper::getPath($route, [], Router::ABSOLUTE_URL);
             return $url;
         }
+
+        if (!isset($link['url']) && false !== strpos($link['entryURL'], '.php')) {
+            $q = '/modules/'. $link['moduleName'] .'/' . $link['entryURL'];
+            return UrlGeneratorHelper::getPath('legacy', ['q' => $q], Router::ABSOLUTE_URL);
+        }
+
+        if (!isset($link['url'])) dd($link);
         return $link['url'];
     }
 

@@ -16,6 +16,7 @@ namespace App\Twig\Extension;
 use App\Entity\I18n;
 use App\Entity\Person;
 use App\Entity\SchoolYear;
+use App\Entity\Setting;
 use App\Exception\MissingClassException;
 use App\Manager\ScriptManager;
 use App\Provider\I18nProvider;
@@ -25,6 +26,7 @@ use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
 use App\Twig\Sidebar;
 use App\Util\Format;
+use App\Util\UserHelper;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -145,6 +147,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('pageManager', [$this, 'pageManager']),
             new TwigFunction('getSchoolYears', [$this, 'getSchoolYears']),
             new TwigFunction('getActiveLanguages', [$this, 'getActiveLanguages']),
+            new TwigFunction('getBackgroundImage', [$this, 'getBackgroundImage'])
         ];
     }
 
@@ -324,5 +327,39 @@ class PageExtension extends AbstractExtension
     public function getActiveLanguages(): array
     {
         return ProviderFactory::getRepository(I18n::class)->findByActive();
+    }
+
+    /**
+     * getBackgroundImage
+     * @param string $default
+     * @return string
+     * @throws \Exception
+     */
+    public function getBackgroundImage(string $default = 'build/static/backgroundPage.jpg'): string
+    {
+        $public = realpath(__DIR__ . '/../../../public') . DIRECTORY_SEPARATOR;
+        $result = false;
+        if ($this->session->has('backgroundImage') && is_file($this->session->get('backgroundImage')))
+            return $this->session->get('backgroundImage');
+        $user = UserHelper::getCurrentUser();
+        if ($user instanceof Person && $user->getPersonalBackground()) {
+            $file = realpath(is_file($user->getPersonalBackground()) ? $user->getPersonalBackground() : (is_file($public.$user->getPersonalBackground()) ? $public.$user->getPersonalBackground() : null));
+            if ($file) {
+                $file = str_replace([$public, "\\"], ['', '/'], $file);
+                $this->session->set('backgroundImage', $file);
+                return $file;
+            }
+        }
+
+        $background = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationBackground');
+        $background = realpath(is_file($background) ? $background : (is_file($public.$background) ? $public.$background : null));
+        if ($background) {
+            $background = str_replace([$public, "\\"], ['', '/'], $background);
+            $this->session->set('backgroundImage', $background);
+            return $background;
+        }
+
+        $this->session->set('backgroundImage',  $default);
+        return  $default;
     }
 }

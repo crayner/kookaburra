@@ -88,7 +88,7 @@ class PageListener implements EventSubscriberInterface
         $this->sideBar = $sideBar;
         $this->mainMenu = $mainMenu;
         $this->moduleMenu = $moduleMenu;
-        $this->moduleMenu->setScriptManager($scriptManager)->setRouter($router)->setTranslator($trans);
+        $this->moduleMenu->setScriptManager($scriptManager)->setTranslator($trans);
         $this->minorLinks = $minorLinks;
         $this->fastFinder = $fastFinder;
         $this->idleTimeout = $idleTimeout;

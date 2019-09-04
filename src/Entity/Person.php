@@ -23,6 +23,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints as ASSERT;
+use Symfony\Component\Console\Helper\FormatterHelper;
 
 /**
  * Class GibbonPerson
@@ -2660,10 +2661,12 @@ class Person implements EntityInterface
      * @param int $dimension
      * @param bool $asHeight
      * @return string
+     * @deprecated 4/Sep 2019: Please use Person::photo()
      */
     public function renderImage(int $dimension = 75, bool $asHeight = false)
     {
-        return FormatHelper::renderImage($this, $dimension, $asHeight);
+        trigger_error('Deprecated 4/Sep 2019: Please use Person::photo()', E_USER_DEPRECATED);
+        return $this->photo($dimension);
     }
 
     /**

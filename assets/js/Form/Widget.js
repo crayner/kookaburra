@@ -138,6 +138,15 @@ export default function Widget(props) {
         return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr}/>)
     }
 
+    if (form.type === 'textarea') {
+        return (
+            <div {...wrapper_attr}>
+                <textarea {...widget_attr} defaultValue={form.value} />
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
     if (form.type === 'toggle') {
         widget_attr.type = 'hidden'
         wrapper_attr.className += ' right'

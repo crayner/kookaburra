@@ -41,7 +41,7 @@ class UrlGeneratorHelper
      */
     public static function getPath($route, $parameters = [], $relative = false)
     {
-        return self::$generator->generate($route, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        return str_replace(['/index.php/?','/index.php?', '/?'], '?', self::$generator->generate($route, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH));
     }
 
     /**
