@@ -16,10 +16,13 @@ export default function HeaderRow(props) {
     if (columns > 1) {
         column_attr.colSpan = columns
     }
+    let label = (<h3>{form.label}</h3>)
+    if (form.header_type === 'h4')
+        label = (<h4>{form.label}</h4>)
 
     return (<tr {...row_attr}>
         <td {...column_attr}>
-            <h3>{form.label}</h3>
+            {label}
         </td>
     </tr>)
 

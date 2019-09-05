@@ -173,6 +173,16 @@ export default function Widget(props) {
         )
     }
 
+    if (form.type === 'integer') {
+        widget_attr.type = 'number'
+        return (
+            <div {...wrapper_attr}>
+                <input {...widget_attr} defaultValue={form.value} />
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
     console.log(form)
     return (<div {...wrapper_attr}>
         {element}

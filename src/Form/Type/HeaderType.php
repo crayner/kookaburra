@@ -32,6 +32,7 @@ class HeaderType extends AbstractType
             [
                 'mapped' => false,
                 'row_style' => 'single',
+                'header_type' => 'h3',
             ]
         );
     }

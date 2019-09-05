@@ -31,7 +31,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
 
 /**
- * Class SystemSettings
+ * Class OrganisationSettingsType
  * @package App\Form\Modules\SystemAdmin
  */
 class OrganisationSettingsType extends AbstractType

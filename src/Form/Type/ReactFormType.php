@@ -268,9 +268,9 @@ class ReactFormType extends AbstractType
             return 'submit';
         if (in_array('button', $prefixes))
             return 'button';
-        if (in_array('repeated', $prefixes))
-            return 'repeated';
-
+        if (in_array('integer', $prefixes))
+            return 'integer';
+//dump($prefixes);
         return 'unknown';
     }
 
