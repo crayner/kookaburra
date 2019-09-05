@@ -45,11 +45,10 @@ class FileURLToStringTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        if (null === $value)
-            return $value;
+        if (null === $value || '' === $value)
+            return null;
         if (is_string($value))
             return $value;
-        dd($value);
     }
 
     /**
@@ -59,10 +58,16 @@ class FileURLToStringTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (null === $value)
-            return $value;
-        if (is_string($value))
-            return $value;
+        if (null === $value || '' === $value)
+            return null;
+        if (is_string($value)) {
+            if (strpos($value, 'http') === 0)
+                return $value;
+
+            $public = realpath(__DIR__ . '/../../../public');
+            $file = realpath($value) ?: (realpath($public.$value) ?: null);
+            return $file;
+        }
 
         if ($value instanceof File)
         {

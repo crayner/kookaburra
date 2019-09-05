@@ -113,7 +113,10 @@ export default function Widget(props) {
         return (
             <div {...wrapper_attr}>
                 <input {...widget_attr} />
-                <button type={'button'} title={functions.translate('File Download')} className={'button button-right'} {...button_attr} onClick={() => functions.downloadFile(form.value)}><span className={'fa-fw fas fa-file-download'}></span></button>
+                <div className={'button-right'}>
+                <button type={'button'} title={functions.translate('File Download')} className={'button'} {...button_attr} onClick={() => functions.downloadFile(form.value)}><span className={'fa-fw fas fa-file-download'}></span></button>
+                <button type={'button'} title={functions.translate('File Delete')} className={'button'} {...button_attr} onClick={() => functions.deleteFile(form)}><span className={'fa-fw fas fa-trash'}></span></button>
+                </div>
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
         )

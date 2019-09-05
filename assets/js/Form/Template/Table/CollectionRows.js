@@ -38,7 +38,7 @@ export default function CollectionRows(props) {
 
         let buttons = []
         if (form.allow_delete) {
-            buttons.push(<button onClick={() => functions.deleteElement(row)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'far fa-trash-alt fa-fw'}></span></button>)
+            buttons.push(<button title={functions.translate('Delete') } onClick={() => functions.deleteElement(row)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'far fa-trash-alt fa-fw'}></span></button>)
         }
 
         columns.push(<td key={'actions'}>{hidden}<div className={'text-center'}>{buttons}</div></td>)
@@ -49,7 +49,7 @@ export default function CollectionRows(props) {
     rows.push(<tr key={'addRow'}>
         <td colSpan={functions.getColumnCount() - 1}></td>
         <td><div className={'text-center'}>
-            <button onClick={() => functions.addElement(form)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'fas fa-plus-circle fa-fw'}></span></button>
+            <button title={functions.translate('Add')} onClick={() => functions.addElement(form)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'fas fa-plus-circle fa-fw'}></span></button>
         </div></td>
     </tr>)
 

@@ -12,6 +12,7 @@
  */
 namespace App\Entity;
 
+use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\ScaleRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Scale")
  */
-class Scale
+class Scale implements EntityInterface
 {
     use BooleanList;
 

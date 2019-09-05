@@ -14,7 +14,9 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class DepartmentController
@@ -38,5 +40,35 @@ class ResourceController extends AbstractController
         $file = is_file($file) ? $file : (is_file($public.$file) ? $public.$file : '');
 
         return new BinaryFileResponse($file);
+    }
+
+    /**
+     * delete
+     * @param string $file
+     * @param string $route
+     * @param TranslatorInterface $translator
+     * @return JsonResponse
+     * @Route("/{file}/{route}/delete/", name="delete")
+     */
+    public function delete(string $file, string $route, TranslatorInterface $translator)
+    {
+        if ($this->isGranted('ROLE_ROUTE', [$route])) {
+            $file = base64_decode($file);
+            $public = realpath(__DIR__ . '/../../public');
+            $file = is_file($file) ? $file : (is_file($public . $file) ? $public . $file : '');
+            if (is_file($file)) {
+                unlink($file);
+                $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.')];
+            } else {
+                $data['errors'][] = ['class' => 'warning', 'message' => $translator->trans('Your request was successful, but some data was not properly deleted.')];
+            }
+            $data['errors'][] = ['class' => 'info', 'message' => $translator->trans('You must submit the form to save this empty value.', [], 'kookaburra')];
+            $data['status'] = 'success';
+        } else {
+            $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because you do not have access to this action.')];
+            $data['status'] = 'error';
+
+        }
+        return new JsonResponse($data, 200);
     }
 }

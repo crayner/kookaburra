@@ -12,6 +12,7 @@ export default class PanelApp extends Component {
         this.panels = props.panels
         this.forms = props.forms
         this.selectedPanel = props.selectedPanel
+        this.actionRoute = props.actionRoute
 
         this.state = {
             tabIndex: this.panels[this.selectedPanel].index,
@@ -36,10 +37,10 @@ export default class PanelApp extends Component {
                     Parser(panel.content)
                 )
             }
-            return <FormApp {...this.props} form={this.forms[name]} />
+            return <FormApp {...this.props} form={this.forms[name]} actionRoute={this.actionRoute} />
         }
         return (
-            <Panels {...this.props} panels={this.panels} selectedIndex={this.state.tabIndex} onSelectTab={this.onSelectTab} />
+            <Panels {...this.props} panels={this.panels} selectedIndex={this.state.tabIndex} onSelectTab={this.onSelectTab} actionRoute={this.actionRoute} />
         )
     }
 }

@@ -19,15 +19,13 @@ use App\Exception\SettingNotFoundException;
 use App\Form\Type\SettingsType;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\EntityTrait;
-use App\Validator\AlwaysInValid;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Services\Format;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SettingProvider implements EntityProviderInterface
@@ -207,6 +205,7 @@ class SettingProvider implements EntityProviderInterface
 
         $setting->setValue($value);
         $this->saveEntity();
+        $this->writeSettingInSession($setting);
     }
 
     /**
@@ -363,5 +362,36 @@ class SettingProvider implements EntityProviderInterface
             }
             $this->saveSettings($child, $content, $translator);
         }
+    }
+
+    /**
+     * getSession
+     * @return SessionInterface
+     */
+    private function getSession(): ?SessionInterface
+    {
+        if ($this->stack->getCurrentRequest() && $this->stack->getCurrentRequest()->getSession())
+            return $this->stack->getCurrentRequest()->getSession();
+        return null;
+    }
+
+    private $sessionSettings = [
+    ];
+
+    /**
+     * writeSettingInSession
+     * @param Setting $setting
+     */
+    private function writeSettingInSession(Setting $setting): void
+    {
+        if (null === $this->getSession())
+            return;
+
+        if (isset($this->sessionSettings[$setting->getScope()][$setting->getName()]))
+            $this->getSession()->set($this->sessionSettings[$setting->getScope()][$setting->getName()], $setting->getValue());
+
+        if ($setting->getScope() === 'System')
+            $this->getSession()->set($setting->getName(), $setting->getValue());
+
     }
 }

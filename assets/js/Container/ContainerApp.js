@@ -43,14 +43,13 @@ export default class ContainerApp extends Component {
         openPage(route, {target: '_blank'}, false)
     }
 
-
     openUrl(file) {
         window.open(file, '_blank')
     }
 
     render() {
         return (
-            <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} functions={this.functions} forms={this.forms} />
+            <PanelApp panels={this.panels} selectedPanel={this.selectedPanel} functions={this.functions} forms={this.forms} actionRoute={this.actionRoute} />
         )
     }
 }

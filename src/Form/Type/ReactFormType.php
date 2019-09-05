@@ -98,6 +98,9 @@ class ReactFormType extends AbstractType
          $this->addTranslation('File Download', [], 'kookaburra');
          $this->addTranslation('Open Link', [], 'kookaburra');
          $this->addTranslation('Yes/No', [], 'kookaburra');
+         $this->addTranslation('File Delete', [], 'kookaburra');
+         $this->addTranslation('Add');
+         $this->addTranslation('Delete');
          $view->vars['toArray'] = $vars;
      }
 

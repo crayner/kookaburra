@@ -6,6 +6,7 @@ import Row from "./Template/Table/Row"
 import {fetchJson} from "../component/fetchJson"
 import Messages from "../component/Messages"
 import {createPassword} from "../component/createPassword"
+import {openPage} from "../component/openPage"
 
 export default class FormApp extends Component {
     constructor (props) {
@@ -13,6 +14,7 @@ export default class FormApp extends Component {
         this.columnCount = props.form.column_count
         this.functions = props.functions
         this.columns = props.form.columns
+        this.actionRoute = props.actionRoute
 
         this.functions.submitForm = this.submitForm.bind(this)
         this.functions.onElementChange = this.onElementChange.bind(this)
@@ -20,6 +22,7 @@ export default class FormApp extends Component {
         this.functions.addElement = this.addElement.bind(this)
         this.functions.onCKEditorChange = this.onCKEditorChange.bind(this)
         this.functions.generateNewPassword = this.generateNewPassword.bind(this)
+        this.functions.deleteFile = this.deleteFile.bind(this)
         this.replaceName = this.replaceName.bind(this)
         this.buildFormData = this.buildFormData.bind(this)
         this.replaceFormElement = this.replaceFormElement.bind(this)
@@ -39,6 +42,42 @@ export default class FormApp extends Component {
         this.setState({
             formCount: this.calcFormCount({...this.state.form}, 0)
         })
+    }
+
+    deleteFile(form) {
+
+        const route = '/resource/' + btoa(form.value) + '/' + this.actionRoute + '/delete/'
+        console.log(route)
+        fetchJson(
+             route,
+            {},
+            false)
+            .then(data => {
+                console.log(data)
+                if (data.status === 'success') {
+                    let errors = this.state.errors
+                    errors = errors.concat(data.errors)
+                    this.setState({
+                        errors: errors,
+                        form: {...this.changeFormValue(this.state.form,form,'')},
+                    })
+                } else {
+                    let errors = this.state.errors
+                    errors = errors.concat(data.errors)
+                    this.setState({
+                        errors: this.state.errors,
+                    })
+
+                }
+            }).catch(error => {
+                let errors = this.state.errors
+                errors.push({'class': 'error', 'message': error})
+                this.submit = false
+                this.setState({
+                    errors: errors,
+                })
+        })
+
     }
 
     generateNewPassword(form) {
@@ -343,4 +382,5 @@ export default class FormApp extends Component {
 FormApp.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
+    actionRoute: PropTypes.string.isRequired,
 }

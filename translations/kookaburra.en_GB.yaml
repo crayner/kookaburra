@@ -38,3 +38,5 @@ Current: Current
 'The password must be a minimum of %{minLength} characters long.': 'The password must be a minimum of %{minLength} characters long.'
 Open Link: Open Link
 File Download: File Download
+You must submit the form to save this empty value.: You must submit the form to save this empty value.
+File Delete: File Delete

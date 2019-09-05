@@ -50,12 +50,14 @@ class ReactFileTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        if ('' !== $value || null === $value)
+            return null;
+
         if (is_string($value)) {
             $public = realpath(__DIR__ . '/../../../public');
             $value = realpath($value) ?: (realpath($public.$value) ?: '');
-            if ('' === $value)
+            if ('' === $value || ! is_file($value))
                 return null;
-
             return $value;
         }
 

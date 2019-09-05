@@ -18,6 +18,7 @@ use App\Container\Panel;
 use App\Entity\I18n;
 use App\Entity\Setting;
 use App\Form\Modules\SystemAdmin\LocalisationSettingsType;
+use App\Form\Modules\SystemAdmin\MiscellaneousSettingsType;
 use App\Form\Modules\SystemAdmin\OrganisationSettingsType;
 use App\Form\Modules\SystemAdmin\SecuritySettingsType;
 use App\Form\Modules\SystemAdmin\SystemSettingsType;
@@ -182,6 +183,30 @@ class SystemAdminController extends AbstractController
 
         $panel = new Panel('Localisation');
         $container->addForm('Localisation', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
+
+        // Miscellaneous
+        $form = $this->createForm(MiscellaneousSettingsType::class, null,
+            [
+                'action' => $this->generateUrl('system_admin__system_settings', ['tabName' => 'Miscellaneous']),
+            ]
+        );
+
+        if ($tabName === 'Miscellaneous' && $request->getContentType() === 'json') {
+            $data = [];
+            try {
+                $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
+            } catch (\Exception $e) {
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.') . ' ' . $e->getMessage()];
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data,200);
+        }
+
+        $panel = new Panel('Miscellaneous');
+        $container->addForm('Miscellaneous', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Finally Finished
         $manager->addContainer($container)->buildContainers();

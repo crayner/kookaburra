@@ -60,6 +60,7 @@ class ReactFileListener implements EventSubscriberInterface
         $request = $this->stack->getCurrentRequest();
         if ($request->getContentType() === 'json') {
             $form = $event->getForm();
+            $data = $form->getData();
             $value = $this->getContentValue($form->getName(), json_decode($request->getContent(), true));
 
             if (preg_match('#^data:[^;]*;base64,#', $value) === 1) {
