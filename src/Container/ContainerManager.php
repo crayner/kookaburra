@@ -206,8 +206,7 @@ class ContainerManager
     {
         $container = new Container();
         $container->addForm('single', $view);
-        $panel = new Panel();
-        $panel->setName('single');
+        $panel = new Panel('single');
         $container->addPanel($panel)->setTarget($target)->setApplication($application);
         $this->setTranslationDomain($domain)->addContainer($container)->buildContainers();
     }

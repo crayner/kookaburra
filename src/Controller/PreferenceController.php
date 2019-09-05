@@ -57,7 +57,7 @@ class PreferenceController extends AbstractController
             if ($passwordForm->isValid()) {
                 $user = $this->getUser();
                 $user->changePassword($rp->getRaw());
-                $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your account has been successfully updated. You can now continue to use the system as per normal.', [], 'gibbon')];
+                $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your account has been successfully updated. You can now continue to use the system as per normal.')];
                 $passwordForm = $this->createForm(ResetPasswordType::class, $rp,
                     [
                         'action' => $this->generateUrl('preferences', ['tabName' => 'Reset Password']),
@@ -69,7 +69,7 @@ class PreferenceController extends AbstractController
                 return new JsonResponse($data, 200);
             } else {
                 $manager->singlePanel($passwordForm->createView());
-                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'gibbon')];
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.')];
                 $data['form'] = $manager->getFormFromContainer('formContent', 'single');
                 return new JsonResponse($data, 200);
             }
@@ -78,8 +78,7 @@ class PreferenceController extends AbstractController
         $manager->setTranslationDomain('gibbon');
         $container = new Container();
         $container->setSelectedPanel($tabName);
-        $passwordPanel = new Panel();
-        $passwordPanel->setName('Reset Password');
+        $passwordPanel = new Panel('Reset Password');
         $container->addForm('Reset Password', $passwordForm->createView());
 
         $person = $this->getUser()->getPerson();
@@ -94,13 +93,13 @@ class PreferenceController extends AbstractController
                 $em->persist($person);
                 $em->flush();
                 $em->refresh($person);
-                $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.', [], 'gibbon')];
+                $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.')];
                 $settingsForm = $this->createForm(PreferenceSettingsType::class, $person, ['action' => $this->generateUrl('preferences', ['tabName' => 'Settings'])]);
                 $manager->singlePanel($settingsForm->createView());
                 $data['form'] = $manager->getFormFromContainer('formContent', 'single');
                 return new JsonResponse($data, 200);
             } else {
-                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.', [], 'gibbon')];
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.')];
                 $manager->singlePanel($settingsForm->createView());
                 $data['form'] = $manager->getFormFromContainer('formContent', 'single');
                 return new JsonResponse($data, 200);

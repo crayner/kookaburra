@@ -13,12 +13,14 @@
 namespace App\Form\Type;
 
 
+use App\Form\EventSubscriber\ReactFileListener;
 use App\Form\Transform\ReactFileTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -27,6 +29,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ReactFileType extends AbstractType
 {
+    /**
+     * @var RequestStack
+     */
+    private $stack;
+
+    /**
+     * ReactFileType constructor.
+     * @param RequestStack $stack
+     */
+    public function __construct(RequestStack $stack)
+    {
+        $this->stack = $stack;
+    }
+
+
     /**
      * getParent
      * @return string|null
@@ -43,7 +60,8 @@ class ReactFileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new ReactFileTransformer());
+        $builder->addViewTransformer(new ReactFileTransformer())
+            ->addEventSubscriber(new ReactFileListener($this->stack));
     }
 
     /**

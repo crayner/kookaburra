@@ -160,7 +160,6 @@ export default class FormApp extends Component {
         if (this.submit) return
         this.submit = true
         let data = this.buildFormData({}, this.state.form)
-        console.log(data)
         fetchJson(
             this.state.form.action,
             {method: this.state.form.method, body: JSON.stringify(data)},

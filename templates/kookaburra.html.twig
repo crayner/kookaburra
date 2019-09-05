@@ -6,8 +6,7 @@
             {{ include('default/head.html.twig') }}
         {% endblock head %}
     </head>
-    {% dump(app.request.session) %}
-    {% dump(asset(getBackgroundImage())) %}
+
     <body style="background: url('{{ asset(getBackgroundImage()) }}') repeat fixed center top olivedrab!important;">
     <div id="wrapOuter" class="sm:px-6">
         {% include 'default/minor_links.html.twig' %}

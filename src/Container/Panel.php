@@ -53,6 +53,15 @@ class Panel
     private $index;
 
     /**
+     * Panel constructor.
+     * @param null|string $name
+     */
+    public function __construct(?string $name = null)
+    {
+        $this->setName($name);
+    }
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -63,10 +72,10 @@ class Panel
     /**
      * Name.
      *
-     * @param string $name
+     * @param null|string $name
      * @return Panel
      */
-    public function setName(string $name): Panel
+    public function setName(?string $name): Panel
     {
         $this->name = $name;
         return $this->setLabel($name);
@@ -103,10 +112,10 @@ class Panel
     /**
      * Label.
      *
-     * @param string $label
+     * @param null|string $label
      * @return Panel
      */
-    public function setLabel(string $label): Panel
+    public function setLabel(?string $label): Panel
     {
         $this->label = $label;
         return $this;

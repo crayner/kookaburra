@@ -19,6 +19,7 @@ use App\Entity\Setting;
 use App\Entity\Theme;
 use App\Form\Transform\ToggleTransformer;
 use App\Form\Type\HeaderType;
+use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Provider\ProviderFactory;
@@ -31,6 +32,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Url;
 
 /**
@@ -66,14 +68,15 @@ class PreferenceSettingsType extends AbstractType
         ;
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'personalBackground')) {
             $builder
-                ->add('personalBackground', UrlType::class,
+                ->add('personalBackground', ReactFileType::class,
                     [
                         'label' => 'Personal Background',
                         'help' => 'Set your own custom background image.<br/>Please provide URL to image.',
                         'help_html' => true,
                         'required' => false,
+                        'fileName' => 'personal_bg_' . UserHelper::getCurrentUser()->getId(),
                         'constraints' => [
-                            new Url(),
+                            new Image(['maxSize' => '750k']),
                         ],
                     ]
                 )

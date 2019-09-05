@@ -28,7 +28,7 @@ class ReactFileTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        if ($value === null)
+        if ($value === null || '' === $value)
             return null;
 
         if (is_string($value)) {
