@@ -17,6 +17,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Entity\I18n;
 use App\Entity\Setting;
+use App\Form\Modules\SystemAdmin\LocalisationSettingsType;
 use App\Form\Modules\SystemAdmin\OrganisationSettingsType;
 use App\Form\Modules\SystemAdmin\SecuritySettingsType;
 use App\Form\Modules\SystemAdmin\SystemSettingsType;
@@ -134,7 +135,7 @@ class SystemAdminController extends AbstractController
         $panel = new Panel('Organisation');
         $container->addForm('Organisation', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
-        // Organisation Settings
+        // Security Settings
         $form = $this->createForm(SecuritySettingsType::class, null,
             [
                 'action' => $this->generateUrl('system_admin__system_settings', ['tabName' => 'Security']),
@@ -157,6 +158,30 @@ class SystemAdminController extends AbstractController
 
         $panel = new Panel('Security');
         $container->addForm('Security', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
+
+        // Localisation
+        $form = $this->createForm(LocalisationSettingsType::class, null,
+            [
+                'action' => $this->generateUrl('system_admin__system_settings', ['tabName' => 'Localisation']),
+            ]
+        );
+
+        if ($tabName === 'Localisation' && $request->getContentType() === 'json') {
+            $data = [];
+            try {
+                $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
+            } catch (\Exception $e) {
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.') . ' ' . $e->getMessage()];
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data,200);
+        }
+
+        $panel = new Panel('Localisation');
+        $container->addForm('Localisation', $form->createView())->addPanel($panel)->setSelectedPanel($tabName);
 
         // Finally Finished
         $manager->addContainer($container)->buildContainers();

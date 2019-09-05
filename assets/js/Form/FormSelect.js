@@ -12,8 +12,9 @@ export default function FormSelect(props) {
     } = props
 
     var options = []
-    if (!isEmpty(form.placeholder)){
-        options.push(<option key={'placeholder'} className={'text-gray-500'} value={''}>{form.placeholder}</option>)
+
+    if (form.placeholder !== false){
+        options.push(<option key={'placeholder'} className={'text-gray-500'}>{form.placeholder}</option>)
     }
 
     Object.keys(form.choices).map(choice => {
@@ -25,7 +26,7 @@ export default function FormSelect(props) {
             <select multiple={form.multiple} {...widget_attr} defaultValue={form.value}>
                 {options}
             </select>
-    </div>
+        </div>
     )
 }
 
