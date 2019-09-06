@@ -101,6 +101,7 @@ class ReactFormType extends AbstractType
          $this->addTranslation('File Delete', [], 'kookaburra');
          $this->addTranslation('Add');
          $this->addTranslation('Delete');
+         $this->addTranslation('There are no records to display.');
          $view->vars['toArray'] = $vars;
      }
 
@@ -181,6 +182,9 @@ class ReactFormType extends AbstractType
         $vars['errors'] =  isset($view->vars['errors']) ? $this->renderErrors($view->vars['errors']) : [];
         if (in_array($vars['type'], ['collection','unknown'])) {
             $vars['value'] = null;
+        }
+        if (in_array($vars['type'], ['file'])) {
+            $vars['delete_security'] = $view->vars['delete_security'];
         }
         if (in_array($vars['type'], ['repeated'])) {
             $vars['row_style'] = 'transparent';
@@ -273,6 +277,8 @@ class ReactFormType extends AbstractType
             return 'button';
         if (in_array('integer', $prefixes))
             return 'integer';
+        if (in_array('repeated', $prefixes))
+            return 'transparent';
 //dump($prefixes);
         return 'unknown';
     }

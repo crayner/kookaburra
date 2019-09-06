@@ -74,6 +74,7 @@ class ReactFileType extends AbstractType
                 'compound'     => false,
                 'multiple'     => false,
                 'type'         => 'file',
+                'delete_security' => false,
             ]
         );
 
@@ -82,6 +83,8 @@ class ReactFileType extends AbstractType
                 'fileName',
             ]
         );
+
+        $resolver->setAllowedTypes('delete_security', ['boolean', 'string']);
     }
 
     /**
@@ -93,5 +96,7 @@ class ReactFileType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['public_dir'] = realpath(__DIR__ . '/../../../public');
+        $view->vars['value'] = $options['data'];
+        $view->vars['delete_security'] = $options['delete_security'];
     }
 }

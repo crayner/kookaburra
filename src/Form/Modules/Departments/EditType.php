@@ -19,6 +19,7 @@ use App\Form\Type\ReactCollectionType;
 use App\Form\Type\ReactFormType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -89,6 +90,7 @@ class EditType extends AbstractType
                     'element_delete_options' => ['__id__' => 'id', '__department__' => 'department'],
                 ]
             )
+            ->add('id', HiddenType::class)
             ->add('submit', SubmitType::class,
                 [
                     'row_style' => 'single',

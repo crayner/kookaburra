@@ -12,6 +12,7 @@ export default function CollectionRows(props) {
         form,
         functions,
         errors,
+        columnCount,
     } = props
 
     let table_attr = widgetAttr(form, 'leftIndent smallIntBorder standardForm striped', {})
@@ -23,28 +24,38 @@ export default function CollectionRows(props) {
         )
 
     let rows = []
-    Object.keys(form.children).map(rowKey => {
-        let row = form.children[rowKey]
-        let columns = []
-        let hidden = []
-        Object.keys(row.children).map(childKey => {
-            let child = {...row.children[childKey]}
-            if (child.type !== 'hidden') {
-                columns.push(<td key={childKey}><Widget form={{...child}} functions={functions}/></td>)
-            } else {
-                hidden.push(<Widget form={{...child}} functions={functions} key={childKey}/>)
+    if (typeof form.children !== "undefined" && form.children.length > 0) {
+        Object.keys(form.children).map(rowKey => {
+            let row = form.children[rowKey]
+            let columns = []
+            let hidden = []
+            Object.keys(row.children).map(childKey => {
+                let child = {...row.children[childKey]}
+                if (child.type !== 'hidden') {
+                    columns.push(<td key={childKey}><Widget form={{...child}} functions={functions}/></td>)
+                } else {
+                    hidden.push(<Widget form={{...child}} functions={functions} key={childKey}/>)
+                }
+            })
+
+            let buttons = []
+            if (form.allow_delete) {
+                buttons.push(<button title={functions.translate('Delete')} onClick={() => functions.deleteElement(row)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'far fa-trash-alt fa-fw'}></span></button>)
             }
+
+            columns.push(<td key={'actions'}>{hidden}
+                <div className={'text-center'}>{buttons}</div>
+            </td>)
+
+            rows.push(<tr key={rowKey}>{columns}</tr>)
         })
-
-        let buttons = []
-        if (form.allow_delete) {
-            buttons.push(<button title={functions.translate('Delete') } onClick={() => functions.deleteElement(row)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'far fa-trash-alt fa-fw'}></span></button>)
-        }
-
-        columns.push(<td key={'actions'}>{hidden}<div className={'text-center'}>{buttons}</div></td>)
-
-        rows.push(<tr key={rowKey}>{columns}</tr>)
-    })
+    } else {
+        rows.push(<tr key={'emptyWarning'}>
+            <td colSpan={columnCount}>
+                <div className={'warning'}>{functions.translate('There are no records to display.')}</div>
+            </td>
+        </tr>)
+    }
 
     rows.push(<tr key={'addRow'}>
         <td colSpan={functions.getColumnCount() - 1}></td>
@@ -70,6 +81,7 @@ CollectionRows.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
     errors: PropTypes.array,
+    columnCount: PropTypes.number.isRequired,
 }
 
 CollectionRows.defaultProps = {

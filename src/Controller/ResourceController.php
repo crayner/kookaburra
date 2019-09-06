@@ -52,7 +52,7 @@ class ResourceController extends AbstractController
      */
     public function delete(string $file, string $route, TranslatorInterface $translator)
     {
-        if ($this->isGranted('ROLE_ROUTE', [$route])) {
+        if ((strpos($route, 'ROLE_') === 0 && $this->isGranted($route)) || $this->isGranted('ROLE_ROUTE', [$route])) {
             $file = base64_decode($file);
             $public = realpath(__DIR__ . '/../../public');
             $file = is_file($file) ? $file : (is_file($public . $file) ? $public . $file : '');

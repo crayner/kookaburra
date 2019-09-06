@@ -74,6 +74,7 @@ class ResetPasswordType extends AbstractType
                     'constraints' => [
                         new Password(),
                     ],
+                    'row_style' => 'transparent',
                     'invalid_message' => 'Your request failed due to non-matching passwords.',
                 ]
             )

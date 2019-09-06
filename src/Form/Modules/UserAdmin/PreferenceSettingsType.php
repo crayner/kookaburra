@@ -73,11 +73,13 @@ class PreferenceSettingsType extends AbstractType
                         'label' => 'Personal Background',
                         'help' => 'Set your own custom background image.<br/>Please provide URL to image.',
                         'help_html' => true,
+                        'data' => $options['data']->getPersonalBackground(),
                         'required' => false,
-                        'fileName' => 'personal_bg_' . UserHelper::getCurrentUser()->getId(),
+                        'fileName' => 'personal_bg',
                         'constraints' => [
                             new Image(['maxSize' => '750k']),
                         ],
+                        'delete_security' => 'ROLE_USER',
                     ]
                 )
             ;

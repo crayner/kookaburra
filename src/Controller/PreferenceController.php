@@ -50,8 +50,8 @@ class PreferenceController extends AbstractController
             ]
         );
 
-        if ($request->getContentType() === 'json' && $tabName === 'Reset Password') {
-
+        if ($request->getContentType() === 'json' && $tabName === 'Reset Password')
+        {
             $passwordForm->submit(json_decode($request->getContent(), true));
             $data = [];
             if ($passwordForm->isValid()) {
@@ -86,6 +86,7 @@ class PreferenceController extends AbstractController
 
 
         if ($request->getContentType() === 'json' && $tabName === 'Settings') {
+            dump(json_decode($request->getContent(), true));
             $settingsForm->submit(json_decode($request->getContent(), true));
             $data = [];
             if ($settingsForm->isValid()) {

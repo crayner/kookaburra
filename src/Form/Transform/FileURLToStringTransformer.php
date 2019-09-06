@@ -13,6 +13,7 @@
 namespace App\Form\Transform;
 
 
+use App\Util\JsonFileUploadHelper;
 use App\Util\UserHelper;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -63,6 +64,11 @@ class FileURLToStringTransformer implements DataTransformerInterface
         if (is_string($value)) {
             if (strpos($value, 'http') === 0)
                 return $value;
+
+            if (preg_match('#^data:[^;]*;base64,#', $value) === 1) {
+                $file = JsonFileUploadHelper::saveFile($value, $this->filePrefix);
+                return $file->getRealPath();
+            }
 
             $public = realpath(__DIR__ . '/../../../public');
             $file = realpath($value) ?: (realpath($public.$value) ?: null);

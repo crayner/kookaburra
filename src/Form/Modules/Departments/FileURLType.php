@@ -12,11 +12,14 @@
 
 namespace App\Form\Modules\Departments;
 
+use App\Form\EventSubscriber\FileURLListener;
+use App\Form\EventSubscriber\ReactFileListener;
 use App\Form\Transform\FileURLToStringTransformer;
 use App\Validator\URLOrFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -25,6 +28,21 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FileURLType extends AbstractType
 {
+    /**
+     * @var RequestStack
+     */
+    private $stack;
+
+    /**
+     * FileURLType constructor.
+     * @param RequestStack $stack
+     */
+    public function __construct(RequestStack $stack)
+    {
+        $this->stack = $stack;
+    }
+
+
     /**
      * getParent
      * @return string|null
@@ -41,7 +59,8 @@ class FileURLType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new FileURLToStringTransformer($options['file_prefix']));
+        $builder->addModelTransformer(new FileURLToStringTransformer($options['file_prefix']))
+            ->addEventSubscriber(new FileURLListener($this->stack));
     }
 
     public function configureOptions(OptionsResolver $resolver)

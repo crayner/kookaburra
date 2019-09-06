@@ -17,14 +17,18 @@ export default class CollectionApp extends Component {
 
         this.state = {
             errors: [],
-            count: 0,
-            formCount: 0,
+            count: getChildCount({...props.form}),
+            formCount: this.functions.calcFormCount({...props.form}, 0),
+            form: {...props.form},
         }
     }
 
     componentDidMount() {
-        Object.keys(this.form.prototype.children).map(key => {
-            const child = this.form.prototype.children[key]
+        let form = {...this.state.form}
+        if (typeof form.children === 'undefined')
+            form.children = []
+        Object.keys(form.prototype.children).map(key => {
+            const child = form.prototype.children[key]
             if (child.type !== 'hidden') {
                 this.functions.incColumnCount()
             }
@@ -32,8 +36,9 @@ export default class CollectionApp extends Component {
         this.functions.incColumnCount()
 
         this.setState({
-            count: getChildCount(this.form),
-            formCount: this.functions.calcFormCount(this.form, 0),
+            count: getChildCount(form),
+            formCount: this.functions.calcFormCount(form, 0),
+            form: form,
         })
     }
 
@@ -46,7 +51,7 @@ export default class CollectionApp extends Component {
     }
 
     render() {
-        return (<CollectionRows form={this.form} functions={this.functions} errors={this.state.errors} />)
+        return (<CollectionRows form={this.state.form} functions={this.functions} errors={this.state.errors} columnCount={this.columnCount} key={this.form.collection_key} />)
     }
 }
 
@@ -57,11 +62,13 @@ CollectionApp.propTypes = {
 
 function getChildCount(form) {
     let count = 0
-    Object.keys(form.children).map(key => {
-        const child = form.children[key]
-        if (typeof child === 'object')
-            count++
-    })
+    if (typeof form.children !== "undefined" && form.children.length > 0) {
+        Object.keys(form.children).map(key => {
+            const child = form.children[key]
+            if (typeof child === 'object')
+                count++
+        })
+    }
     return count
 }
 

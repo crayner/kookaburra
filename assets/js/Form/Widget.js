@@ -40,7 +40,7 @@ export default function Widget(props) {
         widget_attr.type = 'button'
         widget_attr.style = {float: 'right'}
         widget_attr.className = 'btn-gibbon'
-        widget_attr.onClick = () => functions.submitForm()
+        widget_attr.onClick = (e) => functions.submitForm(e,form)
         return (
             <div {...wrapper_attr}>
                 <span className={'emphasis small'}>* {form.help}</span>
@@ -134,6 +134,7 @@ export default function Widget(props) {
 
 
     if (form.type === 'collection') {
+        console.log(form)
         return (<CollectionApp form={form} functions={functions} key={form.collection_key} />)
     }
 

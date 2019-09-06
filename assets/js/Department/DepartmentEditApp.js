@@ -39,16 +39,18 @@ export default class DepartmentEditApp extends Component {
             })
             resources.children = children
         }
-        resources.children.map((child, key) => {
-            const value = child.children.type.value === 'File' ? 'File' : 'Link'
-            if (value === 'File') {
-                child.children.url.type = 'file'
-            } else {
-                child.children.url.type = 'url'
-            }
-            child.children.type.value = value
-            values[key] = value
-        })
+        if (typeof resources.children !== 'undefined' && resources.children.length > 0) {
+            resources.children.map((child, key) => {
+                const value = child.children.type.value === 'File' ? 'File' : 'Link'
+                if (value === 'File') {
+                    child.children.url.type = 'file'
+                } else {
+                    child.children.url.type = 'url'
+                }
+                child.children.type.value = value
+                values[key] = value
+            })
+        }
 
         this.otherProps.forms.single.children.resources = {...resources}
         return values
@@ -73,11 +75,18 @@ export default class DepartmentEditApp extends Component {
     }
 
     addElement(element){
-        element.children.type.value = 'Link'
+        element.children.type.value = this.otherProps.forms.single.children.id.value
+        element.children.department.value = 'Link'
         element.children.url.type = 'url'
+        console.log(this)
+        if (typeof this.otherProps.forms.single.children.resources.children === 'undefined') {
+            this.otherProps.forms.single.children.resources.children = []
+        }
         this.otherProps.forms.single.children.resources.children[element.name] = element
         let values = this.state.values
         values[element.name] = element.children.type.value
+        const uuidv4 = require('uuid/v4')
+        this.otherProps.forms.single.children.resources.collection_key = uuidv4()
         this.setState({
             values: values
         })

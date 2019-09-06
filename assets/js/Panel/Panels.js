@@ -10,9 +10,8 @@ import FormApp from "../Form/FormApp"
 export default function Panels(props) {
     const {
         panels,
-        forms,
-        onSelectTab,
         selectedIndex,
+        functions,
     } = props
 
     const tabTags = Object.keys(panels).map(name => {
@@ -37,7 +36,7 @@ export default function Panels(props) {
     })
 
     return (
-        <Tabs selectedIndex={selectedIndex} onSelect={tabIndex => onSelectTab(tabIndex)}>
+        <Tabs selectedIndex={selectedIndex} onSelect={tabIndex => functions.onSelectTab(tabIndex)}>
             <TabList>
                 {tabTags}
             </TabList>
@@ -50,8 +49,8 @@ export default function Panels(props) {
 Panels.propTypes = {
     panels: PropTypes.object.isRequired,
     forms: PropTypes.object.isRequired,
+    functions: PropTypes.object.isRequired,
     selectedIndex: PropTypes.number.isRequired,
-    onSelectTab: PropTypes.func.isRequired,
 }
 
 function renderPanelContent(panel, props){
@@ -61,10 +60,9 @@ function renderPanelContent(panel, props){
     }
 
     let form = props.forms[panel.name]
-    if (null !== panel.form){
-        return <FormApp
-            {...props}
-            form={form} />
-    }
+    return <FormApp
+        {...props}
+        formName={panel.name}
+        form={form} />
 }
 

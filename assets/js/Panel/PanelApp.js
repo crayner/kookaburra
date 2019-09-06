@@ -1,52 +1,41 @@
 'use strict'
 
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Parser from "html-react-parser"
 import Panels from "./Panels"
 import FormApp from "../Form/FormApp"
 
-export default class PanelApp extends Component {
-    constructor (props) {
-        super(props)
-        this.panels = props.panels
-        this.forms = props.forms
-        this.selectedPanel = props.selectedPanel
-        this.actionRoute = props.actionRoute
+export default function PanelApp(props) {
+    const {
+        panels,
+        forms,
+        selectedPanel,
+        actionRoute,
+        functions,
+    } = props
 
-        this.state = {
-            tabIndex: this.panels[this.selectedPanel].index,
+    const tabIndex = panels[selectedPanel].index
+
+    if (Object.keys(panels).length === 1) {
+        const name = Object.keys(panels)[0]
+        const panel = panels[name]
+        if (panel.content !== null) {
+            return (
+                Parser(panel.content)
+            )
         }
-
-        this.onSelectTab = this.onSelectTab.bind(this)
+        return <FormApp {...props} form={forms[name]} functions={functions} />
     }
-
-    onSelectTab(tabIndex)
-    {
-        this.setState({
-            tabIndex: tabIndex,
-        })
-    }
-
-    render() {
-        if (Object.keys(this.panels).length === 1) {
-            const name = Object.keys(this.panels)[0]
-            const panel = this.panels[name]
-            if (panel.content !== null) {
-                return (
-                    Parser(panel.content)
-                )
-            }
-            return <FormApp {...this.props} form={this.forms[name]} actionRoute={this.actionRoute} />
-        }
-        return (
-            <Panels {...this.props} panels={this.panels} selectedIndex={this.state.tabIndex} onSelectTab={this.onSelectTab} actionRoute={this.actionRoute} />
-        )
-    }
+    return (
+        <Panels {...props} panels={panels} selectedIndex={tabIndex} functions={functions} />
+    )
 }
 
 PanelApp.propTypes = {
     panels: PropTypes.object.isRequired,
     forms: PropTypes.object.isRequired,
     selectedPanel: PropTypes.string,
+    actionRoute: PropTypes.string,
+    functions: PropTypes.object.isRequired,
 }
