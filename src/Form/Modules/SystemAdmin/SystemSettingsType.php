@@ -88,6 +88,7 @@ class SystemSettingsType extends AbstractType
                                     'Testing' =>  "Testing",
                                     'Development' =>  "Development",
                                 ],
+                                'placeholder' => false,
                             ],
                         ],
                     ],

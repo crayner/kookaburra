@@ -185,7 +185,7 @@ class ReactFormType extends AbstractType
             $vars['value'] = null;
         }
         if (in_array($vars['type'], ['file'])) {
-            $vars['delete_security'] = $view->vars['delete_security'];
+            $vars['delete_security'] = isset($view->vars['delete_security']) ? $view->vars['delete_security'] : false;
         }
         if (in_array($vars['type'], ['repeated'])) {
             $vars['row_style'] = 'transparent';
@@ -215,9 +215,10 @@ class ReactFormType extends AbstractType
             else
                 $vars['attr'][$attrName] = $attr;
 
-        if (isset($view->vars['placeholder']) && !(null === $view->vars['placeholder'] || false === $view->vars['placeholder']))
-            $vars['placeholder'] = $this->translate($view->vars['placeholder'], [], $this->getTranslationDomain($view->vars['translation_domain']));
-
+        if (isset($view->vars['placeholder'])) {
+            $vars['placeholder'] = $view->vars['placeholder'] ? $this->translate($view->vars['placeholder'], [], $this->getTranslationDomain($view->vars['translation_domain'])) : false;
+            dump($vars);
+        }
         if (isset($view->vars['choices'])) {
             if (false !== $view->vars['choice_translation_domain'])
                 foreach($view->vars['choices'] as $q=>$choice)

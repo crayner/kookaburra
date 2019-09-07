@@ -13,7 +13,7 @@ export default function FormSelect(props) {
 
     var options = []
 
-    if (form.placeholder !== false){
+    if (typeof form.placeholder !== 'undefined' && form.placeholder !== false){
         options.push(<option key={'placeholder'} className={'text-gray-500'}>{form.placeholder}</option>)
     }
 
