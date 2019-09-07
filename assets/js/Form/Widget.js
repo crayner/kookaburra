@@ -134,7 +134,8 @@ export default function Widget(props) {
 
 
     if (form.type === 'collection') {
-        console.log(form)
+        if (typeof form.children === 'undefined')
+            form.children = []
         return (<CollectionApp form={form} functions={functions} key={form.collection_key} />)
     }
 

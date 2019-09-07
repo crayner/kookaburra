@@ -99,6 +99,7 @@ class ReactFormType extends AbstractType
          $this->addTranslation('Open Link', [], 'kookaburra');
          $this->addTranslation('Yes/No', [], 'kookaburra');
          $this->addTranslation('File Delete', [], 'kookaburra');
+         $this->addTranslation('Let me ponder your request', [], 'kookaburra');
          $this->addTranslation('Add');
          $this->addTranslation('Delete');
          $this->addTranslation('There are no records to display.');

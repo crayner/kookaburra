@@ -80,7 +80,7 @@ class OrganisationSettingsType extends AbstractType
                             'name' => 'organisationLogo',
                             'entry_type' => FilePathType::class,
                             'entry_options' => [
-                                'fileName' => 'org_logo',
+                                'file_prefix' => 'org_logo',
                                 'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationLogo'),
                                 'constraints' => [
                                     new Image(['minWidth' => 400, 'maxWidth' => 400, 'minHeight' => 100, 'maxHeight' => 100]),
@@ -92,7 +92,7 @@ class OrganisationSettingsType extends AbstractType
                             'name' => 'organisationBackground',
                             'entry_type' => ReactFileType::class,
                             'entry_options' => [
-                                'fileName' => 'org_bg',
+                                'file_prefix' => 'org_bg',
                                 'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationBackground'),
                                 'constraints' => [
                                     new Image(['maxSize' => '750k']),

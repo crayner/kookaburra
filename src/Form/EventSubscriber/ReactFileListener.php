@@ -67,7 +67,7 @@ class ReactFileListener implements EventSubscriberInterface
                 $event->setData($data);
                 return;
             }
-            $file = JsonFileUploadHelper::saveFile($value, $form->getConfig()->getOption('fileName'));
+            $file = JsonFileUploadHelper::saveFile($value, $form->getConfig()->getOption('file_prefix'));
             $validator = Validation::createValidator();
             $x = $validator->validate($file, $form->getConfig()->getOption('constraints'));
             if ($x->count() > 0) {
@@ -87,7 +87,6 @@ class ReactFileListener implements EventSubscriberInterface
                         unlink($file);
                 }
             }
-            dump($data);
             $event->setData($data);
         }
     }

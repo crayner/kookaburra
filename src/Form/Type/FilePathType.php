@@ -40,7 +40,7 @@ class FilePathType extends AbstractType
 
 		$resolver->setRequired(
 			[
-				'fileName',
+				'file_prefix',
 			]
 		);
 	}

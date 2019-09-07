@@ -80,7 +80,7 @@ class ReactFileType extends AbstractType
 
         $resolver->setRequired(
             [
-                'fileName',
+                'file_prefix',
             ]
         );
 

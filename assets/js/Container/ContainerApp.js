@@ -41,7 +41,8 @@ export default class ContainerApp extends Component {
         this.mergeParentForm = this.mergeParentForm.bind(this)
         this.state = {
             selectedPanel: props.selectedPanel,
-            forms: props.forms
+            forms: props.forms,
+            submit: false
         }
         this.formNames = {}
         this.submit = {}
@@ -78,9 +79,7 @@ export default class ContainerApp extends Component {
     }
 
     downloadFile(file) {
-
         const route = '/resource/' + btoa(file) + '/' + this.actionRoute + '/download/'
-
         openPage(route, {target: '_blank'}, false)
     }
 
@@ -255,8 +254,12 @@ export default class ContainerApp extends Component {
         const parentName = this.getParentFormName(form)
         if (this.submit[parentName]) return
         this.submit[parentName] = true
+        this.setState({
+            submit: true
+        })
         let parentForm = this.getParentForm(form)
         let data = this.buildFormData({}, parentForm)
+console.log({data,parentForm})
         fetchJson(
             parentForm.action,
             {method: parentForm.method, body: JSON.stringify(data)},
@@ -269,12 +272,14 @@ export default class ContainerApp extends Component {
                 this.submit[parentName] = false
                 this.setState({
                     forms: this.mergeParentForm(parentName, form),
+                    submit: false,
                 })
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})
                 this.submit[parentName] = false
                 this.setState({
                     forms: this.mergeParentForm(parentName, parentForm),
+                    submit: false,
                 })
         })
     }
@@ -394,24 +399,29 @@ export default class ContainerApp extends Component {
         const uuidv4 = require('uuid/v4')
         let id = uuidv4()
         let element = this.replaceName({...form.prototype}, id)
+        let parentForm = this.getParentForm(form)
+        let parentFormName = this.getParentFormName(form)
         delete element.children.id
+        if (typeof form.children === 'undefined')
+            form.children = []
         if (typeof this.functions.addElementCallable === 'function') {
-            form.children[id] = this.functions.addElementCallable(element)
+            parentForm = this.functions.addElementCallable(element)
         } else {
-            form.children[id] = element
+            form.children.push(element)
+            parentForm = this.replaceFormElement(parentForm, form)
         }
 
-        let newForm = this.replaceFormElement({...this.state.form}, {...form})
-        let formCount = this.calcFormCount({...newForm}, 0)
         this.setState({
-            form: newForm,
-            formCount: formCount,
+            forms: this.mergeParentForm(parentFormName,parentForm)
         })
     }
 
     render() {
         return (
-            <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} />
+            <section>
+                {this.state.submit ? <div className={'info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
+                <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} />
+            </section>
         )
     }
 }

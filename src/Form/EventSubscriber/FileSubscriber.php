@@ -67,7 +67,7 @@ class FileSubscriber implements EventSubscriberInterface
 		    if (strtolower($extension) === 'mpga' && strtolower($original) === 'mp3' )
 		        $extension = 'mp3';
 
-			$fName = $form->getConfig()->getOption('fileName') . '_' . mb_substr(md5(uniqid()), mb_strlen($form->getConfig()->getOption('fileName')) + 1) . '.' . $extension;
+			$fName = $form->getConfig()->getOption('file_prefix') . '_' . mb_substr(md5(uniqid()), mb_strlen($form->getConfig()->getOption('file_prefix')) + 1) . '.' . $extension;
 
             $path = $this->targetDir;
 			$data->move($path, $fName);

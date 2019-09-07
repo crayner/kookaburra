@@ -11,12 +11,12 @@ export default function CollectionRows(props) {
     const {
         form,
         functions,
-        errors,
         columnCount,
     } = props
 
     let table_attr = widgetAttr(form, 'leftIndent smallIntBorder standardForm striped', {})
     delete table_attr.name
+    let errors = form.errors
 
     const header = (<CollectionHeaderRow
         form={form}
@@ -58,7 +58,7 @@ export default function CollectionRows(props) {
     }
 
     rows.push(<tr key={'addRow'}>
-        <td colSpan={functions.getColumnCount() - 1}></td>
+        <td colSpan={columnCount - 1}></td>
         <td><div className={'text-center'}>
             <button title={functions.translate('Add')} onClick={() => functions.addElement(form)} className={'button text-gray-800'} type={'button'} key={'one'}><span className={'fas fa-plus-circle fa-fw'}></span></button>
         </div></td>
@@ -80,7 +80,6 @@ export default function CollectionRows(props) {
 CollectionRows.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
-    errors: PropTypes.array,
     columnCount: PropTypes.number.isRequired,
 }
 

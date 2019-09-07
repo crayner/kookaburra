@@ -16,107 +16,92 @@ export default class DepartmentEditApp extends Component {
             submitFormCallable: this.submitForm.bind(this),
         }
 
-        this.mapTypeValues = this.mapTypeValues.bind(this)
-
         this.state = {
-            values: {}
+            forms: props.forms,
         }
     }
 
     componentDidMount() {
-        this.setState({
-            values: this.mapTypeValues(this.otherProps.forms.single)
+        let parentForm = {...this.state.forms.single}
+        parentForm.children.resources.children.map((child,key) => {
+            if (child.children.type.value === 'File') {
+                parentForm.children.resources.children[key].children.url.type = 'file'
+            } else {
+                parentForm.children.resources.children[key].children.url.type = 'url'
+                parentForm.children.resources.children[key].children.type.value = 'Link'
+            }
         })
-    }
-
-    mapTypeValues(form){
-        let resources = form.children.resources
-        let values = {}
-        if (typeof resources.children === 'object') {
-            let children = []
-            Object.keys(resources.children).map(key => {
-                children.push(resources.children[key])
-            })
-            resources.children = children
-        }
-        if (typeof resources.children !== 'undefined' && resources.children.length > 0) {
-            resources.children.map((child, key) => {
-                const value = child.children.type.value === 'File' ? 'File' : 'Link'
-                if (value === 'File') {
-                    child.children.url.type = 'file'
-                } else {
-                    child.children.url.type = 'url'
-                }
-                child.children.type.value = value
-                values[key] = value
-            })
-        }
-
-        this.otherProps.forms.single.children.resources = {...resources}
-        return values
+        this.setState({
+            forms: {single: parentForm}
+        })
     }
 
     manageLinkOrFile(e, form) {
         let name = form.id.replace('department_edit_resources_', '')
         name = name.replace('_type', '')
-        let child = this.otherProps.forms.single.children.resources.children[name]
-        form.value = e.target.value
-        if (form.value === 'File') {
+        let child = {}
+        let childKey = null
+        let parentForm = {...this.state.forms.single}
+        parentForm.children.resources.children.map((x,key) => {
+            if (name === x.name) {
+                child = x
+                childKey = key
+            }
+        })
+        let value = e.target.value
+        if (value === 'File') {
             child.children.url.type = 'file'
+            child.children.type.value = 'File'
         } else {
             child.children.url.type = 'url'
+            child.children.type.value = 'Link'
         }
-        this.otherProps.forms.single.children.resources.children[name] = child
-        let values = this.state.values
-        values[name] = form.value
+        parentForm.children.resources.children[childKey] = child
         this.setState({
-            values: values
+            forms: {single: parentForm}
         })
     }
 
     addElement(element){
-        element.children.type.value = this.otherProps.forms.single.children.id.value
-        element.children.department.value = 'Link'
+        element.children.type.value = 'Link'
         element.children.url.type = 'url'
-        console.log(this)
-        if (typeof this.otherProps.forms.single.children.resources.children === 'undefined') {
-            this.otherProps.forms.single.children.resources.children = []
+        let parentForm = this.otherProps.forms.single
+        if (typeof parentForm.children.resources.children === 'undefined') {
+            parentForm.children.resources.children = []
         }
-        this.otherProps.forms.single.children.resources.children[element.name] = element
-        let values = this.state.values
-        values[element.name] = element.children.type.value
+        parentForm.children.resources.children.push(element)
         const uuidv4 = require('uuid/v4')
-        this.otherProps.forms.single.children.resources.collection_key = uuidv4()
+        parentForm.children.resources.collection_key = uuidv4()
         this.setState({
-            values: values
+            forms: {single: parentForm}
         })
-        return element
+        return parentForm
     }
 
     deleteElement(data, element) {
         if (typeof data.form !== 'object' || data.status === 'error') {
             // restore the deleted element to the display on error
-            this.otherProps.forms.single.children.resources.children[element.name] = element
+            let parentForm = {...this.otherProps.forms.single}
+            parentForm.children.resources.children[element.name] = element
             this.setState({
-                values: this.mapTypeValues(this.otherProps.forms.single)
+                forms: {single: parentForm}
             })
-            return this.otherProps.forms.single
+            return parentForm
         }
         this.setState({
-            values: this.mapTypeValues(data.form)
+            forms: {...data.form}
         })
-        this.otherProps.forms.single = {...data.form}
         return data.form
     }
 
     submitForm(form) {
         this.setState({
-            values: this.mapTypeValues(form)
+            forms: {single: form}
         })
         return form
     }
 
     render() {
-        return (<ContainerApp {...this.otherProps} functions={this.functions} />)
+        return (<ContainerApp {...this.otherProps} forms={this.state.forms} functions={this.functions} />)
     }
 }

@@ -75,7 +75,7 @@ class PreferenceSettingsType extends AbstractType
                         'help_html' => true,
                         'data' => $options['data']->getPersonalBackground(),
                         'required' => false,
-                        'fileName' => 'personal_bg',
+                        'file_prefix' => 'personal_bg',
                         'constraints' => [
                             new Image(['maxSize' => '750k']),
                         ],
