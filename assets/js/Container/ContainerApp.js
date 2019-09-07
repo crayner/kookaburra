@@ -88,7 +88,6 @@ export default class ContainerApp extends Component {
     }
 
     deleteFile(form) {
-        console.log(form)
         let route = '/resource/' + btoa(form.value) + '/' + this.actionRoute + '/delete/'
         if (form.delete_security !== false)
             route = '/resource/' + btoa(form.value) + '/' + form.delete_security + '/delete/'
@@ -259,7 +258,6 @@ export default class ContainerApp extends Component {
         })
         let parentForm = this.getParentForm(form)
         let data = this.buildFormData({}, parentForm)
-console.log({data,parentForm})
         fetchJson(
             parentForm.action,
             {method: parentForm.method, body: JSON.stringify(data)},
@@ -333,7 +331,6 @@ console.log({data,parentForm})
         })
         if (typeof element.children.id === 'object') {
             let id = element.id.replace('_' + element.name,'')
-            console.log(id)
             let collection = this.findElementById({...this.state.form}, id, {})
             let route = collection.element_delete_route
             if (typeof collection.element_delete_options !== 'object') collection.element_delete_options = {}

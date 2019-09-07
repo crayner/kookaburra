@@ -73,7 +73,6 @@ export default class FastFinderApp extends Component {
     getSuggestionValue(suggestion) {
         var url = "/finder/{id}/redirect/"
         url = url.replace('{id}', suggestion.id)
-        console.log(suggestion)
         this.setState({
             value: suggestion.text
         })
