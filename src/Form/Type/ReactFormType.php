@@ -13,6 +13,7 @@
 namespace App\Form\Type;
 
 use App\Manager\ScriptManager;
+use App\Util\ReactFormHelper;
 use App\Util\TranslationsHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -38,12 +39,13 @@ class ReactFormType extends AbstractType
       */
      private $translator;
 
-     /**
-      * ReactFormType constructor.
-      * @param ScriptManager $scriptManager
-      * @param TranslatorInterface $translator
-      */
-     public function __construct(ScriptManager $scriptManager, TranslatorInterface $translator)
+    /**
+     * ReactFormType constructor.
+     * @param ScriptManager $scriptManager
+     * @param TranslatorInterface $translator
+     * @param ReactFormHelper $helper
+     */
+     public function __construct(ScriptManager $scriptManager, TranslatorInterface $translator, ReactFormHelper $helper)
      {
          $this->scriptManager = $scriptManager;
          $this->translator = $translator;
@@ -215,10 +217,9 @@ class ReactFormType extends AbstractType
             else
                 $vars['attr'][$attrName] = $attr;
 
-        if (isset($view->vars['placeholder'])) {
+        if (isset($view->vars['placeholder']))
             $vars['placeholder'] = $view->vars['placeholder'] ? $this->translate($view->vars['placeholder'], [], $this->getTranslationDomain($view->vars['translation_domain'])) : false;
-            dump($vars);
-        }
+
         if (isset($view->vars['choices'])) {
             if (false !== $view->vars['choice_translation_domain'])
                 foreach($view->vars['choices'] as $q=>$choice)

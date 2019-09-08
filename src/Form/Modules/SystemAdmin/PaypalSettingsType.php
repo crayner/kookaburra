@@ -6,29 +6,28 @@
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * User: craig
- * Date: 3/09/2019
- * Time: 14:33
+ * Date: 7/09/2019
+ * Time: 11:57
  */
 
 namespace App\Form\Modules\SystemAdmin;
 
+
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SettingsType;
+use App\Form\Type\ToggleType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class LocalisationSettingsType
+ * Class PaypalSettingsType
  * @package App\Form\Modules\SystemAdmin
  */
-class LocalisationSettingsType extends AbstractType
+class PaypalSettingsType extends AbstractType
 {
     /**
      * buildForm
@@ -38,49 +37,33 @@ class LocalisationSettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('localisationSettingsHeader', HeaderType::class,
+            ->add('paypalHeader', HeaderType::class,
                 [
-                    'label' => 'Localisation'
+                    'label' => 'PayPal Payment Gateway',
                 ]
             )
-            ->add('localisationSettings', SettingsType::class,
+            ->add('paypalSettings', SettingsType::class,
                 [
                     'settings' => [
                         [
                             'scope' => 'System',
-                            'name' => 'country',
-                            'entry_type' => CountryType::class,
-                            'entry_options' => [
-                                'placeholder' => '',
-                            ],
+                            'name' => 'enablePayments',
+                            'entry_type' => ToggleType::class,
                         ],
                         [
                             'scope' => 'System',
-                            'name' => 'firstDayOfTheWeek',
-                            'entry_type' => ChoiceType::class,
-                            'entry_options' => [
-                                'choices' => [
-                                    'Monday' => "Monday",
-                                    'Sunday' => "Sunday",
-
-                                ],
-                            ],
+                            'name' => 'paypalAPIUsername',
+                            'entry_type' => TextType::class,
                         ],
                         [
                             'scope' => 'System',
-                            'name' => 'timezone',
-                            'entry_type' => TimezoneType::class,
-                            'entry_options' => [
-                                'placeholder' => '',
-                            ],
+                            'name' => 'paypalAPIPassword',
+                            'entry_type' => TextType::class,
                         ],
                         [
                             'scope' => 'System',
-                            'name' => 'currency',
-                            'entry_type' => CurrencyType::class,
-                            'entry_options' => [
-                                'placeholder' => '',
-                            ],
+                            'name' => 'paypalAPISignature',
+                            'entry_type' => TextType::class,
                         ],
                     ],
                 ]

@@ -22,6 +22,7 @@ if (window.CONTAINER_PROPS !== 'undefined') {
                 translations={container.translations}
                 actionRoute={container.actionRoute}
                 forms={container.forms}
+                extras={container.extras}
             />, target)
         } else if (target !== null) {
             render(

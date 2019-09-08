@@ -121,7 +121,7 @@ class IdleTimeout implements ContentInterface
      * @param string|null $domain
      * @return string
      */
-    private function translate(string $key, ?array $params = [], ?string $domain = 'gibbon'): string
+    private function translate(string $key, ?array $params = [], ?string $domain = 'messages'): string
     {
         return $this->getTranslator()->trans($key, $params, $domain);
     }

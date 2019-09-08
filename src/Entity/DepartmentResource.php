@@ -216,4 +216,14 @@ class DepartmentResource
 
         return $this;
     }
+
+    /**
+     * onRemove
+     * @ORM\PreRemove()
+     */
+    public function RemoveFiles(): DepartmentResource
+    {
+        $this->oldUrl = $this->getUrl();
+        return $this->removeOldFiles();
+    }
 }

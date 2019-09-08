@@ -316,6 +316,7 @@ class DepartmentController extends AbstractController
             $content = json_decode($request->getContent(), true);
 
             $form->submit($content);
+
             $em = $this->getDoctrine()->getManager();
 
             if ($form->isSubmitted() && $form->isValid()) {

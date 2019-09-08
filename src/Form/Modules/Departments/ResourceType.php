@@ -68,11 +68,6 @@ class ResourceType extends AbstractType
                         new NotBlank(),
                     ],
                     'row_style' => 'collection_column',
-                    'attr' => [
-                        'style' => [
-                            'minWidth' => '15.5rem',
-                        ],
-                    ],
                 ]
             )
             ->add('department', HiddenEntityType::class,

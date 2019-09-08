@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react'
 import ContainerApp from "../Container/ContainerApp"
+import {deleteFile} from "../component/deleteFile"
 
 
 export default class DepartmentEditApp extends Component {
@@ -12,9 +13,10 @@ export default class DepartmentEditApp extends Component {
         this.functions = {
             manageLinkOrFile: this.manageLinkOrFile.bind(this),
             addElementCallable: this.addElement.bind(this),
-            deleteElementCallable: this.deleteElement.bind(this),
-            submitFormCallable: this.submitForm.bind(this),
+            setParentState: this.setMyState.bind(this)
         }
+
+        this.manageURLTypes = this.manageURLTypes.bind(this)
 
         this.state = {
             forms: props.forms,
@@ -22,7 +24,14 @@ export default class DepartmentEditApp extends Component {
     }
 
     componentDidMount() {
-        let parentForm = {...this.state.forms.single}
+        this.manageURLTypes({...this.state.forms.single})
+    }
+
+    setMyState(forms){
+        this.manageURLTypes({...forms.single})
+    }
+
+    manageURLTypes(parentForm) {
         parentForm.children.resources.children.map((child,key) => {
             if (child.children.type.value === 'File') {
                 parentForm.children.resources.children[key].children.url.type = 'file'
@@ -57,49 +66,17 @@ export default class DepartmentEditApp extends Component {
             child.children.type.value = 'Link'
         }
         parentForm.children.resources.children[childKey] = child
-        this.setState({
-            forms: {single: parentForm}
-        })
+        this.setMyState({single: parentForm})
     }
 
     addElement(element){
         element.children.type.value = 'Link'
         element.children.url.type = 'url'
-        let parentForm = this.otherProps.forms.single
-        if (typeof parentForm.children.resources.children === 'undefined') {
-            parentForm.children.resources.children = []
-        }
-        parentForm.children.resources.children.push(element)
-        const uuidv4 = require('uuid/v4')
-        parentForm.children.resources.collection_key = uuidv4()
-        this.setState({
-            forms: {single: parentForm}
-        })
-        return parentForm
+        element.children.department.value = this.state.forms.single.children.id.value
+
+        return element
     }
 
-    deleteElement(data, element) {
-        if (typeof data.form !== 'object' || data.status === 'error') {
-            // restore the deleted element to the display on error
-            let parentForm = {...this.otherProps.forms.single}
-            parentForm.children.resources.children[element.name] = element
-            this.setState({
-                forms: {single: parentForm}
-            })
-            return parentForm
-        }
-        this.setState({
-            forms: {...data.form}
-        })
-        return data.form
-    }
-
-    submitForm(form) {
-        this.setState({
-            forms: {single: form}
-        })
-        return form
-    }
 
     render() {
         return (<ContainerApp {...this.otherProps} forms={this.state.forms} functions={this.functions} />)

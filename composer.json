@@ -7,6 +7,7 @@
         "php": "^7.3.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "aura/sqlquery": "3.*-dev",
         "crayner/doctrine-bundle": "^1.0",
         "doctrine/doctrine-migrations-bundle": "^2.0",

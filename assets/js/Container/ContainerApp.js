@@ -7,6 +7,7 @@ import {isEmpty} from '../component/isEmpty'
 import {openPage} from "../component/openPage"
 import {fetchJson} from "../component/fetchJson"
 import {createPassword} from "../component/createPassword"
+import {deleteFile} from "../component/deleteFile"
 
 export default class ContainerApp extends Component {
     constructor (props) {
@@ -37,6 +38,7 @@ export default class ContainerApp extends Component {
         this.functions.deleteFile = this.deleteFile.bind(this)
         this.functions.calcFormCount = this.calcFormCount.bind(this)
         this.getParentForm = this.getParentForm.bind(this)
+        this.setParentState = this.setParentState.bind(this)
         this.getParentFormName = this.getParentFormName.bind(this)
         this.mergeParentForm = this.mergeParentForm.bind(this)
         this.state = {
@@ -56,6 +58,15 @@ export default class ContainerApp extends Component {
         })
     }
 
+    setParentState(forms){
+        if (typeof this.functions.setParentState === 'function') {
+            this.functions.setParentState(forms)
+        } else {
+            this.setState({
+                forms: forms,
+            })
+        }
+    }
     translate(id){
         if (isEmpty(this.translations[id])) {
             console.error('Unable to translate: ' + id)
@@ -88,36 +99,15 @@ export default class ContainerApp extends Component {
     }
 
     deleteFile(form) {
-        let route = '/resource/' + btoa(form.value) + '/' + this.actionRoute + '/delete/'
-        if (form.delete_security !== false)
-            route = '/resource/' + btoa(form.value) + '/' + form.delete_security + '/delete/'
-        fetchJson(
-            route,
-            {},
-            false)
-            .then(data => {
-                if (data.status === 'success') {
-                    let errors = this.state.errors
-                    errors = errors.concat(data.errors)
-                    this.setState({
-                        errors: errors,
-                        form: {...this.changeFormValue(this.state.form,form,'')},
-                    })
-                } else {
-                    let errors = this.state.errors
-                    errors = errors.concat(data.errors)
-                    this.setState({
-                        errors: this.state.errors,
-                    })
-
-                }
-            }).catch(error => {
-            let errors = this.state.errors
-            errors.push({'class': 'error', 'message': error})
-            this.submit = false
-            this.setState({
-                errors: errors,
-            })
+        const restoreForm = {...form}
+        deleteFile(form).then(data => {
+            let errors = parentForm.errors
+            errors = errors.concat(data.errors)
+            parentForm.errors = errors
+            if (data.status === 'success')
+                this.setParentState(this.mergeParentForm(this.getParentFormName(form), this.changeFormValue(parentForm,form,'')))
+            else
+                this.setParentState(this.mergeParentForm(this.getParentFormName(form), this.changeFormValue(parentForm,{...restoreForm},'')))
         })
     }
 
@@ -129,18 +119,12 @@ export default class ContainerApp extends Component {
         let second = this.findElementById(fullForm, id, {})
         alert(form.generateButton.alertPrompt + ': ' + password)
         fullForm = this.changeFormValue(fullForm,second,password)
-        this.setState({
-            errors: this.state.errors,
-            form: this.mergeParentForm(this.getParentFormName(form),fullForm),
-        })
+        this.setParentState(this.mergeParentForm(this.getParentFormName(form),fullForm))
     }
 
     onCKEditorChange(event, editor, form) {
         const data = editor.getData()
-        this.setState({
-            errors: this.state.errors,
-            form: {...this.changeFormValue(this.state.form,form,data)},
-        })
+        this.setParentState(this.mergeParentForm(this.getParentFormName(form), this.changeFormValue(this.getParentForm(form),form,data)))
     }
 
     calcFormCount(form, formCount) {
@@ -266,19 +250,19 @@ export default class ContainerApp extends Component {
                 let errors = parentForm.errors
                 errors = errors.concat(data.errors)
                 let form = typeof this.functions.submitFormCallable === 'function' ? this.functions.submitFormCallable(data.form) : data.form
-                form.errors = errors
+                parentForm.errors = errors
                 this.submit[parentName] = false
                 this.setState({
-                    forms: this.mergeParentForm(parentName, form),
                     submit: false,
                 })
+                this.setParentState(this.mergeParentForm(parentName, form))
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})
                 this.submit[parentName] = false
                 this.setState({
-                    forms: this.mergeParentForm(parentName, parentForm),
                     submit: false,
                 })
+                this.setParentState(this.mergeParentForm(parentName, form))
         })
     }
 
@@ -286,15 +270,17 @@ export default class ContainerApp extends Component {
         if (typeof form.children === 'object') {
             Object.keys(form.children).map(key => {
                 let child = this.deleteFormElement(form.children[key],element)
-                if (child.id === element.id)
+                if (child.id === element.id) {
                     delete form.children[key]
+                }
             })
         }
         if (typeof form.children === 'array') {
             form.children.map((child,key) => {
                 child = this.deleteFormElement(child,element)
-                if (child.id === element.id)
-                    form.children.splice(key,1)
+                if (child.id === element.id) {
+                    form.children.splice(key, 1)
+                }
             })
         }
         return form
@@ -324,14 +310,13 @@ export default class ContainerApp extends Component {
     }
 
     deleteElement(element) {
-        let form = this.deleteFormElement({...this.state.form}, element)
-        this.setState({
-            form: form,
-            formCount: this.calcFormCount({...form}, 0)
-        })
+        let parentForm = this.getParentForm(element)
+        const restoreForm = parentForm
+        parentForm = this.deleteFormElement(parentForm, element)
+        this.setParentState(this.mergeParentForm(this.getParentFormName(element),parentForm))
         if (typeof element.children.id === 'object') {
             let id = element.id.replace('_' + element.name,'')
-            let collection = this.findElementById({...this.state.form}, id, {})
+            let collection = this.findElementById(parentForm, id, {})
             let route = collection.element_delete_route
             if (typeof collection.element_delete_options !== 'object') collection.element_delete_options = {}
             let fetch = true
@@ -342,18 +327,26 @@ export default class ContainerApp extends Component {
                     fetch = false
                 }
             })
-            if (fetch === false) retutn
+            if (fetch === false) return
+
             fetchJson(route, [], false)
                 .then((data) => {
-                    let newForm = this.state.form
-                    if (typeof this.functions.deleteElementCallable === 'function') newForm = this.functions.deleteElementCallable(data, element)
-                    this.setState({
-                        errors: data.errors,
-                        form: newForm,
-                        formCount: this.calcFormCount(newForm, 0)
-                    })
+                    let errors = parentForm.errors
+                    errors = errors.concat(data.errors)
+                    parentForm.errors = errors
+                    if (data.status === 'success') {
+                        if (typeof this.functions.deleteElementCallable === 'function') element = this.functions.deleteElementCallable(data, element)
+                        this.setParentState(this.mergeParentForm(this.getParentFormName(element), parentForm))
+                    } else {
+                        this.setParentState(this.mergeParentForm(this.getParentFormName(element),{...restoreForm}))
+                    }
+                }).catch(error => {
+                    parentForm = {...restoreForm}
+                    let errors = parentForm.errors
+                    errors.push({'class': 'error', 'message': error})
+                    parentForm.errors = errors
+                    this.setParentState(this.mergeParentForm(this.getParentFormName(form), parentForm))
                 })
-
         }
     }
 
@@ -402,11 +395,10 @@ export default class ContainerApp extends Component {
         if (typeof form.children === 'undefined')
             form.children = []
         if (typeof this.functions.addElementCallable === 'function') {
-            parentForm = this.functions.addElementCallable(element)
-        } else {
-            form.children.push(element)
-            parentForm = this.replaceFormElement(parentForm, form)
+            element = this.functions.addElementCallable(element)
         }
+        form.children.push(element)
+        parentForm = this.replaceFormElement(parentForm, form)
 
         this.setState({
             forms: this.mergeParentForm(parentFormName,parentForm)

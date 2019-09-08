@@ -17,14 +17,20 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Entity\I18n;
 use App\Entity\Setting;
+use App\Form\Modules\SystemAdmin\EmailSettingsType;
+use App\Form\Modules\SystemAdmin\GoogleIntegationType;
 use App\Form\Modules\SystemAdmin\LocalisationSettingsType;
 use App\Form\Modules\SystemAdmin\MiscellaneousSettingsType;
 use App\Form\Modules\SystemAdmin\OrganisationSettingsType;
+use App\Form\Modules\SystemAdmin\PaypalSettingsType;
 use App\Form\Modules\SystemAdmin\SecuritySettingsType;
+use App\Form\Modules\SystemAdmin\SMSSettingsType;
 use App\Form\Modules\SystemAdmin\SystemSettingsType;
+use App\Manager\SystemAdmin\GoogleSettingManager;
 use App\Manager\SystemAdmin\LanguageManager;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -88,6 +94,7 @@ class SystemAdminController extends AbstractController
     public function systemSettings(Request $request, ContainerManager $manager, TranslatorInterface $translator, string $tabName = 'System')
     {
         $settingProvider = ProviderFactory::create(Setting::class);
+        $container = new Container();
         // System Settings
         $form = $this->createForm(SystemSettingsType::class, null, ['action' => $this->generateUrl('system_admin__system_settings', ['tabName' => 'System']) ]);
 
@@ -105,7 +112,6 @@ class SystemAdminController extends AbstractController
             return new JsonResponse($data,200);
         }
 
-        $container = new Container();
         $panel = new Panel('System');
         $container->addForm('System', $form->createView())->setTarget('formContent')->addPanel($panel);
 
@@ -212,5 +218,109 @@ class SystemAdminController extends AbstractController
         $manager->addContainer($container)->buildContainers();
 
         return $this->render('modules/system_admin/system_settings.html.twig');
+    }
+
+    /**
+     * thirdParty
+     * @param Request $request
+     * @param ContainerManager $manager
+     * @param TranslatorInterface $translator
+     * @param string $tabName
+     * @Route("/third_party/{tabName}", name="third_party")
+     * @IsGranted("ROLE_ROUTE"))
+     */
+    public function thirdParty(Request $request, ContainerManager $manager, TranslatorInterface $translator, string $tabName = 'Google')
+    {
+        $settingProvider = ProviderFactory::create(Setting::class);
+        $container = new Container();
+        $container->setTarget('formContent')->setSelectedPanel($tabName)->setApplication('ThirdParty');
+        // Google
+        $form = $this->createForm(GoogleIntegationType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'Google']) ]);
+
+        if ($tabName === 'Google' && $request->getContentType() === 'json') {
+            $data = [];
+            try {
+                $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
+                $gm = new GoogleSettingManager();
+                $gm->handleGoogleSecretsFile($form, $request, $translator);
+            } catch (\Exception $e) {
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.') . ' ' .$e->getMessage() ];
+            }
+
+            $form = $this->createForm(GoogleIntegationType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'Google']) ]);
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data,200);
+        }
+
+        $panel = new Panel('Google');
+        $container->addForm('Google', $form->createView())->addPanel($panel);
+
+        // PayPal
+        $form = $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'PayPal']) ]);
+
+        if ($tabName === 'PayPal' && $request->getContentType() === 'json') {
+            $data = [];
+            try {
+                $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
+            } catch (\Exception $e) {
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
+            }
+
+            $form = $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'PayPal']) ]);
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data,200);
+        }
+
+        $panel = new Panel('PayPal');
+        $container->addForm('PayPal', $form->createView())->addPanel($panel);
+
+        // SMS
+        $form = $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'SMS']) ]);
+
+        if ($tabName === 'SMS' && $request->getContentType() === 'json') {
+            $data = [];
+            try {
+                $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
+            } catch (\Exception $e) {
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data,200);
+        }
+
+        $panel = new Panel('SMS');
+        $container->addForm('SMS', $form->createView())->addPanel($panel);
+
+        // E-Mail
+        $form = $this->createForm(EmailSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'E-Mail']) ]);
+
+        if ($tabName === 'E-Mail' && $request->getContentType() === 'json') {
+            $data = [];
+            try {
+                $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
+            } catch (\Exception $e) {
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data,200);
+        }
+
+        $panel = new Panel('E-Mail');
+        $container->addForm('E-Mail', $form->createView())->addPanel($panel);
+
+        // Finally Finished
+        $manager->addContainer($container)->buildContainers();
+
+        return $this->render('modules/system_admin/third_party.html.twig');
     }
 }

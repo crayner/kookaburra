@@ -6,29 +6,27 @@
  * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * User: craig
- * Date: 3/09/2019
- * Time: 14:33
+ * Date: 7/09/2019
+ * Time: 11:57
  */
 
 namespace App\Form\Modules\SystemAdmin;
+
 
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SettingsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class LocalisationSettingsType
+ * Class SMSSettingsType
  * @package App\Form\Modules\SystemAdmin
  */
-class LocalisationSettingsType extends AbstractType
+class EmailSettingsType extends AbstractType
 {
     /**
      * buildForm
@@ -38,48 +36,24 @@ class LocalisationSettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('localisationSettingsHeader', HeaderType::class,
+            ->add('emailHeader', HeaderType::class,
                 [
-                    'label' => 'Localisation'
+                    'label' => 'E-Mail',
                 ]
             )
-            ->add('localisationSettings', SettingsType::class,
+            ->add('emailSettings', SettingsType::class,
                 [
                     'settings' => [
                         [
                             'scope' => 'System',
-                            'name' => 'country',
-                            'entry_type' => CountryType::class,
-                            'entry_options' => [
-                                'placeholder' => '',
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'firstDayOfTheWeek',
+                            'name' => 'enableMailerSMTP',
                             'entry_type' => ChoiceType::class,
                             'entry_options' => [
                                 'choices' => [
-                                    'Monday' => "Monday",
-                                    'Sunday' => "Sunday",
-
+                                    'GMail' => 'GMail', 'SMTP' => 'SMTP',
                                 ],
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'timezone',
-                            'entry_type' => TimezoneType::class,
-                            'entry_options' => [
-                                'placeholder' => '',
-                            ],
-                        ],
-                        [
-                            'scope' => 'System',
-                            'name' => 'currency',
-                            'entry_type' => CurrencyType::class,
-                            'entry_options' => [
-                                'placeholder' => '',
+                                'choice_translation_domain' => false,
+                                'placeholder' => 'No',
                             ],
                         ],
                     ],

@@ -30,6 +30,7 @@ class URLOrFileValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        dump($value);
         if (null === $value)
             return;
 
@@ -45,7 +46,7 @@ class URLOrFileValidator extends ConstraintValidator
             $this->context->getValidator()->validate($value, $fileValidator);
             return;
         }
-        dd($value);
+
     }
 
 }

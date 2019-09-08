@@ -127,7 +127,7 @@ class ModuleMenu implements ContentInterface
      * @param string|null $domain
      * @return string
      */
-    private function translate(string $key, ?array $params = [], ?string $domain = 'gibbon'): string
+    private function translate(string $key, ?array $params = [], ?string $domain = 'messages'): string
     {
         return $this->getTranslator()->trans($key, $params, $domain);
     }
@@ -151,6 +151,7 @@ class ModuleMenu implements ContentInterface
                 return $link['url'];
             $route = strtolower(str_replace(' ', '_', substr($route[1], 0, strpos($route[1], '/')))) . '__' . $link['entryURL'];
             $url = UrlGeneratorHelper::getPath($route, [], Router::ABSOLUTE_URL);
+            dump($route,$url);
             return $url;
         }
 

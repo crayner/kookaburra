@@ -186,7 +186,7 @@ class BreadCrumbs
                 $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath('legacy', array_merge(['q' => str_replace('index.php?q=','', $this->getBaseURL()) . '/' . $route], $params));
             } else {
                 if (false === strpos($route, '__'))
-                    $route = $this->getModule() . '__' . $route;
+                    $route = strtolower(str_replace(' ', '_', $this->getModule())) . '__' . $route;
                 $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath($route, $params);
             }
         }

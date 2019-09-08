@@ -17,6 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\SubmitEvent;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Validation;
 
@@ -32,12 +33,19 @@ class ReactFileListener implements EventSubscriberInterface
     private $stack;
 
     /**
+     * @var integer
+     */
+    private $parents = 0;
+
+    /**
      * ReactFileListener constructor.
      * @param RequestStack $stack
+     * @param int $parents
      */
-    public function __construct(RequestStack $stack)
+    public function __construct(RequestStack $stack, int $parents = 0)
     {
         $this->stack = $stack;
+        $this->parents = $parents;
     }
 
     /**
@@ -61,9 +69,10 @@ class ReactFileListener implements EventSubscriberInterface
         if ($request->getContentType() === 'json') {
             $targetPath = realpath(__DIR__ . '/../../../public/uploads') . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m');
             $form = $event->getForm();
+            $this->getParentNames($form);
             $data = $form->getData();
-            $value = $this->getContentValue($form->getName(), json_decode($request->getContent(), true));
-            if ('' === $value) {
+            $value = $this->getValueFromContent($form, json_decode($request->getContent(), true));
+            if ('' === $value || null === $value) {
                 $event->setData($data);
                 return;
             }
@@ -92,13 +101,21 @@ class ReactFileListener implements EventSubscriberInterface
     }
 
     /**
+     * @return int
+     */
+    public function getParents(): int
+    {
+        return $this->parents;
+    }
+
+    /**
      * getContentValue
      * @param string $name
      * @param array $content
      * @param null $value
-     * @return string|null
+     * @return mixed
      */
-    public function getContentValue(string $name, array $content, $value = null): ?string
+    public function getContentValue(string $name, array $content, $value = null)
     {
         foreach($content as $q=>$w)
         {
@@ -120,5 +137,40 @@ class ReactFileListener implements EventSubscriberInterface
     public function getStack(): RequestStack
     {
         return $this->stack;
+    }
+
+    /**
+     * getParentNames
+     * @param FormInterface $form
+     * @return array
+     */
+    public function getParentNames(FormInterface $form): array
+    {
+        $result = [];
+        $result[] = $form->getName();
+
+        for($x=0; $x < $this->getParents(); $x++) {
+            $form = $form->getParent();
+            array_unshift($result, $form->getName());
+        }
+
+        return $result;
+    }
+
+    /**
+     * getValueFromContent
+     * @param FormInterface $form
+     * @param array $content
+     * @return mixed
+     */
+    public function getValueFromContent(FormInterface $form, array $content)
+    {
+        foreach($this->getParentNames($form) as $q=>$name) {
+            if ($q === 0)
+                $content = $this->getContentValue($name, $content);
+            else
+                $content = $content[$name];
+        }
+        return $content;
     }
 }

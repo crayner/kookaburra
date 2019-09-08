@@ -3,6 +3,7 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import {rowAttr, columnAttr} from '../../buildAttr'
+import Parser from "html-react-parser"
 
 export default function HeaderRow(props) {
     const {
@@ -20,9 +21,14 @@ export default function HeaderRow(props) {
     if (form.header_type === 'h4')
         label = (<h4>{form.label}</h4>)
 
+    let help = ''
+    if (typeof form.help === 'string')
+        help = form.help
+
     return (<tr {...row_attr}>
         <td {...column_attr}>
             {label}
+            {Parser(help)}
         </td>
     </tr>)
 

@@ -47,3 +47,6 @@ parameters:
     mailer_auth_mode: null
     mailer_sender_name: 'Kookaburra'
     mailer_sender_address: ~
+    google_api_key: ~
+    google_client_id: ~
+    google_client_secret: ~

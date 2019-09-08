@@ -14,6 +14,7 @@ namespace App\Container;
 
 
 use App\Manager\ScriptManager;
+use App\Util\ReactFormHelper;
 use App\Util\TranslationsHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\FormView;
@@ -154,7 +155,7 @@ class ContainerManager
             $container['forms'] = $container['forms']->toArray();
             $container['translations'] = TranslationsHelper::getTranslations();
             $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
-
+            $container['extras'] = ReactFormHelper::getExtras();
             $containers[$target] = $container;
         }
 

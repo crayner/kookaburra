@@ -46,6 +46,7 @@ class FileURLToStringTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
+        dump($value);
         if (null === $value || '' === $value)
             return null;
         if (is_string($value))
@@ -59,8 +60,10 @@ class FileURLToStringTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        dump($value);
         if (null === $value || '' === $value)
             return null;
+
         if (is_string($value)) {
             if (strpos($value, 'http') === 0)
                 return $value;

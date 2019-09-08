@@ -60,7 +60,7 @@ class FileURLType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addModelTransformer(new FileURLToStringTransformer($options['file_prefix']))
-            ->addEventSubscriber(new FileURLListener($this->stack));
+            ->addEventSubscriber(new FileURLListener($this->stack, 2));
     }
 
     public function configureOptions(OptionsResolver $resolver)

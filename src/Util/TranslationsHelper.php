@@ -61,7 +61,7 @@ class TranslationsHelper
      * addTranslation
      * @return ReactFormType
      */
-    public static function addTranslation(string $id, array $options = [], ?string $domain = 'gibbon')
+    public static function addTranslation(string $id, array $options = [], ?string $domain = 'messages')
     {
         self::getTranslations();
         self::$translations[$id] = self::translate($id, $options, $domain);
@@ -74,7 +74,7 @@ class TranslationsHelper
      * @param string|null $domain  Override the default messages.
      * @return string
      */
-    private static function translate(string $id, array $params = [], ?string $domain = 'gibbon'): string
+    public static function translate(string $id, array $params = [], ?string $domain = 'messages'): string
     {
         return self::$translator->trans($id, $params, $domain);
     }

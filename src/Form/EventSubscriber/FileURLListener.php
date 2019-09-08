@@ -28,7 +28,9 @@ class FileURLListener extends ReactFileListener
     {
         $request = $this->getStack()->getCurrentRequest();
         $form = $event->getForm();
-        $value = $this->getContentValue($form->getName(), json_decode($request->getContent(), true));
+
+        $value = $this->getValueFromContent($form, json_decode($request->getContent(), true));
+
         if (strpos($value, 'http') === 0)
         {
             $event->setData($value);
