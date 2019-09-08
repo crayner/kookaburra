@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react'
 import ContainerApp from "../Container/ContainerApp"
-import {deleteFile} from "../component/deleteFile"
-
 
 export default class DepartmentEditApp extends Component {
     constructor (props) {

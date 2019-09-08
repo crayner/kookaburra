@@ -1,4 +1,4 @@
 {%  trans_default_domain 'gibbon' %}
 
 {% set photo = person.photo(size, class|default('')) %}
-<img src="{{ asset(photo.asset|replace(['{theme}'],getThemeName())) }}" class="{{ photo.class }}" />
+<img src="{{ asset(photo.asset|replace({'{theme}': getThemeName()})) }}" class="{{ photo.class }}" />

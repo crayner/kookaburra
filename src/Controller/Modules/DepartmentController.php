@@ -323,6 +323,8 @@ class DepartmentController extends AbstractController
                 $em->persist($department);
                 $em->flush();
                 $em->refresh($department);
+                foreach($department->getResources() as $resource)
+                    $em->refresh($resource);
                 $form = $this->createForm(EditType::class, $department,
                     [
                         'resource_manager' => $resourceTypeManager,

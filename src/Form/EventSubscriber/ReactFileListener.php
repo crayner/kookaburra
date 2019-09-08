@@ -85,8 +85,8 @@ class ReactFileListener implements EventSubscriberInterface
                     $form->addError(new FormError($constraint->getMessage()));
                 $data = null;
             } else {
-                $public = realpath(__DIR__ . '/../../public');
-                $data = $file->getRealPath();
+                $public = realpath(__DIR__ . '/../../../public');
+                $data = str_replace($public, '', $file->getRealPath());
 
                 // Remove existing file..
                 $file = $form->getData();

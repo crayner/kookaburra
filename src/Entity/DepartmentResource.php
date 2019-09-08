@@ -209,10 +209,13 @@ class DepartmentResource
      */
     public function removeOldFiles(): DepartmentResource
     {
-        if ($this->getOldUrl() && is_file($this->getOldUrl()))
+        if ($this->getOldUrl())
         {
-            unlink($this->getOldUrl());
+            $file = realpath($this->getOldUrl()) ?: realpath(__DIR__.'/../../public' . $this->getOldUrl()) ?: null;
+            if (is_file($file))
+                unlink($file);
         }
+        $this->oldUrl = null;
 
         return $this;
     }

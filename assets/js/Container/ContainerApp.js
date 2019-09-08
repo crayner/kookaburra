@@ -7,7 +7,6 @@ import {isEmpty} from '../component/isEmpty'
 import {openPage} from "../component/openPage"
 import {fetchJson} from "../component/fetchJson"
 import {createPassword} from "../component/createPassword"
-import {deleteFile} from "../component/deleteFile"
 
 export default class ContainerApp extends Component {
     constructor (props) {
@@ -99,16 +98,33 @@ export default class ContainerApp extends Component {
     }
 
     deleteFile(form) {
-        const restoreForm = {...form}
-        deleteFile(form).then(data => {
-            let errors = parentForm.errors
-            errors = errors.concat(data.errors)
-            parentForm.errors = errors
-            if (data.status === 'success')
-                this.setParentState(this.mergeParentForm(this.getParentFormName(form), this.changeFormValue(parentForm,form,'')))
-            else
-                this.setParentState(this.mergeParentForm(this.getParentFormName(form), this.changeFormValue(parentForm,{...restoreForm},'')))
-        })
+        let route = '/resource/' + btoa(form.value) + '/' + this.actionRoute + '/delete/'
+        if (typeof form.delete_security !== 'undefined' && form.delete_security !== false)
+            route = '/resource/' + btoa(form.value) + '/' + form.delete_security + '/delete/'
+        let parentForm = this.getParentForm(form)
+        fetchJson(
+            route,
+            {},
+            false)
+            .then(data => {
+                if (data.status === 'success') {
+                    let errors = parentForm.errors
+                    errors = errors.concat(data.errors)
+                    parentForm.errors = errors
+                    this.setParentState(this.mergeParentForm(this.getParentFormName(form), this.changeFormValue(parentForm,form,'')))
+                } else {
+                    let errors = parentForm.errors
+                    errors = errors.concat(data.errors)
+                    parentForm.errors = errors
+                    this.setParentState(this.mergeParentForm(this.getParentFormName(form), parentForm))
+
+                }
+            }).catch(error => {
+                let errors = parentForm.errors
+                errors.push({'class': 'error', 'message': error})
+                parentForm.errors = errors
+                this.setParentState(this.mergeParentForm(this.getParentFormName(form), parentForm))
+            })
     }
 
     generateNewPassword(form) {

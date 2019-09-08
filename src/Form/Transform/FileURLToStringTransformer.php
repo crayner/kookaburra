@@ -46,7 +46,6 @@ class FileURLToStringTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        dump($value);
         if (null === $value || '' === $value)
             return null;
         if (is_string($value))
@@ -60,7 +59,6 @@ class FileURLToStringTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        dump($value);
         if (null === $value || '' === $value)
             return null;
 
@@ -75,7 +73,7 @@ class FileURLToStringTransformer implements DataTransformerInterface
 
             $public = realpath(__DIR__ . '/../../../public');
             $file = realpath($value) ?: (realpath($public.$value) ?: null);
-            return $file;
+            return str_replace($public, '', $file);
         }
 
         if ($value instanceof File)
@@ -85,7 +83,8 @@ class FileURLToStringTransformer implements DataTransformerInterface
             $name = substr(trim($this->filePrefix, '_') . '_' . ($user ? $user->getId() : '0') . '_' . date('Ymd') . '_' . uniqid('', true), 0, 32) . '.' . $value->getExtension();
 
             $name = $value->move($path, $name);
-            return $name->getRealPath();
+            $public = realpath(__DIR__ . '/../../../public');
+            return str_replace($public, '', $name->getRealPath());
         }
 
         dd($value);
