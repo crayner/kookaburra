@@ -12,9 +12,14 @@
 
 namespace App\Form\Modules\SystemAdmin;
 
+use App\Entity\Setting;
+use App\Form\Type\FilePathType;
 use App\Form\Type\HeaderType;
+use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SettingsType;
+use App\Provider\ProviderFactory;
+use App\Validator\ReactImage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -46,6 +51,30 @@ class DisplaySettingsType extends AbstractType
                             'entry_options' => [
                                 'attr' => [
                                     'rows' => 6,
+                                ],
+                            ],
+                        ],
+                        [
+                            'scope' => 'System',
+                            'name' => 'organisationLogo',
+                            'entry_type' => FilePathType::class,
+                            'entry_options' => [
+                                'file_prefix' => 'org_logo',
+                                'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationLogo'),
+                                'constraints' => [
+                                    new ReactImage(['minWidth' => 400, 'maxWidth' => 400, 'minHeight' => 100, 'maxHeight' => 100]),
+                                ],
+                            ],
+                        ],
+                        [
+                            'scope' => 'System',
+                            'name' => 'organisationBackground',
+                            'entry_type' => ReactFileType::class,
+                            'entry_options' => [
+                                'file_prefix' => 'org_bg',
+                                'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationBackground'),
+                                'constraints' => [
+                                    new ReactImage(['maxSize' => '750k', 'minWidth' => '1500', 'minHeight' => '1200']),
                                 ],
                             ],
                         ],
