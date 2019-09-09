@@ -236,7 +236,7 @@ class FastFinder implements ContentInterface
     public function accessibleStaff()
     {
         $staff = [];
-        if (CacheHelper::isStale('fastFinderStaff') || true)
+        if (CacheHelper::isStale('fastFinderStaff'))
         {
             // STAFF
             $staffIsAccessible = SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php');
@@ -260,7 +260,7 @@ class FastFinder implements ContentInterface
     {
         // STUDENTS
         $students = [];
-        if (CacheHelper::isStale('fastFinderStudents') || true) {
+        if (CacheHelper::isStale('fastFinderStudents')) {
             $studentIsAccessible = SecurityHelper::isActionAccessible('/modules/students/student_view.php');
             $highestActionStudent = SecurityHelper::getHighestGroupedAction( '/modules/students/student_view.php');
             if ($studentIsAccessible) {

@@ -30,18 +30,22 @@ class FinderController extends AbstractController
      */
     public function finderRedirect(string $id, Request $request)
     {
+        $id = base64_decode($id);
         $type = substr($id, 0, 3);
         $id = substr($id, 4);
 
         switch ($type) {
             case 'Stu':
-                return $this->redirectToRoute('home', ['q' => '/modules/Students/student_view_details.php', 'gibbonPersonID' => $id]);
+                return $this->redirectToRoute('legacy', ['q' => '/modules/Students/student_view_details.php', 'gibbonPersonID' => $id]);
                 break;
             case 'Act':
-                return $this->redirectToRoute('home', ['q' => '/modules/'.$id]);
+                if (strpos($id,'.php') !== false)
+                    return $this->redirectToRoute('legacy', ['q' => '/modules/'.$id]);
+                $id = explode('/', $id);
+                return $this->redirectToRoute(strtolower(str_replace(' ', '_', $id[0]) .'__'.$id[1]));
                 break;
             case 'Sta':
-                return $this->redirectToRoute('home', ['q' => '/modules/Staff/staff_view_details.php', 'gibbonPersonID' => $id]);
+                return $this->redirectToRoute('legacy', ['q' => '/modules/Staff/staff_view_details.php', 'gibbonPersonID' => $id]);
                 break;
             case 'Cla':
                 $class = ProviderFactory::getRepository(CourseClass::class)->find($id);
@@ -89,6 +93,6 @@ class FinderController extends AbstractController
     public function finderLegacy(Request $request)
     {
         $id = $request->query->get('fastFinderSearch');
-        return $this->forward(FinderController::class.'::finderRedirect', ['id' => $id]);
+        return $this->forward(FinderController::class.'::finderRedirect', ['id' => base64_encode($id)]);
     }
 }

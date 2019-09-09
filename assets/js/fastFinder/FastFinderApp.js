@@ -72,11 +72,12 @@ export default class FastFinderApp extends Component {
 
     getSuggestionValue(suggestion) {
         var url = "/finder/{id}/redirect/"
-        url = url.replace('{id}', suggestion.id)
+        const id = btoa(suggestion.id)
+        url = url.replace('{id}', id)
+        openPage(url, [], false)
         this.setState({
             value: suggestion.text
         })
-        openPage(url, [], false)
     }
 
     renderSuggestion(suggestion) {
