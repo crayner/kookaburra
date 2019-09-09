@@ -43,7 +43,6 @@ export default class ContainerApp extends Component {
         this.state = {
             selectedPanel: props.selectedPanel,
             forms: props.forms,
-            submit: false
         }
         this.formNames = {}
         this.submit = {}
@@ -88,8 +87,11 @@ export default class ContainerApp extends Component {
         })
     }
 
-    downloadFile(file) {
-        const route = '/resource/' + btoa(file) + '/' + this.actionRoute + '/download/'
+    downloadFile(form) {
+        const file = form.value
+        let route = '/resource/' + btoa(file) + '/' + this.actionRoute + '/download/'
+        if (typeof form.delete_security !== 'undefined' && form.delete_security !== false)
+            route = '/resource/' + btoa(form.value) + '/' + form.delete_security + '/download/'
         openPage(route, {target: '_blank'}, false)
     }
 
@@ -253,9 +255,7 @@ export default class ContainerApp extends Component {
         const parentName = this.getParentFormName(form)
         if (this.submit[parentName]) return
         this.submit[parentName] = true
-        this.setState({
-            submit: true
-        })
+        this.setParentState({...this.state.forms})
         let parentForm = this.getParentForm(form)
         let data = this.buildFormData({}, parentForm)
         fetchJson(
@@ -266,19 +266,13 @@ export default class ContainerApp extends Component {
                 let errors = parentForm.errors
                 errors = errors.concat(data.errors)
                 let form = typeof this.functions.submitFormCallable === 'function' ? this.functions.submitFormCallable(data.form) : data.form
-                parentForm.errors = errors
+                form.errors = errors
                 this.submit[parentName] = false
-                this.setState({
-                    submit: false,
-                })
                 this.setParentState(this.mergeParentForm(parentName, form))
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})
                 this.submit[parentName] = false
-                this.setState({
-                    submit: false,
-                })
-                this.setParentState(this.mergeParentForm(parentName, form))
+                this.setParentState(this.mergeParentForm(parentName, parentForm))
         })
     }
 
@@ -421,10 +415,19 @@ export default class ContainerApp extends Component {
         })
     }
 
+    isSubmit() {
+        let result = false
+        Object.keys(this.submit).map(key => {
+            if (this.submit[key])
+                result = true
+        })
+        return result
+    }
+
     render() {
         return (
             <section>
-                {this.state.submit ? <div className={'info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
+                {this.isSubmit()  ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
                 <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} />
             </section>
         )

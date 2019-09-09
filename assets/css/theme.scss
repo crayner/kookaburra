@@ -291,3 +291,16 @@ input.button, a.button, button.button {
         height: auto !important;
     }
 }
+
+@keyframes waitOne {
+    from {background-color: #bee3f8;}
+    to {background-color: #90cdf4;}
+}
+
+.waitOne {
+    animation-name: waitOne;
+    animation-direction: alternate;
+    animation-delay: 1s;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
