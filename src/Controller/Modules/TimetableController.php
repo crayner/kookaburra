@@ -36,7 +36,7 @@ class TimetableController extends AbstractController
     public function renderTT(Request $request, TranslatorInterface $translator, GibbonManager $manager)
     {
         if (!$this->isGranted('ROLE_ACTION', ['/modules/Timetable/tt.php']))
-            return new Response('<div class="error">'.$translator->trans('Your request failed because you do not have access to this action.',[],'gibbon').'</div>');
+            return new Response('<div class="error">'.$translator->trans('Your request failed because you do not have access to this action.',[],'messages').'</div>');
         $manager->execute();
         include __DIR__ . '/../../../Gibbon/modules/Timetable/moduleFunctions.php';
         $output = '';
@@ -71,7 +71,7 @@ class TimetableController extends AbstractController
             $output .= $tt;
         } else {
             $output .= "<div class='error'>";
-            $output .= $translator->trans('There is no information for the date specified.', [], 'gibbon');
+            $output .= $translator->trans('There is no information for the date specified.', [], 'messages');
             $output .= '</div>';
         }
         return new Response($output);

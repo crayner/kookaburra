@@ -77,7 +77,7 @@ class LanguageType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => I18n::class,
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
             ]
         );
     }

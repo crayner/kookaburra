@@ -47,7 +47,7 @@ class StaffPreferenceSettingsType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Staff::class,
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'row_style' => 'transparent',
             ]
         );

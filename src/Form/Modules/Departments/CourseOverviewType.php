@@ -42,7 +42,7 @@ class CourseOverviewType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'data_class' => Course::class,
             ]
         );

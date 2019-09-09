@@ -591,7 +591,7 @@ class LegacyManager
             if ($page->isAddressValid($address) == false) {
                 $content = GibbonManager::getContainer()->get('twig')->render('legacy/error.html.twig',
                     [
-                        'extendedError' => GibbonManager::getContainer()->get('translator')->trans('Illegal address detected: access denied.', [], 'gibbon'),
+                        'extendedError' => GibbonManager::getContainer()->get('translator')->trans('Illegal address detected: access denied.', [], 'messages'),
                         'extendedParams' => ['%address%' => $address],
                         'manager' => $this,
                     ]

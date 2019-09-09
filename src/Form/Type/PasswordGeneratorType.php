@@ -58,7 +58,7 @@ class PasswordGeneratorType extends AbstractType
     {
         $provider = ProviderFactory::create(Setting::class);
         $resolver->setDefault('generateButton', [
-            'title' => $this->translator->trans('Generate', [], 'gibbon'),
+            'title' => $this->translator->trans('Generate', [], 'messages'),
             'class' => 'button generatePassword -ml-px button-right',
             'passwordPolicy' => [
                 'alpha' => $provider->getSettingByScopeAsBoolean('System', 'passwordPolicyAlpha'),
@@ -67,7 +67,7 @@ class PasswordGeneratorType extends AbstractType
                 "minLength" => $provider->getSettingByScopeAsInteger('System', 'passwordPolicyMinLength'),
             ],
             'onClick' => 'generateNewPassword',
-            'alertPrompt' => $this->translator->trans('Copy this password if required', [],'gibbon'),
+            'alertPrompt' => $this->translator->trans('Copy this password if required', [],'messages'),
         ]);
     }
 

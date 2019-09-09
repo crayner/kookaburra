@@ -6,7 +6,7 @@
         {% set attr = attr ~ ' style="color: #' ~ alert.highestColour ~ '; border-color: #' ~ alert.highestColour ~ '; background-color: #' ~ alert.highestColourBG ~ ';"' %}
         {% set attr = attr ~ ' class="' ~ alerts.classDefault ~ '"'  %}
         {% if alert.title_params.name is defined %}
-            {% set alert = alert|merge({title_params: alert.title_params|merge({name: alert.title_params.name|trans({}, 'gibbon')})}) %}
+            {% set alert = alert|merge({title_params: alert.title_params|merge({name: alert.title_params.name|trans({}, 'messgaes')})}) %}
         {% endif %}
         {% set attr = attr ~ ' title="' ~ alert.title|trans(alert.title_params, alert.translation_domain) ~ '"' %}
         {% include 'default/link.html.twig' with {url: alert.link, text: alert.tag} %}

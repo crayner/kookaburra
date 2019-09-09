@@ -45,16 +45,33 @@ class GoogleSettingManager
      */
     public function handleGoogleSecretsFile(FormInterface $form, Request $request, TranslatorInterface $translator)
     {
-        $content = json_decode($request->getContent(), true);
-        $file = new File($form->get('clientSecretFile')->getData(), true);
-        $secret = json_decode(file_get_contents($file->getRealPath()), true);
-        unlink($file->getRealPath());
-        $config = Yaml::parse(file_get_contents(__DIR__.'/../../../config/packages/kookaburra.yaml'));
+        $fileName = realpath($form->get('clientSecretFile')->getData()) ?: realpath(__DIR__ . '/../../../public' .$form->get('clientSecretFile')->getData()) ?: '';
+        if (is_file($fileName)) {
+            $content = json_decode($request->getContent(), true);
+            $file = new File($fileName, true);
+            try {
+                $secret = json_decode(file_get_contents($file->getRealPath()), true);
+            } catch (\Exception $e) {
+                return ['class' => 'error', 'message' => $translator->trans('Your request failed due to a file transfer issue.', [], 'kookaburra')];
+            }
+            unlink($file->getRealPath());
+            $config = Yaml::parse(file_get_contents(__DIR__ . '/../../../config/packages/kookaburra.yaml'));
 
-        $config['parameters']['google_api_key'] = $content['googleSettings']['System__googleDeveloperKey'];
-        $config['parameters']['google_client_id'] = $secret['web']['client_id'];
-        $config['parameters']['google_client_secret'] = $secret['web']['client_secret'];
+            $config['parameters']['google_api_key'] = $content['googleSettings']['System__googleDeveloperKey'];
+            $config['parameters']['google_client_id'] = $secret['web']['client_id'];
+            $config['parameters']['google_client_secret'] = $secret['web']['client_secret'];
 
-        file_put_contents(__DIR__.'/../../../config/packages/kookaburra.yaml', Yaml::dump($config, 8));
+            file_put_contents(__DIR__ . '/../../../config/packages/kookaburra.yaml', Yaml::dump($config, 8));
+            return ['class' => 'info', 'message' => $translator->trans('Your requested included a valid Google Secret File.  The information was successfully stored.', [], 'kookaburra')];
+        } else {
+            $content = json_decode($request->getContent(), true);
+            $config = Yaml::parse(file_get_contents(__DIR__ . '/../../../config/packages/kookaburra.yaml'));
+
+            $config['parameters']['google_api_key'] = $content['googleSettings']['System__googleDeveloperKey'];
+
+            file_put_contents(__DIR__ . '/../../../config/packages/kookaburra.yaml', Yaml::dump($config, 8));
+            return ['class' => 'info', 'message' => $translator->trans('Your requested did not included a valid Google Secret File. All other Google changes where saved.', [], 'kookaburra')];
+
+        }
     }
 }

@@ -171,7 +171,7 @@ class PublicType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'data_class' => Person::class,
                 'constraints' => [
                     new UniqueEntity(['email']),

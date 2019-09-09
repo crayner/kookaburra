@@ -28,6 +28,7 @@ use App\Form\Modules\SystemAdmin\SMSSettingsType;
 use App\Form\Modules\SystemAdmin\SystemSettingsType;
 use App\Manager\SystemAdmin\GoogleSettingManager;
 use App\Manager\SystemAdmin\LanguageManager;
+use App\Manager\SystemAdmin\MailerSettingsManager;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -234,6 +235,7 @@ class SystemAdminController extends AbstractController
         $settingProvider = ProviderFactory::create(Setting::class);
         $container = new Container();
         $container->setTarget('formContent')->setSelectedPanel($tabName)->setApplication('ThirdParty');
+
         // Google
         $form = $this->createForm(GoogleIntegationType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'Google']) ]);
 
@@ -242,7 +244,7 @@ class SystemAdminController extends AbstractController
             try {
                 $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
                 $gm = new GoogleSettingManager();
-                $gm->handleGoogleSecretsFile($form, $request, $translator);
+                $data['errors'][] = $gm->handleGoogleSecretsFile($form, $request, $translator);
             } catch (\Exception $e) {
                 $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.') . ' ' .$e->getMessage() ];
             }
@@ -289,6 +291,7 @@ class SystemAdminController extends AbstractController
                 $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
             }
 
+            $form = $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'SMS']) ]);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
@@ -305,10 +308,13 @@ class SystemAdminController extends AbstractController
             $data = [];
             try {
                 $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
+                $msm = new MailerSettingsManager();
+                $msm->handleMailerDsn($request);
             } catch (\Exception $e) {
                 $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
             }
 
+            $form = $this->createForm(EmailSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'E-Mail']) ]);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 

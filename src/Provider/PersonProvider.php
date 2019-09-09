@@ -231,7 +231,7 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
         $resolver->setDefaults(
             [
                 'title_params' => [],
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
             ]
         );
         $resolver->addAllowedValues('highestLevel', ['High', 'Medium', 'Low']);

@@ -42,3 +42,12 @@ You must submit the form to save this empty value.: You must submit the form to 
 File Delete: File Delete
 "If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, %1$sclick here%2$s.": "If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, %1$sclick here%2$s."
 'Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}': 'Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}'
+Let me ponder your request: Let me ponder your request
+Google Integration: Google Integration
+Google OAuth Download File: Google OAuth Download File
+Google API Key: Google API Key
+'Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}': 'Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}'
+'When using GMail with two factor authentication, you will need to create an application password on your GMail account. See %{anchor}Google Account Security: App Passwords%{closeAnchor}': 'When using GMail with two factor authentication, you will need to create an application password on your GMail account. See %{anchor}Google Account Security: App Passwords%{closeAnchor}'
+'Your requested included a valid Google Secret File.  The information was successfully stored.': 'Your requested included a valid Google Secret File.  The information was successfully stored.'
+'Your requested did not included a valid Google Secret File. All other Google changes where saved.': 'Your requested did not included a valid Google Secret File. All other Google changes where saved.'
+'Your request failed due to a file transfer issue.': Your request failed due to a file transfer issue.

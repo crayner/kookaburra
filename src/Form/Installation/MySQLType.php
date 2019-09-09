@@ -136,7 +136,7 @@ class MySQLType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => MySQLSettings::class,
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'constraints' => [
                     new MySqlConnection(),
                 ]

@@ -203,7 +203,7 @@ class ContainerManager
      * @param string $target
      * @param string $domain
      */
-    public function singlePanel(FormView $view, ?string $application = null, string $target = 'formContent', string $domain = 'gibbon')
+    public function singlePanel(FormView $view, ?string $application = null, string $target = 'formContent', string $domain = 'messages')
     {
         $container = new Container();
         $container->addForm('single', $view);

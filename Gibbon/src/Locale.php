@@ -127,9 +127,9 @@ class Locale implements LocaleInterface
     {
         if (!$this->supportsGetText) return;
 
-        bindtextdomain('gibbon', $absolutePath.'/i18n');
-        bind_textdomain_codeset('gibbon', 'UTF-8');
-        textdomain('gibbon');
+        bindtextdomain('messages', $absolutePath.'/i18n');
+        bind_textdomain_codeset('messages', 'UTF-8');
+        textdomain('messages');
     }
 
     /**

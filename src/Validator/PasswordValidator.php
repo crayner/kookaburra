@@ -65,7 +65,7 @@ class PasswordValidator extends ConstraintValidator
             if ($user instanceof SecurityUser) {
                 if ($user->isPasswordValid($value)) {
                     $this->context->buildViolation('Your request failed because your new password is the same as your current password.')
-                        ->setTranslationDomain('gibbon')
+                        ->setTranslationDomain('messages')
                         ->addViolation();
                 }
             }

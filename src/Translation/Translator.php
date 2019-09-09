@@ -40,9 +40,12 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
      */
     public function trans($id, array $parameters = [], $domain = 'messages', $locale = null)
     {
+        if (null === $id || '' === $id)
+            return '';
+
         if ($domain === 'gibbon')
         {
-          //  trigger_error('The use of the Gibbon language domain is deprecated. Use null or messages.', E_USER_DEPRECATED);
+            // trigger_error('The use of the Gibbon language domain is deprecated. Use null or messages.', E_USER_DEPRECATED);
             $domain = 'messages';
         }
 
@@ -93,6 +96,10 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
             }
         }
 
+        $parameters = [
+            'Gibbon' => 'Kookaburra',
+            'gibbon' => 'kookaburra',
+        ];
         return str_replace(array_keys($parameters), array_values($parameters), $trans);
     }
 

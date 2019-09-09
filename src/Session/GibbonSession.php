@@ -96,7 +96,10 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
                 }
                 break;
         }
-        return $this->getAttributeBag()->get($name, $default);
+        $result = $this->getAttributeBag()->get($name, $default);
+        if ('' === $result || null === $result)
+            return $default;
+        return $result;
     }
 
     /**

@@ -93,7 +93,7 @@ class DetailStudentSortType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'attr' => [
                     'class' => 'noIntBorder fullWidth',
                 ],

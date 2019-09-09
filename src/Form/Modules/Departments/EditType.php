@@ -110,7 +110,7 @@ class EditType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Department::class,
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'columns' => 1,
                 'target' => 'formContent',
                 'attr' => [

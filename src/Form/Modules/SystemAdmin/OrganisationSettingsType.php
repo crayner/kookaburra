@@ -21,6 +21,7 @@ use App\Form\Type\ReactFormType;
 use App\Form\Type\SettingsType;
 use App\Provider\ProviderFactory;
 use App\Validator\AlwaysInValid;
+use App\Validator\ReactImage;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -83,7 +84,7 @@ class OrganisationSettingsType extends AbstractType
                                 'file_prefix' => 'org_logo',
                                 'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationLogo'),
                                 'constraints' => [
-                                    new Image(['minWidth' => 400, 'maxWidth' => 400, 'minHeight' => 100, 'maxHeight' => 100]),
+                                    new ReactImage(['minWidth' => 400, 'maxWidth' => 400, 'minHeight' => 100, 'maxHeight' => 100]),
                                 ],
                             ],
                         ],
@@ -95,7 +96,7 @@ class OrganisationSettingsType extends AbstractType
                                 'file_prefix' => 'org_bg',
                                 'empty_data' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System','organisationBackground'),
                                 'constraints' => [
-                                    new Image(['maxSize' => '750k']),
+                                    new ReactImage(['maxSize' => '750k', 'minWidth' => '1500', 'minHeight' => '1200']),
                                 ],
                             ],
                         ],

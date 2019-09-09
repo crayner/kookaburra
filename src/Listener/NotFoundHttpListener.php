@@ -79,7 +79,7 @@ class NotFoundHttpListener implements EventSubscriberInterface
             && $event->getRequest()->getContentType() === 'json')
         {
             $data = [];
-            $data['errors'][] = ['class' => 'error', 'message' => $this->translator->trans('The selected record does not exist, or you do not have access to it.', [], 'gibbon')];
+            $data['errors'][] = ['class' => 'error', 'message' => $this->translator->trans('The selected record does not exist, or you do not have access to it.', [], 'messages')];
             $data['status'] = 'error';
 
             $response = new JsonResponse($data, 201);

@@ -36,17 +36,7 @@ parameters:
             - ROLE_PARENT
     timezone: ~
     locale: ~
-    mailer_transport: null
-    mailer_host: null
-    mailer_user: null
-    mailer_password: null
-    mailer_spool:
-        type: memory
-    mailer_port: null
-    mailer_encryption: null
-    mailer_auth_mode: null
-    mailer_sender_name: 'Kookaburra'
-    mailer_sender_address: ~
+    mailer_dns: ~
     google_api_key: ~
     google_client_id: ~
     google_client_secret: ~

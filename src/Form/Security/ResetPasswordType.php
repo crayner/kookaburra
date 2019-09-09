@@ -98,7 +98,8 @@ class ResetPasswordType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => ResetPassword::class,
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
+                'default'
             ]
         );
     }

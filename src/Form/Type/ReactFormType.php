@@ -142,7 +142,7 @@ class ReactFormType extends AbstractType
       * @param string|null $domain  Override the default messages.
       * @return string
       */
-     private function translate(string $id, array $params = [], ?string $domain = 'gibbon'): string
+     private function translate(string $id, array $params = [], ?string $domain = 'messages'): string
      {
          return $this->translator->trans($id, $params, $domain);
      }

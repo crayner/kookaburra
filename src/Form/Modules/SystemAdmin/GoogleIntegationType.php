@@ -12,20 +12,23 @@
 
 namespace App\Form\Modules\SystemAdmin;
 
-
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFileType;
 use App\Form\Type\ReactFormType;
 use App\Form\Type\SettingsType;
 use App\Form\Type\ToggleType;
+use App\Validator\ReactFile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
 
+/**
+ * Class GoogleIntegationType
+ * @package App\Form\Modules\SystemAdmin
+ */
 class GoogleIntegationType extends AbstractType
 {
     /**
@@ -61,7 +64,7 @@ class GoogleIntegationType extends AbstractType
             ->add('clientSecretFile', ReactFileType::class,
                 [
                     'constraints' => [
-                        new File(['mimeTypes' => ['text/plain'], 'maxSize' => '1k']),
+                        new ReactFile(['mimeTypes' => ['text/plain'], 'maxSize' => '1k']),
                     ],
                     'label' => 'Google OAuth Download File',
                     'help' => 'Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}',

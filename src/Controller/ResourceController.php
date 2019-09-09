@@ -34,10 +34,17 @@ class ResourceController extends AbstractController
      */
     public function download(string $file, string $route)
     {
-        $this->denyAccessUnlessGranted('ROLE_ROUTE', [$route]);
+        if (strpos($route, 'ROLE_') === 0)
+            $this->denyAccessUnlessGranted($route);
+        else
+            $this->denyAccessUnlessGranted('ROLE_ROUTE', [$route]);
         $file = base64_decode($file);
+
         $public = realpath(__DIR__ . '/../../public');
-        $file = is_file($file) ? $file : (is_file($public.$file) ? $public.$file : '');
+        $file = realpath($file) ?: realpath($public.$file) ?: '';
+
+        if (!is_file($file))
+            throw new \Exception('The file was not found to download.');
 
         return new BinaryFileResponse($file);
     }

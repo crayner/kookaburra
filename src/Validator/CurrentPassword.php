@@ -23,7 +23,7 @@ class CurrentPassword extends Constraint
     /**
      * @var string
      */
-    public $translationDomain = 'gibbon';
+    public $translationDomain = 'messages';
 
     /**
      * @var string

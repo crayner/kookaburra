@@ -151,7 +151,6 @@ class ModuleMenu implements ContentInterface
                 return $link['url'];
             $route = strtolower(str_replace(' ', '_', substr($route[1], 0, strpos($route[1], '/')))) . '__' . $link['entryURL'];
             $url = UrlGeneratorHelper::getPath($route, [], Router::ABSOLUTE_URL);
-            dump($route,$url);
             return $url;
         }
 

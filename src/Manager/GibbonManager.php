@@ -383,9 +383,9 @@ class GibbonManager implements ContainerAwareInterface
         $session = $this->request->getSession();
 
         $actionData = $repository->findOneByURLListModuleNameRoleID(
-            '%'.$session->get('action').'%',
-            $session->get('module'),
-            $session->get('gibbonRoleIDCurrent')
+            '%'.$session->get('action', '').'%',
+            $session->get('module', ''),
+            $session->get('gibbonRoleIDCurrent', 0)
         );
         $actionData = $actionData ? $actionData->toArray() : null;
 

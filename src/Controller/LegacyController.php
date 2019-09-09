@@ -12,6 +12,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 use Symfony\Component\Routing\Annotation\Route;
 
 class LegacyController extends AbstractController
@@ -61,5 +64,14 @@ class LegacyController extends AbstractController
     {
         ProviderFactory::create(I18n::class)->setLanguageSession($request->getSession(), ['code' => $i18n]);
         return $this->forward(LegacyController::class.'::index');
+    }
+
+    /**
+     * @Route("/test")
+     */
+    public function test(MailerInterface $mailer)
+    {
+
+        dd($mailer);
     }
 }

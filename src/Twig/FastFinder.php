@@ -72,15 +72,15 @@ class FastFinder implements ContentInterface
             'roleCategory'          => RoleProvider::getRoleCategory($this->getSession()->get('gibbonRoleIDCurrent')),
         ];
 
-        $templateData['trans_fastFind'] = $this->getTranslator()->trans('Fast Finder', [], 'gibbon');
-        $templateData['trans_fastFindActions'] = $this->getTranslator()->trans('Actions', [], 'gibbon');
-        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses' ? ', '.$this->getTranslator()->trans('Classes', [], 'gibbon') : '';
-        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/students/student_view.php') ? ', '.$this->getTranslator()->trans('Students', [], 'gibbon') : '';
-        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php') ? ', '.$this->getTranslator()->trans('Staff', [], 'gibbon') : '';
-        $templateData['trans_enrolmentCount'] = $templateData['roleCategory'] === 'Staff' ? $this->getTranslator()->trans('Total Student Enrolment:', [], 'gibbon') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('gibbonSchoolYearID')) : '';
+        $templateData['trans_fastFind'] = $this->getTranslator()->trans('Fast Finder', [], 'messages');
+        $templateData['trans_fastFindActions'] = $this->getTranslator()->trans('Actions', [], 'messages');
+        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses' ? ', '.$this->getTranslator()->trans('Classes', [], 'messages') : '';
+        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/students/student_view.php') ? ', '.$this->getTranslator()->trans('Students', [], 'messages') : '';
+        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php') ? ', '.$this->getTranslator()->trans('Staff', [], 'messages') : '';
+        $templateData['trans_enrolmentCount'] = $templateData['roleCategory'] === 'Staff' ? $this->getTranslator()->trans('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('gibbonSchoolYearID')) : '';
         $templateData['themeName'] = $this->getSession()->get('gibbonThemeName');
-        $templateData['trans_placeholder'] = $this->getTranslator()->trans('Start typing a name...', [], 'gibbon');
-        $templateData['trans_close'] = $this->getTranslator()->trans('Close', [], 'gibbon');
+        $templateData['trans_placeholder'] = $this->getTranslator()->trans('Start typing a name...', [], 'messages');
+        $templateData['trans_close'] = $this->getTranslator()->trans('Close', [], 'messages');
 
         $actions = $this->getFastFinderActions($this->getSession()->get('gibbonRoleIDCurrent'));
 
@@ -299,7 +299,7 @@ class FastFinder implements ContentInterface
      * @param string|null $domain
      * @return string
      */
-    private function translate(string $key, ?array $params = [], ?string $domain = 'gibbon'): string
+    private function translate(string $key, ?array $params = [], ?string $domain = 'messages'): string
     {
         return $this->getTranslator()->trans($key, $params, $domain);
     }

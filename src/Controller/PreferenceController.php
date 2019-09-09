@@ -75,7 +75,7 @@ class PreferenceController extends AbstractController
             }
 
         }
-        $manager->setTranslationDomain('gibbon');
+        $manager->setTranslationDomain('messages');
         $container = new Container();
         $container->setSelectedPanel($tabName);
         $passwordPanel = new Panel('Reset Password');

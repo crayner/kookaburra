@@ -36,7 +36,7 @@ class CatchController extends AbstractController
     public function container(ContainerManager $manager)
     {
         $container = new Container();
-        $manager->setTranslationDomain('gibbon');
+        $manager->setTranslationDomain('messages');
 
         $panel = new Panel();
         $panel->setName('One')->setContent($this->renderView('container_test.html.twig'));

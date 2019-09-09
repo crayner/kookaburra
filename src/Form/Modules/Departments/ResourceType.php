@@ -88,7 +88,7 @@ class ResourceType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => DepartmentResource::class,
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
             ]
         );
     }

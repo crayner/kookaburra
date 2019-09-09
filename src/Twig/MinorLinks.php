@@ -97,20 +97,20 @@ class MinorLinks implements ContentInterface
             $links[] = [
                 'class' => 'link-white',
                 'text' => 'Logout',
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'url' => ['route' => 'logout'],
             ];
             $links[] = [
                 'class' => 'link-white',
                 'text' => 'Preferences',
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'url' => ['route' => 'preferences'],
             ];
             if ($this->getSession()->get('emailLink', '') !== '') {
                 $links[] = [
                     'class' => 'link-white',
                     'text' => 'Email',
-                    'translation_domain' => 'gibbon',
+                    'translation_domain' => 'messages',
                     'url' => $this->getSession()->get('emailLink'),
                     'target' => '_blank',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],
@@ -130,7 +130,7 @@ class MinorLinks implements ContentInterface
                 $links[] = [
                     'url' => $this->getSession()->get('website', ''),
                     'text' => 'My Website',
-                    'translation_domain' => 'gibbon',
+                    'translation_domain' => 'messages',
                     'target' => '_blank',
                     'class' => 'link-white',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],

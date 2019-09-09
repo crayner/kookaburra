@@ -1,4 +1,4 @@
-{% trans_default_domain 'gibbon' %}
+{% trans_default_domain 'messages' %}
 
 {% if content.count > 0 %}
     <a class='inline-block relative mr-4' title='{{ 'Notifications'|trans }}' href='{{ path('notifications_manage') }}'><span class='badge -mr-2 right-0'>{{ content.count }}</span><img style='margin-left: 2px; vertical-align: -75%' src='{{ asset('/themes/' ~ getThemeName() ~ '/img/notifications.png') }}' /></a>

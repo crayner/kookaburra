@@ -12,7 +12,6 @@
 
 namespace App\Form\Modules\UserAdmin;
 
-
 use App\Entity\I18n;
 use App\Entity\Person;
 use App\Entity\Setting;
@@ -24,16 +23,14 @@ use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Provider\ProviderFactory;
 use App\Util\UserHelper;
+use App\Validator\ReactImage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Image;
-use Symfony\Component\Validator\Constraints\Url;
 
 /**
  * Class PreferenceSettingsType
@@ -77,7 +74,7 @@ class PreferenceSettingsType extends AbstractType
                         'required' => false,
                         'file_prefix' => 'personal_bg',
                         'constraints' => [
-                            new Image(['maxSize' => '750k']),
+                            new ReactImage(['maxSize' => '750k']),
                         ],
                         'delete_security' => 'ROLE_USER',
                     ]
@@ -143,7 +140,7 @@ class PreferenceSettingsType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Person::class,
-                'translation_domain' => 'gibbon',
+                'translation_domain' => 'messages',
                 'attr' => [
                     'className' => 'smallIntBorder fullWidth standardForm',
                     'autoComplete' => 'on',
