@@ -17,6 +17,7 @@ use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Entity\I18n;
 use App\Entity\Setting;
+use App\Form\Modules\SystemAdmin\DisplaySettingsType;
 use App\Form\Modules\SystemAdmin\EmailSettingsType;
 use App\Form\Modules\SystemAdmin\GoogleIntegationType;
 use App\Form\Modules\SystemAdmin\LocalisationSettingsType;
@@ -92,6 +93,7 @@ class SystemAdminController extends AbstractController
      * systemSettings
      * @param Request $request
      * @Route("/system/{tabName}/settings/", name="system_settings")
+     * @IsGranted("ROLE_ROUTE")
      */
     public function systemSettings(Request $request, ContainerManager $manager, TranslatorInterface $translator, string $tabName = 'System')
     {
@@ -345,5 +347,37 @@ class SystemAdminController extends AbstractController
                 'manager' => $manager->setEm($this->getDoctrine()->getManager()),
             ]
         );
+    }
+
+    /**
+     * systemSettings
+     * @param Request $request
+     * @Route("/display/settings/", name="display_settings")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function displaySettings(Request $request, ContainerManager $manager, TranslatorInterface $translator)
+    {
+        $settingProvider = ProviderFactory::create(Setting::class);
+
+        // System Settings
+        $form = $this->createForm(DisplaySettingsType::class, null, ['action' => $this->generateUrl('system_admin__display_settings') ]);
+
+        if ($request->getContentType() === 'json') {
+            $data = [];
+            try {
+                $data['errors'] = $settingProvider->handleSettingsForm($form, $request, $translator);
+            } catch (\Exception $e) {
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data,200);
+        }
+
+        $manager->singlePanel($form->createView());
+
+        return $this->render('modules/system_admin/display_settings.html.twig');
     }
 }

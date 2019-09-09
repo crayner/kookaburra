@@ -26,7 +26,7 @@ export default function Row(props) {
         return (<ParagraphRow form={form} functions={functions} columns={columns}/>)
     }
 
-    if (form.row_style === 'single') {
+    if (form.row_style === 'single' || form.type === 'submit') {
         return (<SingleRow form={form} functions={functions} columns={columns}/>)
     }
 
