@@ -29,6 +29,7 @@ use App\Form\Modules\SystemAdmin\SystemSettingsType;
 use App\Manager\SystemAdmin\GoogleSettingManager;
 use App\Manager\SystemAdmin\LanguageManager;
 use App\Manager\SystemAdmin\MailerSettingsManager;
+use App\Manager\VersionManager;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -328,5 +329,21 @@ class SystemAdminController extends AbstractController
         $manager->addContainer($container)->buildContainers();
 
         return $this->render('modules/system_admin/third_party.html.twig');
+    }
+
+    /**
+     * check
+     * @param VersionManager $manager
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/check/", name="check")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function check(VersionManager $manager) {
+
+        return $this->render('modules/system_admin/check.html.twig',
+            [
+                'manager' => $manager->setEm($this->getDoctrine()->getManager()),
+            ]
+        );
     }
 }

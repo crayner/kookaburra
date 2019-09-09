@@ -352,3 +352,28 @@ ssl: SSL
 tls: TLS
 None: None
 Automatic: Automatic
+'{name} requires {software} version {version} or higher': '{name} requires {software} version {version} or higher'
+'Kookaburra': Kookaburra
+'PHP Version': PHP Version
+'MySQL Version': 'MySQL Version'
+'MySQL Collation': MySQL Collation
+'Database collation should be set to {collation}': 'Database collation should be set to {collation}'
+'Apache Modules': Apache Modules
+N/A: N/A
+Enabled: Enabled
+'PHP Extensions': PHP Extensions
+'PHP Settings': PHP Settings
+'Must be {operator} {required}': 'Must be {operator} {required}'
+'File Permissions': File Permissions
+'System not publicly writeable': System not publicly writeable
+'Uploads folder server writeable': Uploads folder server writeable
+'count files checked': "{count, plural,
+        =0   {No files checked.}
+        one   {One file checked.}
+        other   {# files checked.}
+    }"
+'Files publicly writeable': "{count, plural,
+        =0   {No files writeable.}
+        one   {One file is writeable.}
+        other   {# files are writeable.}
+    }"

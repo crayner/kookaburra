@@ -1,7 +1,7 @@
 parameters:
     version: 0.0.00-dev
     systemRequirements:
-        php: 7.0.0
+        php: 7.3.0
         mysql: 5.6
         apache:
             - 'mod_rewrite'
@@ -13,8 +13,8 @@ parameters:
             - 'xml'
             - 'gd'
         settings:
-            max_input_vars: 5000
-            max_file_uploads: 20
-            allow_url_fopen: 1
-            register_globals: 0
+            max_input_vars: [5000, '>=']
+            max_file_uploads: [20, '>=']
+            allow_url_fopen: [1, '==']
+            register_globals: [0, '==']
 
