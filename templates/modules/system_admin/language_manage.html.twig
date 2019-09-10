@@ -11,7 +11,7 @@
 
 {% block content %}
     <h2>{{ 'Installed'|trans }}</h2>
-    <p>Changing the default language will give strange translation results until the cache is fully rebuilt.</p>
+    <p>{{ 'Changing the default language will give strange translation results until the cache is fully rebuilt.'|trans({}, 'kookaburra') }}</p>
     <div class="dataTable">
         <div class="overflow-x-auto overflow-y-visible">
             <table class="w-full striped">
