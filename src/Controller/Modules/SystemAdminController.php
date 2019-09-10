@@ -39,7 +39,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -49,46 +51,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class SystemAdminController extends AbstractController
 {
-    /**
-     * languageInstall
-     * @param Request $request
-     * @return RedirectResponse
-     * @Route("/language/manage/", name="language_manage", methods={"POST"})
-     * @Security("is_granted('ROLE_ACTION', ['/modules/System Admin/i18n_manage.php'])")
-     */
-    public function languageInstall(Request $request, LanguageManager $manager)
-    {
-        $i18n = ProviderFactory::getRepository(I18n::class)->find($request->request->get('gibboni18nID'));
-        $url = '/?q=/modules/System Admin/i18n_manage.php';
-
-        if (!$i18n instanceof I18n)
-            return new RedirectResponse('/?q=/modules/System Admin/i18n_manage.php&return=error1');
-
-        $installed = $manager->i18nFileInstall($this->getParameter('kernel.project_dir'), $i18n);
-
-        if ($installed) {
-            $i18n->setInstalled('Y');
-            $i18n->setVersion($this->getParameter('version'));
-            $em = $this->getDoctrine()->getManager();
-            try {
-                $em->persist($i18n);
-                $em->flush();
-                $updated = true;
-            } catch (PDOException $e) {
-                $updated = false;
-            } catch (\PDOException $e) {
-                $updated = false;
-            }
-        }
-
-        if (!$installed)
-            return new RedirectResponse($url. '&return=error3');
-        if (!$updated)
-            return new RedirectResponse($url. '&return=warning1');
-        return new RedirectResponse($url. '&return=success0');
-    }
-
-
     /**
      * systemSettings
      * @param Request $request
@@ -379,5 +341,87 @@ class SystemAdminController extends AbstractController
         $manager->singlePanel($form->createView());
 
         return $this->render('modules/system_admin/display_settings.html.twig');
+    }
+    /**
+     * languageInstall
+     * @param Request $request
+     * @return RedirectResponse
+     * @Route("/language/manage/", name="language_manage")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function languageManage(Request $request, LanguageManager $manager)
+    {
+        $langsInstalled = ProviderFactory::getRepository(I18n::class)->findBy(['installed' => 'Y'],['code' => "ASC"]);
+        $langsNotInstalled = ProviderFactory::getRepository(I18n::class)->findBy(['installed' => 'N'],['code' => 'ASC']);
+
+        return $this->render('modules/system_admin/language_manage.html.twig', [
+            'installed' => $langsInstalled,
+            'notInstalled' => $langsNotInstalled,
+            'manager' => $manager,
+            'translationPath' => realPath(__DIR__.'/../../../translations'),
+            'gVersion' => $this->getParameter('gibbon_version'),
+        ]);
+    }
+
+    /**
+     * languageSetDefault
+     * @param I18n $i18n
+     * @Route("/language/{i18n}/default/", name="language_default")
+     * @Security("is_granted('ROLE_ROUTE', ['system_admin__language_manage'])")
+     */
+    public function languageSetDefault(I18n $i18n, SessionInterface $session)
+    {
+        $provider =ProviderFactory::create(I18n::class);
+        $was = $provider->getRepository()->findOneBySystemDefault('Y');
+        $was->setSystemDefault('N');
+        $i18n->setSystemDefault('Y');
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($was);
+        $em->persist($i18n);
+        $em->flush();
+        $config = Yaml::parse(file_get_contents(__DIR__.'/../../../config/packages/kookaburra.yaml'));
+        $config['parameters']['locale'] = $i18n->getCode();
+        file_put_contents(__DIR__.'/../../../config/packages/kookaburra.yaml', Yaml::dump($config, 8));
+        $this->addFlash('success', 'Your request was completed successfully.');
+        $session->set('i18n', $i18n->toArray());
+        return $this->redirectToRoute('system_admin__language_manage');
+    }
+
+    /**
+     * languageInstall
+     * @param Request $request
+     * @return RedirectResponse
+     * @Route("/language/{i18n}/install/", name="language_install")
+     * @Security("is_granted('ROLE_ROUTE', ['system_admin__language_manage'])")
+     */
+    public function languageInstall(I18n $i18n, Request $request, LanguageManager $manager)
+    {
+        $installed = $manager->i18nFileInstall($i18n);
+
+        if ($installed) {
+            $i18n->setInstalled('Y');
+            $i18n->setVersion($this->getParameter('gibbon_version'));
+            $em = $this->getDoctrine()->getManager();
+            try {
+                $em->persist($i18n);
+                $em->flush();
+                $updated = true;
+            } catch (PDOException $e) {
+                $updated = false;
+            } catch (\PDOException $e) {
+                $updated = false;
+            }
+        }
+
+        if (!$installed) {
+            $this->addFlash('error', 'The file transfer was not completed successfully.  Please try again.');
+            return $this->redirectToRoute('system_admin__language_manage');
+        }
+        if (!$updated){
+            $this->addFlash('warning', 'Your request was successful, but some data was not properly saved.');
+            return $this->redirectToRoute('system_admin__language_manage');
+        }
+        $this->addFlash('success', 'Your request was completed successfully.');
+        return $this->redirectToRoute('system_admin__language_manage');
     }
 }

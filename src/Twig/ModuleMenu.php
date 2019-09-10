@@ -60,6 +60,7 @@ class ModuleMenu implements ContentInterface
             foreach ($menuModuleItems as $category => &$items) {
                 foreach ($items as &$item) {
                     $item['category'] = $this->translate($item['category']);
+                    $item['name'] = $this->translate($item['name']);
                     $urlList = array_map('trim', explode(',', $item['URLList']));
                     $item['active'] = $request->attributes->get('action') ? in_array($request->attributes->get('action')->getEntryURL(), $urlList) : false;
                     $item['route'] = strpos($item['entryURL'], '.php') === false ? $currentModule->getEntryURLFullRoute($item['entryURL']) : false;

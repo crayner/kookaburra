@@ -14,6 +14,7 @@ namespace App\Manager\SystemAdmin;
 
 use App\Entity\I18n;
 use App\Provider\ProviderFactory;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LanguageManager
 {
@@ -26,20 +27,20 @@ class LanguageManager
      * @param I18n $code
      * @return bool
      */
-    public function i18nFileInstall(string $absolutePath, I18n $i18n)
+    public function i18nFileInstall(I18n $i18n): bool
     {
         // Grab the file contents from the GibbonEdu i18n repository
+        $absolutePath = realpath(__DIR__ . '/../../..');
         $gitHubURL = 'https://github.com/GibbonEdu/i18n/blob/master/'.$i18n->getCode().'/LC_MESSAGES/gibbon.mo?raw=true';
         $gitHubContents = file_get_contents($gitHubURL);
 
         if (empty($gitHubContents)) return false;
 
         // Locate where the i18n files will be copied to on the server
-        $localPath = $absolutePath.'/translations/gibbon.'.$i18n->getCode().'.mo';
+        $localPath = $absolutePath.'/translations/messages.'.$i18n->getCode().'.mo';
         $localDir = dirname($localPath);
-        if (!is_dir($localDir)) {
+        if (!is_dir($localDir))
             mkdir($localDir, 0755, true);
-        }
 
         // Copy files
         return file_put_contents($localPath, $gitHubContents) !== false;
@@ -54,7 +55,7 @@ class LanguageManager
      */
     public function i18nFileExists($absolutePath, $code)
     {
-        return file_exists($absolutePath.'/translations/gibbon.'.$code.'.mo');
+        return file_exists($absolutePath.'/translations/messages.'.$code.'.mo');
     }
 
     /**

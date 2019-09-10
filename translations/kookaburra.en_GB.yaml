@@ -51,3 +51,4 @@ Google API Key: Google API Key
 'Your requested included a valid Google Secret File.  The information was successfully stored.': 'Your requested included a valid Google Secret File.  The information was successfully stored.'
 'Your requested did not included a valid Google Secret File. All other Google changes where saved.': 'Your requested did not included a valid Google Secret File. All other Google changes where saved.'
 'Your request failed due to a file transfer issue.': Your request failed due to a file transfer issue.
+Changing the default language will give strange translation results until the cache is fully rebuilt.: Changing the default language will give strange translation results until the cache is fully rebuilt.

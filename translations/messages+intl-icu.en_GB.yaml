@@ -383,3 +383,21 @@ Main Menu Category Order: Main Menu Category Order
 A comma separated list of module categories in display order.: A comma separated list of module categories in display order.
 single: single
 'Configuration values can be set in your system php.ini file. On shared host, use .htaccess to set php settings.': Configuration values can be set in your system php.ini file. On shared host, use .htaccess to set php settings.
+'This action will download the required files and place them in the {path} folder on your server. Are you sure you want to continue?': This action will download the required files and place them in the {path} folder on your server. Are you sure you want to continue?
+Installed: Installed
+Code: Code
+Default: Default
+Not Installed: Not Installed
+Update: Update
+Install: Install
+'The file transfer was not completed successfully.  Please try again.': The file transfer was not completed successfully.  Please try again.
+'Your request was successful, but some data was not properly saved.': Your request was successful, but some data was not properly saved.
+'Set as Default': Set as Default
+Manage Languages: Manage Languages
+Manage Modules: Manage Modules
+Manage Themes: Manage Themes
+System Check: System Check
+Import From File: Import From File
+Notification Settings: Notification Settings
+String Replacement: String Replacement
+Third Party Settings: Third Party Settings

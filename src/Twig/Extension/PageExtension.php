@@ -147,7 +147,8 @@ class PageExtension extends AbstractExtension
             new TwigFunction('pageManager', [$this, 'pageManager']),
             new TwigFunction('getSchoolYears', [$this, 'getSchoolYears']),
             new TwigFunction('getActiveLanguages', [$this, 'getActiveLanguages']),
-            new TwigFunction('getBackgroundImage', [$this, 'getBackgroundImage'])
+            new TwigFunction('getBackgroundImage', [$this, 'getBackgroundImage']),
+            new TwigFunction('version_compare', [$this, 'version_compare']),
         ];
     }
 
@@ -361,5 +362,17 @@ class PageExtension extends AbstractExtension
 
         $this->session->set('backgroundImage',  $default);
         return  $default;
+    }
+
+    /**
+     * version_compare
+     * @param string|null $version
+     * @param string $required
+     * @param string $compare
+     * @return bool
+     */
+    public function version_compare(?string $version, string $required, string $compare = '=='): bool
+    {
+        return version_compare($version ?: '0.0', $required, $compare);
     }
 }

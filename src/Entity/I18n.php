@@ -370,4 +370,25 @@ class I18n implements EntityInterface
     {
         return self::$languages;
     }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray() {
+        return [
+            "gibboni18nID" => $this->getId(), // legacy
+            "id" => $this->getId(),
+            "code" => $this->getCode(),
+            "name" => $this->getName(),
+            "dateFormat" =>  $this->getDateFormat(),
+            "dateFormatRegEx" => $this->getDateFormatRegEx(),
+            "dateFormatPHP" => $this->getDateFormatPHP(),
+            "rtl" => $this->getRtl(),
+            'default' => [
+                'code' => $this->getCode(),
+                'name' => $this->getName(),
+            ]
+        ];
+    }
 }
