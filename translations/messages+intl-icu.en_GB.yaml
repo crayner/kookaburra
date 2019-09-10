@@ -401,3 +401,32 @@ Import From File: Import From File
 Notification Settings: Notification Settings
 String Replacement: String Replacement
 Third Party Settings: Third Party Settings
+Notification Events: Notification Events
+This section allows you to manage system-wide notifications. When a notification event occurs, any users subscribed to that event will receive a notification. Each event below can optionally be turned off to prevent all notifications of that type.: This section allows you to manage system-wide notifications. When a notification event occurs, any users subscribed to that event will receive a notification. Each event below can optionally be turned off to prevent all notifications of that type.
+Module: Module
+Subscribers: Subscribers
+New Activity Registration: New Activity Registration
+Student Bumped: Student Bumped
+Student Withdrawn: Student Withdrawn
+Daily Attendance Summary: Daily Attendance Summary
+This is a CLI notification event. It will only run if the corresponding CLI script has been setup on the server.: This is a CLI notification event. It will only run if the corresponding CLI script has been setup on the server.
+Weekly Attendance Summary: Weekly Attendance Summary
+Behaviour Letters: Behaviour Letters
+Daily Behaviour Summary: Daily Behaviour Summary
+New Negative Record: New Negative Record
+New Positive Record: New Positive Record
+Updated Behaviour Record: Updated Behaviour Record
+Family Data Updates: Family Data Updates
+Finance Data Updates: Finance Data Updates
+Medical Form Updates: Medical Form Updates
+Personal Data Updates: Personal Data Updates
+Updated Individual Needs: Updated Individual Needs
+Overdue Loan Items: Overdue Loan Items
+Parent Weekly Email Summary: Parent Weekly Email Summary
+New Application Form: New Application Form
+Application Form Accepted: Application Form Accepted
+New Student Note: New Student Note
+Updated Privacy Settings: Updated Privacy Settings
+Login - Failed: Login - Failed
+New Public Registration: New Public Registration
+User Status Check and Fix: User Status Check and Fix

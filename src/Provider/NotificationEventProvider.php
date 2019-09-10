@@ -293,4 +293,14 @@ class NotificationEventProvider implements EntityProviderInterface
         $provider->saveEntity();
         $this->getSender()->newRegistration($person, $this->getNotificationText(), $this->getNotificationTextOptions(), $this->getModuleName(), $this->getActionLink(), $notification);
     }
+
+    /**
+     * selectAllNotificationEvents
+     * @return array
+     * @throws \Exception
+     */
+    public function selectAllNotificationEvents(): array
+    {
+        return $this->getRepository()->findAllNotificationEvents();
+    }
 }

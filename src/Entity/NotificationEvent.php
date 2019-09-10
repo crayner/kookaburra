@@ -15,6 +15,7 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Provider\ProviderFactory;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,10 +49,24 @@ class NotificationEvent implements EntityInterface
     private $moduleName;
 
     /**
+     * @var Module|null
+     * @ORM\ManyToOne(targetEntity="Module")
+     * @ORM\JoinColumn(name="moduleID", referencedColumnName="gibbonModuleID", nullable=true)
+     */
+    private $module;
+
+    /**
      * @var string|null
      * @ORM\Column(length=50, name="actionName")
      */
     private $actionName;
+
+    /**
+     * @var Action|null
+     * @ORM\ManyToOne(targetEntity="Action")
+     * @ORM\JoinColumn(name="actionID", referencedColumnName="gibbonActionID", nullable=true)
+     */
+    private $action;
 
     /**
      * @var string|null
@@ -75,6 +90,12 @@ class NotificationEvent implements EntityInterface
      * @ORM\Column(length=1, options={"default": "Y"})
      */
     private $active = 'Y';
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="NotificationListener", mappedBy="event")
+     */
+    private $listeners;
 
     /**
      * @return int|null
@@ -114,6 +135,7 @@ class NotificationEvent implements EntityInterface
 
     /**
      * @return string|null
+     * @deprecated 10 Sep/2019  Use getModule()->getName()
      */
     public function getModuleName(): ?string
     {
@@ -123,6 +145,7 @@ class NotificationEvent implements EntityInterface
     /**
      * @param string|null $moduleName
      * @return NotificationEvent
+     * @deprecated 10 Sep/2019  Use getModule()->setName()
      */
     public function setModuleName(?string $moduleName): NotificationEvent
     {
@@ -132,6 +155,7 @@ class NotificationEvent implements EntityInterface
 
     /**
      * @return string|null
+     * @deprecated 10 Sep/2019  Use getAction()->getName()
      */
     public function getActionName(): ?string
     {
@@ -141,6 +165,7 @@ class NotificationEvent implements EntityInterface
     /**
      * @param string|null $actionName
      * @return NotificationEvent
+     * @deprecated 10 Sep/2019  Use getAction()->setName()
      */
     public function setActionName(?string $actionName): NotificationEvent
     {
@@ -208,5 +233,65 @@ class NotificationEvent implements EntityInterface
     public static function getTypeList(): array
     {
         return self::$typeList;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getListeners(): Collection
+    {
+        return $this->listeners;
+    }
+
+    /**
+     * Listeners.
+     *
+     * @param Collection $listeners
+     * @return NotificationEvent
+     */
+    public function setListeners(Collection $listeners): NotificationEvent
+    {
+        $this->listeners = $listeners;
+        return $this;
+    }
+
+    /**
+     * @return Module|null
+     */
+    public function getModule(): ?Module
+    {
+        return $this->module;
+    }
+
+    /**
+     * Module.
+     *
+     * @param Module|null $module
+     * @return NotificationEvent
+     */
+    public function setModule(?Module $module): NotificationEvent
+    {
+        $this->module = $module;
+        return $this;
+    }
+
+    /**
+     * @return Action|null
+     */
+    public function getAction(): ?Action
+    {
+        return $this->action;
+    }
+
+    /**
+     * Action.
+     *
+     * @param Action|null $action
+     * @return NotificationEvent
+     */
+    public function setAction(?Action $action): NotificationEvent
+    {
+        $this->action = $action;
+        return $this;
     }
 }

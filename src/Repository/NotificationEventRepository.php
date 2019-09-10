@@ -31,4 +31,22 @@ class NotificationEventRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, NotificationEvent::class);
     }
+
+    /**
+     * findAllNotificationEvents
+     * @return array
+     */
+    public function findAllNotificationEvents(): array
+    {
+        return $this->createQueryBuilder('ne')
+            ->join('ne.module', 'm')
+            ->leftJoin('ne.listeners', 'nl')
+            ->where('m.active = :yes')
+            ->setParameter('yes', 'Y')
+            ->groupBy('ne.id')
+            ->orderBy('m.name')
+            ->addOrderBy('ne.event')
+            ->getQuery()
+            ->getResult();
+    }
 }

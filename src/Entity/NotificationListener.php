@@ -32,7 +32,7 @@ class NotificationListener
     
     /**
      * @var NotificationEvent|null
-     * @ORM\ManyToOne(targetEntity="NotificationEvent")
+     * @ORM\ManyToOne(targetEntity="NotificationEvent", inversedBy="listeners")
      * @ORM\JoinColumn(name="gibbonNotificationEventID", referencedColumnName="gibbonNotificationEventID", nullable=true)
      */
     private $event;

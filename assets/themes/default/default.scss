@@ -1413,3 +1413,33 @@ input[value="1"] + .slider:before {
 .close > span {
     font-size: 20px;
 }
+[data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.5s;
+    visibility: visible;
+}
+[data-title]:after {
+    content: attr(data-title);
+    color: lightyellow;
+    font-max-size: 1rem;
+    font-size: 1rem;
+    font-weight: normal;
+    position: absolute;
+    left: -250px;
+    text-align: justify;
+    padding: 1px 5px 2px 5px;
+    bottom: -1.6em;
+    max-width: 250px;
+    width: 250px;
+    white-space: pre-wrap;
+    box-shadow: 1px 1px 3px #222222;
+    opacity: 0;
+    border: 1px solid #111111;
+    border-radius: 4px;
+    z-index: 99999;
+    visibility: hidden;
+    background-color: dimgrey;
+}
+[data-title] {
+    position: relative;
+}

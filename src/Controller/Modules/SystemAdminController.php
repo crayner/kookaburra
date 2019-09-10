@@ -16,6 +16,7 @@ use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Entity\I18n;
+use App\Entity\NotificationEvent;
 use App\Entity\Setting;
 use App\Form\Modules\SystemAdmin\DisplaySettingsType;
 use App\Form\Modules\SystemAdmin\EmailSettingsType;
@@ -342,6 +343,7 @@ class SystemAdminController extends AbstractController
 
         return $this->render('modules/system_admin/display_settings.html.twig');
     }
+
     /**
      * languageInstall
      * @param Request $request
@@ -423,5 +425,22 @@ class SystemAdminController extends AbstractController
         }
         $this->addFlash('success', 'Your request was completed successfully.');
         return $this->redirectToRoute('system_admin__language_manage');
+    }
+
+    /**
+     * systemSettings
+     * @param Request $request
+     * @Route("/notification/settings/", name="notification_settings")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function notificationSettings(Request $request, ContainerManager $manager, TranslatorInterface $translator)
+    {
+        $notificationProvider = ProviderFactory::create(NotificationEvent::class);
+
+        return $this->render('modules/system_admin/notification_settings.html.twig',
+            [
+                'events' => $notificationProvider->selectAllNotificationEvents(),
+            ]
+        );
     }
 }
