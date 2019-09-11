@@ -17,6 +17,7 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -346,5 +347,31 @@ class Role implements EntityInterface
     public function __toString(): string
     {
         return $this->getCategory().': '.$this->getName();
+    }
+
+    /**
+     * @var Collection|Permission[]|null
+     * @ORM\OneToMany(targetEntity="Permission", mappedBy="role")
+     */
+    private $permissions;
+
+    /**
+     * @return Collection|Permission[]|null
+     */
+    public function getPermissions()
+    {
+        return $this->permissions = $this->permissions ?: new ArrayCollection();
+    }
+
+    /**
+     * Permissions.
+     *
+     * @param Collection|Permission[]|null $permissions
+     * @return Role
+     */
+    public function setPermissions($permissions)
+    {
+        $this->permissions = $permissions;
+        return $this;
     }
 }

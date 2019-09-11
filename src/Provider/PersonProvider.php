@@ -25,6 +25,7 @@ use App\Security\SecurityUser;
 use App\Util\SecurityHelper;
 use App\Entity\NotificationEvent;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -281,5 +282,31 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
         } else {
             $this->getSession()->addFlash('success', 'Your registration was successfully submitted, and you may now log into the system using your new username and password.');
         }
+    }
+
+    /**
+     * getCurrentStudentChoiceList
+     * @return array
+     * @throws \Exception
+     */
+    public function getCurrentStudentChoiceList(): array {
+        $result = [];
+        foreach($this->getRepository()->findCurrentStudents() as $q=>$w){
+            $result[]= new ChoiceView([], $w->getId(), $w->formatName(), []);
+        }
+        return $result;
+    }
+
+    /**
+     * getCurrentStaffChoiceList
+     * @return array
+     * @throws \Exception
+     */
+    public function getCurrentStaffChoiceList(): array {
+        $result = [];
+        foreach($this->getRepository()->findCurrentStaff() as $q=>$w){
+            $result[]= new ChoiceView([], $w->getId(), $w->formatName(), []);
+        }
+        return $result;
     }
 }

@@ -23,6 +23,7 @@ use App\Form\Modules\SystemAdmin\EmailSettingsType;
 use App\Form\Modules\SystemAdmin\GoogleIntegationType;
 use App\Form\Modules\SystemAdmin\LocalisationSettingsType;
 use App\Form\Modules\SystemAdmin\MiscellaneousSettingsType;
+use App\Form\Modules\SystemAdmin\NotificationEventType;
 use App\Form\Modules\SystemAdmin\OrganisationSettingsType;
 use App\Form\Modules\SystemAdmin\PaypalSettingsType;
 use App\Form\Modules\SystemAdmin\SecuritySettingsType;
@@ -33,6 +34,8 @@ use App\Manager\SystemAdmin\LanguageManager;
 use App\Manager\SystemAdmin\MailerSettingsManager;
 use App\Manager\VersionManager;
 use App\Provider\ProviderFactory;
+use App\Util\ReactFormHelper;
+use App\Util\TranslationsHelper;
 use Doctrine\DBAL\Driver\PDOException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -428,12 +431,12 @@ class SystemAdminController extends AbstractController
     }
 
     /**
-     * systemSettings
-     * @param Request $request
+     * notificationSettings
+     * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/notification/settings/", name="notification_settings")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function notificationSettings(Request $request, ContainerManager $manager, TranslatorInterface $translator)
+    public function notificationSettings()
     {
         $notificationProvider = ProviderFactory::create(NotificationEvent::class);
 
@@ -442,5 +445,39 @@ class SystemAdminController extends AbstractController
                 'events' => $notificationProvider->selectAllNotificationEvents(),
             ]
         );
+    }
+
+    /**
+     * notificationEventEdit
+     * @param Request $request
+     * @param NotificationEvent $event
+     * @Route("/notification/{event}/edit/", name="notification_edit")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function notificationEventEdit(Request $request, NotificationEvent $event, ContainerManager $manager, ReactFormHelper $helper)
+    {
+        $form = $this->createForm(NotificationEventType::class, $event, ['action' => $this->generateUrl('system_admin__notification_edit', ['event' => $event->getId()]), 'listener_delete_route' => '@todo']);
+
+        if ($request->getContentType() === 'json') {
+            $content = json_decode($request->getContent(), true);
+            $form->submit($content);
+            if ($form->isValid()) {
+                dump($form, $event);
+            } else {
+                dump($form, $event);
+                $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('Your request failed because your inputs were invalid.')];
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return new JsonResponse($data,200);
+
+        }
+
+        $manager->singlePanel($form->createView(), 'NotificationEvent');
+
+
+        return $this->render('/modules/system_admin/notification_edit.html.twig');
     }
 }

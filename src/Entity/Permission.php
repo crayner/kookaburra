@@ -33,7 +33,7 @@ class Permission
 
     /**
      * @var Role|null
-     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="permissions")
      * @ORM\JoinColumn(name="gibbonRoleID", referencedColumnName="gibbonRoleID", nullable=false)
      */
     private $role;

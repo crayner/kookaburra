@@ -41,6 +41,7 @@ class NotificationListener
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=true)
+     * @ORM\OrderBy({"surname": "ASC", "firstName": "ASC"})
      */
     private $person;
 

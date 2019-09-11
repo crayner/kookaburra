@@ -13,6 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\YearGroup;
+use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -29,5 +30,18 @@ class YearGroupRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, YearGroup::class);
+    }
+
+    /**
+     * findCurrentYearGroups
+     * @return array
+     */
+    public function findCurrentYearGroups(): array
+    {
+        return $this->createQueryBuilder('yg')
+            ->orderBy('yg.sequenceNumber')
+            ->getQuery()
+            ->getResult();
+        ;
     }
 }

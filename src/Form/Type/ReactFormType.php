@@ -222,11 +222,33 @@ class ReactFormType extends AbstractType
 
         if (isset($view->vars['choices'])) {
             if (false !== $view->vars['choice_translation_domain'])
-                foreach($view->vars['choices'] as $q=>$choice)
+                foreach($view->vars['choices'] as $q=>$choice) {
                     $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+                    if (isset($choice->choices)) {
+                        foreach($choice->choices as $w) {
+                            $w->label = $this->translate($w->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
+                        }
+                    }
+                }
 
             $vars['choice_translation_domain'] = false;
-            $vars['choices'] = $view->vars['choices'];
+
+            // json_encode will sort if the index is not in order, so some work to do.
+            $result = [];
+            foreach($view->vars['choices'] as $q=>$choice) {
+                $z = [];
+                if (isset($choice->choices)) {
+                    foreach($choice->choices as $w) {
+                        $z[] = $w;
+                    }
+                    $choice->choices = $z;
+                    $result[$q] = $choice;
+                } else {
+                    $result[] = $choice;
+                }
+            }
+
+            $vars['choices'] = $result;
         }
 
         if (in_array('submit', $view->vars['block_prefixes']))
@@ -282,6 +304,8 @@ class ReactFormType extends AbstractType
             return 'integer';
         if (in_array('repeated', $prefixes))
             return 'transparent';
+        if (in_array('display', $prefixes))
+            return 'display';
 //dump($prefixes);
         return 'unknown';
     }

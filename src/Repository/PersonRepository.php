@@ -19,7 +19,9 @@ use App\Entity\Person;
 use App\Entity\RollGroup;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
+use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -139,5 +141,73 @@ class PersonRepository extends ServiceEntityRepository
 
         return $query->getQuery()
             ->getResult();
+    }
+
+    /**
+     * findByRoles
+     * @param array $roles
+     * @return mixed
+     */
+    public function findByRoles(array $roles)
+    {
+        return $this->createQueryBuilder('p')
+            ->select(['p', 'r.name'])
+            ->join('p.primaryRole', 'r', 'with', 'p.primaryRole IN (:roles)')
+            ->setParameter('roles', $roles, Connection::PARAM_INT_ARRAY)
+            ->where('p.status = :full')
+            ->setParameter('full', 'Full')
+            ->groupBy('p.id')
+            ->orderBy('r.id', 'ASC')
+            ->addOrderBy('p.surname', 'ASC')
+            ->addOrderBy('p.firstName', "ASC")
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findCurrentStudents
+     * @return array
+     */
+    public function findCurrentStudents(): array
+    {
+        $schoolYear = SchoolYearHelper::getCurrentSchoolYear();
+        $today = new \DateTime(date('Y-m-d'));
+        return $this->createQueryBuilder('p')
+            ->join('p.studentEnrolments','se')
+            ->where('se.schoolYear = :schoolYear')
+            ->setParameter('schoolYear', $schoolYear)
+            ->andWhere('p.status = :full')
+            ->setParameter('full', 'Full')
+            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
+            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
+            ->setParameter('today', $today)
+            ->orderBy('p.surname')
+            ->addOrderBy('p.preferredName')
+            ->getQuery()
+            ->getResult();
+        ;
+    }
+
+    /**
+     * findCurrentStaff
+     * @return array
+     * @throws \Exception
+     */
+    public function findCurrentStaff(): array
+    {
+        $today = new \DateTime(date('Y-m-d'));
+        return $this->createQueryBuilder('p')
+            ->join('p.staff','s')
+            ->where('s.id IS NOT NULL')
+            ->andWhere('p.status = :full')
+            ->setParameter('full', 'Full')
+            ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
+            ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
+            ->setParameter('today', $today)
+            ->orderBy('p.surname')
+            ->addOrderBy('p.preferredName')
+            ->getQuery()
+            ->getResult();
+        ;
     }
 }
