@@ -42,7 +42,7 @@ export default class ContainerApp extends Component {
         this.mergeParentForm = this.mergeParentForm.bind(this)
         this.state = {
             selectedPanel: props.selectedPanel,
-            forms: props.forms,
+            forms: {...props.forms},
         }
         this.formNames = {}
         this.submit = {}
@@ -65,6 +65,7 @@ export default class ContainerApp extends Component {
             })
         }
     }
+
     translate(id){
         if (isEmpty(this.translations[id])) {
             console.error('Unable to translate: ' + id)
@@ -361,9 +362,11 @@ export default class ContainerApp extends Component {
     }
 
     replaceName(element, id) {
+        element = {...element}
         if (typeof element.children === 'object') {
+            element.children = {...element.children}
             Object.keys(element.children).map(childKey => {
-                let child = this.replaceName({...element.children[childKey]}, id)
+                let child = this.replaceName(element.children[childKey], id)
                 element.children[childKey] = child
             })
         }
@@ -398,7 +401,7 @@ export default class ContainerApp extends Component {
     addElement(form) {
         const uuidv4 = require('uuid/v4')
         let id = uuidv4()
-        let element = this.replaceName({...form.prototype}, id)
+        let element = this.replaceName(form.prototype, id)
         let parentForm = this.getParentForm(form)
         let parentFormName = this.getParentFormName(form)
         delete element.children.id
@@ -407,12 +410,10 @@ export default class ContainerApp extends Component {
         if (typeof this.functions.addElementCallable === 'function') {
             element = this.functions.addElementCallable(element)
         }
-        form.children.push(element)
-        parentForm = this.replaceFormElement(parentForm, form)
+        form.children.push({...element})
 
-        this.setState({
-            forms: this.mergeParentForm(parentFormName,parentForm)
-        })
+        parentForm = this.replaceFormElement(parentForm, form)
+        this.setParentState(this.mergeParentForm(parentFormName,parentForm))
     }
 
     isSubmit() {

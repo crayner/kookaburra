@@ -11,8 +11,9 @@ export default function CollectionApp(props) {
     } = props
 
     let columnCount = 0
-    Object.keys(form.prototype.children).map(key => {
-        const child = form.prototype.children[key]
+    let prototype = {...form.prototype}
+    Object.keys(prototype.children).map(key => {
+        const child = prototype.children[key]
         if (child.type !== 'hidden') {
             columnCount++
         }

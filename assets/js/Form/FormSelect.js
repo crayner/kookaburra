@@ -18,7 +18,18 @@ export default function FormSelect(props) {
     }
 
     Object.keys(form.choices).map(choice => {
-        options.push(<option value={form.choices[choice].value} key={form.choices[choice].value}>{form.choices[choice].label}</option>)
+        if (typeof form.choices[choice].choices === 'undefined') {
+            options.push(<option value={form.choices[choice].value}
+                                 key={form.choices[choice].value}>{form.choices[choice].label}</option>)
+        } else {
+            const groupName = form.choices[choice].label
+            let subOptions = []
+            Object.keys(form.choices[choice].choices).map(subChoice => {
+                subOptions.push(<option value={form.choices[choice].choices[subChoice].value}
+                                     key={form.choices[choice].choices[subChoice].value}>{form.choices[choice].choices[subChoice].label}</option>)
+            })
+            options.push(<optgroup key={groupName} label={groupName}>{subOptions}</optgroup>)
+        }
     })
 
     return (

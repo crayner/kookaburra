@@ -188,6 +188,15 @@ export default function Widget(props) {
         )
     }
 
+    if (form.type === 'display') {
+        return (
+            <div {...wrapper_attr}>
+                {form.value}
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
     console.log(form)
     return (<div {...wrapper_attr}>
         {element}

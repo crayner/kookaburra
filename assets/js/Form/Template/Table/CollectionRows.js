@@ -30,7 +30,7 @@ export default function CollectionRows(props) {
             let columns = []
             let hidden = []
             Object.keys(row.children).map(childKey => {
-                let child = {...row.children[childKey]}
+                let child = row.children[childKey]
                 if (child.type !== 'hidden') {
                     columns.push(<td key={childKey}><Widget form={{...child}} functions={functions}/></td>)
                 } else {
