@@ -137,7 +137,7 @@ class HelperListener implements EventSubscriberInterface
      */
     public function gibbonInitiate(RequestEvent $event)
     {
-        if (false !== strpos($event->getRequest()->getPathInfo(), '/installation/'))
+        if (false !== strpos($event->getRequest()->getPathInfo(), '/install/'))
             return;
 
         $installed =  $this->container->hasParameter('installed') ? (bool) $this->container->getParameter('installed') : false;
@@ -152,19 +152,19 @@ class HelperListener implements EventSubscriberInterface
             $config['parameters']['installation']['status'] = 'check';
             $config['parameters']['installed'] = false;
             GlobalHelper::writeKookaburraYaml($config);
-            $event->setResponse(new RedirectResponse($this->router->generate('installation_check')));
+            $event->setResponse(new RedirectResponse($this->router->generate('install__installation_check')));
             return ;
         }
         if ($installationProcess['status'] === 'mysql') {
-            $event->setResponse(new RedirectResponse($this->router->generate('installation_mysql')));
+            $event->setResponse(new RedirectResponse($this->router->generate('install__installation_mysql')));
             return ;
         }
         if ($installationProcess['status'] === 'build') {
-            $event->setResponse(new RedirectResponse($this->router->generate('installation_build')));
+            $event->setResponse(new RedirectResponse($this->router->generate('install__installation_build')));
             return ;
         }
         if ($installationProcess['status'] === 'system') {
-            $event->setResponse(new RedirectResponse($this->router->generate('installation_system')));
+            $event->setResponse(new RedirectResponse($this->router->generate('install__installation_system')));
             return ;
         }
     }

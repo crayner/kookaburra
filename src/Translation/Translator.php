@@ -17,6 +17,7 @@ use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Component\Translation\TranslatorInterface as TranslatorInterfaceLegacy;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -117,9 +118,11 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
      */
     public function getStrings($refresh = false): ?Collection
     {
+        if (strpos($this->stack->getCurrentRequest()->get('_route'), 'install__') === 0)
+            return new ArrayCollection();
         $provider = ProviderFactory::create(StringReplacement::class);
         if (empty($this->strings) && ! $refresh)
-            $this->strings = $provider->getSession()->get('stringReplacement', null);
+            $this->strings = $this->stack->getCurrentRequest()->getSession()->get('stringReplacement', null);
         else
             return $this->strings;
 
@@ -132,7 +135,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
         else
             return $this->strings = $this->strings instanceof ArrayCollection ? $this->strings : new ArrayCollection();
 
-        $provider->getSession()->set('stringReplacement', $this->strings);
+        $this->stack->getCurrentRequest()->getSession()->set('stringReplacement', $this->strings);
 
         return $this->strings;
     }
@@ -217,12 +220,19 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
      */
     private $translator;
 
+
+    /**
+     * @var RequestStack
+     */
+    private $stack;
+
     /**
      * Translator constructor.
      * @param TranslatorInterface $translator
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator, RequestStack $stack)
     {
         $this->translator = $translator;
+        $this->stack  = $stack;
     }
 }

@@ -38,7 +38,7 @@ class RegistrationMinimumAgeValidator extends ConstraintValidator
 
         if ($interval->y < $minimumAge)
             $this->context->buildViolation($constraint->message)
-                ->setParameter('%1$s', $minimumAge)
+                ->setParameter('{oneString}', $minimumAge)
                 ->setTranslationDomain('messages')
                 ->addViolation();
     }

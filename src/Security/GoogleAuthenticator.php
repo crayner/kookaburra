@@ -21,6 +21,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AuthenticatorInterface;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class GoogleAuthenticator
@@ -352,13 +353,14 @@ class GoogleAuthenticator implements AuthenticatorInterface
     {
         if (! empty($this->clientSecrets))
             return $this->clientSecrets;
+        $config = Yaml::parse(file_get_contents(__DIR__ . '/../../config/packages/kookaburra.yaml'));
         $clientSecrets = [];
-        $clientSecrets['web']['client_id'] = $this->getSettingManager()->getSettingByScopeAsString('System', 'googleClientID');
-        $clientSecrets['web']['project_id'] = $this->getSettingManager()->getSettingByScopeAsString('System', 'googleDeveloperKey');
+        $clientSecrets['web']['client_id'] = $config['parameters']['google_client_id'];
+        $clientSecrets['web']['project_id'] = $config['parameters']['google_api_key'];
         $clientSecrets['web']['auth_uri'] = 'https://accounts.google.com/o/oauth2/auth';
         $clientSecrets['web']['token_uri'] = 'https://www.googleapis.com/oauth2/v3/token';
         $clientSecrets['web']['auth_provider_x509_cert_url'] = 'https://www.googleapis.com/oauth2/v1/certs';
-        $clientSecrets['web']['client_secret'] = $this->getSettingManager()->getSettingByScopeAsString('System', 'googleClientSecret');
+        $clientSecrets['web']['client_secret'] = $config['parameters']['google_client_secret'];;
         $clientSecrets['web']['redirect_uris'] = [$this->getSettingManager()->getSettingByScopeAsString('System', 'googleRedirectUri')];
         return $this->clientSecrets = $clientSecrets;
     }

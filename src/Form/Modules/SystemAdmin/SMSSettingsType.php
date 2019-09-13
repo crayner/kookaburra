@@ -56,10 +56,9 @@ class SMSSettingsType extends AbstractType
                             'entry_type' => ChoiceType::class,
                             'entry_options' => [
                                 'choices' => [
-                                    'OneWaySMS' => 'OneWaySMS', 'Twilio' => 'Twilio', 'Nexmo' => 'Nexmo', 'Clockwork' => 'Clockwork', 'TextLocal' => 'TextLocal', 'Mail to SMS' => 'Mail to SMS'
+                                    'No' => 'No', 'OneWaySMS' => 'OneWaySMS', 'Twilio' => 'Twilio', 'Nexmo' => 'Nexmo', 'Clockwork' => 'Clockwork', 'TextLocal' => 'TextLocal', 'Mail to SMS' => 'Mail to SMS'
                                 ],
                                 'choice_translation_domain' => false,
-                                'placeholder' => 'No',
                                 'on_change' => 'toggleSMSRows',
                             ],
                         ],

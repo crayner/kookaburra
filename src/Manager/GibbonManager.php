@@ -126,28 +126,22 @@ class GibbonManager implements ContainerAwareInterface
         $gibbon->locale = $this->container->get('locale');
         self::setGuid($gibbon->getConfig('guid'));
 
-        //todo  Installation Testing will return installation Response if necessary
+        $mysqlConnector = new MySqlConnector();
+        if ($connection = $mysqlConnector->connect($gibbon->getConfig())) {
+            $this->container->set('db', $connection);
+//            $this->container->set(Connection::class, $pdo);
+            self::setConnection2($connection);
+            self::setPDO($connection->getConnection());
+            $sqlConnector = new sqlConnection();
+            $sqlConnector->setPdo($connection->getConnection());
+            self::setConnection($sqlConnector);
 
-        // Initialize using the database connection
-        if ($gibbon->isInstalled()) {
-
-            $mysqlConnector = new MySqlConnector();
-            if ($connection = $mysqlConnector->connect($gibbon->getConfig())) {
-                $this->container->set('db', $connection);
-//                $this->container->set(Connection::class, $pdo);
-                self::setConnection2($connection);
-                self::setPDO($connection->getConnection());
-                $sqlConnector = new sqlConnection();
-                $sqlConnector->setPdo($connection->getConnection());
-                self::setConnection($sqlConnector);
-
-                $gibbon->initializeCore($this->container);
-            } else {
-                // We need to handle failed database connections after install. Display an error if no connection
-                // can be established. Needs a specific error page once header/footer is split out of index.
-                if (!$gibbon->isInstalling()) {
-                    return self::returnErrorResponse();
-                }
+            $gibbon->initializeCore($this->container);
+        } else {
+            // We need to handle failed database connections after install. Display an error if no connection
+            // can be established. Needs a specific error page once header/footer is split out of index.
+            if (!$gibbon->isInstalling()) {
+                return self::returnErrorResponse();
             }
         }
 

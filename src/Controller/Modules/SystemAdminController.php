@@ -197,7 +197,7 @@ class SystemAdminController extends AbstractController
      * @param ContainerManager $manager
      * @param TranslatorInterface $translator
      * @param string $tabName
-     * @Route("/third_party/{tabName}", name="third_party")
+     * @Route("/third/{tabName}/party/", name="third_party")
      * @IsGranted("ROLE_ROUTE"))
      */
     public function thirdParty(Request $request, ContainerManager $manager, TranslatorInterface $translator, string $tabName = 'Google')

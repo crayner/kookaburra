@@ -336,8 +336,10 @@ class PageExtension extends AbstractExtension
      * @return string
      * @throws \Exception
      */
-    public function getBackgroundImage(string $default = 'build/static/backgroundPage.jpg'): string
+    public function getBackgroundImage(string $default = '/build/static/backgroundPage.jpg'): string
     {
+        if (strpos($this->stack->getCurrentRequest()->get('_route'), 'install__') === 0 )
+            return $default;
         $public = realpath(__DIR__ . '/../../../public') . DIRECTORY_SEPARATOR;
         $result = false;
         if ($this->session->has('backgroundImage') && is_file($this->session->get('backgroundImage')))
@@ -345,7 +347,7 @@ class PageExtension extends AbstractExtension
         $user = UserHelper::getCurrentUser();
         if ($user instanceof Person && $user->getPersonalBackground()) {
             $file = realpath(is_file($user->getPersonalBackground()) ? $user->getPersonalBackground() : (is_file($public.$user->getPersonalBackground()) ? $public.$user->getPersonalBackground() : null));
-            if ($file) {
+            if (is_file($file)) {
                 $file = str_replace([$public, "\\"], ['', '/'], $file);
                 $this->session->set('backgroundImage', $file);
                 return $file;
@@ -354,7 +356,7 @@ class PageExtension extends AbstractExtension
 
         $background = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationBackground');
         $background = realpath(is_file($background) ? $background : (is_file($public.$background) ? $public.$background : null));
-        if ($background) {
+        if (is_file($background)) {
             $background = str_replace([$public, "\\"], ['', '/'], $background);
             $this->session->set('backgroundImage', $background);
             return $background;

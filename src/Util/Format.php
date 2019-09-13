@@ -121,10 +121,10 @@ class Format
                 $format);
 
         } elseif ($roleCategory == 'Parent') {
-            $format = (!$informal? '%1$s ' : '') . ($reverse? '%3$s, %2$s' : '%2$s %3$s');
+            $format = (!$informal? '{oneString} ' : '') . ($reverse? '{threeString}, {twoString}' : '{twoString} {threeString}');
             $output = sprintf($format, $title, $preferredName, $surname);
         } elseif ($roleCategory == 'Student') {
-            $format = $reverse ? '%2$s, %1$s' : '%1$s %2$s';
+            $format = $reverse ? '{twoString}, {oneString}' : '{oneString} {twoString}';
             $output = sprintf($format, $preferredName, $surname);
         }
 

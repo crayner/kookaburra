@@ -60,6 +60,8 @@ class AddressModuleActionListener implements EventSubscriberInterface
     public function onKernelController(ControllerEvent $event): void
     {
         $request = $event->getRequest();
+        if (strpos($request->get('_route'),'install__') === 0)
+            return;
         $this->format->setupFromSession($request->getSession());
         if ($request->query->has('q'))
             return;

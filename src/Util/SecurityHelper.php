@@ -329,7 +329,7 @@ class SecurityHelper
             if ($punctuation)
                 $output[] = 'Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).';
             if ($minLength >= 0)
-                $output[] = 'Must be at least %1$s characters in length.';
+                $output[] = 'Must be at least {oneString} characters in length.';
         }
         $output['minLength'] = $minLength;
 

@@ -1,5 +1,3 @@
-
-
 {% extends 'kookaburra.html.twig' %}
 
 {% form_theme form
@@ -7,7 +5,7 @@
 %}
 
 {% block page %}
-    <h2>{{ 'Installation - Step %1$s'|trans({'%1$s': '1'}) }}</h2>
+    <h2>{{ 'Installation - Step {step}'|trans({'{step}': '1'}) }}</h2>
     <div class="{{ message.class }}">{{ message.text|trans({}, 'kookaburra') }}</div>
     {{ form_start(form) }}
     <table class="smallIntBorder w-full relative" cellspacing="0">
@@ -18,10 +16,9 @@
                 </td>
             </tr>
         {% for name,details in systemDisplay['System Requirements'] %}
-            <tr>
+           <tr>
                 <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
-
-                    <label for="phpVersionLabel" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'%{name}': name}, 'kookaburra') }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans }}</span></label>
+                    <label for="phpVersionLabel" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'%{name}': name}, 'kookaburra') }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans(details.comment_params|default({})) }}</span></label>
                     {% endif %}
                 </td>
                 <td class=" px-2 border-b-0 sm:border-b border-t-0 ">

@@ -69,7 +69,7 @@ class LanguageType extends AbstractType
                 'label_class' => 'px-2 border-b-0 sm:border-b border-t-0',
                 'row_class' => false,
             ]
-        )->setAction($this->router->generate('installation_check'));
+        )->setAction($this->router->generate('install__installation_check'));
     }
 
     public function configureOptions(OptionsResolver $resolver)

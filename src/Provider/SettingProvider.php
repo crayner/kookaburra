@@ -368,13 +368,16 @@ class SettingProvider implements EntityProviderInterface
      * getSession
      * @return SessionInterface
      */
-    private function getSession(): ?SessionInterface
+    public function getSession(): ?SessionInterface
     {
         if ($this->stack->getCurrentRequest() && $this->stack->getCurrentRequest()->getSession())
             return $this->stack->getCurrentRequest()->getSession();
         return null;
     }
 
+    /**
+     * @var array
+     */
     private $sessionSettings = [
     ];
 

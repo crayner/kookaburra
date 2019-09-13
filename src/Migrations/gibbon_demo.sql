@@ -11851,12 +11851,6 @@ INSERT INTO `gibbonAttendanceCode` (`gibbonAttendanceCodeID`, `name`, `nameShort
 ALTER TABLE `gibbonAttendanceCode` ENABLE KEYS;
 UNLOCK TABLES;
 
-
-LOCK TABLES `gibbonDepartmentStaff` WRITE;
-ALTER TABLE `gibbonDepartmentStaff` DISABLE KEYS;
 DELETE FROM `gibbonDepartmentStaff` WHERE `gibbonPersonID` NOT IN (SELECT `gibbonPersonID` FROM `gibbonPerson`);
-ALTER TABLE `gibbonDepartmentStaff` ENABLE KEYS;
-UNLOCK TABLES;
-
 
 SET FOREIGN_KEY_CHECKS = 1;

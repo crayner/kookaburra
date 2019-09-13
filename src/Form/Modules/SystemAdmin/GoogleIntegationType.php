@@ -42,10 +42,10 @@ class GoogleIntegationType extends AbstractType
             ->add('googleIntegrationHeader', HeaderType::class,
                 [
                     'label' => 'Google Integration',
-                    'help' => 'If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google\'s APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, %1$sclick here%2$s.',
+                    'help' => 'If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google\'s APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, {oneString}click here{twoString}.',
                     'help_translation_parameters' => [
-                        '%1$s' => "<a href='https://gibbonedu.org/support/administrators/installing-gibbon/authenticating-with-google-oauth/' target='_blank'>",
-                        '%2$s' => '</a>',
+                        '{oneString}' => "<a href='https://gibbonedu.org/support/administrators/installing-gibbon/authenticating-with-google-oauth/' target='_blank'>",
+                        '{twoString}' => '</a>',
                     ],
                     'translation_domain' => 'kookaburra',
                 ]

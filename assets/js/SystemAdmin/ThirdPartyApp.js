@@ -46,11 +46,12 @@ export default class ThirdPartyApp extends Component {
     }
 
     toggleSMSRowsOnValue(value, forms) {
-        if (value === '' || value === null)
+        if (value === '' || value === null|| value === 'N')
             value = 'No'
         let parentForm = {...forms.SMS}
         const settings = this.extras[value]
         let smsSettings = parentForm.children.smsSettings
+        smsSettings.children['Messenger__smsGateway'].value = value
         Object.keys(settings).map(name => {
             const values = settings[name]
             smsSettings.children[name].row_style = 'hidden'
@@ -68,7 +69,7 @@ export default class ThirdPartyApp extends Component {
     }
 
     toggleMailerRowsOnValue(value, forms) {
-        if (value === '' || value === null)
+        if (value === '' || value === null || value === 'N')
             value = 'No'
         if (value === 'Y')
             value = "SMTP"

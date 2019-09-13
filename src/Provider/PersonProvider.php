@@ -187,7 +187,7 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
                         'highestColour'   => $alert->getColour(),
                         'highestColourBG' => $alert->getColourBG(),
                         'tag'             => 'P',
-                        'title'           => 'privacy_alert_level', // sprintf(__('Privacy is required: %1$s'), $privacy),
+                        'title'           => 'privacy_alert_level', // sprintf(__('Privacy is required: {oneString}'), $privacy),
                         'title_params'    => ['message' => $privacy],
                         'translation_domain' => 'kookaburra',
                         'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId(),
@@ -275,7 +275,7 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
             $event = ProviderFactory::create(NotificationEvent::class)->createEvent('User Admin', 'New Public Registration');
 
             $event->addRecipient($this->getSession()->get('organisationAdmissions'));
-            $event->setNotificationText('An new public registration, for %1$s, is pending approval.')->setNotificationTextOptions(['%1$s' => $person->formatName()]);
+            $event->setNotificationText('An new public registration, for {oneString}, is pending approval.')->setNotificationTextOptions(['{oneString}' => $person->formatName()]);
             $event->setActionLink("/?q=/modules/User Admin/user_manage_edit.php&gibbonPersonID=". $person->getId()."&search=");
 
             $event->sendNotifications();

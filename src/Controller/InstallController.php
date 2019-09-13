@@ -27,6 +27,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Class InstallController
+ * @package App\Controller
+ * @Route("/install", name="install__")
+ */
 class InstallController extends AbstractController
 {
     /**
@@ -40,14 +45,13 @@ class InstallController extends AbstractController
         $i18n = new I18n();
         $i18n->setCode(LocaleHelper::getDefaultLocale('en_GB'));
         $form = $this->createForm(LanguageType::class, $i18n);
-
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $errors = $validator->validate($form->get('code')->getData(), new \App\Validator\I18n());
             if (0 === count($errors)) {
                 $manager->setLocale($form->get('code')->getData());
                 $manager->setInstallationStatus('mysql');
-                return $this->redirectToRoute('installation_mysql');
+                return $this->redirectToRoute('install__installation_mysql');
             }
         }
 
@@ -129,7 +133,7 @@ class InstallController extends AbstractController
                 $manager->setAdministrator($form);
                 $manager->setSystemSettings($form);
             }
-            return $this->redirectToRoute('installation_complete');
+            return $this->redirectToRoute('install__installation_complete');
         }
 
         return $this->render('installation/system_settings.html.twig',

@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Intl\Currencies;
+use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
 /**
@@ -81,11 +82,14 @@ class InstallationManager
                 ));
             } else {
                 $config = $this->readKookaburraYaml();
-                $config['parameters']['absoluteURL'] = str_replace('/installation/check/', '', $this->urlHelper->getAbsoluteUrl('/installation/check/'));
+                $config['parameters']['absoluteURL'] = str_replace('/install/installation/check/', '', $this->urlHelper->getAbsoluteUrl('/install/installation/check/'));
                 $config['parameters']['guid'] = str_replace(['{','-','}'], '', com_create_guid());
                 $this->writeKookaburraYaml($config);
             }
         }
+
+        $version = Yaml::parse(file_get_contents(__DIR__.'/../../config/packages/version.yaml'));
+        $version = $version['parameters'];
 
         $ready = true;
 
@@ -94,6 +98,7 @@ class InstallationManager
         $systemDisplay['System Requirements']['PHP Version'] = [];
         $systemDisplay['System Requirements']['PHP Version']['name'] = 'PHP Version';
         $systemDisplay['System Requirements']['PHP Version']['comment'] = 'Kookaburra %{version} requires PHP Version %{php_version} or higher';
+        $systemDisplay['System Requirements']['PHP Version']['comment_params'] = ['%{version}' => $version['version'], '%{php_version}' => $systemRequirements['php']];
         $systemDisplay['System Requirements']['PHP Version']['detail'] = PHP_VERSION;
         $systemDisplay['System Requirements']['PHP Version']['result'] = version_compare(PHP_VERSION, $systemRequirements['php'], '>=');
         $ready &= $systemDisplay['System Requirements']['PHP Version']['result'];
@@ -142,7 +147,7 @@ class InstallationManager
         }
 
 
-        return new Response($this->twig->render('installation/ckeck.html.twig',
+        return new Response($this->twig->render('installation/check.html.twig',
             [
                 'systemRequirements' => $systemRequirements,
                 'systemDisplay' => $systemDisplay,
@@ -247,7 +252,7 @@ class InstallationManager
             return new Response($content);// if you used NullOutput()
 
         $this->setInstallationStatus('system');
-        return new RedirectResponse('/installation/system/');
+        return new RedirectResponse('/install/installation/system/');
     }
 
     /**

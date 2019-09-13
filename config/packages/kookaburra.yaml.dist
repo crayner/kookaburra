@@ -1,6 +1,6 @@
 parameters:
     guid: 'Generate a Secret Code Here'
-    installed: ~
+    installed: false
     databaseServer: ~
     databaseUsername: ~
     databasePassword: ~
@@ -35,7 +35,7 @@ parameters:
             - ROLE_REGISTRAR
             - ROLE_PARENT
     timezone: ~
-    locale: ~
+    locale: en_GB
     mailer_dns: ~
     google_api_key: ~
     google_client_id: ~

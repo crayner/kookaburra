@@ -20,5 +20,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class RegistrationMinimumAge extends Constraint
 {
-    public $message = 'Your request failed because you do not meet the minimum age for joining this site (%1$s years of age).';
+    public $message = 'Your request failed because you do not meet the minimum age for joining this site ({oneString} years of age).';
 }

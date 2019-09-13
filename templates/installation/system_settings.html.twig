@@ -7,7 +7,7 @@
 %}
 
 {% block page %}
-    <h2>{{ 'Installation - Step %1$s'|trans({'%1$s': '3'}) }}</h2>
+    <h2>{{ 'Installation - Step {step}'|trans({'{step}': '3'}) }}</h2>
     {% if message is defined and message is iterable %}
         <div class="{{ message.class }}">{{ message.text|trans({}, 'kookaburra') }}</div>
     {% endif %}

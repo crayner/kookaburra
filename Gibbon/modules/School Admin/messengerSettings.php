@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+use App\Util\UrlGeneratorHelper;
 use Gibbon\Forms\Form;
 
 if (isActionAccessible($guid, $connection2, '/modules/School Admin/messengerSettings.php') == false) {
@@ -39,7 +40,7 @@ if (isActionAccessible($guid, $connection2, '/modules/School Admin/messengerSett
 
     $row = $form->addRow()->addHeading(__('SMS Settings'));
 
-    $row = $form->addRow()->addAlert(__('Gibbon can use a number of different gateways to send out SMS messages. These are paid services, not affiliated with Gibbon, and you must create your own account with them before being able to send out SMSs using the Messenger module.').' '.sprintf(__('%1$sClick here%2$s to configure SMS settings.'), "<a href='".$_SESSION[$guid]['absoluteURL']."/index.php?q=/modules/System Admin/thirdPartySettings.php'>", "</a>"));
+    $row = $form->addRow()->addAlert(__('Gibbon can use a number of different gateways to send out SMS messages. These are paid services, not affiliated with Gibbon, and you must create your own account with them before being able to send out SMSs using the Messenger module.').' '.sprintf(__('%1$sClick here%2$s to configure SMS settings.'), "<a href='".UrlGeneratorHelper::getPath('system_admin__third_party')."'>", "</a>"));
 
 	$row = $form->addRow()->addHeading(__('Message Wall Settings'));
 

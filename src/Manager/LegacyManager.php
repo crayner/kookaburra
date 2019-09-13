@@ -14,9 +14,12 @@ namespace App\Manager;
 
 use App\Entity\Hook;
 use App\Entity\Module;
+use App\Entity\Person;
 use App\Entity\Setting;
 use App\Entity\StudentEnrolment;
 use App\Provider\ProviderFactory;
+use App\Util\UserHelper;
+use Gibbon\Domain\User\UserGateway;
 use Gibbon\UI\Components\Header;
 use Gibbon\UI\Components\Sidebar;
 use Gibbon\UI\Dashboard\ParentDashboard;
@@ -56,15 +59,21 @@ class LegacyManager
     private $sidebar;
 
     /**
+     * @var \Google_Service_Calendar
+     */
+    private $service;
+
+    /**
      * LegacyManager constructor.
      * @param RequestStack $stack
      */
-    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard, Header $header, Sidebar $sidebar)
+    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard, Header $header, Sidebar $sidebar, \Google_Service_Calendar $service)
     {
         $this->providerFactory = $providerFactory;
         $this->staffDashboard = $staffDashboard;
         $this->header = $header;
         $this->sidebar = $sidebar;
+        $this->service = $service;
     }
 
     /**
@@ -264,7 +273,7 @@ class LegacyManager
          */
         $localeCode = str_replace('_', '-', $session->get('i18n')['code']);
         $localeCodeShort = substr($session->get('i18n')['code'], 0, 2);
-        $localePath = $session->get('absolutePath').'/gibbon/jquery-ui/i18n/jquery.ui.datepicker-%1$s.js';
+        $localePath = $session->get('absolutePath').'/gibbon/jquery-ui/i18n/jquery.ui.datepicker-{oneString}.js';
 
         $datepickerLocale = 'en-GB';
         if ($localeCode === 'en-US' || is_file(sprintf($localePath, $localeCode))) {
@@ -402,16 +411,16 @@ class LegacyManager
         // Try to auto-set user's calendar feed if not set already
         if ($session->exists('calendarFeedPersonal') && $session->exists('googleAPIAccessToken')) {
             if (!$session->has('calendarFeedPersonal') && $session->has('googleAPIAccessToken')) {
-                $service = $this->container->get('Google_Service_Calendar');
                 try {
-                    $calendar = $service->calendars->get('primary');
+                    $calendar = $this->service->calendars->get('primary');
                 } catch (\Google_Service_Exception $e) {}
 
                 if (!empty($calendar['id'])) {
                     $session->set('calendarFeedPersonal', $calendar['id']);
-                    $this->container->get(UserGateway::class)->update($session->get('gibbonPersonID'), [
-                        'calendarFeedPersonal' => $calendar['id'],
-                    ]);
+                    $person = UserHelper::getCurrentUser();
+                    $person->setCalendarFeedPersonal($calendar['id']);
+                    $provider = ProviderFactory::create(Person::class);
+                    $provider->setEntity($person)->saveEntity();
                 }
             }
         }
@@ -432,7 +441,7 @@ class LegacyManager
         // TODO: When we implement routing, these can become part of the HTTP middleware.
         if ($isLoggedIn) {
             if ($session->get('gibbonSchoolYearID') != $session->get('gibbonSchoolYearIDCurrent')) {
-                $page->addWarning('<b><u>'.sprintf(__('Warning: you are logged into the system in school year %1$s, which is not the current year.'), $session->get('gibbonSchoolYearName')).'</b></u>'.__('Your data may not look quite right (for example, students who have left the school will not appear in previous years), but you should be able to edit information from other years which is not available in the current year.'));
+                $page->addWarning('<b><u>'.sprintf(__('Warning: you are logged into the system in school year {oneString}, which is not the current year.'), $session->get('gibbonSchoolYearName')).'</b></u>'.__('Your data may not look quite right (for example, students who have left the school will not appear in previous years), but you should be able to edit information from other years which is not available in the current year.'));
             }
         }
 

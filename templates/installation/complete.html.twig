@@ -3,12 +3,12 @@
 {% extends 'kookaburra.html.twig' %}
 
 {% block page %}
-    <h2>{{ 'Installation - Step %1$s'|trans({'%1$s': '4'}) }}</h2>
+    <h2>{{ 'Installation - Step {step}'|trans({'{step}': '4'}) }}</h2>
     <div class="success">
         {{ 'Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.'|trans({'%{link}': '<a href="' ~ path('home') ~ '">', '%{close}': '</a>'})|raw }}
     </div>
     <div class="info">
-        {{ 'Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.'|trans({'%{link}': '<a href="' ~ path('system_check') ~ '">', '%{close}': '</a>'})|raw }}
+        {{ 'Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.'|trans({'%{link}': '<a href="' ~ path('system_admin__check') ~ '">', '%{close}': '</a>'})|raw }}
     </div>
 {% endblock page %}
 

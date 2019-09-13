@@ -65,7 +65,7 @@ Home: Home
 'You have multiple roles within the system. Use the list below to switch role:': 'You have multiple roles within the system. Use the list below to switch role:'
 Active: Active
 'denotes a required field': 'denotes a required field'
-'Installation - Step %1$s': 'Installation - Step %1$s'
+'Installation - Step {step}': 'Installation - Step {step}'
 'System Requirements': 'System Requirements'
 'Language Settings': 'Language Settings'
 'Database Settings': 'Database Settings'
@@ -77,13 +77,13 @@ Active: Active
 'If you cannot solve this problem by retyping the address, or through other means, please contact your system administrator.': 'If you cannot solve this problem by retyping the address, or through other means, please contact your system administrator.'
 Welcome: Welcome
 'Student Applications': 'Student Applications'
-'Parents of students interested in study at %1$s may use our %2$s online roll%3$s to initiate the application process.': 'Parents of students interested in study at %1$s may use our %2$s online roll%3$s to initiate the application process.'
+'Parents of students interested in study at {oneString} may use our {twoString} online roll{threeString} to initiate the application process.': 'Parents of students interested in study at {oneString} may use our {twoString} online roll{threeString} to initiate the application process.'
 'Staff Applications': 'Staff Applications'
-'Individuals interested in working at %1$s may use our %2$s online roll%3$s to view job openings and begin the recruitment process.': 'Individuals interested in working at %1$s may use our %2$s online roll%3$s to view job openings and begin the recruitment process.'
+'Individuals interested in working at {oneString} may use our {twoString} online roll{threeString} to view job openings and begin the recruitment process.': 'Individuals interested in working at {oneString} may use our {twoString} online roll{threeString} to view job openings and begin the recruitment process.'
 Departments: Departments
-'Please feel free to %1$sbrowse our departmental inrollation%2$s, to learn more about %3$s.': 'Please feel free to %1$sbrowse our departmental inrollation%2$s, to learn more about %3$s.'
+'Please feel free to {oneString}browse our departmental inrollation{twoString}, to learn more about {threeString}.': 'Please feel free to {oneString}browse our departmental inrollation{twoString}, to learn more about {threeString}.'
 'Learn With Us': 'Learn With Us'
-'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.': 'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.'
+'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to {oneString}browse our public units{twoString}.': 'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to {oneString}browse our public units{twoString}.'
 'Basic Inrollation': 'Basic Inrollation'
 Name: Name
 Tutors: Tutors
@@ -166,7 +166,7 @@ Must be unique: Must be unique
 'The password policy stipulates that passwords must:':  'The password policy stipulates that passwords must:'
 Contain at least one lowercase letter, and one uppercase letter.: Contain at least one lowercase letter, and one uppercase letter.
 Contain at least one number.: Contain at least one number.
-'Must be at least %1$s characters in length.': 'Must be at least %1$s characters in length.'
+'Must be at least {oneString} characters in length.': 'Must be at least {oneString} characters in length.'
 Password: Password
 Privacy Statement: Privacy Statement
 Agreement: Agreement
@@ -174,21 +174,21 @@ Do you agree to the above?: Do you agree to the above?
 Yes: Yes
 Submit: Submit
 Other Information: Other Information
-'An new public registration, for %1$s, is pending approval.': 'A new public registration, for %1$s, is pending approval.'
+'An new public registration, for {oneString}, is pending approval.': 'A new public registration, for {oneString}, is pending approval.'
 Notification: Notification
 'Notification - {name}': 'Notification - {name}'
-'Login to %1$s and use the notification icon to check your new notification, or %2$sclick here%3$s.': 'Login to %1$s and use the notification icon to check your new notification, or %2$sclick here%3$s.'
-'If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:': 'If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:'
-'Email sent via %1$s at %2$s.': 'Email sent via %1$s at %2$s.'
+'Login to {oneString} and use the notification icon to check your new notification, or {twoString}click here{threeString}.': 'Login to {oneString} and use the notification icon to check your new notification, or {twoString}click here{threeString}.'
+'If you do not wish to receive email notifications from {oneString}, please {twoString}click here{threeString} to adjust your preferences:': 'If you do not wish to receive email notifications from {oneString}, please {twoString}click here{threeString} to adjust your preferences:'
+'Email sent via {oneString} at {twoString}.': 'Email sent via {oneString} at {twoString}.'
 'Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.': Your registration was successfully submitted and is now pending approval. Our team will review your registration and be in touch in due course.'
 View Details: View Details
 There is no information for the date specified.: There is no information for the date specified.
 Your request failed because you do not have access to this action.: Your request failed because you do not have access to this action.
-'Parents of students interested in study at %1$s may use our %2$s online form%3$s to initiate the application process.': 'Parents of students interested in study at %1$s may use our %2$s online form%3$s to initiate the application process.'
-'Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.': 'Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.'
+'Parents of students interested in study at {oneString} may use our {twoString} online form{threeString} to initiate the application process.': 'Parents of students interested in study at {oneString} may use our {twoString} online form{threeString} to initiate the application process.'
+'Individuals interested in working at {oneString} may use our {twoString} online form{threeString} to view job openings and begin the recruitment process.': 'Individuals interested in working at {oneString} may use our {twoString} online form{threeString} to view job openings and begin the recruitment process.'
 'Notifications': Notifications
 'You do not have access to this action.': You do not have access to this action.
-'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.': 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'
+'Please feel free to {oneString}browse our departmental information{twoString}, to learn more about {threeString}.': 'Please feel free to {oneString}browse our departmental information{twoString}, to learn more about {threeString}.'
 Subject List: Subject List
 Course List: Course List
 Login: Login

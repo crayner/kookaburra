@@ -6,7 +6,7 @@ Kookaburra: Kookaburra
 'One or more of the system requirements listed above is not configured correctly.': 'One or more of the system requirements listed below is not configured correctly! Please ensure that all system requirements are met before proceeding to installation of Kookaburra.'
 'The language %{code} selected is not a valid language choice for Kookaburra. Valid choices are %{codes}': 'The language "%{code}" selected is not a valid language choice for Kookaburra. Valid choices are "%{codes}".'
 'Welcome To Kookaburra': 'Welcome To Kookaburra'
-'For support, please visit %1$scraigrayner.com%2$s.': 'For support, please visit %1$scraigrayner.com%2$s.'
+'For support, please visit {oneString}craigrayner.com{twoString}.': 'For support, please visit {oneString}craigrayner.com{twoString}.'
 'Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.': 'Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.'
 'Kookaburra Software is a fork of Gibbon.': 'Kookaburra Software is a fork of Gibbon.'
 'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.': 'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.'
@@ -26,7 +26,7 @@ Dr: Dr
 The password must contain both lower and uppercase characters.: The password must contain both lower and uppercase characters.
 The password must contain as least one number.: The password must contain as least one number.
 Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).: Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).
-'Must be at least %1$s characters in length.': 'Must be at least %1$s characters in length.'
+'Must be at least {oneString} characters in length.': 'Must be at least {oneString} characters in length.'
 'Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.': 'Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.'
 'Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.':
     'Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.'
@@ -40,7 +40,7 @@ Open Link: Open Link
 File Download: File Download
 You must submit the form to save this empty value.: You must submit the form to save this empty value.
 File Delete: File Delete
-"If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, %1$sclick here%2$s.": "If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, %1$sclick here%2$s."
+"If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, {oneString}click here{twoString}.": "If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, {oneString}click here{twoString}."
 'Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}': 'Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}'
 Let me ponder your request: Let me ponder your request
 Google Integration: Google Integration
