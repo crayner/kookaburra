@@ -5,7 +5,7 @@ Symfony implementation of <a href="http://gibbonedu.org" target="_blank">Gibbon 
 * At the moment, during development, you can use Github as a source of the project. <a href="https://github.com/crayner/kookaburra" target="_blank">https://github.com/crayner/kookaburra</a>
 * Download as a zip and extract the code to your project directory.  You will need to configure your web server to deliver a Symfony project.  Details at <a href="https://symfony.com/doc/current/setup/web_server_configuration.html" target="_blank">https://symfony.com/doc/current/setup/web_server_configuration.html</a>
 * You will also need <a href="https://getcomposer.org/download/" target="_blank">__Composer__. </a>
-* Run composer install in the project directory
+* Run _composer install_ in the project directory.
 * Open a web browser and run the base url of your site.  The install check screen should open.  ___Installation - Step 1___
 * Your on your way.  Follow the on screen instuctions.
 

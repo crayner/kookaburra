@@ -2138,9 +2138,9 @@ class Person implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="text", name="calendarFeedPersonal")
+     * @ORM\Column(length=192, name="calendarFeedPersonal", nullable=true)
      */
-    private $calendarFeedPersonal = '';
+    private $calendarFeedPersonal;
 
     /**
      * @return null|string
