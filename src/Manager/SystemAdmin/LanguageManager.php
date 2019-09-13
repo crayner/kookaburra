@@ -14,11 +14,13 @@ namespace App\Manager\SystemAdmin;
 
 use App\Entity\I18n;
 use App\Provider\ProviderFactory;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class LanguageManager
+ * @package App\Manager\SystemAdmin
+ */
 class LanguageManager
 {
-
     /**
      * i18nFileInstall
      *

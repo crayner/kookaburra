@@ -19,6 +19,8 @@ use App\Form\Installation\LanguageType;
 use App\Form\Installation\MySQLType;
 use App\Form\Installation\SystemType;
 use App\Manager\InstallationManager;
+use App\Manager\SystemAdmin\LanguageManager;
+use App\Provider\ProviderFactory;
 use App\Util\LocaleHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -151,8 +153,10 @@ class InstallController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/installation/complete/", name="installation_complete")
      */
-    public function installationComplete(InstallationManager $manager)
+    public function installationComplete(InstallationManager $manager, LanguageManager $languageManager)
     {
+        $i18n = ProviderFactory::getRepository(I18n::class)->findOneByCode($manager->getLocale());
+        $languageManager->i18nFileInstall($i18n);
         $manager->setInstallationStatus('complete');
         return $this->render('installation/complete.html.twig');
     }

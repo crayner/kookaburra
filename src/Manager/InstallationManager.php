@@ -177,6 +177,16 @@ class InstallationManager
     }
 
     /**
+     * getLocale
+     * @return string|null
+     */
+    public function getLocale(): ?string
+    {
+        $config = $this->readKookaburraYaml();
+        return $config['parameters']['locale'];
+    }
+
+    /**
      * setLocale
      * @param string $locale
      */
