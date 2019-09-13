@@ -430,4 +430,21 @@ Updated Privacy Settings: Updated Privacy Settings
 Login - Failed: Login - Failed
 New Public Registration: New Public Registration
 User Status Check and Fix: User Status Check and Fix
-This notification event is not active. The following subscribers will not receive any notifications until the event is set to active.: This notification event is not active. The following subscribers will not receive any notifications until the event is set to active.
+This notification event is not active. The following subscribers will not receive any notifications until the event is set to active.: This notification event is not active. The following listeners will not receive any notifications until the event is set to active.
+'The value should not be empty.': The value should not be empty.
+'Not a valid student.': Not a valid student.
+'Not a valid staff member.': Not a valid staff member.
+'Not a valid Year Group.': Not a valid Year Group.
+Extend and Update: Extend and Update
+Import and Export: Import and Export
+Edit Notification Event: Edit Notification Event
+Event: Event
+Permission Required: Permission Required
+Edit Subscribers: Edit Listeners
+Available only to users with the required permission.: Available only to users with the required permission.
+Please Select...: Please Select...
+Scope: Scope
+All: All
+Year Group: Year Group
+Scope Type Choices: Scope Type Choices
+Close Message: Close Message

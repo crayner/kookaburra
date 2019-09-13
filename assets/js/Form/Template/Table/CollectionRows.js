@@ -23,8 +23,13 @@ export default function CollectionRows(props) {
         functions={functions} />
         )
 
+
     let rows = []
-    if (typeof form.children !== "undefined" && form.children.length > 0) {
+    if (Object.keys(errors).length > 0) {
+        rows.push(<tr key={'errors'}><td colSpan={columnCount}><div className={'errors flex-1 relative'}>{errors}</div></td></tr>)
+    }
+
+    if (typeof form.children !== "undefined" && Object.keys(form.children).length > 0) {
         Object.keys(form.children).map(rowKey => {
             let row = form.children[rowKey]
             let columns = []
@@ -66,7 +71,7 @@ export default function CollectionRows(props) {
 
     return (
         <div className={'collection'}>
-            <Messages messages={errors} />
+            <Messages messages={errors} translate={functions.translate} />
             <table {...table_attr}>
                 {header}
                 <tbody>

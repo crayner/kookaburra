@@ -181,8 +181,8 @@ class PersonRepository extends ServiceEntityRepository
             ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
             ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
             ->setParameter('today', $today)
-            ->orderBy('p.surname')
-            ->addOrderBy('p.preferredName')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
             ->getQuery()
             ->getResult();
         ;

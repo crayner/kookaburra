@@ -12,6 +12,7 @@
  */
 namespace App\Entity;
 
+use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -141,8 +142,10 @@ class NotificationListener
      * @param int|null $scopeID
      * @return NotificationListener
      */
-    public function setScopeID(?int $scopeID): NotificationListener
+    public function setScopeID($scopeID): NotificationListener
     {
+        if ($scopeID instanceof EntityInterface)
+            $scopeID = $scopeID->getId();
         $this->scopeID = $scopeID;
         return $this;
     }

@@ -15,15 +15,15 @@ namespace App\Form\Modules\SystemAdmin;
 use App\Entity\Action;
 use App\Entity\NotificationEvent;
 use App\Entity\Person;
+use App\Form\EventSubscriber\AnyChoiceIsValidSubscriber;
+use App\Form\EventSubscriber\NotificationListenerSubscriber;
+use App\Form\Type\DisplayType;
 use App\Form\Type\HiddenEntityType;
 use App\Provider\ProviderFactory;
 use App\Validator\SystemAdmin\NotificationListener;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,8 +31,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Class NotificationListenerType
  * @package App\Form\Modules\SystemAdmin
  */
-class NotificationListenerType extends AbstractType implements DataTransformerInterface
+class NotificationListenerType extends AbstractType
 {
+    /**
+     * buildForm
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $action = ProviderFactory::getRepository(Action::class)->findOneByName($options['event']->getAction()->getName());
@@ -54,6 +59,7 @@ class NotificationListenerType extends AbstractType implements DataTransformerIn
         ];
         $eventScopes = array_combine(explode(',', $options['event']->getScopes()), explode(',', trim($options['event']->getScopes())));
         $availableScopes = array_intersect_key($allScopes, $eventScopes);
+
         $builder
             ->add('person', EntityType::class,
                 [
@@ -65,19 +71,16 @@ class NotificationListenerType extends AbstractType implements DataTransformerIn
                     'placeholder' => 'Please Select...',
                 ]
             )
-
-            ->add('scope', ChoiceType::class,
+            ->add('scopeType', ChoiceType::class,
                 [
                     'label' => 'Scope',
                     'choices' => array_flip($availableScopes),
                     'on_change' => 'toggleScopeType',
                 ]
             )
-            ->add('scopeTypeChoice', ChoiceType::class,
+            ->add('scopeID', DisplayType::class,
                 [
                     'label' => 'Scope Type Choices',
-                    'choices' => [],
-                    'placeholder' => 'Please Select...',
                 ]
             )
             ->add('event', HiddenEntityType::class,
@@ -87,7 +90,7 @@ class NotificationListenerType extends AbstractType implements DataTransformerIn
                 ]
             )
         ;
-        $builder->addViewTransformer($this);
+        $builder->addEventSubscriber(new NotificationListenerSubscriber());
     }
 
     /**
@@ -106,33 +109,10 @@ class NotificationListenerType extends AbstractType implements DataTransformerIn
                 'constraints' => [
                     new NotificationListener(),
                 ],
+                'allow_extra_fields' => true,
+                'data_class' => \App\Entity\NotificationListener::class,
+                'error_bubbling' => false,
             ]
         );
-    }
-
-    /**
-     * transform
-     * @param mixed $value
-     * @return mixed|void
-     */
-    public function transform($value)
-    {
-    }
-
-    /**
-     * reverseTransform
-     * @param mixed $value
-     * @return mixed|void
-     */
-    public function reverseTransform($value)
-    {
-        if (is_array($value)) {
-            $nl = new \App\Entity\NotificationListener();
-            $nl->setPerson(ProviderFactory::getRepository(Person::class)->find($value['person'] ?: 0));
-            $nl->setScopeType($value['scope'] ?: 'All');
-            $nl->setScopeID(intval($value['scopeTypeChoice']) !== 0 ?: null );
-            $nl->setEvent($value['event']);
-            return $nl;
-        }
     }
 }

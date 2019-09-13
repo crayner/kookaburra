@@ -7,7 +7,7 @@ import Message from "./Message"
 export default class Messages extends Component {
     constructor(props) {
         super(props)
-
+        this.translate = props.translate
         this.cancelMessage = this.cancelMessage.bind(this)
     }
 
@@ -20,10 +20,21 @@ export default class Messages extends Component {
     }
 
     render() {
-        let cells = this.props.messages.map((message,key) => {
+        let cells = Object.keys(this.props.messages).map(key => {
+            let message = this.props.messages[key]
+            if (typeof message === 'undefined')
+                return ''
+            if (typeof message === 'string') {
+                let x = {}
+                x.message = message
+                x.class = 'error'
+                x.id = key
+                message = {...x}
+            }
             message['id'] = key
             return <Message
                 message={message}
+                translate={this.translate}
                 key={'message_' + message.id}
                 cancelMessage={this.cancelMessage}
             />
@@ -37,5 +48,6 @@ export default class Messages extends Component {
 
 Messages.propTypes = {
     messages: PropTypes.array.isRequired,
+    translate: PropTypes.func.isRequired
 }
 

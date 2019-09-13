@@ -33,7 +33,7 @@ export default function FormApp(props) {
                     id={form.id}
                     {...form.attr}
                     method={form.method !== undefined ? form.method : 'POST'}>
-                    <Messages messages={form.errors} />
+                    <Messages messages={form.errors} translate={functions.translate} />
                     <table {...table_attr}>
                         <tbody>
                             {dummyRow}

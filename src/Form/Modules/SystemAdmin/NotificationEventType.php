@@ -13,7 +13,6 @@
 namespace App\Form\Modules\SystemAdmin;
 
 use App\Entity\NotificationEvent;
-use App\Entity\NotificationListener;
 use App\Entity\Person;
 use App\Entity\YearGroup;
 use App\Form\Type\DisplayType;
@@ -66,7 +65,7 @@ class NotificationEventType extends AbstractType
             )
             ->add('header2', HeaderType::class,
                 [
-                    'label' => 'Edit Listeners',
+                    'label' => 'Edit Subscribers',
                 ]
             )
             ->add('id', HiddenType::class)
@@ -96,12 +95,11 @@ class NotificationEventType extends AbstractType
                     'header_row' => true,
                     'row_style' => 'single',
                     'element_delete_route' => $options['listener_delete_route'],
-                    'element_delete_options' => ['__id__' => 'id'],
+                    'element_delete_options' => ['__id__' => 'id', '__event__' => 'event'],
                 ]
             )
             ->add('submit', SubmitType::class)
         ;
-
         ReactFormHelper::setExtras(
             [
                 'students' =>  ProviderFactory::create(Person::class)->getCurrentStudentChoiceList(),
@@ -121,6 +119,10 @@ class NotificationEventType extends AbstractType
         return ReactFormType::class;
     }
 
+    /**
+     * configureOptions
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(

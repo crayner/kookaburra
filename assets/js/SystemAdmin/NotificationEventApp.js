@@ -20,7 +20,20 @@ export default class NotificationEventApp extends Component {
         }
     }
 
+    componentDidMount() {
+        this.setMyState({...this.state.forms})
+    }
+
     setMyState(forms) {
+        let listeners = forms.single.children.listeners.children
+        let newListeners = []
+        if (typeof listeners !== 'object')
+            listeners = []
+        Object.keys(listeners).map(key => {
+            const child = {...listeners[key]}
+            newListeners = this.setListenerChildByScope(listeners, key, child.children.scopeType.value)
+        })
+        forms.single.children.listeners.children = newListeners
         this.setState({
             forms: {...forms}
         })
@@ -30,9 +43,10 @@ export default class NotificationEventApp extends Component {
     {
         const value = e.target.value
         let listeners = this.state.forms.single.children.listeners.children
-        const name = form.id.replace('notification_event_listeners_', '').replace('_scope', '')
+        const name = form.id.replace('notification_event_listeners_', '').replace('_scopeType', '')
         let childKey = 'jjj'
-        listeners.map((child,key) => {
+        Object.keys(listeners).map(key => {
+            let child = listeners[key]
             if (child.name === name)
                 childKey = key
         })
@@ -43,17 +57,18 @@ export default class NotificationEventApp extends Component {
     }
 
     addElement(element){
-        element.children.scope.value = 'All'
+        element.children.scopeType.value = 'All'
         element.children.person.value = ''
-        element.children.scopeTypeChoice.type = 'display'
-        element.children.scopeTypeChoice.value = ''
-        const length = Object.keys(element.children.scope.choices).length
+        element.children.scopeID.type = 'display'
+        element.children.scopeID.value = ''
+        element.children.event.value = this.state.forms.single.children.id.value
+        const length = Object.keys(element.children.scopeType.choices).length
         if (length === 1) {
-            element.children.scope.type = 'display'
-            element.children.scope.value = 'All'
+            element.children.scopeType.type = 'display'
+            element.children.scopeType.value = 'All'
         } else {
-            element.children.scope.type = 'choice'
-            element.children.scope.value = 'All'
+            element.children.scopeType.type = 'choice'
+            element.children.scopeType.value = 'All'
         }
         return element
     }
@@ -61,32 +76,30 @@ export default class NotificationEventApp extends Component {
     setListenerChildByScope(listeners,childKey,value)
     {
         let form = listeners[childKey]
-        form.children.scope.value = value
+        form.children.scopeType.value = value
         if (value === 'All' || value === '') {
-            form.children.scopeTypeChoice.type = 'display'
-            form.children.scopeTypeChoice.value =  ''
-            const length = Object.keys(form.children.scope.choices).length
+            form.children.scopeID.type = 'display'
+            form.children.scopeID.value =  ''
+            const length = Object.keys(form.children.scopeType.choices).length
             if (length === 1) {
-                form.children.scope.type = 'display'
-                form.children.scope.value = 'All'
+                form.children.scopeType.type = 'display'
+                form.children.scopeType.value = 'All'
             } else {
-                form.children.scope.type = 'choice'
+                form.children.scopeType.type = 'choice'
             }
         }
+        form.children.scopeID.placeholder = form.children.person.placeholder
         if (value === 'gibbonPersonIDStudent') {
-            form.children.scopeTypeChoice.type = 'choice'
-            form.children.scopeTypeChoice.value = ''
-            form.children.scopeTypeChoice.choices = this.extras.students
+            form.children.scopeID.type = 'choice'
+            form.children.scopeID.choices = this.extras.students
         }
         if (value === 'gibbonYearGroupID') {
-            form.children.scopeTypeChoice.type = 'choice'
-            form.children.scopeTypeChoice.value = ''
-            form.children.scopeTypeChoice.choices = this.extras.yearGroups
+            form.children.scopeID.type = 'choice'
+            form.children.scopeID.choices = this.extras.yearGroups
         }
         if (value === 'gibbonStaffID') {
-            form.children.scopeTypeChoice.type = 'choice'
-            form.children.scopeTypeChoice.value = ''
-            form.children.scopeTypeChoice.choices = this.extras.staff
+            form.children.scopeID.type = 'choice'
+            form.children.scopeID.choices = this.extras.staff
         }
         listeners[childKey] = form
         return listeners

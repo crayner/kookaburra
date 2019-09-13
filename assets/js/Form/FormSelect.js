@@ -9,10 +9,10 @@ export default function FormSelect(props) {
         form,
         wrapper_attr,
         widget_attr,
+        errors,
     } = props
 
     var options = []
-
     if (typeof form.placeholder !== 'undefined' && form.placeholder !== false){
         options.push(<option key={'placeholder'} className={'text-gray-500'}>{form.placeholder}</option>)
     }
@@ -37,6 +37,7 @@ export default function FormSelect(props) {
             <select multiple={form.multiple} {...widget_attr} defaultValue={form.value}>
                 {options}
             </select>
+            {errors}
         </div>
     )
 }
@@ -45,4 +46,9 @@ FormSelect.propTypes = {
     form: PropTypes.object.isRequired,
     wrapper_attr: PropTypes.object.isRequired,
     widget_attr: PropTypes.object.isRequired,
+    errors: PropTypes.array,
+}
+
+FormSelect.defaultProps = {
+    errors: [],
 }

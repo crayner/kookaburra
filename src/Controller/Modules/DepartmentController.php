@@ -359,7 +359,7 @@ class DepartmentController extends AbstractController
      * deleteResource
      * @param DepartmentResource $departmentResource
      * @Route("/{department}/resource/{resource}/delete/", name="resource_delete")
-     * @Security("is_granted('ROLE_ROUTE', ['departments__edit'])")
+     * @Security("is_granted('ROLE_ROUTE', ['departments__edit']")
      * @return JsonResponse
      */
     public function deleteResource(DepartmentResource $resource, Department $department, TranslatorInterface $translator, ContainerManager $manager, ResourceTypeManager $resourceTypeManager)
@@ -405,7 +405,6 @@ class DepartmentController extends AbstractController
 
         //JSON Response required.
         return JsonResponse::create($data, 200);
-
     }
 
 

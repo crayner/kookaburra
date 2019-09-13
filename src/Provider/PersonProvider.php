@@ -20,8 +20,10 @@ use App\Entity\Person;
 use App\Entity\PersonMedical;
 use App\Entity\Role;
 use App\Entity\Setting;
+use App\Entity\StudentEnrolment;
 use App\Manager\Traits\EntityTrait;
 use App\Security\SecurityUser;
+use App\Util\SchoolYearHelper;
 use App\Util\SecurityHelper;
 use App\Entity\NotificationEvent;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
@@ -292,7 +294,7 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
     public function getCurrentStudentChoiceList(): array {
         $result = [];
         foreach($this->getRepository()->findCurrentStudents() as $q=>$w){
-            $result[]= new ChoiceView([], $w->getId(), $w->formatName(), []);
+            $result[]= new ChoiceView([], $w->getId(), $w->formatName(true,true), []);
         }
         return $result;
     }
@@ -305,8 +307,20 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
     public function getCurrentStaffChoiceList(): array {
         $result = [];
         foreach($this->getRepository()->findCurrentStaff() as $q=>$w){
-            $result[]= new ChoiceView([], $w->getId(), $w->formatName(), []);
+            $result[]= new ChoiceView([], $w->getId(), $w->formatName(true,true), []);
         }
         return $result;
+    }
+
+    /**
+     * isStudent
+     * @param Person $person
+     * @return bool
+     * @throws \Exception
+     */
+    public function isStudent(Person $person): bool
+    {
+        $result = $this->getRepository(StudentEnrolment::class)->findOneBy(['person' => $person, 'schoolYear' => SchoolYearHelper::getCurrentSchoolYear()]);
+        return $result instanceof StudentEnrolment;
     }
 }

@@ -140,7 +140,7 @@ export default function Widget(props) {
     }
 
     if (form.type === 'choice') {
-        return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr}/>)
+        return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr} errors={errors}/>)
     }
 
     if (form.type === 'textarea') {

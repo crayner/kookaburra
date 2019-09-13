@@ -35,7 +35,6 @@ export default class ContainerApp extends Component {
         this.functions.onCKEditorChange = this.onCKEditorChange.bind(this)
         this.functions.generateNewPassword = this.generateNewPassword.bind(this)
         this.functions.deleteFile = this.deleteFile.bind(this)
-        this.functions.calcFormCount = this.calcFormCount.bind(this)
         this.getParentForm = this.getParentForm.bind(this)
         this.setParentState = this.setParentState.bind(this)
         this.getParentFormName = this.getParentFormName.bind(this)
@@ -146,41 +145,23 @@ export default class ContainerApp extends Component {
         this.setParentState(this.mergeParentForm(this.getParentFormName(form), this.changeFormValue(this.getParentForm(form),form,data)))
     }
 
-    calcFormCount(form, formCount) {
-        if (typeof form.children === 'array' && form.children.length > 0) {
-            this.state.form.children.map(child => {
-                formCount = this.calcFormCount(child, formCount)
-            })
-        } else if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
-            Object.keys(form.children).map(key => {
-                let child = form.children[key]
-                formCount = this.calcFormCount(child, formCount)
-            })
-        }
-        formCount++
-        return formCount
-    }
-
     changeFormValue(form, find, value) {
-        if (typeof form.children === 'array' && form.children.length > 0) {
-            form.children.map((child,key) => {
+        let newForm = {...form}
+        if (typeof newForm.children === 'object' && Object.keys(newForm.children).length > 0) {
+            let george = {...newForm.children}
+            Object.keys(george).map(key => {
+                let child = {...george[key]}
                 if (child.id === find.id) {
                     child.value = value
+                    Object.assign(george[key], {...child})
+                } else {
+                    Object.assign(george[key], this.changeFormValue({...child}, find, value))
                 }
-                form.children[key] = this.changeFormValue(child, find, value)
             })
-            return form
-        } else if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
-            Object.keys(form.children).map(key => {
-                let child = form.children[key]
-                if (child.id === find.id) {
-                    child.value = value
-                }
-                form.children[key] = this.changeFormValue(child, find, value)
-            })
-            return form
+            Object.assign(newForm.children, {...george})
+            return {...newForm}
         } else {
-            return form
+            return {...newForm}
         }
     }
 
@@ -203,9 +184,7 @@ export default class ContainerApp extends Component {
         const parentName = this.getParentFormName(form)
         if (form.type === 'toggle') {
             let value = form.value === 'Y' ? 'N' : 'Y'
-            this.setState({
-                forms: this.mergeParentForm(parentName, this.changeFormValue(parentForm,form,value)),
-            })
+            this.setParentState(this.mergeParentForm(parentName, this.changeFormValue(parentForm,form,value)))
             return
         }
         if (form.type === 'file') {
@@ -214,22 +193,18 @@ export default class ContainerApp extends Component {
             readFile.readAsDataURL(value)
             readFile.onerror = (e) => {
                 parentForm.errors.push({'class': 'error', 'message': this.functions.translations('A problem occurred loading the file.')})
-                this.setState({
-                    forms: this.mergeParentForm(parentName, this.changeFormValue(parentForm,form,value)),
-                })
+                this.setParentState(this.mergeParentForm(parentName, this.changeFormValue(parentForm,form,value)))
             }
             readFile.onload = (e) => {
                 value = e.target.result
-                this.setState({
-                    forms: this.mergeParentForm(parentName, this.changeFormValue(parentForm,form,value)),
-                })
+                this.setParentState(this.mergeParentForm(parentName, this.changeFormValue(parentForm,form,value)))
             }
             return
         }
         let value = e.target.value
-        this.setState({
-            forms: this.mergeParentForm(parentName, this.changeFormValue(parentForm,form,value)),
-        })
+        form.value = value
+        const newValue = this.changeFormValue({...parentForm},form,value)
+        this.setParentState(this.mergeParentForm(parentName, newValue))
     }
 
     buildFormData(data, form) {
@@ -257,7 +232,7 @@ export default class ContainerApp extends Component {
         if (this.submit[parentName]) return
         this.submit[parentName] = true
         this.setParentState({...this.state.forms})
-        let parentForm = this.getParentForm(form)
+        let parentForm = {...this.getParentForm(form)}
         let data = this.buildFormData({}, parentForm)
         fetchJson(
             parentForm.action,
@@ -269,11 +244,11 @@ export default class ContainerApp extends Component {
                 let form = typeof this.functions.submitFormCallable === 'function' ? this.functions.submitFormCallable(data.form) : data.form
                 form.errors = errors
                 this.submit[parentName] = false
-                this.setParentState(this.mergeParentForm(parentName, form))
+                this.setParentState({...this.mergeParentForm(parentName, {...form})})
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})
                 this.submit[parentName] = false
-                this.setParentState(this.mergeParentForm(parentName, parentForm))
+                this.setParentState({...this.mergeParentForm(parentName, {...parentForm})})
         })
     }
 
@@ -401,10 +376,17 @@ export default class ContainerApp extends Component {
     addElement(form) {
         const uuidv4 = require('uuid/v4')
         let id = uuidv4()
-        let element = this.replaceName(form.prototype, id)
-        let parentForm = this.getParentForm(form)
+        let element = {...this.replaceName(form.prototype, id)}
+        let parentForm = {...this.getParentForm(form)}
         let parentFormName = this.getParentFormName(form)
-        delete element.children.id
+        element.children.id.value = id
+        if (typeof form.children === 'object'){
+            let newChildren = []
+            Object.keys(form.children).map(key => {
+                newChildren.push({...form.children[key]})
+            })
+            form.children = newChildren
+        }
         if (typeof form.children === 'undefined')
             form.children = []
         if (typeof this.functions.addElementCallable === 'function') {
@@ -412,8 +394,9 @@ export default class ContainerApp extends Component {
         }
         form.children.push({...element})
 
-        parentForm = this.replaceFormElement(parentForm, form)
-        this.setParentState(this.mergeParentForm(parentFormName,parentForm))
+        parentForm = {...this.replaceFormElement(parentForm, form)}
+
+        this.setParentState({...this.mergeParentForm(parentFormName,parentForm)})
     }
 
     isSubmit() {

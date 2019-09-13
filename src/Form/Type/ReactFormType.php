@@ -104,6 +104,7 @@ class ReactFormType extends AbstractType
          $this->addTranslation('Let me ponder your request', [], 'kookaburra');
          $this->addTranslation('Add');
          $this->addTranslation('Delete');
+         $this->addTranslation('Close Message');
          $this->addTranslation('There are no records to display.');
          $view->vars['toArray'] = $vars;
      }
@@ -292,6 +293,8 @@ class ReactFormType extends AbstractType
             return 'text';
         if (in_array('choice', $prefixes))
             return 'choice';
+        if (in_array('display', $prefixes))
+            return 'display';
         if (in_array('hidden', $prefixes))
             return 'hidden';
         if (in_array('collection', $prefixes))
@@ -304,8 +307,6 @@ class ReactFormType extends AbstractType
             return 'integer';
         if (in_array('repeated', $prefixes))
             return 'transparent';
-        if (in_array('display', $prefixes))
-            return 'display';
 //dump($prefixes);
         return 'unknown';
     }
