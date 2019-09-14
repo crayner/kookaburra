@@ -448,3 +448,11 @@ All: All
 Year Group: Year Group
 Scope Type Choices: Scope Type Choices
 Close Message: Close Message
+Manage String Replacements: Manage String Replacements
+Original String: Original String
+Replacement String: Replacement String
+Mode: Mode
+Whole: Whole
+Partial: Partial
+Priority: Priority
+Higher priorities are substituted first.: Higher priorities are substituted first.

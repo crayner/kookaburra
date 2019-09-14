@@ -19,6 +19,7 @@ use App\Entity\I18n;
 use App\Entity\NotificationEvent;
 use App\Entity\NotificationListener;
 use App\Entity\Setting;
+use App\Entity\StringReplacement;
 use App\Form\Modules\SystemAdmin\DisplaySettingsType;
 use App\Form\Modules\SystemAdmin\EmailSettingsType;
 use App\Form\Modules\SystemAdmin\GoogleIntegationType;
@@ -29,6 +30,7 @@ use App\Form\Modules\SystemAdmin\OrganisationSettingsType;
 use App\Form\Modules\SystemAdmin\PaypalSettingsType;
 use App\Form\Modules\SystemAdmin\SecuritySettingsType;
 use App\Form\Modules\SystemAdmin\SMSSettingsType;
+use App\Form\Modules\SystemAdmin\StringReplacementType;
 use App\Form\Modules\SystemAdmin\SystemSettingsType;
 use App\Manager\SystemAdmin\GoogleSettingManager;
 use App\Manager\SystemAdmin\LanguageManager;
@@ -67,7 +69,7 @@ class SystemAdminController extends AbstractController
         $settingProvider = ProviderFactory::create(Setting::class);
         $container = new Container();
         // System Settings
-        $form = $this->createForm(SystemSettingsType::class, null, ['action' => $this->generateUrl('system_admin__system_settings', ['tabName' => 'System']) ]);
+        $form = $this->createForm(SystemSettingsType::class, null, ['action' => $this->generateUrl('system_admin__system_settings', ['tabName' => 'System'])]);
 
         if ($tabName === 'System' && $request->getContentType() === 'json') {
             $data = [];
@@ -80,7 +82,7 @@ class SystemAdminController extends AbstractController
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('System');
@@ -107,7 +109,7 @@ class SystemAdminController extends AbstractController
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('Organisation');
@@ -131,7 +133,7 @@ class SystemAdminController extends AbstractController
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('Security');
@@ -155,7 +157,7 @@ class SystemAdminController extends AbstractController
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('Localisation');
@@ -179,7 +181,7 @@ class SystemAdminController extends AbstractController
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('Miscellaneous');
@@ -207,7 +209,7 @@ class SystemAdminController extends AbstractController
         $container->setTarget('formContent')->setSelectedPanel($tabName)->setApplication('ThirdParty');
 
         // Google
-        $form = $this->createForm(GoogleIntegationType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'Google']) ]);
+        $form = $this->createForm(GoogleIntegationType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'Google'])]);
 
         if ($tabName === 'Google' && $request->getContentType() === 'json') {
             $data = [];
@@ -216,21 +218,21 @@ class SystemAdminController extends AbstractController
                 $gm = new GoogleSettingManager();
                 $data['errors'][] = $gm->handleGoogleSecretsFile($form, $request, $translator);
             } catch (\Exception $e) {
-                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.') . ' ' .$e->getMessage() ];
+                $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.') . ' ' . $e->getMessage()];
             }
 
-            $form = $this->createForm(GoogleIntegationType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'Google']) ]);
+            $form = $this->createForm(GoogleIntegationType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'Google'])]);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('Google');
         $container->addForm('Google', $form->createView())->addPanel($panel);
 
         // PayPal
-        $form = $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'PayPal']) ]);
+        $form = $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'PayPal'])]);
 
         if ($tabName === 'PayPal' && $request->getContentType() === 'json') {
             $data = [];
@@ -240,18 +242,18 @@ class SystemAdminController extends AbstractController
                 $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
             }
 
-            $form = $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'PayPal']) ]);
+            $form = $this->createForm(PaypalSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'PayPal'])]);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('PayPal');
         $container->addForm('PayPal', $form->createView())->addPanel($panel);
 
         // SMS
-        $form = $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'SMS']) ]);
+        $form = $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'SMS'])]);
 
         if ($tabName === 'SMS' && $request->getContentType() === 'json') {
             $data = [];
@@ -261,18 +263,18 @@ class SystemAdminController extends AbstractController
                 $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
             }
 
-            $form = $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'SMS']) ]);
+            $form = $this->createForm(SMSSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'SMS'])]);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('SMS');
         $container->addForm('SMS', $form->createView())->addPanel($panel);
 
         // E-Mail
-        $form = $this->createForm(EmailSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'E-Mail']) ]);
+        $form = $this->createForm(EmailSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'E-Mail'])]);
 
         if ($tabName === 'E-Mail' && $request->getContentType() === 'json') {
             $data = [];
@@ -284,11 +286,11 @@ class SystemAdminController extends AbstractController
                 $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed due to a database error.')];
             }
 
-            $form = $this->createForm(EmailSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'E-Mail']) ]);
+            $form = $this->createForm(EmailSettingsType::class, null, ['action' => $this->generateUrl('system_admin__third_party', ['tabName' => 'E-Mail'])]);
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $panel = new Panel('E-Mail');
@@ -307,7 +309,8 @@ class SystemAdminController extends AbstractController
      * @Route("/check/", name="check")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function check(VersionManager $manager) {
+    public function check(VersionManager $manager)
+    {
 
         return $this->render('modules/system_admin/check.html.twig',
             [
@@ -327,7 +330,7 @@ class SystemAdminController extends AbstractController
         $settingProvider = ProviderFactory::create(Setting::class);
 
         // System Settings
-        $form = $this->createForm(DisplaySettingsType::class, null, ['action' => $this->generateUrl('system_admin__display_settings') ]);
+        $form = $this->createForm(DisplaySettingsType::class, null, ['action' => $this->generateUrl('system_admin__display_settings')]);
 
         if ($request->getContentType() === 'json') {
             $data = [];
@@ -340,7 +343,7 @@ class SystemAdminController extends AbstractController
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
         }
 
         $manager->singlePanel($form->createView());
@@ -357,14 +360,14 @@ class SystemAdminController extends AbstractController
      */
     public function languageManage(Request $request, LanguageManager $manager)
     {
-        $langsInstalled = ProviderFactory::getRepository(I18n::class)->findBy(['installed' => 'Y'],['code' => "ASC"]);
-        $langsNotInstalled = ProviderFactory::getRepository(I18n::class)->findBy(['installed' => 'N'],['code' => 'ASC']);
+        $langsInstalled = ProviderFactory::getRepository(I18n::class)->findBy(['installed' => 'Y'], ['code' => "ASC"]);
+        $langsNotInstalled = ProviderFactory::getRepository(I18n::class)->findBy(['installed' => 'N'], ['code' => 'ASC']);
 
         return $this->render('modules/system_admin/language_manage.html.twig', [
             'installed' => $langsInstalled,
             'notInstalled' => $langsNotInstalled,
             'manager' => $manager,
-            'translationPath' => realPath(__DIR__.'/../../../translations'),
+            'translationPath' => realPath(__DIR__ . '/../../../translations'),
             'gVersion' => $this->getParameter('gibbon_version'),
         ]);
     }
@@ -377,7 +380,7 @@ class SystemAdminController extends AbstractController
      */
     public function languageSetDefault(I18n $i18n, SessionInterface $session)
     {
-        $provider =ProviderFactory::create(I18n::class);
+        $provider = ProviderFactory::create(I18n::class);
         $was = $provider->getRepository()->findOneBySystemDefault('Y');
         $was->setSystemDefault('N');
         $i18n->setSystemDefault('Y');
@@ -385,9 +388,9 @@ class SystemAdminController extends AbstractController
         $em->persist($was);
         $em->persist($i18n);
         $em->flush();
-        $config = Yaml::parse(file_get_contents(__DIR__.'/../../../config/packages/kookaburra.yaml'));
+        $config = Yaml::parse(file_get_contents(__DIR__ . '/../../../config/packages/kookaburra.yaml'));
         $config['parameters']['locale'] = $i18n->getCode();
-        file_put_contents(__DIR__.'/../../../config/packages/kookaburra.yaml', Yaml::dump($config, 8));
+        file_put_contents(__DIR__ . '/../../../config/packages/kookaburra.yaml', Yaml::dump($config, 8));
         $this->addFlash('success', 'Your request was completed successfully.');
         $session->set('i18n', $i18n->toArray());
         return $this->redirectToRoute('system_admin__language_manage');
@@ -423,7 +426,7 @@ class SystemAdminController extends AbstractController
             $this->addFlash('error', 'The file transfer was not completed successfully.  Please try again.');
             return $this->redirectToRoute('system_admin__language_manage');
         }
-        if (!$updated){
+        if (!$updated) {
             $this->addFlash('warning', 'Your request was successful, but some data was not properly saved.');
             return $this->redirectToRoute('system_admin__language_manage');
         }
@@ -466,12 +469,12 @@ class SystemAdminController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 try {
                     $em->persist($event);
-                    foreach($event->getListeners() as $listener) {
+                    foreach ($event->getListeners() as $listener) {
                         $em->persist($listener);
                     }
                     $em->flush();
                     $em->refresh($event);
-                    foreach($event->getListeners() as $listener) {
+                    foreach ($event->getListeners() as $listener) {
                         $em->refresh($listener);
                     }
                     $form = $this->createForm(NotificationEventType::class, $event, ['action' => $this->generateUrl('system_admin__notification_edit', ['event' => $event->getId()]), 'listener_delete_route' => $this->generateUrl('system_admin__notification_listener_delete', ['listener' => '__id__', 'event' => '__event__'])]);
@@ -488,7 +491,7 @@ class SystemAdminController extends AbstractController
             $manager->singlePanel($form->createView());
             $data['form'] = $manager->getFormFromContainer('formContent', 'single');
 
-            return new JsonResponse($data,200);
+            return new JsonResponse($data, 200);
 
         }
 
@@ -513,7 +516,7 @@ class SystemAdminController extends AbstractController
         $data['errors'] = [];
         $data['form'] = [];
         $em = $this->getDoctrine()->getManager();
-        if (! $event->getListeners()->contains($listener)) {
+        if (!$event->getListeners()->contains($listener)) {
             $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('Your request failed because your inputs were invalid.', [], 'messages')];
             $data['status'] = 'error';
             return JsonResponse::create($data, 200);
@@ -539,5 +542,96 @@ class SystemAdminController extends AbstractController
 
         //JSON Response required.
         return JsonResponse::create($data, 200);
+    }
+
+    /**
+     * stringReplacementEdit
+     * @param Request $request
+     * @param ContainerManager $manager
+     * @param string|null $stringReplacement
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/string/replacement/{stringReplacement}/edit/", name="string_replacement_edit")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function stringReplacementEdit(Request $request, ContainerManager $manager, ?string $stringReplacement = 'Add')
+    {
+        $stringReplacement = $stringReplacement !== 'Add' ? ProviderFactory::getRepository(StringReplacement::class)->find($stringReplacement) : new StringReplacement();
+
+        $form = $this->createForm(StringReplacementType::class, $stringReplacement, ['action' => $this->generateUrl('system_admin__string_replacement_edit', ['stringReplacement' => $stringReplacement->getId() ?: 'Add'])]);
+
+        if ($request->getContentType() === 'json') {
+            $content = json_decode($request->getContent(), true);
+            dump($content);
+            $data = [];
+            $form->submit($content);
+            if ($form->isValid()) {
+                dump($stringReplacement);
+                try {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($stringReplacement);
+                    $em->flush();
+                    $data['errors'][] = ['class' => 'success', 'message' => TranslationsHelper::translate('Your request was completed successfully.', [], 'messages')];
+                    $data['status'] = 'success';
+                    $form = $this->createForm(StringReplacementType::class, $stringReplacement, ['action' => $this->generateUrl('system_admin__string_replacement_edit', ['stringReplacement' => $stringReplacement->getId() ?: 'Add'])]);
+                } catch (PDOException $e) {
+                    $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('Your request failed because your inputs were invalid.', [], 'messages')];
+                    $data['status'] = 'error';
+                }
+            } else {
+                $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('Your request failed due to a database error.', [], 'messages')];
+                $data['status'] = 'error';
+            }
+
+            $manager->singlePanel($form->createView());
+            $data['form'] = $manager->getFormFromContainer('formContent', 'single');
+
+            return JsonResponse::create($data, 200);
+        }
+
+        $manager->singlePanel($form->createView());
+
+        return $this->render('modules/system_admin/string_replacement_edit.html.twig');
+    }
+
+    /**
+     * stringReplacementManage
+     * @param Request $request
+     * @param ContainerManager $manager
+     * @param string|null $stringReplacement
+     * @Route("/string/replacement/manage/", name="string_replacement_manage")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function stringReplacementManage(Request $request, ContainerManager $manager)
+    {
+        $content = [];
+        $provider = ProviderFactory::create(StringReplacement::class);
+        $content = $provider->getPaginationResults($request->query->get('search'));
+        return $this->render('modules/system_admin/string_replacement_manage.html.twig',
+            [
+                'content' => $content,
+                'search' => $request->query->get('search') ?: '',
+            ]
+        );
+    }
+
+    /**
+     * stringReplacementDelete
+     * @param StringReplacement $stringReplacement
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/string/replacement/{stringReplacement}/delete/", name="string_replacement_delete")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function stringReplacementDelete(StringReplacement $stringReplacement)
+    {
+        try {
+            $em =$this->getDoctrine()->getManager();
+            $em->remove($stringReplacement);
+            $em->flush();
+            $this->addFlash('success', 'Your request was completed successfully.');
+        } catch (PDOException $e) {
+            $this->addFlash('error', 'Your request failed due to a database error.');
+        }
+
+        return $this->forward(SystemAdminController::class . '::stringReplacementManage');
     }
 }

@@ -12,6 +12,7 @@
  */
 namespace App\Entity;
 
+use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\StringReplacementRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="String")
  */
-class StringReplacement
+class StringReplacement implements EntityInterface
 {
     use BooleanList;
     /**
@@ -114,7 +115,7 @@ class StringReplacement
      * @var string|null
      * @ORM\Column(length=8)
      */
-    private $mode;
+    private $mode = 'Whole';
 
     /**
      * @var array
@@ -175,4 +176,24 @@ class StringReplacement
      * @ORM\Column(type="smallint", columnDefinition="INT(2)", options={"default": "0"})
      */
     private $priority;
+
+    /**
+     * @return int|null
+     */
+    public function getPriority(): ?int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * Priority.
+     *
+     * @param int|null $priority
+     * @return StringReplacement
+     */
+    public function setPriority(?int $priority): StringReplacement
+    {
+        $this->priority = $priority;
+        return $this;
+    }
 }

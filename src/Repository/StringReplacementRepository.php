@@ -30,4 +30,21 @@ class StringReplacementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, StringReplacement::class);
     }
+
+    /**
+     * getPaginationSearch
+     * @param string $search
+     * @return mixed
+     */
+    public function getPaginationSearch(string $search)
+    {
+        $search = '%' . $search . '%';
+        return $this->createQueryBuilder('s')
+            ->where('s.original LIKE :search')
+            ->orWhere('s.replacement LIKE :search')
+            ->setParameter('search', $search)
+            ->orderBy('s.original')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -27,4 +27,14 @@ class StringReplacementProvider implements EntityProviderInterface
      * @var string
      */
     private $entityName = StringReplacement::class;
+
+    /**
+     * getPaginationResults
+     * @param string $search
+     * @return array
+     */
+    public function getPaginationResults(?string $search)
+    {
+        return $this->getRepository()->getPaginationSearch($search ?: '');
+;    }
 }

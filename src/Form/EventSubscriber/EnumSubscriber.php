@@ -58,6 +58,12 @@ class EnumSubscriber implements EventSubscriberInterface
 
         $class = new $className();
         $raw = $class->$method();
+        if (false === $options['choice_list_prefix']) {
+            $x = [];
+            foreach($raw as $w)
+                $x[$w] = $w;
+            $raw = $x;
+        }
 
         if ($options['choice_translation_domain'] === false || false === $options['choice_list_prefix']) {
             $choices = $raw;
