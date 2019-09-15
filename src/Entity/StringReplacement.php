@@ -152,11 +152,19 @@ class StringReplacement implements EntityInterface
     private $caseSensitive = 'N';
 
     /**
+     * @return bool
+     */
+    public function isCaseSensitive(): bool
+    {
+        return $this->getCaseSensitive() === 'Y' ? true : false ;
+    }
+
+    /**
      * @return string|null
      */
-    public function getCaseSensitive(): ?string
+    public function getCaseSensitive(): string
     {
-        return $this->caseSensitive;
+        return $this->caseSensitive = in_array($this->caseSensitive, self::getBooleanList()) ? $this->caseSensitive : 'N' ;
     }
 
     /**
@@ -195,5 +203,19 @@ class StringReplacement implements EntityInterface
     {
         $this->priority = $priority;
         return $this;
+    }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $result =  (array) $this;
+        $x = [];
+        foreach($result as $q=>$w){
+            $x[str_replace("\x00App\Entity\StringReplacement\x00", '', $q)] = $w;
+        }
+        return $x;
     }
 }

@@ -70,8 +70,8 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
         $strings = $this->getStrings();
         if ((! empty($strings) || $strings->count() > 0) && $strings instanceof ArrayCollection) {
             foreach ($strings->toArray() AS $replacement) {
-                if ($replacement->getReplaceMode()=="partial") { //Partial match
-                    if ($replacement->isCaseSensitive()=="Y") {
+                if ($replacement->getMode() === "Partial") { //Partial match
+                    if ($replacement->isCaseSensitive()) {
                         if (strpos($trans, $replacement->getOriginal())!==FALSE) {
                             $trans=str_replace($replacement->getOriginal(), $replacement->getReplacement(), $trans);
                         }
@@ -83,7 +83,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
                     }
                 }
                 else { //Whole match
-                    if ($replacement->isCaseSensitive()=="Y") {
+                    if ($replacement->isCaseSensitive()) {
                         if ($replacement->getOriginal()==$trans) {
                             $trans=$replacement->getReplacement();
                         }

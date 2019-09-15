@@ -11,7 +11,7 @@
 
 {% block content %}
     <h2>{{ 'Search'|trans }}</h3>
-    <form action="{{ path('system_admin__string_replacement_manage') }}" method="GET" autocomplete="on" enctype="multipart/form-data" class="noIntBorder fullWidth" id="searchForm" onsubmit="gibbonFormSubmitted(this)">
+    <form action="{{ path('system_admin__string_replacement_manage') }}" method="GET" autocomplete="on" enctype="multipart/form-data" class="noIntBorder fullWidth" id="searchForm">
         <table class="noIntBorder fullWidth relative" cellspacing="0">
             <tbody>
                 <tr id="" class=" flex flex-col sm:flex-row justify-between content-center p-0">
@@ -24,65 +24,13 @@
                 </tr>
                 <tr id="" class=" flex flex-col sm:flex-row justify-between content-center p-0">
                     <td class="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 right" colspan="2">
-                        <a href="{{ path('system_admin__string_replacement_manage') }}" title="{{ 'Clear Search'|trans }}" class="right"><span class="fas fa-search-minus fa-fw fa-2x text-gray-700"></span></a> &nbsp;<input type="submit" value="{{ 'Go'|trans }}">
+                        <a href="{{ path('system_admin__string_replacement_manage') }}" title="{{ 'Clear Search'|trans }}" class="right"><span class="fas fa-search-minus fa-fw fa-2x text-gray-700"></span></a>
+                        <a href="#" class="right" onclick="document.getElementById('searchForm').submit()" title="{{ 'Search'|trans }}"><span class="fas fa-search fa-fw fa-2x text-gray-700"></span></a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </form>
     <h2>{{ 'View'|trans }}<a title="{{ 'Add'|trans }}" style="float:right; font-size: 1.25rem" href="{{ path('system_admin__string_replacement_edit', {stringReplacement: 'Add'}) }}"><span class="fas fa-plus-circle fa-fw text-gray-700"></span></a></h2>
-        {% if content|length is same as(0) %}
-        <div class="h-48 rounded-sm border bg-gray-100 shadow-inner overflow-hidden">
-            <div class="w-full h-full flex flex-col items-center justify-center text-gray-600 text-lg">
-                {{ 'There are no records to display.'|trans }}
-            </div>
-        </div>
-        {% else %}
-        <table class="w-full striped" cellspacing="0">
-            <thead>
-            <tr class="head text-xs">
-                <th class="column sortable relative pr-4 cursor-pointer" data-sort="original" colspan="1" rowspan="1" style="width: auto">
-                    {{ 'Original String'|trans }}
-               </th>
-                <th class="column sortable relative pr-4 cursor-pointer" data-sort="replacement" colspan="1" rowspan="1" style="width: auto">
-                    {{ 'Replacement String'|trans }}
-                </th>
-                <th class="column hidden sm:table-cell sortable relative pr-4 cursor-pointer" data-sort="mode" colspan="1" rowspan="1" style="width: auto">
-                    {{'Mode'|trans}}
-                </th>
-                <th class="column hidden md:table-cell sortable relative pr-4 cursor-pointer" data-sort="caseSensitive" colspan="1" rowspan="1" style="width: auto">
-                    {{'Case Sensitive'|trans}}
-                </th>
-                <th class="column hidden md:table-cell sortable relative pr-4 cursor-pointer sorting sortDESC" data-sort="priority" colspan="1" rowspan="1" style="width: auto">
-                    {{'Priority'|trans}}
-                </th>
-                <th class="column" colspan="1" rowspan="1" style="width: 1%">
-                    {{'Actions'|trans}}
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for string in content %}
-                <tr>
-                    <td class="p-2 sm:p-3">{{ string.original }}</td>
-                    <td class="p-2 sm:p-3">{{ string.replacement }}</td>
-                    <td class="p-2 sm:p-3 hidden sm:table-cell">{{ string.mode }}</td>
-                    <td class="p-2 sm:p-3 hidden md:table-cell">{{ string.caseSensitive is same as('Y') ? 'Yes'|trans : 'No'|trans }}</td>
-                    <td class="p-2 sm:p-3 hidden md:table-cell">{{ string.priority }}</td>
-                    <td class="p-2 sm:p-3">
-                        <nav class="relative group">
-                            <div class=" hidden group-hover:flex sm:flex absolute sm:static top-0 right-0 -mr-1 rounded shadow sm:shadow-none bg-white sm:bg-transparent px-1 -mt-3 sm:m-0 sm:p-0 z-10">
-                                <a class="p-3 sm:p-0" href="{{ path('system_admin__string_replacement_edit', {stringReplacement: string.id}) }}" title="{{'Edit'|trans}}"><span class="far fa-edit fa-fw fa-1-5x text-gray-700"></span></a>
-                                <a class="thickbox p-3 sm:p-0" href="{{ path('system_admin__string_replacement_delete', {stringReplacement: string.id}) }}" title="Delete"><span class="fas fa-trash-alt fa-fw fa-1-5x text-gray-700"></span></a>
-                            </div>
-                            <button class="block sm:hidden rounded mx-auto my-1 px-1 py-2 bg-gray-300 text-2xl text-gray-600 font-sans font-bold leading-none" onclick="event.preventDefault();" ontouchend="event.preventDefault();">
-                                <span class="block -mt-3">...</span>
-                            </button>
-                        </nav>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-            {% endif %}
+        <section id="paginationContent"></section>
 {% endblock content %}

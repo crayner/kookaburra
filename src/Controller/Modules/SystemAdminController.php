@@ -35,6 +35,7 @@ use App\Form\Modules\SystemAdmin\SystemSettingsType;
 use App\Manager\SystemAdmin\GoogleSettingManager;
 use App\Manager\SystemAdmin\LanguageManager;
 use App\Manager\SystemAdmin\MailerSettingsManager;
+use App\Manager\SystemAdmin\StringReplacementPagination;
 use App\Manager\VersionManager;
 use App\Provider\ProviderFactory;
 use App\Util\ReactFormHelper;
@@ -601,11 +602,13 @@ class SystemAdminController extends AbstractController
      * @Route("/string/replacement/manage/", name="string_replacement_manage")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function stringReplacementManage(Request $request, ContainerManager $manager)
+    public function stringReplacementManage(Request $request, ContainerManager $manager, StringReplacementPagination $pagination)
     {
         $content = [];
         $provider = ProviderFactory::create(StringReplacement::class);
         $content = $provider->getPaginationResults($request->query->get('search'));
+        $pagination->setContent($content)
+            ->setPaginationScript();
         return $this->render('modules/system_admin/string_replacement_manage.html.twig',
             [
                 'content' => $content,

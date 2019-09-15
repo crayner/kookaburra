@@ -456,3 +456,18 @@ Whole: Whole
 Partial: Partial
 Priority: Priority
 Higher priorities are substituted first.: Higher priorities are substituted first.
+"Parents of students interested in study at %1$s may use our %2$s online form%3$s to initiate the application process.": "Parents of students interested in study at %1$s may use our %2$s online form%3$s to initiate the application process."
+"Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.": "Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process."
+Edit: Edit
+Case Sensitive: Case Sensitive
+Search: Search
+Search For: Search For
+Original string, replacement string.: Original string, replacement string.
+Clear Search: Clear Search
+Go: Go
+View: View
+'Records {start}-{end} of {total}': 'Records {start}-{end} of {total}'
+First Page: First Page
+Previous Page: Previous Page
+Next Page: Next Page
+Last Page: Last Page
