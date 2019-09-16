@@ -18,6 +18,7 @@ export default class PaginationApp extends Component {
         this.lastPage = this.lastPage.bind(this)
         this.prevPage = this.prevPage.bind(this)
         this.nextPage = this.nextPage.bind(this)
+        this.adjustPageSize = this.adjustPageSize.bind(this)
 
         this.state = {
             sortColumn: '',
@@ -25,6 +26,8 @@ export default class PaginationApp extends Component {
             results: [],
             offset: 0,
             controls: [],
+            pageMax: this.pageMax,
+            sizeButtons: []
         }
     }
 
@@ -32,7 +35,8 @@ export default class PaginationApp extends Component {
         let result = this.paginateContent(this.content,this.state.offset)
         this.setState({
             results: result,
-            control: this.buildControl(this.state.offset, result)
+            control: this.buildControl(this.state.offset, result),
+            sizeButtons: this.buildPageSizeControls(this.state.pageMax),
         })
     }
 
@@ -75,8 +79,11 @@ export default class PaginationApp extends Component {
         )
     }
 
-    paginateContent(content, offset) {
-        return content.slice(offset, this.pageMax)
+    paginateContent(content, offset, pageMax = 0) {
+        if (pageMax === 0)
+            pageMax = this.state.pageMax
+
+        return content.slice(offset, offset + pageMax)
     }
 
     firstPage(){
@@ -84,39 +91,68 @@ export default class PaginationApp extends Component {
     }
 
     prevPage() {
-        this.checkOffset(this.state.offset - this.pageMax)
+        this.checkOffset(this.state.offset - this.state.pageMax)
     }
 
     nextPage() {
-        this.checkOffset(this.state.offset + this.pageMax)
+        this.checkOffset(this.state.offset + this.state.pageMax)
     }
 
     lastPage() {
         let offset = this.state.offset
         while (offset <= this.content.length)
-            offset = offset + this.pageMax
-
+            offset = offset + this.state.pageMax
+        this.checkOffset(offset, this.state.pageMax)
     }
 
-    checkOffset(offset) {
+    checkOffset(offset, pageMax = 0) {
+        if (pageMax === 0)
+            pageMax = this.state.pageMax
+
         while (offset > this.content.length)
-            offset = offset - this.pageMax
+            offset = offset - pageMax
+
+        if (pageMax >= this.content.length)
+            offset = 0
 
         if (offset < 0)
             offset = 0
 
-        let result = this.paginateContent(this.sortContent('', '', this.content), offset)
+        let result = this.paginateContent(this.sortContent('', '', this.content), offset, pageMax)
 
         this.setState({
             offset: offset,
             results: result,
-            control: this.buildControl(offset, result),
+            control: this.buildControl(offset, result, pageMax),
+            pageMax: pageMax,
+            sizeButtons: this.buildPageSizeControls(pageMax)
         })
     }
 
-    buildControl(offset, result) {
+    adjustPageSize(size) {
+        if (size === 'All')
+            size = this.content.length
+
+        this.checkOffset(this.state.offset, size)
+    }
+
+    buildPageSizeControls(pageMax) {
+        let control = []
+
+        control.push(<a href={'#'} key={'10'} onClick={() => this.adjustPageSize(10)} className={(pageMax === 10 ? 'text-blue-600' : 'text-gray-600')}>10,</a>)
+        control.push(<a href={'#'} key={'25'} onClick={() => this.adjustPageSize(25)} className={(pageMax === 25 ? 'text-blue-600' : 'text-gray-600')}>25,</a>)
+        control.push(<a href={'#'} key={'50'} onClick={() => this.adjustPageSize(50)} className={(pageMax === 50 ? 'text-blue-600' : 'text-gray-600')}>50,</a>)
+        control.push(<a href={'#'} key={'All'} onClick={() => this.adjustPageSize('All')} className={(pageMax === this.content.length ? 'text-blue-600' : 'text-gray-600')}>All</a>)
+
+        return control
+    }
+
+    buildControl(offset, result, pageMax = 0) {
         if (this.content.length === 0)
             return []
+        
+        if (pageMax === 0)
+            pageMax = this.state.pageMax
 
         let content = this.row.caption.replace('{start}', (offset + 1))
         content = content.replace('{end}', (result.length + offset))
@@ -124,18 +160,18 @@ export default class PaginationApp extends Component {
 
         let control = []
         if (offset > 0) {
-            control.push(<a href={'#'} onClick={() => this.firstPage()} title={this.row.firstPage}><span className={'text-gray-600 fas fa-angle-double-left fa-fw'}></span></a>)
+            control.push(<a href={'#'} key={'first'} onClick={() => this.firstPage()} title={this.row.firstPage}><span className={'text-gray-600 fas fa-angle-double-left fa-fw'}></span></a>)
         }
 
-        if (this.content.length > this.pageMax && offset > 0) {
-            control.push(<a href={'#'} onClick={() => this.prevPage()} title={this.row.prevPage}><span className={'text-gray-600 fas fa-chevron-left fa-fw'}></span></a>)
+        if (this.content.length > pageMax && offset > 0) {
+            control.push(<a href={'#'} key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span className={'text-gray-600 fas fa-angle-left fa-fw'}></span></a>)
         }
 
-        control.push(content)
+        control.push(<span key={'content'}>{content}</span>)
 
-        if (this.content.length > this.pageMax && this.pageMax + offset < this.content.length) {
-            control.push(<a href={'#'} onClick={() => this.nextPage()} title={this.row.nextPage}><span className={'text-gray-600 fas fa-chevron-right fa-fw'}></span></a>)
-            control.push(<a href={'#'} onClick={() => this.lastPage()} title={this.row.lastPage}><span className={'text-gray-600 fas fa-angle-double-right fa-fw'}></span></a>)
+        if (this.content.length > pageMax && pageMax + offset < this.content.length) {
+            control.push(<a href={'#'} key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span className={'text-gray-600 fas fa-angle-right fa-fw'}></span></a>)
+            control.push(<a href={'#'} key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span className={'text-gray-600 fas fa-angle-double-right fa-fw'}></span></a>)
         }
         return control
     }
@@ -143,7 +179,8 @@ export default class PaginationApp extends Component {
     render () {
         return (
             <div>
-                <div className={'w-full text-xs right text-gray-600'}>{this.state.control}</div>
+                <div className={'text-xs text-gray-600 text-left'}>{this.state.sizeButtons}
+                <div className={'text-xs text-gray-600 text-right'} style={{marginTop: '-12px'}}>{this.state.control}</div></div>
                 <table className={'w-full striped'}>
                     <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn} sortColumnDirection={this.state.sortDirection} />
                     <PaginationContent row={this.row} content={this.state.results} contentCount={this.content.length} offset={this.state.offset}/>

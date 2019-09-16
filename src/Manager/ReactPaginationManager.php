@@ -156,7 +156,6 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      */
     private function toArray(): array
     {
-        dump($this->getRow(),$this->getRow()->toArray());
         return [
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),

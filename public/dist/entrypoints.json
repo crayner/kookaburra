@@ -1,5 +1,14 @@
 {
   "entrypoints": {
+    "default": {
+      "js": [
+        "/build/runtime.df9c463a.js",
+        "/build/default.0f9ed62b.js"
+      ],
+      "css": [
+        "/build/default.40a9ac65.css"
+      ]
+    },
     "fastFinder": {
       "js": [
         "/build/runtime.df9c463a.js",
@@ -9,13 +18,6 @@
       ],
       "css": [
         "/build/fastFinder.09f43b10.css"
-      ]
-    },
-    "idleTimeout": {
-      "js": [
-        "/build/runtime.df9c463a.js",
-        "/build/0.ba0f77be.js",
-        "/build/idleTimeout.4fe782c1.js"
       ]
     },
     "menuModule": {
@@ -43,13 +45,11 @@
         "/build/5.ab211765.css"
       ]
     },
-    "default": {
+    "idleTimeout": {
       "js": [
         "/build/runtime.df9c463a.js",
-        "/build/default.0f9ed62b.js"
-      ],
-      "css": [
-        "/build/default.40a9ac65.css"
+        "/build/0.ba0f77be.js",
+        "/build/idleTimeout.4fe782c1.js"
       ]
     },
     "container": {
@@ -61,6 +61,13 @@
       ],
       "css": [
         "/build/container.15569a13.css"
+      ]
+    },
+    "pagination": {
+      "js": [
+        "/build/runtime.df9c463a.js",
+        "/build/0.ba0f77be.js",
+        "/build/pagination.f1009497.js"
       ]
     },
     "css/theme": {
@@ -76,7 +83,7 @@
         "/build/runtime.df9c463a.js"
       ],
       "css": [
-        "/build/css/app.d09bdce2.css"
+        "/build/css/app.25aaf3b8.css"
       ]
     }
   }
