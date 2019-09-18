@@ -88,7 +88,7 @@ class ImportReport
     public function __construct(array $data, bool $validateStructure = true)
     {
         if (isset($data['details'])) {
-            $this->details = $data['details'];
+            $this->setDetails($data['details']);
         }
 
         if (isset($data['access'])) {
@@ -747,5 +747,30 @@ class ImportReport
     public function getTablesUsed(): array
     {
         return $this->tablesUsed;
+    }
+
+    /**
+     * Details.
+     *
+     * @param array $details
+     * @return ImportReport
+     */
+    public function setDetails(array $details): ImportReport
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired([
+            'alias',
+            'type',
+            'name',
+            'table',
+            'modes',
+        ]);
+        $resolver->setDefaults([
+            'category' => null,
+            'grouping' => null,
+        ]);
+        $resolver->setAllowedTypes('modes', 'array');
+        $this->details = $resolver->resolve($details);
+        return $this;
     }
 }

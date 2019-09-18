@@ -68,39 +68,43 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
             return $trans;
 
         $strings = $this->getStrings();
+
+        $sr = new StringReplacement();
+        $sr->setOriginal('Gibbon')->setReplacement('Kookaurra')->setMode('Partial')->setCaseSensitive('Y');
+        $strings->add($sr);
+        $sr = new StringReplacement();
+        $sr->setOriginal('gibbon')->setReplacement('kookaurra')->setMode('Partial')->setCaseSensitive('Y');
+        $strings->add($sr);
+
         if ((! empty($strings) || $strings->count() > 0) && $strings instanceof ArrayCollection) {
             foreach ($strings->toArray() AS $replacement) {
                 if ($replacement->getMode() === "Partial") { //Partial match
                     if ($replacement->isCaseSensitive()) {
-                        if (strpos($trans, $replacement->getOriginal())!==FALSE) {
-                            $trans=str_replace($replacement->getOriginal(), $replacement->getReplacement(), $trans);
+                        if (false !== strpos($trans, $replacement->getOriginal())) {
+                            $trans = str_replace($replacement->getOriginal(), $replacement->getReplacement(), $trans);
                         }
                     }
                     else {
-                        if (stripos($trans, $replacement->getOriginal())!==FALSE) {
-                            $trans=str_ireplace($replacement->getOriginal(), $replacement->getReplacement(), $trans);
+                        if (false !== stripos($trans, $replacement->getOriginal())) {
+                            $trans = str_ireplace($replacement->getOriginal(), $replacement->getReplacement(), $trans);
                         }
                     }
                 }
                 else { //Whole match
                     if ($replacement->isCaseSensitive()) {
-                        if ($replacement->getOriginal()==$trans) {
-                            $trans=$replacement->getReplacement();
+                        if ($replacement->getOriginal() === $trans) {
+                            $trans = $replacement->getReplacement();
                         }
                     }
                     else {
-                        if (strtolower($replacement->getOriginal())==strtolower($trans)) {
-                            $trans=$replacement->getReplacement();
+                        if (strtolower($replacement->getOriginal()) === strtolower($trans)) {
+                            $trans = $replacement->getReplacement();
                         }
                     }
                 }
             }
         }
 
-        $parameters = [
-            'Gibbon' => 'Kookaburra',
-            'gibbon' => 'kookaburra',
-        ];
         return str_replace(array_keys($parameters), array_values($parameters), $trans);
     }
 

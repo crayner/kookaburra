@@ -758,6 +758,8 @@ class SystemAdminController extends AbstractController
                     foreach ($field['select'] as $name)
                         $w .= $name . ", ' ',";
                     $w = rtrim($w, "', ") . ")'";
+                } elseif (!isset($field['select'])) {
+                    $w = "''";
                 } else {
                     $w .= $field['select'];
                 }
