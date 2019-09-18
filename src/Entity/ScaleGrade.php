@@ -157,9 +157,17 @@ class ScaleGrade
     /**
      * @return string|null
      */
-    public function getisDefault(): ?string
+    public function isIsDefault(): ?string
     {
-        return $this->isDefault;
+        return $this->getIsDefault() === 'Y' ? true : false;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIsDefault(): ?string
+    {
+        return $this->isDefault = self::checkBoolean($this->isDefault, 'N');
     }
 
     /**
