@@ -213,7 +213,16 @@ class ImportManager
 
             // Finally fail if nothing is found
             if (!file_exists($path)) {
-                return null;
+                $path = $this->getCustomImportReportDir().'/'.$reportName.'.yml';
+                if (!file_exists($path)) {
+                    // Next check the built-in import types folder
+                    $path = $this->getImportReportDir().'/'.$reportName.'.yml';
+
+                    // Finally fail if nothing is found
+                    if (!file_exists($path)) {
+                        return null;
+                    }
+                }
             }
         }
 
