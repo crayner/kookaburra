@@ -1,0 +1,180 @@
+details:
+    type: markbookColumns
+    name: Markbook Columns
+    table: MarkbookColumn
+    modes: { update: true, insert: true, export: true }
+    alias: mc
+access:
+    module: Markbook
+    action: Edit Markbook_everything
+primaryKey:
+    id
+uniqueKeys:
+    - [ courseClass, name ]
+join:
+    CourseClass:
+        alias: cc
+        table: MarkbookColumn
+    Course:
+        alias: c
+        table: CourseClass
+    SchoolYear:
+        alias: sy
+        table: Course
+    Unit:
+        alias: u
+        table: MarkbookColumn
+    PlannerEntry:
+        alias: pe
+        table: MarkbookColumn
+    ScaleAttainment:
+        alias: sa
+        table: MarkbookColumn
+        targetTable: Scale
+    ScaleEffort:
+        alias: se
+        table: MarkbookColumn
+        targetTable: Scale
+    RubricAttainment:
+        alias: ra
+        table: MarkbookColumn
+        targetTable: Rubric
+    RubricEffort:
+        alias: re
+        table: MarkbookColumn
+        targetTable: Rubric
+table:
+    schoolYear:
+        name: "School Year"
+        desc: "School year name, as set in School Admin. Must already exist."
+        args: { filter: schoolyear, required: true, custom: true, readonly: true }
+        relationship: { table: SchoolYear, key: id, field: name  }
+        select: sy.name
+    course:
+        name: "Course"
+        desc: "Short Name"
+        args: { filter: string, required: true, custom: true, readonly: true }
+        relationship: { table: Course, key: id, field: [ nameShort, schoolYear ]  }
+        select: c.nameShort
+    courseClass:
+        name: "Class"
+        desc: "Short Name"
+        args: { filter: string, required: true, custom: true }
+        relationship: { table: CourseClass, key: id, field: [ nameShort, course ]  }
+        select: cc.nameShort
+    unit:
+        name: "Unit"
+        desc: "Name"
+        args: { filter: string, custom: true }
+        relationship: { table: Unit, key: id, field: [ name, course ]  }
+        select: u.name
+    plannerEntry:
+        name: "Lesson"
+        desc: "Name"
+        args: { filter: string, custom: true }
+        relationship: { table: PlannerEntry, key: id, field: [ name, courseClass ]  }
+        select: pe.name
+    name: 
+        name: "Name"
+        desc: ""
+        args: { filter: string, required: true }
+        select: mc.name
+    description: 
+        name: "Description"
+        desc: ""
+        args: { filter: string, required: true }
+        select: mc.description
+    type:
+        name: "Type"
+        desc: ""
+        args: { filter: string, required: true, custom: true }
+        select: mc.type
+    date:
+        name: "Date Added"
+        desc: ""
+        args: {filter: date, custom: true }
+        select: mc.date
+    attainment:
+        name: "Assess Attainment?"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: mc.attainment
+    scaleAttainment:
+        name: "Attainment Scale"
+        desc: "Short Name"
+        args: { filter: string, custom: true }
+        relationship: { table: Scale, key: ScaleID, field: nameShort  }
+        select: sa.nameShort
+    attainmentRaw:
+        name: "Total Mark"
+        desc: ""
+        args: { filter: yesno, custom: true }
+        select: mc.attainmentRaw
+    attainmentRawMax:
+        name: "Attainment Total Mark"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: mc.attainmentRawMax
+    attainmentWeighting:
+        name: "Attainment Weighting"
+        desc: ""
+        args: { filter: numeric, custom: true }
+        select: mc.attainmentWeighting
+    rubricAttainment:
+        name: "Attainment Rubric"
+        desc: "Name"
+        args: { filter: string, custom: true }
+        relationship: { table: Rubric, key: RubricID, field: name  }
+        select: ra.name
+    effort:
+        name: "Assess Effort?"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: mc.effort
+    scaleEffort:
+        name: "Effort Scale"
+        desc: "Short Name"
+        args: { filter: string, custom: true }
+        relationship: { table: Scale, key: ScaleID, field: nameShort  }
+        select: se.nameShort
+    rubricEffort:
+        name: "Effort Rubric"
+        desc: "Name"
+        args: { filter: string, custom: true }
+        relationship: { table: Rubric, key: RubricID, field: name  }
+        select: re.name
+    comment:
+        name: "Include Comment?"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: mc.comment
+    uploadedResponse:
+        name: "Include Uploaded Response?"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: mc.uploadedResponse
+    viewableStudents:
+        name: "Viewable to Students"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: mc.viewableStudents
+    viewableParents:
+        name: "Viewable to Parents"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: mc.viewableParents
+    completeDate:
+        name: "Go Live Date"
+        desc: "Column is hidden until date is reached."
+        args: {filter: date, custom: true }
+        select: mc.completeDate
+    complete:
+        name: "Completed?"
+        desc: ""
+        args: { filter: yesno, custom: true }
+        select: mc.complete
+    sequenceNumber:
+        name: "Sequence Number"
+        desc: ""
+        args: { filter: numeric }
+        select: mc.sequenceNumber

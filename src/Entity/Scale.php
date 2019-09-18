@@ -71,10 +71,9 @@ class Scale implements EntityInterface
     private $numeric = 'N';
 
     /**
-     * @var Scale|null
+     * @var ScaleGrade|null
      * @ORM\OneToMany(targetEntity="ScaleGrade", mappedBy="scale")
      */
-
     private $scaleGrades;
 
     /**

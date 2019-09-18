@@ -1,0 +1,86 @@
+details:
+    type: markbookTargets
+    name: Targets
+    table: MarkbookTarget
+    modes: { update: true, insert: true, export: false }
+    alias: mt
+access:
+    module: Markbook
+    action: Edit Markbook_everything
+join:
+    CourseClass:
+        alias: cc
+        table: MarkbookTarget
+    Course:
+        alias: c
+        table: CourseClass
+    SchoolYear:
+        alias: sy
+        table: Course
+    Student:
+        alias: p
+        table: MarkbookTarget
+        targetTable: Person
+    ScaleGrade:
+        alias: sg
+        table: MarkbookTarget
+    Scale:
+        alias: s
+        table: ScaleGrade
+fields:
+    schoolYear:
+        name: "School Year"
+        desc: "School year name, as set in School Admin. Must already exist."
+        args: { filter: schoolyear, required: true, custom: true, readonly: true }
+        relationship: { table: SchoolYear, key: id, field: name  }
+        select: sy.name
+    course:
+        name: "Course"
+        desc: "Short Name"
+        args: { filter: string, required: true, custom: true, readonly: true }
+        relationship: { table: Course, key: id, field: [ nameShort, schoolYear ] }
+        select: c.nameShort
+    courseClass:
+        name: "Class"
+        desc: "Short Name"
+        args: { filter: string, required: true, custom: true }
+        relationship: { table: CourseClass, key: id, field: [ nameShort, CourseID ] }
+        select: cc.nameShort
+    student:
+        name: "Student"
+        desc: "Username"
+        args: { filter: string, required: true }
+        relationship: { table: Person, key: id, field: username }
+        select: p.username
+    scale:
+        name: "Grade Scale"
+        desc: "Short Name"
+        args: { filter: string, required: true, custom: true }
+        relationship: { table: Scale, key: id, field: nameShort  }
+        select: s.nameShort
+    scaleGrade:
+        name: "Target Grade"
+        desc: "Value"
+        args: { filter: string, required: true, custom: true }
+        relationship: { table: ScaleGrade, key: id, field: value  }
+        select: sg.value
+tables:
+    MarkbookTarget:
+        primaryKey:
+            id
+        uniqueKeys:
+            - [ courseClass, student ]
+        fields:
+            - schoolYear
+            - course
+            - courseClass
+            - student
+            - scaleGrade
+    CourseClass:
+        primaryKey:
+            id
+        fields:
+            - schoolYear
+            - course
+            - courseClass
+            - scale

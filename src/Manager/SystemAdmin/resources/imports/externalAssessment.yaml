@@ -62,7 +62,7 @@ fields:
         name: "Result"
         desc: "Must match value of ScaleGrade.value in database."
         args: { filter: string }
-        relationship: { table: Scale, key: id, join: externalAssessmentField, on: [scale, id], field: [ value, ExternalAssessmentField ] }
+        relationship: { table: Scale, key: id, join: ExternalAssessmentField, on: [id, scale], field: [ value, externalAssessmentField ] }
         select: sg.value
 tables:
     ExternalAssessmentStudent:
@@ -78,7 +78,7 @@ tables:
         primaryKey:
             id
         uniqueKeys:
-            - [ ExternalAssessmentStudentID, ExternalAssessmentFieldID ]
+            - [ externalAssessmentStudent, externalAssessmentField ]
         fields:
             - externalAssessment
             - date

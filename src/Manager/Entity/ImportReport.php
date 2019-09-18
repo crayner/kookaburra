@@ -90,7 +90,6 @@ class ImportReport
         if (isset($data['details'])) {
             $this->setDetails($data['details']);
         }
-
         if (isset($data['access'])) {
             $this->access = $data['access'];
         }
@@ -136,20 +135,19 @@ class ImportReport
         }
 
         if (!empty($this->tables)) {
-
             foreach ($this->tables as $tableName => $table) {
                 $this->tablesUsed[] = $tableName;
 
-                $this->switchTable($tableName);
+               // $this->switchTable($tableName);
 
                 // Add relational tables to the tablesUsed array so they're locked
                 foreach ($this->table as $fieldName => $field) {
-                    if ($this->isFieldRelational($fieldName)) {
+ /*                   if ($this->isFieldRelational($fieldName)) {
                         $relationship = $this->getField($fieldName, 'relationship');
                         if (!in_array($relationship['table'], $this->tablesUsed)) {
                             $this->tablesUsed[] = $relationship['table'];
                         }
-                    }
+                    }  */
 
                     // Check the filters so we know if extra data is nessesary
                     $filter = $this->getField($fieldName, 'filter');
@@ -178,6 +176,7 @@ class ImportReport
             $this->tablesUsed = array_unique($this->tablesUsed);
         }
 
+        /**
         foreach ($this->tables as $tableName => $table) {
             $this->switchTable($tableName);
             $this->validated = true;
@@ -189,6 +188,7 @@ class ImportReport
                 $this->validated &= $this->validateWithDatabase();
             }
         }
+        */
 
         $this->loadAccessData();
 
