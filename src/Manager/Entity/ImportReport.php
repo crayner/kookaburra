@@ -396,7 +396,12 @@ class ImportReport
      */
     public function getModules(): ArrayCollection
     {
-        return $this->modules = $this->modules ?: new ArrayCollection();
+        if (null === $this->modules) {
+            $this->modules = new ArrayCollection();
+            foreach(ProviderFactory::getRepository(Module::class)->findAll() as $module)
+                $this->modules->set($module->getName(), $module);
+        }
+        return $this->modules;
     }
 
     /**
@@ -768,6 +773,7 @@ class ImportReport
         $resolver->setDefaults([
             'category' => null,
             'grouping' => null,
+            'custom' => false,
         ]);
         $resolver->setAllowedTypes('modes', 'array');
         $this->details = $resolver->resolve($details);

@@ -16,6 +16,7 @@ use App\Entity\Setting;
 use App\Manager\Entity\ImportReport;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -47,34 +48,38 @@ class ImportManager
      */
     public function loadImportReportList(bool $validateStructure = false): ArrayCollection
     {
-        $importReports = [];
-
+        $finder = new Finder();
         // Get the built-in import definitions
-        $defaultFiles = glob($this->getImportReportDir() . "/*.yaml");
+        $defaultFiles = $finder->files()->in($this->getImportReportDir())->name(['*.yaml', '*.yml']);
 
         // Create ImportReport objects for each file
-        foreach ($defaultFiles as $file) {
-            $fileData = Yaml::parse(file_get_contents($file));
+        if ($finder->hasResults()) {
+            foreach ($defaultFiles as $file) {
+                $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
 
-            if (isset($fileData['details']) && isset($fileData['details']['type'])) {
-                $fileData['details']['grouping'] = (isset($fileData['access']['module']))? $fileData['access']['module'] : 'General';
-                $this->addImportReport($fileData['details']['type'], new ImportReport($fileData, $validateStructure));
+                if (isset($fileData['details']) && isset($fileData['details']['type'])) {
+                    $fileData['details']['grouping'] = (isset($fileData['access']['module'])) ? $fileData['access']['module'] : 'General';
+                    $this->addImportReport($fileData['details']['type'], new ImportReport($fileData, $validateStructure));
+                }
             }
         }
-
-        // Get the user-defined custom definitions
-        $customFiles = glob($this->getCustomImportReportDir() . "/*.yaml");
 
         if (! is_dir($this->getCustomImportReportDir()))
             mkdir($this->getCustomImportReportDir(), 0755, true) ;
 
-        foreach ($customFiles as $file) {
-            $fileData = $yaml::parse(file_get_contents($file));
+        $finder = new Finder();
+        // Get the user-defined custom definitions
+        $customFiles = $finder->files()->in($this->getCustomImportReportDir())->name(["*.yaml", '*.yml']);
 
-            if (isset($fileData['details']) && isset($fileData['details']['type'])) {
-                $fileData['details']['grouping'] = '* Custom Imports';
-                $fileData['details']['custom'] = true;
-                $this->addImportReport($fileData['details']['type'], new ImportReport($fileData, $validateStructure));
+        if ($finder->hasResults()) {
+            foreach ($customFiles as $file) {
+                $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
+
+                if (isset($fileData['details']) && isset($fileData['details']['type'])) {
+                    $fileData['details']['grouping'] = '* Custom Imports';
+                    $fileData['details']['custom'] = true;
+                    $this->addImportReport($fileData['details']['type'], new ImportReport($fileData, $validateStructure));
+                }
             }
         }
 
@@ -121,7 +126,7 @@ class ImportManager
      */
     public function addImportReport(string $key, ImportReport $type): ImportManager
     {
-        $this->getImportReports() ->set($key,$type);
+        $this->getImportReports()->set($key,$type);
         return $this;
     }
 

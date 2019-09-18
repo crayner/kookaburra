@@ -65,12 +65,6 @@ class ActionRepository extends ServiceEntityRepository
      */
     public function findOneByModuleContainsURL(Module $module, string $address): ?Action
     {
-        $this->actions = $this->actions ?: $this->findAll();
-
-        foreach($this->actions as $action)
-            if ($action->getModule()->isEqualTo($module) && false !== stripos($action->getURLList(), $address))
-                return $action;
-
         return $this->createQueryBuilder('a')
             ->where('a.module = :module')
             ->setParameter('module', $module)

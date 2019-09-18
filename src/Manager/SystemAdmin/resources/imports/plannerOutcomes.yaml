@@ -30,7 +30,7 @@ table:
         name: "Learning Area"
         desc: "Short Name"
         args: { filter: string, custom: true }
-        relationship: { table: Department, key: DepartmentID, field: nameShort  }
+        relationship: { table: Department, key: id, field: nameShort  }
         select: d.nameShort
     name: 
         name: "Name"

@@ -8,8 +8,8 @@ framework:
     session:
         handler_id: ~
         cookie_secure: auto
-        cookie_samesite: lax
-        name: gibbon_session
+        cookie_samesite: strict
+        name: kookaburra_session
 
     #esi: true
     #fragments: true

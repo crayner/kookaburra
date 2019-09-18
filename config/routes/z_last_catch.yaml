@@ -7,3 +7,4 @@ default_catch:
         permanent: true
     requirements:
         path: ".+"
+    schemes: [ 'https' ]
