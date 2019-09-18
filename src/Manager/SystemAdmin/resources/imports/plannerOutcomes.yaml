@@ -1,0 +1,71 @@
+details:
+    type: plannerOutcomes
+    name: Outcomes
+    table: Outcome
+    modes: { update: true, insert: true, export: true }
+    alias: o
+access:
+    module: Planner
+    action: Manage Outcomes_viewEditAll
+primaryKey:
+    id
+uniqueKeys:
+    - [ name, department ]
+    - [ nameShort, department ]
+join:
+    Department:
+        table: Outcome
+        alias: d
+    PersonCreator:
+        table: Outcome
+        alias: p
+        targetTable: Person
+table:
+    scope: 
+        name: "Scope"
+        desc: ""
+        args: { filter: string, required: true, custom: true }
+        select: o.scope
+    department:
+        name: "Learning Area"
+        desc: "Short Name"
+        args: { filter: string, custom: true }
+        relationship: { table: Department, key: DepartmentID, field: nameShort  }
+        select: d.nameShort
+    name: 
+        name: "Name"
+        desc: ""
+        args: { filter: string, required: true }
+        select: o.name
+    nameShort:
+        name: "Short Name"
+        desc: ""
+        args: { filter: string, required: true }
+        select: o.nameShort
+    active:
+        name: "Active"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: o.active
+    category:
+        name: "Category"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: o.category
+    description:
+        name: "Description"
+        desc: ""
+        args: { filter: html }
+        select: o.description
+    yearGroupList:
+        name: "Year Groups"
+        desc: "Relevant student year groups"
+        args: { filter: csv, custom: true }
+        relationship: { table: YearGroup, key: id, field: nameShort }
+        select: o.yearGroupList
+    personCreator:
+        name: "Created By"
+        desc: "Username"
+        args: { filter: string, custom: true }
+        relationship: { table: Person, key: PersonID, field: username }
+        select: p.username

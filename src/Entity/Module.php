@@ -16,6 +16,8 @@ use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class Module
@@ -335,5 +337,18 @@ class Module implements EntityInterface
     public function getEntryURLFullRoute(?string $entryURL = null): string
     {
         return Action::getRouteName($this->getName(), ($entryURL ?: $this->getEntryURL()));
+    }
+
+    /**
+     * isEqualTo
+     * @param Module $user
+     * @return true
+     */
+    public function isEqualTo(Module $module): bool
+    {
+        if ($module->getId() !== $this->getId())
+            return false;
+
+        return true;
     }
 }

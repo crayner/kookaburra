@@ -47,7 +47,6 @@ class ImportManager
      */
     public function loadImportReportList(bool $validateStructure = false): ArrayCollection
     {
-        $yaml = new Yaml();
         $importReports = [];
 
         // Get the built-in import definitions
@@ -55,7 +54,7 @@ class ImportManager
 
         // Create ImportReport objects for each file
         foreach ($defaultFiles as $file) {
-            $fileData = $yaml::parse(file_get_contents($file));
+            $fileData = Yaml::parse(file_get_contents($file));
 
             if (isset($fileData['details']) && isset($fileData['details']['type'])) {
                 $fileData['details']['grouping'] = (isset($fileData['access']['module']))? $fileData['access']['module'] : 'General';

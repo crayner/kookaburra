@@ -34,6 +34,13 @@ class ActionRepository extends ServiceEntityRepository
         parent::__construct($registry, Action::class);
     }
 
+    /**
+     * findOneByURLListModuleNameRoleID
+     * @param string $URLList
+     * @param string $moduleName
+     * @param string|null $roleID
+     * @return array
+     */
     public function findOneByURLListModuleNameRoleID(string $URLList, string $moduleName, string $roleID = null)
     {
         if ('' === $moduleName)
@@ -58,6 +65,12 @@ class ActionRepository extends ServiceEntityRepository
      */
     public function findOneByModuleContainsURL(Module $module, string $address): ?Action
     {
+        $this->actions = $this->actions ?: $this->findAll();
+
+        foreach($this->actions as $action)
+            if ($action->getModule()->isEqualTo($module) && false !== stripos($action->getURLList(), $address))
+                return $action;
+
         return $this->createQueryBuilder('a')
             ->where('a.module = :module')
             ->setParameter('module', $module)
@@ -70,6 +83,11 @@ class ActionRepository extends ServiceEntityRepository
     }
 
     /**
+     * @var Action[]
+     */
+    private $actions;
+
+    /**
      * findOneByNameModule
      * @param string $name
      * @param Module $module
@@ -78,6 +96,12 @@ class ActionRepository extends ServiceEntityRepository
      */
     public function findOneByNameModule(string $name, Module $module): Action
     {
+        $this->actions = $this->actions ?: $this->findAll();
+
+        foreach($this->actions as $action)
+            if ($action->getName() === $name && $action->getModule()->isEqualTo($module))
+                return $action;
+
         return $this->createQueryBuilder('a')
             ->where('a.name = :name')
             ->andWhere('a.module = :module')
