@@ -704,100 +704,102 @@ class SystemAdminController extends AbstractController
 
         $excel->setActiveSheetIndex(0);
 
-        $count = 0;
-        $rowData = [];
-        $queryFields = [];
-        $columnFields = $report->getAllFields();
+        if ($manager->isDataExport()) {
+            $count = 0;
+            $rowData = [];
+            $queryFields = [];
+            $columnFields = $report->getAllFields();
 
-        $columnFields = array_filter($columnFields, function ($fieldName) use ($report) {
-            return !$report->isFieldHidden($fieldName);
-        });
+            $columnFields = array_filter($columnFields, function ($fieldName) use ($report) {
+                return !$report->isFieldHidden($fieldName);
+            });
 
-        // Create the header row
-        foreach ($columnFields as $fieldName) {
-            $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($count).'1', $report->getField($fieldName, 'name', $fieldName));
-            $excel->getActiveSheet()->getStyle(GlobalHelper::num2alpha($count).'1')->applyFromArray($style_head_fill);
+            // Create the header row
+            foreach ($columnFields as $fieldName) {
+                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($count) . '1', $report->getField($fieldName, 'name', $fieldName));
+                $excel->getActiveSheet()->getStyle(GlobalHelper::num2alpha($count) . '1')->applyFromArray($style_head_fill);
 
-            // Dont auto-size giant text fields
-            if ($report->getField($fieldName, 'kind') == 'text') {
-                $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setWidth(25);
-            } else {
-                $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setAutoSize(true);
+                // Dont auto-size giant text fields
+                if ($report->getField($fieldName, 'kind') == 'text') {
+                    $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setWidth(25);
+                } else {
+                    $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setAutoSize(true);
+                }
+
+                // Add notes to column headings
+                $info = ($report->isFieldRequired($fieldName)) ? "* required\n" : '';
+                $info .= $report->readableFieldType($fieldName) . "\n";
+                $info .= $report->getField($fieldName, 'desc', '');
+                $info = strip_tags($info);
+
+                if (!empty($info)) {
+                    $excel->getActiveSheet()->getComment(GlobalHelper::num2alpha($count) . '1')->getText()->createTextRun($info);
+                }
+
+                $count++;
             }
 
-            // Add notes to column headings
-            $info = ($report->isFieldRequired($fieldName))? "* required\n" : '';
-            $info .= $report->readableFieldType($fieldName)."\n";
-            $info .= $report->getField($fieldName, 'desc', '');
-            $info = strip_tags($info);
+            $data = [];;
+            $tableName = ucfirst($report->getDetail('table'));
+            $query = $this->getDoctrine()->getManager()->createQueryBuilder();
+            $query->from('\App\Entity\\' . $tableName, $report->getJoinAlias($tableName));
 
-            if (!empty($info)) {
-                $excel->getActiveSheet()->getComment(GlobalHelper::num2alpha($count).'1')->getText()->createTextRun($info);
+            foreach ($report->getJoin() as $fieldName => $join) {
+                $type = $join['type'];
+                $query->$type($report->getJoinAlias($join['table']) . '.' . $join['reference'], $join['alias']);
             }
 
-            $count++;
-        }
+            $select = [];
+            $k = 0;
+            foreach ($report->getFields() as $field) {
+                $w = '';
+                if (is_array($field['select'])) {
+                    $w .= "CONCAT(";
+                    foreach ($field['select'] as $name)
+                        $w .= $name . ", ' ',";
+                    $w = rtrim($w, "', ") . ")'";
+                } else {
+                    $w .= $field['select'];
+                }
 
-        $data = [];;
-        $tableName = ucfirst($report->getDetail('table'));
-        $query = $this->getDoctrine()->getManager()->createQueryBuilder();
-        $query->from('\App\Entity\\'.$tableName, $report->getJoinAlias($tableName));
-
-        foreach($report->getJoin() as $fieldName=>$join)
-        {
-            $type = $join['type'];
-            $query->$type($report->getJoinAlias($join['table']) . '.' . $join['reference'], $join['alias']);
-        }
-
-        $select = [];
-        foreach($report->getFields() as $field)
-        {
-            $w = '';
-            if (is_array($field['select'])) {
-                $w .= "CONCAT(";
-                foreach($field['select'] as $name)
-                    $w .= $name . ", ' ',";
-                $w = rtrim($w,"', "). ")'";
-            } else {
-                $w .= $field['select'];
+                $w .= ' AS field_' . $k++;
+                $select[] = $w;
             }
 
-            $w .= ' AS '.str_replace(' ','_', $field['name']);
-            $select[] = $w;
-        }
-        $query->select($select);
+            $query->select($select);
 
-        if (!$manager->isDataExportAll()) {
+            if (!$manager->isDataExportAll()) {
 
-            // Optionally limit all exports to the current school year by default, to avoid massive files
-            $schoolYear = $report->getTablesUsed();
+                // Optionally limit all exports to the current school year by default, to avoid massive files
+                $schoolYear = $report->getTablesUsed();
 
-            if (in_array('SchoolYear', $report->getTablesUsed()) && !$report->isFieldReadOnly('SchoolYear')) {
-                $data['schoolYear'] = $session->get('schoolYearCurrent')->getId();
-                $query->where($report->getJoinAlias('SchoolYear').'.id = :schoolYear');
+                if (in_array('SchoolYear', $report->getTablesUsed()) && !$report->isFieldReadOnly('SchoolYear')) {
+                    $data['schoolYear'] = $session->get('schoolYearCurrent')->getId();
+                    $query->where($report->getJoinAlias('SchoolYear') . '.id = :schoolYear');
+                }
             }
-        }
 
-        if (null !== $report->getPrimaryKey())
-            $query->setParameters($data)->orderBy($report->getJoinAlias($tableName).'.'. $report->getPrimaryKey(), 'ASC');
+            if (null !== $report->getPrimaryKey())
+                $query->setParameters($data)->orderBy($report->getJoinAlias($tableName) . '.' . $report->getPrimaryKey(), 'ASC');
 
-        try {
-            $result = $query->getQuery()->getResult();
-        } catch (QueryException $e) {
-            dd($tableName,$report,$query,$e->getMessage());
-        }
+            try {
+                $result = $query->getQuery()->getResult();
+            } catch (QueryException $e) {
+                dd($tableName, $report, $query, $e->getMessage());
+            }
 
-        // Continue if there's data
-        if (count($result) > 0) {
+            // Continue if there's data
+            if (count($result) > 0) {
 
-            $rowCount = 2;
-            foreach($result as $row) {
+                $rowCount = 2;
+                foreach ($result as $row) {
 
-                $i = 0;
-                foreach($row as $value)
-                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++).$rowCount, (string) $value);
+                    $i = 0;
+                    foreach ($row as $value)
+                        $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string)$value);
 
-                $rowCount++;
+                    $rowCount++;
+                }
             }
         }
 

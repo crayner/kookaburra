@@ -1,0 +1,70 @@
+details:
+    type: familyAdult
+    name: Adults
+    category: Family
+    table: FamilyAdult
+    modes: { update: true, insert: true, export: true }
+    alias: fa
+access:
+    module: User Admin
+    action: Manage Families
+primaryKey:
+    id
+uniqueKeys:
+    - [ family, contactPriority ]
+    - [ family, person ]
+join:
+    Family:
+        table: FamilyAdult
+        alias: f
+    Person:
+        table: FamilyAdult
+        alias: p
+table:
+    family:
+        name: "Family Sync Key"
+        desc: "Unique ID for family, according to source system."
+        args: { filter: string, required: true }
+        relationship: { table: Family, key: Family, field: familySync  }
+        select: f.familySync
+    person:
+        name: "Adult"
+        desc: "Username"
+        args: { filter: nospaces, required: true }
+        relationship: { table: Person, key: PersonID, field: username  }
+        select: p.username
+    comment:
+        name: "Comment"
+        desc: "Data displayed in full Student Profile"
+        args: { filter: string }
+        select: fa.comment
+    childDataAccess:
+        name: "Data Access?"
+        desc: "Access data on family's children?"
+        args: { filter: yesno, custom: true }
+        select: fa.childDataAccess
+    contactPriority:
+        name: "Contact Priority"
+        desc: "The order in which school should contact family members."
+        args: { filter: numeric, custom: true, required: true }
+        select: fa.contactPriority
+    contactCall:
+        name: "Call?"
+        desc: "Receive non-emergency phone calls from school?"
+        args: { filter: yesno, custom: true }
+        select: fa.contactCall
+    contactSMS:
+        name: "SMS?"
+        desc: "Receive non-emergency SMS messages from school?"
+        args: { filter: yesno, custom: true }
+        select: fa.contactSMS
+    contactEmail:
+        name: "Email?"
+        desc: "Receive non-emergency emails from school?"
+        args: { filter: yesno, custom: true }
+        select: fa.contactEmail
+    contactMail:
+        name: "Mail?"
+        desc: "Receive postage mail from school?"
+        args: { filter: yesno, custom: true }
+        select: fa.contactMail

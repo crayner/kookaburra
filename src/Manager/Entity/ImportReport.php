@@ -695,20 +695,24 @@ class ImportReport
             'table',
             'alias',
             'reference',
+            'targetTable'
         ]);
         $resolver->setAllowedTypes('table', 'string');
         $resolver->setAllowedTypes('reference', 'string');
+        $resolver->setAllowedTypes('targetTable', 'string');
         $resolver->setAllowedValues('type', ['join', 'leftJoin']);
 
-        foreach ($join as $table => $item) {
+        foreach ($join as $field => $item) {
             if (!isset($item['reference']))
-                $item['reference'] = lcfirst($table);
+                $item['reference'] = lcfirst($field);
+            if (!isset($item['targetTable']))
+                $item['targetTable'] = $field;
 
-            $join[$table] = $resolver->resolve($item);
-            if (!class_exists('\App\Entity\\' . $table))
-                throw new MissingClassException(sprintf('The class %s does not exists.', '\App\Entity\\' . $table));
+            $join[$field] = $resolver->resolve($item);
+            if (!class_exists('\App\Entity\\' . $item['targetTable']))
+                throw new MissingClassException(sprintf('The class %s does not exists.', '\App\Entity\\' . $item['targetTable']));
             if (!class_exists('\App\Entity\\' . $item['table']))
-                throw new MissingClassException(sprintf('The class %s does not exists.', '\App\Entity\\' . $table));
+                throw new MissingClassException(sprintf('The class %s does not exists.', '\App\Entity\\' . $item['table']));
         }
 
         $this->join = $join;

@@ -1,0 +1,60 @@
+details:
+    type: family
+    name: Family
+    category: Family
+    table: Family
+    modes: { update: true, insert: true, export: true }
+    alias: f
+access:
+    module: User Admin
+    action: Manage Families
+primaryKey:
+    id
+uniqueKeys:
+    - familySync
+table:
+    name: 
+        name: "Family Name"
+        desc: ""
+        args: { filter: string, required: true }
+        select: f.name
+    status: 
+        name: "Marital Status"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: f.status
+    languageHomePrimary: 
+        name: "Home Language - Primary"
+        desc: ""
+        args: { filter: language }
+        select: f.languageHomePrimary
+    languageHomeSecondary: 
+        name: "Home Language - Secondary"
+        desc: ""
+        args: { filter: language }
+        select: f.languageHomeSecondary
+    nameAddress:
+        name: "Address Name"
+        desc: "Formal name to address parents with."
+        args: { filter: string, required: true }
+        select: f.nameAddress
+    homeAddress:
+        name: "Home Address"
+        desc: "Unit, Building, Street"
+        args: { filter: string }
+        select: f.homeAddress
+    homeAddressDistrict:
+        name: "Home Address (District)"
+        desc: "County, State, District"
+        args: { filter: string }
+        select: f.homeAddressDistrict
+    homeAddressCountry:
+        name: "Home Address (Country)"
+        desc: ""
+        args: { filter: country }
+        select: f.homeAddressCountry
+    familySync:
+        name: "Family Sync Key"
+        desc: "Unique ID for family, according to source system."
+        args: { filter: string, custom: true, required: true }
+        select: f.familySync
