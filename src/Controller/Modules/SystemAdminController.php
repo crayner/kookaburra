@@ -750,8 +750,7 @@ class SystemAdminController extends AbstractController
             }
 
             $select = [];
-            $k = 0;
-            foreach ($report->getFields() as $field) {
+            foreach ($report->getFields() as $name=>$field) {
                 $w = '';
                 if (is_array($field['select'])) {
                     $w .= "CONCAT(";
@@ -764,13 +763,13 @@ class SystemAdminController extends AbstractController
                     $w .= $field['select'];
                 }
 
-                $w .= ' AS field_' . $k++;
+                $w .= ' AS ' . $name;
                 $select[] = $w;
             }
 
             $query->select($select);
 
-            if (!$manager->isDataExportAll()) {
+            if (!$manager->isDataExportAll() && $report->getDetail('table') !== 'SchoolYear') {
 
                 // Optionally limit all exports to the current school year by default, to avoid massive files
                 $schoolYear = $report->getTablesUsed();
@@ -797,9 +796,15 @@ class SystemAdminController extends AbstractController
                 foreach ($result as $row) {
 
                     $i = 0;
-                    foreach ($row as $value)
-                        $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string)$value);
-
+                    foreach ($row as $name=>$value) {
+                        switch ($report->getFieldFilter($name)) {
+                            case 'date':
+                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, $value->format('Y-m-d'));
+                                break;
+                            default:
+                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string)$value);
+                        }
+                    }
                     $rowCount++;
                 }
             }

@@ -779,4 +779,15 @@ class ImportReport
         $this->details = $resolver->resolve($details);
         return $this;
     }
+
+    /**
+     * getFieldFilter
+     * @param string $name
+     * @return string
+     */
+    public function getFieldFilter(string $name): string
+    {
+        $field = isset($this->fields[$name]) ? $this->fields[$name] : null;
+        return null !== $field && isset($field['args']['filter']) ? $field['args']['filter'] : 'string';
+    }
 }
