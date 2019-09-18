@@ -57,6 +57,12 @@ class ExternalAssessmentStudent
     private $attachment;
 
     /**
+     * @var ExternalAssessmentStudentEntry|null
+     * @ORM\OneToMany(targetEntity="App\Entity\ExternalAssessmentStudentEntry", mappedBy="externalAssessmentStudent")
+     */
+    private $entries;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -143,6 +149,26 @@ class ExternalAssessmentStudent
     public function setAttachment(?string $attachment): ExternalAssessmentStudent
     {
         $this->attachment = $attachment;
+        return $this;
+    }
+
+    /**
+     * @return ExternalAssessmentStudentEntry|null
+     */
+    public function getEntries(): ?ExternalAssessmentStudentEntry
+    {
+        return $this->entries;
+    }
+
+    /**
+     * Entries.
+     *
+     * @param ExternalAssessmentStudentEntry|null $entries
+     * @return ExternalAssessmentStudent
+     */
+    public function setEntries(?ExternalAssessmentStudentEntry $entries): ExternalAssessmentStudent
+    {
+        $this->entries = $entries;
         return $this;
     }
 }

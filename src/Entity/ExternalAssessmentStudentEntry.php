@@ -32,7 +32,7 @@ class ExternalAssessmentStudentEntry
 
     /**
      * @var ExternalAssessmentStudent|null
-     * @ORM\ManyToOne(targetEntity="ExternalAssessmentStudent")
+     * @ORM\ManyToOne(targetEntity="ExternalAssessmentStudent", inversedBy="entries")
      * @ORM\JoinColumn(name="gibbonExternalAssessmentStudentID", referencedColumnName="gibbonExternalAssessmentStudentID", nullable=false)
      */
     private $externalAssessmentStudent;

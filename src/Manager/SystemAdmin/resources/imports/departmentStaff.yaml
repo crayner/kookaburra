@@ -1,0 +1,38 @@
+details:
+    type: departmentStaff
+    name: Departments - Staff
+    table: DepartmentStaff
+    modes: { update: true, insert: true, export: true }
+    alias: ds
+access:
+    module: School Admin
+    action: Manage Departments
+primaryKey:
+    id
+uniqueKeys:
+    - [ department, person ]
+join:
+    Department:
+        table: DepartmentStaff
+        alias: d
+    Person:
+        table: DepartmentStaff
+        alias: p
+table:
+    Department:
+        name: "Department"
+        desc: "Short Name"
+        args: { filter: string, required: true }
+        relationship: { table: Department, key: id, field: nameShort  }
+        select: d.nameShort
+    Person:
+        name: "Staff"
+        desc: "Username"
+        args: { filter: nospaces, required: true }
+        relationship: { table: Person, key: id, field: username  }
+        select: p.username
+    role:
+        name: "Role"
+        desc: ""
+        args: { filter: string, required: true, custom: true }
+        select: ds.role

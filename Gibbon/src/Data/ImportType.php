@@ -198,13 +198,12 @@ class ImportType
 
     public static function getBaseDir(Connection $pdo)
     {
-        $absolutePath = getSettingByScope($pdo->getConnection(), 'System', 'absolutePath');
-        return rtrim($absolutePath, '/ ');
+        return realpath(__DIR__. '/../../..');
     }
 
     public static function getImportTypeDir(Connection $pdo)
     {
-        return self::getBaseDir($pdo) . "/resources/imports";
+        return realpath( __DIR__ . '/../../../src/Manager/SystemAdmin/resources/imports');
     }
 
     public static function getCustomImportTypeDir(Connection $pdo)
@@ -1074,7 +1073,7 @@ class ImportType
     }
 
     /**
-     * Has the ImportType been checked against the databate table for field validity?
+     * Has the ImportReport been checked against the databate table for field validity?
      *
      * @return  bool true if the importType has been validated
      */

@@ -68,4 +68,23 @@ class ActionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * findOneByNameModule
+     * @param string $name
+     * @param Module $module
+     * @return Action
+     * @throws NonUniqueResultException
+     */
+    public function findOneByNameModule(string $name, Module $module): Action
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.name = :name')
+            ->andWhere('a.module = :module')
+            ->setParameters(['name' => $name, 'module' => $module])
+            ->orderBy('a.precedence', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

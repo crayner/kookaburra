@@ -1,0 +1,44 @@
+details:
+    type: departments
+    name: Departments
+    table: Department
+    modes: { update: true, insert: true, export: true }
+    alias: d
+access:
+    module: School Admin
+    action: Manage Departments
+primaryKey:
+    id
+uniqueKeys:
+    - nameShort
+table:
+    type: 
+        name: "Type"
+        desc: ""
+        args: { filter: string, required: true, custom: true }
+        select: d.type
+    name: 
+        name: "Name"
+        desc: ""
+        args: { filter: string, required: true }
+        select: d.name
+    nameShort: 
+        name: "Short Name"
+        desc: ""
+        args: { filter: string, required: true }
+        select: d.nameShort
+    subjectListing: 
+        name: "Subject Listing"
+        desc: ""
+        args: { filter: string }
+        select: d.subjectListing
+    blurb: 
+        name: "Blurb"
+        desc: ""
+        args: { filter: html }
+        select: d.blurb
+    logo: 
+        name: "Logo"
+        desc: "125x125px jpg/png/gif"
+        args: { filter: string, custom: true }
+        select: d.logo

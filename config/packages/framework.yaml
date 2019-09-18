@@ -34,4 +34,4 @@ framework:
         #app: cache.adapter.apcu
     assets:
         base_urls:
-            - 'http://bilby.craigrayner.com/'
+            - 'https://bilby.craigrayner.com/'

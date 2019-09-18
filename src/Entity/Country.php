@@ -34,4 +34,44 @@ class Country
      * @ORM\Column(length=7, name="iddCountryCode")
      */
     private $iddCountryCode;
+
+    /**
+     * @return string|null
+     */
+    public function getPrintableName(): ?string
+    {
+        return $this->printable_name;
+    }
+
+    /**
+     * PrintableName.
+     *
+     * @param string|null $printable_name
+     * @return Country
+     */
+    public function setPrintableName(?string $printable_name): Country
+    {
+        $this->printable_name = $printable_name;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIddCountryCode(): ?string
+    {
+        return $this->iddCountryCode;
+    }
+
+    /**
+     * IddCountryCode.
+     *
+     * @param string|null $iddCountryCode
+     * @return Country
+     */
+    public function setIddCountryCode(?string $iddCountryCode): Country
+    {
+        $this->iddCountryCode = $iddCountryCode;
+        return $this;
+    }
 }

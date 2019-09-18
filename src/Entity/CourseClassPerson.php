@@ -25,6 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 class CourseClassPerson implements EntityInterface
 {
     use BooleanList;
+
     /**
      * @var integer|null
      * @ORM\Id()

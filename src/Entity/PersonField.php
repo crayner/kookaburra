@@ -231,11 +231,20 @@ class PersonField
     }
 
     /**
+     * isRequired
+     * @return bool
+     */
+    public function isRequired(): bool
+    {
+        return $this->getRequired() === 'Y' ? true : false;
+    }
+
+    /**
      * @return string|null
      */
     public function getRequired(): ?string
     {
-        return $this->required;
+        return $this->required = self::checkBoolean($this->required, 'N');
     }
 
     /**

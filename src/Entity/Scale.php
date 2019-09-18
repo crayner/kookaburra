@@ -71,6 +71,13 @@ class Scale implements EntityInterface
     private $numeric = 'N';
 
     /**
+     * @var Scale|null
+     * @ORM\OneToMany(targetEntity="ScaleGrade", mappedBy="scale")
+     */
+
+    private $scaleGrades;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -193,6 +200,26 @@ class Scale implements EntityInterface
     public function setNumeric(?string $numeric): Scale
     {
         $this->numeric = self::checkBoolean($numeric, 'N');
+        return $this;
+    }
+
+    /**
+     * @return Scale|null
+     */
+    public function getScaleGrades(): ?Scale
+    {
+        return $this->scaleGrades;
+    }
+
+    /**
+     * ScaleGrades.
+     *
+     * @param Scale|null $scaleGrades
+     * @return Scale
+     */
+    public function setScaleGrades(?Scale $scaleGrades): Scale
+    {
+        $this->scaleGrades = $scaleGrades;
         return $this;
     }
 }

@@ -32,15 +32,23 @@ use App\Form\Modules\SystemAdmin\SecuritySettingsType;
 use App\Form\Modules\SystemAdmin\SMSSettingsType;
 use App\Form\Modules\SystemAdmin\StringReplacementType;
 use App\Form\Modules\SystemAdmin\SystemSettingsType;
+use App\Manager\Entity\ImportReport;
+use App\Manager\ExcelManager;
 use App\Manager\SystemAdmin\GoogleSettingManager;
+use App\Manager\SystemAdmin\ImportManager;
 use App\Manager\SystemAdmin\LanguageManager;
 use App\Manager\SystemAdmin\MailerSettingsManager;
 use App\Manager\SystemAdmin\StringReplacementPagination;
 use App\Manager\VersionManager;
 use App\Provider\ProviderFactory;
+use App\Util\GlobalHelper;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationsHelper;
+use App\Util\UserHelper;
 use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\ORM\Query\QueryException;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -562,11 +570,11 @@ class SystemAdminController extends AbstractController
 
         if ($request->getContentType() === 'json') {
             $content = json_decode($request->getContent(), true);
-            dump($content);
+
             $data = [];
             $form->submit($content);
             if ($form->isValid()) {
-                dump($stringReplacement);
+
                 try {
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($stringReplacement);
@@ -636,5 +644,171 @@ class SystemAdminController extends AbstractController
         }
 
         return $this->forward(SystemAdminController::class . '::stringReplacementManage');
+    }
+
+    /**
+     * manageImport
+     * @Route("/import/manage/", name="import_manage")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function manageImport(ImportManager $manager)
+    {
+        $manager->loadImportReportList();
+
+        return $this->render('modules/system_admin/import_manage.html.twig',
+            [
+                'manager' => $manager,
+            ]
+        );
+    }
+
+    /**
+     * exportRun
+     * @param ImportManager $manager
+     * @Route("/export/{report}/{data}/run/{all}", name="export_run")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function exportRun(string $report, ImportManager $manager, ExcelManager $excel, Request $request, bool $data = false, bool $all = false)
+    {
+        $manager->setDataExport($data || true);
+        $manager->setDataExportAll($all);
+        $session = $request->getSession();
+
+        $report = $manager->getImportReport($report);
+        if (!$report instanceof ImportReport)
+            return $this->render('components/error.html.twig',
+                [
+                    'error' => 'Your request failed because your inputs were invalid.',
+                ]
+            );
+
+        if (!$report->isImportAccessible())
+            return $this->render('components/error.html.twig',
+                [
+                    'error' => 'Your request failed because you do not have access to this action.',
+                ]
+            );
+
+
+        //Create border styles
+        $style_head_fill= array(
+            'fill' => array('fillType' => Fill::FILL_SOLID, 'startColor' => array('rgb' => 'eeeeee'), 'endColor' => array('rgb' => 'eeeeee')),
+            'borders' => array('top' => array('borderStyle' => Border::BORDER_THIN, 'color' => array('rgb' => '444444'), ), 'bottom' => array('borderStyle' => Border::BORDER_THIN, 'color' => array('rgb' => '444444'), )),
+        );
+
+        // Set document properties
+        $excel->getProperties()->setCreator(UserHelper::getCurrentUser()->formatName())
+            ->setLastModifiedBy(UserHelper::getCurrentUser()->formatName())
+            ->setTitle($report->getDetail('name'))
+        ;
+
+        $excel->setActiveSheetIndex(0);
+
+        $count = 0;
+        $rowData = [];
+        $queryFields = [];
+        $columnFields = $report->getAllFields();
+
+        $columnFields = array_filter($columnFields, function ($fieldName) use ($report) {
+            return !$report->isFieldHidden($fieldName);
+        });
+
+        // Create the header row
+        foreach ($columnFields as $fieldName) {
+            $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($count).'1', $report->getField($fieldName, 'name', $fieldName));
+            $excel->getActiveSheet()->getStyle(GlobalHelper::num2alpha($count).'1')->applyFromArray($style_head_fill);
+
+            // Dont auto-size giant text fields
+            if ($report->getField($fieldName, 'kind') == 'text') {
+                $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setWidth(25);
+            } else {
+                $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setAutoSize(true);
+            }
+
+            // Add notes to column headings
+            $info = ($report->isFieldRequired($fieldName))? "* required\n" : '';
+            $info .= $report->readableFieldType($fieldName)."\n";
+            $info .= $report->getField($fieldName, 'desc', '');
+            $info = strip_tags($info);
+
+            if (!empty($info)) {
+                $excel->getActiveSheet()->getComment(GlobalHelper::num2alpha($count).'1')->getText()->createTextRun($info);
+            }
+
+            $count++;
+        }
+
+        $data = [];;
+        $tableName = ucfirst($report->getDetail('table'));
+        $query = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $query->from('\App\Entity\\'.$tableName, $report->getJoinAlias($tableName));
+
+        foreach($report->getJoin() as $fieldName=>$join)
+        {
+            $type = $join['type'];
+            $query->$type($report->getJoinAlias($join['table']) . '.' . $join['reference'], $join['alias']);
+        }
+
+        $select = [];
+        foreach($report->getFields() as $field)
+        {
+            $w = '';
+            if (is_array($field['select'])) {
+                $w .= "CONCAT(";
+                foreach($field['select'] as $name)
+                    $w .= $name . ", ' ',";
+                $w = rtrim($w,"', "). ")'";
+            } else {
+                $w .= $field['select'];
+            }
+
+            $w .= ' AS '.str_replace(' ','_', $field['name']);
+            $select[] = $w;
+        }
+        $query->select($select);
+
+        if (!$manager->isDataExportAll()) {
+
+            // Optionally limit all exports to the current school year by default, to avoid massive files
+            $schoolYear = $report->getTablesUsed();
+
+            if (in_array('SchoolYear', $report->getTablesUsed()) && !$report->isFieldReadOnly('SchoolYear')) {
+                $data['schoolYear'] = $session->get('schoolYearCurrent')->getId();
+                $query->where($report->getJoinAlias('SchoolYear').'.id = :schoolYear');
+            }
+        }
+
+        if (null !== $report->getPrimaryKey())
+            $query->setParameters($data)->orderBy($report->getJoinAlias($tableName).'.'. $report->getPrimaryKey(), 'ASC');
+
+        try {
+            $result = $query->getQuery()->getResult();
+        } catch (QueryException $e) {
+            dd($tableName,$report,$query,$e->getMessage());
+        }
+
+        // Continue if there's data
+        if (count($result) > 0) {
+
+            $rowCount = 2;
+            foreach($result as $row) {
+
+                $i = 0;
+                foreach($row as $value)
+                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++).$rowCount, (string) $value);
+
+                $rowCount++;
+            }
+        }
+
+        $filename = ($manager->isDataExport()) ? 'DataExport'.'-'.$report->getDetail('type') : 'DataStructure'.'-'.$report->getDetail('type');
+
+        $excel->setFileName($filename);
+
+        // FINALIZE THE DOCUMENT SO IT IS READY FOR DOWNLOAD
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $excel->setActiveSheetIndex(0);
+
+        $excel->exportWorksheet();
     }
 }

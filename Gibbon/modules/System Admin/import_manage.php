@@ -31,12 +31,12 @@ if (isActionAccessible($guid, $connection2, "/modules/System Admin/import_manage
 } else {
     $page->breadcrumbs->add(__('Import From File'));
 
+
     $logGateway = $container->get(LogGateway::class);
     $logsByType = $logGateway->selectLogsByModuleAndTitle('System Admin', 'Import - %')->fetchGrouped();
 
     // Get a list of available import options
     $importTypeList = ImportType::loadImportTypeList($pdo, false);
-
     // Build an array of combined import type info and log data
     $importTypeGroups = array_reduce($importTypeList, function ($group, $importType) use ($guid, $connection2, $logsByType) {
         if ($importType->isValid()) {

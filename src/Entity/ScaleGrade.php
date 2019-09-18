@@ -35,7 +35,7 @@ class ScaleGrade
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="Scale")
+     * @ORM\ManyToOne(targetEntity="Scale", inversedBy="scaleGrades")
      * @ORM\JoinColumn(name="gibbonScaleID", referencedColumnName="gibbonScaleID", nullable=false)
      */
     private $scale;

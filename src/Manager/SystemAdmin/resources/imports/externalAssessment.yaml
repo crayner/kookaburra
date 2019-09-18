@@ -1,0 +1,88 @@
+details:
+    type: externalAssessment
+    name: External Assessments
+    table: ExternalAssessmentStudentEntry
+    modes: { update: true, insert: true, export: true }
+    alias: ease
+access:
+    module: Formal Assessment
+    action: External Assessment Data_manage
+join:
+    ExternalAssessmentStudent:
+        table: ExternalAssessmentStudentEntry
+        alias: eas
+    ExternalAssessmentField:
+        table: ExternalAssessmentStudentEntry
+        alias: eaf
+    ExternalAssessment:
+        table: ExternalAssessmentStudent
+        alias: ea
+    Person:
+        table: ExternalAssessmentStudent
+        alias: p
+    ScaleGrade:
+        table: ExternalAssessmentStudentEntry
+        alias: sg
+fields:
+    id:
+        name: "External Assessment"
+        desc: "Name Short"
+        args: { filter: string, custom: true, required: true, readonly: [ExternalAssessmentStudentEntry] }
+        relationship: { table: ExternalAssessment, key: id, field: nameShort  }
+        select: ea.nameShort
+    date:
+        name: "Assessment Date"
+        desc: ""
+        args: {filter: date, custom: true, required: true, readonly: [ExternalAssessmentStudentEntry] }
+        select: eas.date
+    person:
+        name: "Student"
+        desc: "Username"
+        args: { filter: username, required: true }
+        relationship: { table: Person, key: id, field: username }
+        select: p.username
+    externalAssessmentStudent:
+        name: "Student Assessment"
+        desc: ""
+        args: { filter: string, linked: person }
+        relationship: { table: ExternalAssessmentStudent, key: id, field: [ person, date, ExternalAssessment ]  }
+        select: ea.name
+    category:
+        name: "Field Name Category"
+        desc: "Must match value of ExternalAssessmentField.category in database, less [numeric_] prefix."
+        args: { filter: string, custom: true, required: true, readonly: true }
+        select: eaf.category
+    externalAssessmentField:
+        name: "Field Name"
+        desc: "Must match value of ExternalAssessmentField.name in database."
+        args: { filter: string, custom: true, required: true }
+        relationship: { table: ExternalAssessmentField, key: id, field: [ name, category, externalAssessment ]  }
+        select: eaf.name
+    scaleGrade:
+        name: "Result"
+        desc: "Must match value of ScaleGrade.value in database."
+        args: { filter: string }
+        relationship: { table: Scale, key: id, join: externalAssessmentField, on: [scale, id], field: [ value, ExternalAssessmentField ] }
+        select: sg.value
+tables:
+    ExternalAssessmentStudent:
+        primaryKey:
+            id
+        uniqueKeys:
+            - [ externalAssessment, person, date ]
+        fields:
+            - externalAssessment
+            - person
+            - date
+    ExternalAssessmentStudentEntry:
+        primaryKey:
+            id
+        uniqueKeys:
+            - [ ExternalAssessmentStudentID, ExternalAssessmentFieldID ]
+        fields:
+            - externalAssessment
+            - date
+            - externalAssessmentStudent
+            - category
+            - externalAssessmentField
+            - scaleGrade
