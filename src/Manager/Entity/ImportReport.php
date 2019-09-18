@@ -699,6 +699,7 @@ class ImportReport
         ]);
         $resolver->setAllowedTypes('table', 'string');
         $resolver->setAllowedTypes('reference', 'string');
+        $resolver->setAllowedTypes('alias', 'string');
         $resolver->setAllowedTypes('targetTable', 'string');
         $resolver->setAllowedValues('type', ['join', 'leftJoin']);
 

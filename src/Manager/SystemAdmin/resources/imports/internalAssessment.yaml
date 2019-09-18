@@ -1,0 +1,98 @@
+details:
+    type: internalAssessment
+    name: Internal Assessments
+    table: InternalAssessmentEntry
+    modes: { update: true, insert: true, export: true }
+    alias: iae
+access:
+    module: Formal Assessment
+    action: Manage Internal Assessments
+primaryKey:
+    id
+uniqueKeys:
+    - [ internalAssessmentColumn, student ]
+join:
+    InternalAssessmentColumn:
+        table: InternalAssessmentEntry
+        alias: iac
+    CourseClass:
+        table: InternalAssessmentColumn
+        alias: cc
+    Course:
+        table: CourseClass
+        alias: c
+    SchoolYear:
+        table: Course
+        alias: sy
+    Student:
+        table: InternalAssessmentEntry
+        alias: p
+        targetTable: Person
+    LastEdit:
+        table: InternalAssessmentEntry
+        alias: le
+        targetTable: Person
+table:
+    schoolYear:
+        name: "School Year"
+        desc: "School year name, as set in School Admin. Must already exist."
+        args: { filter: schoolyear, required: true, custom: true, readonly: true }
+        relationship: { table: SchoolYear, key: SchoolYearID, field: name  }
+        select: sy.name
+    course:
+        name: "Course"
+        desc: "Short Name"
+        args: { filter: string, required: true, custom: true, readonly: true }
+        relationship: { table: Course, key: CourseID, field: [ nameShort, schoolYear ]  }
+        select: c.nameShort
+    courseClass:
+        name: "Class"
+        desc: "Short Name"
+        args: { filter: string, required: true, custom: true, readonly: true }
+        relationship: { table: CourseClass, key: CourseClassID, field: [ nameShort, course ]  }
+        select: cc.nameShort
+    internalAssessmentColumn:
+        name: "Internal Assessment"
+        desc: "Assessment Column Name"
+        args: { filter: string, custom: true, required: true }
+        relationship: { table: InternalAssessmentColumn, key: InternalAssessmentColumnID, field: [name, courseClass]  }
+        select: iac.name
+    student:
+        name: "Student"
+        desc: "Username"
+        args: { filter: string, required: true }
+        relationship: { table: Person, key: PersonID, field: username }
+        select: p.username
+    attainmentValue:
+        name: "Attainment Value"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: iae.attainmentValue
+    attainmentDescriptor:
+        name: "Attainment Descriptor"
+        desc: ""
+        args: { filter: string, linked: attainmentValue }
+        relationship: { table: ScaleGrade, key: descriptor, join: InternalAssessmentColumn, on: [scaleAttainment, scale], field: [ value, internalAssessmentColumn ] }
+        select: iae.attainmentDescriptor
+    effortValue:
+        name: "Effort Value"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: iae.effortValue
+    effortDescriptor:
+        name: "Effort Descriptor"
+        desc: ""
+        args: { filter: string, linked: effortValue }
+        relationship: { table: ScaleGrade, key: descriptor, join: InternalAssessmentColumn, on: [scaleEffort, scale], field: [ value, internalAssessmentColumn ] }
+        select: iae.effortDescriptor
+    comment:
+        name: "Comment"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: iae.comment
+    lastEdit:
+        name: "Created By"
+        desc: "Username"
+        args: { filter: string, custom: true }
+        relationship: { table: Person, key: id, field: username }
+        select: le.username
