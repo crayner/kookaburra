@@ -12,7 +12,6 @@
 
 namespace App\Manager\Entity;
 
-
 use App\Entity\Action;
 use App\Entity\Country;
 use App\Entity\Language;
@@ -25,6 +24,10 @@ use App\Util\SecurityHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class ImportReport
+ * @package App\Manager\Entity
+ */
 class ImportReport
 {
     /**
@@ -90,6 +93,7 @@ class ImportReport
         if (isset($data['details'])) {
             $this->setDetails($data['details']);
         }
+
         if (isset($data['access'])) {
             $this->access = $data['access'];
         }
@@ -717,6 +721,7 @@ class ImportReport
             $join[$field] = $resolver->resolve($item);
             if (!class_exists('\App\Entity\\' . $item['targetTable']))
                 throw new MissingClassException(sprintf('The class %s does not exists.', '\App\Entity\\' . $item['targetTable']));
+
             if (!class_exists('\App\Entity\\' . $item['table']))
                 throw new MissingClassException(sprintf('The class %s does not exists.', '\App\Entity\\' . $item['table']));
         }

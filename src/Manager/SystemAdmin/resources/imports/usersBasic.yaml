@@ -1,0 +1,114 @@
+details:
+    type: usersBasic
+    name: User - Data - Basic
+    category: User
+    table: Person
+    modes: { update: true, insert: true, export: true }
+    alias: p
+access:
+    module: User Admin
+    action: Manage Users_edit
+primaryKey:
+    id
+uniqueKeys:
+    - username
+join:
+    PrimaryRole:
+        table: Person
+        alias: r
+        targetTable: Role
+table:
+    title:
+        name: "Title"
+        desc: "e.g. Ms., Miss, Mr., Mrs., Dr."
+        args: {filter: string}
+        select: p.title
+    surname:
+        name: "Surname"
+        desc: "Family Name"
+        args: {filter: string, required: true}
+        select: p.surname
+    firstName:
+        name: "First Name"
+        desc: "Given name"
+        args: {filter: string, required: true}
+        select: p.firstName
+    preferredName:
+        name: "Preferred Name"
+        desc: "Most common name, alias, nickname, handle, etc"
+        args: {filter: string, required: true}
+        select: p.preferredName
+    officialName:
+        name: "Official Name"
+        desc: "Full name as shown in ID documents."
+        args: {filter: string, required: true}
+        select: p.officialName
+    nameInCharacters:
+        name: "Name In Characters"
+        desc: "Chinese or other character-based name."
+        args: {filter: string}
+        select: p.nameInCharacters
+    gender:
+        name: "Gender"
+        desc: ""
+        args: {filter: gender, required: true}
+        select: p.gender
+    dob:
+        name: "Date of Birth"
+        desc: ""
+        args: {filter: date}
+        select: p.dob
+    primaryRole:
+        name: "Primary Role"
+        desc: "Name"
+        args: {filter: string, required: true, custom: true }
+        relationship: { table: Role, key: id, field: name  }
+        select: r.name
+    allRoles:
+        name: "All Roles"
+        desc: "Role Names, Comma separated"
+        args: {filter: csv, required: true, custom: true }
+        relationship: { table: Role, key: id, field: name }
+        select: p.allRoles
+    username:
+        name: "Username"
+        desc: "Must be unique."
+        args: {filter: nospaces, required: true}
+        select: p.username
+    password:
+        name: "Password"
+        desc: ""
+        args: {filter: nospaces, required: true, custom: true, function: generatePassword}
+        select: p.passwordStrong
+    passwordForceReset:
+        name: "Force Reset Password?"
+        desc: ""
+        args: {filter: yesno, custom: true}
+        select: p.passwordForceReset
+    status:
+        name: "Status"
+        desc: ""
+        args: {filter: status, custom: true}
+        select: p.status
+    canLogin:
+        name: "Can Login?"
+        desc: ""
+        args: {filter: yesno, custom: true}
+        select: p.canLogin
+    email:
+        name: "Email"
+        desc: ""
+        args: {filter: email}
+        select: p.email
+    studentID:
+        name: "Student ID"
+        desc: "Must be unique if set."
+        args: {filter: string}
+        select: p.studentID
+    image_240:
+        name: "User Photo"
+        desc: "path from /uploads/ to medium portrait image (240px by 320px)"
+        args: {filter: string}
+        select: p.image_240
+
+

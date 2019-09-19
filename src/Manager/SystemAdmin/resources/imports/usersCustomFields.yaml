@@ -1,0 +1,80 @@
+details:
+    type: usersCustomFields
+    name: Custom Fields
+    category: Custom Fields
+    table: PersonField
+    modes: { update: true, insert: true, export: true }
+    alias: pf
+access:
+    module: User Admin
+    action: Manage Users_edit
+primaryKey:
+    id
+uniqueKeys:
+    - name
+table:
+    name: 
+        name: "Name"
+        desc: ""
+        args: { filter: string, required: true }
+        select: pf.name
+    active: 
+        name: "Active"
+        desc: ""
+        args: { filter: yesno, required: true }
+        select: pf.active
+    description:
+        name: "Description"
+        desc: ""
+        args: { filter: string }
+        select: pf.description
+    type:
+        name: "Type"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: pf.type
+    options:
+        name: "Options"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: pf.options
+    required:
+        name: "Required"
+        desc: "Is this field compulsory?"
+        args: { filter: yesno, custom: true }
+        select: pf.required
+    activePersonStudent:
+        name: "Active for Students?"
+        desc: "0 or 1"
+        args: { filter: boolean, custom: true }
+        select: pf.activePersonStudent
+    activePersonStaff:
+        name: "Active for Staff?"
+        desc: "0 or 1"
+        args: { filter: boolean, custom: true }
+        select: pf.activePersonStaff
+    activePersonParent:
+        name: "Active for Parents?"
+        desc: "0 or 1"
+        args: { filter: boolean, custom: true }
+        select: pf.activePersonParent
+    activePersonOther:
+        name: "Active for Other?"
+        desc: "0 or 1"
+        args: { filter: boolean, custom: true }
+        select: pf.activePersonOther
+    activeDataUpdater:
+        name: "Include In Data Updater"
+        desc: "0 or 1"
+        args: { filter: boolean, custom: true }
+        select: pf.activeDataUpdater
+    activeApplicationForm:
+        name: "Include In Application Form"
+        desc: "0 or 1"
+        args: { filter: boolean, custom: true }
+        select: pf.activeApplicationForm
+    activePublicRegistration:
+        name: "Include In Application Form"
+        desc: "0 or 1"
+        args: { filter: boolean, custom: true }
+        select: pf.activePublicRegistration
