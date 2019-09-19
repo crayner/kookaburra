@@ -13,6 +13,8 @@
 namespace App\Manager\Entity;
 
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 class BreadCrumbItem
 {
     /**
@@ -28,7 +30,12 @@ class BreadCrumbItem
     /**
      * @var array
      */
-    private $params = [];
+    private $uri_params = [];
+
+    /**
+     * @var array
+     */
+    private $trans_params = [];
 
     /**
      * BreadCrumbItem constructor.
@@ -36,8 +43,19 @@ class BreadCrumbItem
      */
     public function __construct(array $crumb = [])
     {
-        if ([] !== $crumb)
-            $this->setName($crumb['name'])->setUri($crumb['uri'])->setParams(isset($crumb['params']) ? $crumb['params'] : []);
+        if ([] !== $crumb) {
+            $resolver = new OptionsResolver();
+            $resolver->setRequired([
+                'name',
+                'uri',
+            ]);
+            $resolver->setDefaults([
+                'uri_params' => [],
+                'trans_params' => [],
+            ]);
+            $crumb = $resolver->resolve($crumb);
+            $this->setName($crumb['name'])->setUri($crumb['uri'])->setTransParams($crumb['trans_params'])->setUriParams($crumb['uri_params']);
+        }
     }
 
     /**
@@ -83,20 +101,40 @@ class BreadCrumbItem
     /**
      * @return array
      */
-    public function getParams(): array
+    public function getUriParams(): array
     {
-        return $this->params;
+        return $this->uri_params;
     }
 
     /**
-     * Params.
+     * UriParams.
      *
-     * @param array $params
+     * @param array $uri_params
      * @return BreadCrumbItem
      */
-    public function setParams(array $params): BreadCrumbItem
+    public function setUriParams(array $uri_params): BreadCrumbItem
     {
-        $this->params = $params;
+        $this->uri_params = $uri_params;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTransParams(): array
+    {
+        return $this->trans_params;
+    }
+
+    /**
+     * TransParams.
+     *
+     * @param array $trans_params
+     * @return BreadCrumbItem
+     */
+    public function setTransParams(array $trans_params): BreadCrumbItem
+    {
+        $this->trans_params = $trans_params;
         return $this;
     }
 }

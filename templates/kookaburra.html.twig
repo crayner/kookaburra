@@ -66,11 +66,11 @@
                                     {% if breadcrumbs is same as('new') %}
                                         {% for crumb in createBreadCrumbs(module) %}
                                             {% if loop.last %}
-                                                <span class="trailEnd">{{ crumb.name }}</span>
+                                                <span class="trailEnd">{{ crumb.name|trans(crumb.transParams) }}</span>
                                             {% elseif loop.revindex > 5 and loop.index != 1 %}
-                                                <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.params) }}">...</a> >
+                                                <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.uriParams) }}">...</a> >
                                             {% else %}
-                                                <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.params) }}">{{ crumb.name }}</a> >
+                                                <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.uriParams) }}">{{ crumb.name|trans(crumb.transParams) }}</a> >
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}

@@ -15,6 +15,7 @@ namespace App\Manager\Entity;
 
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BreadCrumbs
 {
@@ -32,6 +33,11 @@ class BreadCrumbs
      * @var
      */
     private $title;
+
+    /**
+     * @var array
+     */
+    private $trans_params = [];
 
     /**
      * @var bool
@@ -125,11 +131,24 @@ class BreadCrumbs
      */
     public function create(array $module)
     {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired([
+            'baseURL',
+            'crumbs',
+            'title',
+        ]);
+        $resolver->setDefaults([
+            'trans_params' => [],
+        ]);
+        $module = $resolver->resolve($module);
+
+
         $this->setItems(new ArrayCollection());
         $item = new BreadCrumbItem();
         $item->setName('Home')->setUri('home');
         $this->addItem($item);
         $this->setTitle($module['title']);
+        $this->setTransParams($module['trans_params']);
         $this->setBaseURL($module['baseURL']);
 
         foreach($module['crumbs'] as $crumb) {
@@ -140,7 +159,7 @@ class BreadCrumbs
         }
 
         $item = new BreadCrumbItem();
-        $item->setName($module['title'])->setUri(null);
+        $item->setName($module['title'])->setUri(null)->setTransParams($module['trans_params']);
         $this->addItem($item);
 
         return $this->getItems();
@@ -156,7 +175,7 @@ class BreadCrumbs
      * @param array  $params  Additional URL params to append to the route
      * @return self
      */
-    public function add(string $title, string $route = '', array $params = [])
+    public function add(string $title, string $route = '', array $uriParams = [], array $transParams = [])
     {
         if (count($this->getCrumbs()) === 0 && $title !== 'Home')
             $this->add('Home', 'home', []);
@@ -167,7 +186,7 @@ class BreadCrumbs
             return $this;
         }
 
-        $this->addCrumb($title, $route, $params);
+        $this->addCrumb($title, $route, $uriParams, $transParams);
 
         return $this->setLegacy(true);
     }
@@ -179,19 +198,20 @@ class BreadCrumbs
      * @param array $params
      * @return BreadCrumbs
      */
-    private function addCrumb(string $title, string $route = '', array $params = []): BreadCrumbs
+    private function addCrumb(string $title, string $route = '', array $uriParams = [], array $transParams = []): BreadCrumbs
     {
         if ('' !== $route) {
             if (strpos($route, '.php') !== false) {
-                $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath('legacy', array_merge(['q' => str_replace('index.php?q=','', $this->getBaseURL()) . '/' . $route], $params));
+                $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath('legacy', array_merge(['q' => str_replace('index.php?q=','', $this->getBaseURL()) . '/' . $route], $uriParams));
             } else {
                 if (false === strpos($route, '__'))
                     $route = strtolower(str_replace(' ', '_', $this->getModule())) . '__' . $route;
-                $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath($route, $params);
+                $this->crumbs['crumbs'][$title] = UrlGeneratorHelper::getPath($route, $uriParams);
             }
         }
 
         $this->crumbs['title'] = $title;
+        $this->crumbs['trans_params'] = $transParams;
 
         return $this;
     }
@@ -204,7 +224,7 @@ class BreadCrumbs
     {
         $result = new ArrayCollection(isset($this->crumbs['crumbs']) ? $this->crumbs['crumbs'] : []);
         if (isset($this->crumbs['title']))
-            $result->set($this->crumbs['title'], '');
+            $result->set($this->crumbs['title'], '', [], $this->crumbs['trans_params']);
         return $result;
     }
 
@@ -257,6 +277,26 @@ class BreadCrumbs
     public function setLegacy(bool $legacy): BreadCrumbs
     {
         $this->legacy = $legacy;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTransParams(): array
+    {
+        return $this->trans_params;
+    }
+
+    /**
+     * TransParams.
+     *
+     * @param array $trans_params
+     * @return BreadCrumbs
+     */
+    public function setTransParams(array $trans_params): BreadCrumbs
+    {
+        $this->trans_params = $trans_params;
         return $this;
     }
 }
