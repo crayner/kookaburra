@@ -17,6 +17,7 @@ join:
         table: Person
         alias: r
         targetTable: Role
+        type: leftJoin
 table:
     title:
         name: "Title"

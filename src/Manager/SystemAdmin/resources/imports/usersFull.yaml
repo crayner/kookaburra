@@ -17,13 +17,16 @@ join:
         table: Person
         alias: r
         targetTable: Role
+        type: leftJoin
     House:
         table: Person
         alias: h
+        type: leftJoin
     SchoolYearClassOf:
         table: Person
         alias: sy
         targetTable: SchoolYear
+        type: leftJoin
 table:
     title:
         name: "Title"
