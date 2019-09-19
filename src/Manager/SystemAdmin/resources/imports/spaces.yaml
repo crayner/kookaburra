@@ -1,0 +1,84 @@
+details:
+    type: spaces
+    name: Facilities
+    table: Space
+    modes: { update: true, insert: true, export: true }
+    alias: s
+access:
+    module: School Admin
+    action: Manage Facilities
+primaryKey:
+    id
+uniqueKeys:
+    - name
+table:
+    name: 
+        name: "Name"
+        desc: "Must be unique."
+        args: { filter: string, required: true }
+        select: s.name
+    type: 
+        name: "Type"
+        desc: ""
+        args: { filter: string, required: true, custom: true }
+        select: s.type
+    capacity:
+        name: "Capacity"
+        desc: ""
+        args: { filter: numeric, custom: true }
+        select: s.capacity
+    computer:
+        name: "Teacher's Computer"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: s.computer
+    studentComputers:
+        name: "Student Computers"
+        desc: "How many are there"
+        args: { filter: numeric, required: true, custom: true }
+        select: s.studentComputers
+    projector:
+        name: "Projector"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: s.projector
+    tv:
+        name: "TV"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: s.tv
+    dvd:
+        name: "DVD Player"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: s.dvd
+    hifi:
+        name: "Hifi"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: s.hifi
+    speakers:
+        name: "Speakers"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: s.speakers
+    iwb:
+        name: "Interactive White Board"
+        desc: ""
+        args: { filter: yesno, required: true, custom: true }
+        select: s.iwb
+    phoneInt:
+        name: "Extension"
+        desc: "Room's internal phone number."
+        args: { filter: string }
+        select: s.phoneInt
+    phoneExt:
+        name: "Phone Number"
+        desc: "Room's external phone number."
+        args: { filter: string }
+        select: s.phoneExt
+    comment:
+        name: "Comment"
+        desc: ""
+        args: { filter: string }
+        select: s.comment

@@ -804,6 +804,9 @@ class SystemAdminController extends AbstractController
                             case 'time':
                                 $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('H:i:s'));
                                 break;
+                            case 'yesno':
+                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, strtolower($value) === 'y' ? 'Yes' : 'No');
+                                break;
                             default:
                                 $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string)$value);
                         }
