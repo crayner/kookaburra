@@ -1,0 +1,75 @@
+details:
+    type: staff
+    category: Staff Management
+    name: Staff
+    table: Staff
+    modes: { update: true, insert: true, export: true }
+    alias: s
+access:
+    module: Staff
+    action: Manage Staff_confidential
+primaryKey:
+    id
+uniqueKeys:
+    - person
+join:
+    Person:
+        alias: p
+        table: Staff
+table:
+    personD:
+        name: "Person"
+        desc: "Username"
+        args: { filter: nospaces, required: true }
+        relationship: { table: Person, key: id, field: username  }
+        select: p.username
+    initials:
+        name: "Initials"
+        desc: "Must be unique if set."
+        args: {filter: string}
+        select: s.initials
+    type:
+        name: "Type"
+        desc: ""
+        args: {filter: string, required: true, custom: true}
+        select: s.type
+    jobTitle:
+        name: "Job Title"
+        desc: ""
+        args: {filter: string, custom: true}
+        select: s.jobTitle
+    firstAidQualified:
+        name: "First Aid Qualified?"
+        desc: ""
+        args: {filter: yesno, custom: true }
+        select: s.firstAidQualified
+    firstAidExpiry:
+        name: "First Aid Expiry"
+        desc: ""
+        args: {filter: date, custom: true }
+        select: s.firstAidExpiry
+    countryOfOrigin:
+        name: "Country Of Origin"
+        desc: ""
+        args: {filter: country, custom: true }
+        select: s.countryOfOrigin
+    qualifications:
+        name: "Qualifications"
+        desc: ""
+        args: {filter: string, custom: true }
+        select: s.qualifications
+    biographicalGrouping:
+        name: "Grouping"
+        desc: ""
+        args: {filter: string, custom: true }
+        select: s.biographicalGrouping
+    biographicalGroupingPriority:
+        name: "Grouping Priority"
+        desc: "Higher numbers move teachers up the order within their grouping."
+        args: {filter: string, custom: true }
+        select: s.biographicalGroupingPriority
+    biography:
+        name: "Biography"
+        desc: ""
+        args: {filter: string}
+        select: s.biography
