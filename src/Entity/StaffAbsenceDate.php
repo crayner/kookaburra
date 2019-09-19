@@ -36,7 +36,7 @@ class StaffAbsenceDate implements EntityInterface
 
     /**
      * @var StaffAbsence|null
-     * @ORM\OneToOne(targetEntity="StaffAbsence")
+     * @ORM\OneToOne(targetEntity="StaffAbsence", inversedBy="staffAbsenceDate")
      * @ORM\JoinColumn(name="gibbonStaffAbsenceID", referencedColumnName="gibbonStaffAbsenceID", nullable=true)
      */
     private $staffAbsence;

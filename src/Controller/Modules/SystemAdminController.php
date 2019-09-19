@@ -704,40 +704,41 @@ class SystemAdminController extends AbstractController
 
         $excel->setActiveSheetIndex(0);
 
-        if ($manager->isDataExport()) {
-            $count = 0;
-            $rowData = [];
-            $queryFields = [];
-            $columnFields = $report->getAllFields();
+        $count = 0;
+        $rowData = [];
+        $queryFields = [];
+        $columnFields = $report->getAllFields();
 
-            $columnFields = array_filter($columnFields, function ($fieldName) use ($report) {
-                return !$report->isFieldHidden($fieldName);
-            });
+        $columnFields = array_filter($columnFields, function ($fieldName) use ($report) {
+            return !$report->isFieldHidden($fieldName);
+        });
 
-            // Create the header row
-            foreach ($columnFields as $fieldName) {
-                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($count) . '1', $report->getField($fieldName, 'name', $fieldName));
-                $excel->getActiveSheet()->getStyle(GlobalHelper::num2alpha($count) . '1')->applyFromArray($style_head_fill);
+        // Create the header row
+        foreach ($columnFields as $fieldName) {
+            $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($count) . '1', $report->getField($fieldName, 'name', $fieldName));
+            $excel->getActiveSheet()->getStyle(GlobalHelper::num2alpha($count) . '1')->applyFromArray($style_head_fill);
 
-                // Dont auto-size giant text fields
-                if ($report->getField($fieldName, 'kind') == 'text') {
-                    $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setWidth(25);
-                } else {
-                    $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setAutoSize(true);
-                }
-
-                // Add notes to column headings
-                $info = ($report->isFieldRequired($fieldName)) ? "* required\n" : '';
-                $info .= $report->readableFieldType($fieldName) . "\n";
-                $info .= $report->getField($fieldName, 'desc', '');
-                $info = strip_tags($info);
-
-                if (!empty($info)) {
-                    $excel->getActiveSheet()->getComment(GlobalHelper::num2alpha($count) . '1')->getText()->createTextRun($info);
-                }
-
-                $count++;
+            // Dont auto-size giant text fields
+            if ($report->getField($fieldName, 'kind') == 'text') {
+                $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setWidth(25);
+            } else {
+                $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setAutoSize(true);
             }
+
+            // Add notes to column headings
+            $info = ($report->isFieldRequired($fieldName)) ? "* required\n" : '';
+            $info .= $report->readableFieldType($fieldName) . "\n";
+            $info .= $report->getField($fieldName, 'desc', '');
+            $info = strip_tags($info);
+
+            if (!empty($info)) {
+                $excel->getActiveSheet()->getComment(GlobalHelper::num2alpha($count) . '1')->getText()->createTextRun($info);
+            }
+
+            $count++;
+        }
+
+        if ($manager->isDataExport()) {
 
             $data = [];;
             $tableName = ucfirst($report->getDetail('table'));
@@ -751,20 +752,22 @@ class SystemAdminController extends AbstractController
 
             $select = [];
             foreach ($report->getFields() as $name=>$field) {
-                $w = '';
-                if (is_array($field['select'])) {
-                    $w .= "CONCAT(";
-                    foreach ($field['select'] as $name)
-                        $w .= $name . ", ' ',";
-                    $w = rtrim($w, "', ") . ")'";
-                } elseif (!isset($field['select'])) {
-                    $w = "''";
-                } else {
-                    $w .= $field['select'];
-                }
+                if (!$report->isFieldHidden($name)) {
+                    $w = '';
+                    if (is_array($field['select'])) {
+                        $w .= "CONCAT(";
+                        foreach ($field['select'] as $name)
+                            $w .= $name . ", ' ',";
+                        $w = rtrim($w, "', ") . ")'";
+                    } elseif (!isset($field['select'])) {
+                        $w = "''";
+                    } else {
+                        $w .= $field['select'];
+                    }
 
-                $w .= ' AS ' . $name;
-                $select[] = $w;
+                    $w .= ' AS ' . $name;
+                    $select[] = $w;
+                }
             }
 
             $query->select($select);
@@ -803,6 +806,9 @@ class SystemAdminController extends AbstractController
                                 break;
                             case 'time':
                                 $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('H:i:s'));
+                                break;
+                            case 'timestamp':
+                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('Y-m-d H:i:s'));
                                 break;
                             case 'yesno':
                                 $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, strtolower($value) === 'y' ? 'Yes' : 'No');

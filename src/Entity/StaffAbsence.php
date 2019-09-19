@@ -148,6 +148,12 @@ class StaffAbsence implements EntityInterface
     private $calendarEvent;
 
     /**
+     * @var StaffAbsenceDate
+     * @ORM\OneToOne(targetEntity="App\Entity\StaffAbsenceDate", mappedBy="staffAbsence")
+     */
+    private $staffAbsenceDate;
+
+    /**
      * StaffAbsence constructor.
      */
     public function __construct()
@@ -521,5 +527,25 @@ class StaffAbsence implements EntityInterface
     public static function getStatusList(): array
     {
         return self::$statusList;
+    }
+
+    /**
+     * @return StaffAbsenceDate
+     */
+    public function getStaffAbsenceDate(): StaffAbsenceDate
+    {
+        return $this->staffAbsenceDate;
+    }
+
+    /**
+     * StaffAbsenceDate.
+     *
+     * @param StaffAbsenceDate $staffAbsenceDate
+     * @return StaffAbsence
+     */
+    public function setStaffAbsenceDate(StaffAbsenceDate $staffAbsenceDate): StaffAbsence
+    {
+        $this->staffAbsenceDate = $staffAbsenceDate;
+        return $this;
     }
 }

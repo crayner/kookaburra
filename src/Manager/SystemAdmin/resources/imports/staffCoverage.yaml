@@ -1,0 +1,151 @@
+details:
+    type: staffCoverage
+    category: Substitute
+    name: Staff Coverage
+    table: StaffCoverage
+    modes: { update: true, insert: true, export: true }
+    alias: sc
+access:
+    module: Staff
+    action: Manage Staff Coverage
+join:
+    SchoolYear:
+        table: StaffCoverage
+        alias: sy
+    Person:
+        table: StaffCoverage
+        alias: p
+    StaffAbsence:
+        table: StaffCoverage
+        alias: sa
+    StaffAbsenceDate:
+        table: StaffAbsence
+        alias: sad
+    CoverageChangedBy:
+        table: StaffCoverage
+        alias: ccb
+        targetTable: Person
+    StatusChangedBy:
+        table: StaffCoverage
+        alias: scb
+        targetTable: Person
+fields:
+    schoolYear:
+        name: "School Year"
+        desc: "School year name, as set in School Admin. Must already exist."
+        args: { filter: schoolyear, required: true, custom: true, readonly: [StaffAbsenceDate] }
+        relationship: { table: SchoolYear, key: id, field: name }
+        select: sy.name
+    person:
+        name: "Teacher"
+        desc: "Username"
+        args: { filter: nospaces, required: true, readonly: true }
+        relationship: { table: Person, key: id, field: username }
+        select: p.username
+    date: 
+        name: "Date"
+        desc: "Must be unique. Format: YYYY-MM-DD"
+        args: { filter: date, required: true, readonly: [StaffCoverage] }
+        select: sad.date
+    allDay:
+        name: "All Day"
+        desc: ""
+        args: { filter: yesno, custom: true, required: true, readonly: [StaffCoverage] }
+        select: sad.allDay
+    start:
+        name: "Start Time"
+        desc: "Format: hh:mm (24hr)"
+        args: { filter: time, custom: true }
+        select: sad.start
+    end:
+        name: "End Time"
+        desc: "Format: hh:mm (24hr)"
+        args: { filter: time, custom: true }
+        select: sad.end
+    status:
+        name: "Status"
+        desc: ""
+        value: "Accepted"
+        args: { filter: string, hidden: true }
+        select: sc.status
+    requestType:
+        name: "Request Type"
+        desc: ""
+        value: "Individual"
+        args: { filter: string, hidden: true }
+        select: sc.requestType
+    coverageChangedBy:
+        name: "Substitute"
+        desc: "Username"
+        args: { filter: nospaces, required: true, readonly: [StaffAbsenceDate] }
+        relationship: { table: Person, key: id, field: username  }
+        select: ccb.username
+    statusChangedBy:
+        name: "Created By"
+        desc: "Username"
+        args: { filter: nospaces, required: true, linked: id, readonly: [StaffAbsenceDate] }
+        relationship: { table: Person, key: id, field: username  }
+        select: scb.username
+    statusNotes:
+        name: "Notes"
+        desc: ""
+        args: { filter: string, custom: true }
+        select: sc.statusNotes
+    statusChangedDate:
+        name: "Created On"
+        desc: ""
+        args: { filter: timestamp, custom: true }
+        select: sc.statusChangedDate
+    coverageChangedDate:
+        name: "Substitute Timestamp"
+        desc: ""
+        args: { filter: timestamp, linked: timestampStatus }
+        select: sc.coverageChangedDate
+    staffAbsence:
+        name: "Absence ID"
+        desc: ""
+        args: { filter: string, linked: date }
+        relationship: { table: StaffAbsenceDate, key: id, join: StaffAbsence, on: [staffAbsence, id], field: [ date, allDay, person, schoolYear ] }
+        select: sa.id
+    staffCoverage:
+        name: "Coverage ID"
+        desc: ""
+        args: { filter: string, linked: notesCoverage, readonly: [StaffCoverage] }
+        relationship: { table: StaffCoverage, key: StaffCoverageID, field: [ notesCoverage, statusChangedBy, schoolYear ] }
+        select: sc.id
+    coverageNotes:
+        name: "Coverage Notes"
+        desc: ""
+        args: { filter: string, custom: true, readonly: [StaffAbsenceDate] }
+        select: sc.coverageNotes
+tables:
+    StaffCoverage: 
+        primaryKey:
+            id
+        uniqueKeys:
+            - [ person, staffAbsence ]
+        fields:
+            - schoolYear
+            - person
+            - date
+            - allDay
+            - staffAbsence
+            - status
+            - requestType
+            - statusChangedBy
+            - statusChangeDate
+            - statusNotes
+            - coverageChangedBy
+            - coverageChangedDate
+            - coverageNotes
+    StaffAbsenceDate: 
+        primaryKey:
+            id
+        uniqueKeys:
+            - [ staffAbsence, date ]
+        fields:
+            - staffAbsence
+            - date
+            - allDay
+            - start
+            - end
