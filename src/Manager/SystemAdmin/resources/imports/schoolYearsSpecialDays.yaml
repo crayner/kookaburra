@@ -1,0 +1,73 @@
+details:
+    type: schoolYearsSpecialDays
+    name: Special Days
+    table: SchoolYearSpecialDay
+    modes: { update: true, insert: true, export: true }
+    alias: sysd
+access:
+    module: School Admin
+    action: Manage Special Days
+primaryKey:
+    id
+uniqueKeys:
+    - date
+join:
+    SchoolYearTerm:
+        table: SchoolYearSpecialDay
+        alias: syt
+    SchoolYear:
+        table: SchoolYearTerm
+        alias: sy
+table:
+    schoolYear:
+        name: "School Year"
+        desc: "School year name, as set in School Admin. Must already exist."
+        args: { filter: schoolyear, required: true, readonly: true }
+        relationship: { table: SchoolYear, key: id, field: name }
+        select: sy.name
+    schoolYearTerm:
+        name: "Term"
+        desc: "Short Name"
+        args: { filter: string, required: true }
+        relationship: { table: SchoolYearTerm, key: id, field: [ nameShort, schoolYear ]  }
+        select: sysd.name
+    date:
+        name: "Date"
+        desc: "Must be unique."
+        args: { filter: date, required: true }
+        select: sysd.date
+    type:
+        name: "Type"
+        desc: ""
+        args: { filter: string, required: true }
+        select: sysd.type
+    name:
+        name: "Name"
+        desc: ""
+        args: { filter: string, required: true }
+        select: sysd.name
+    description:
+        name: "Description"
+        desc: ""
+        args: { filter: string }
+        select: sysd.description
+    schoolOpen:
+        name: "School Opens"
+        desc: ""
+        args: { filter: time }
+        select: sysd.schoolOpen
+    schoolStart:
+        name: "School Starts"
+        desc: ""
+        args: { filter: time }
+        select: sysd.schoolStart
+    schoolEnd:
+        name: "School Ends"
+        desc: ""
+        args: { filter: time }
+        select: sysd.schoolEnd
+    schoolClose:
+        name: "School Closes"
+        desc: ""
+        args: { filter: time }
+        select: sysd.schoolClose

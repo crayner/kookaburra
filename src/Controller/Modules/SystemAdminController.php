@@ -769,8 +769,8 @@ class SystemAdminController extends AbstractController
 
             $query->select($select);
 
-            if (!$manager->isDataExportAll() && $report->getDetail('table') !== 'SchoolYear') {
-
+            if (!$manager->isDataExportAll() && !in_array($tableName, ['SchoolYear', 'SchoolYearSpecialDay']))
+            {
                 // Optionally limit all exports to the current school year by default, to avoid massive files
                 $schoolYear = $report->getTablesUsed();
 
@@ -799,7 +799,10 @@ class SystemAdminController extends AbstractController
                     foreach ($row as $name=>$value) {
                         switch ($report->getFieldFilter($name)) {
                             case 'date':
-                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, $value->format('Y-m-d'));
+                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('Y-m-d'));
+                                break;
+                            case 'time':
+                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('H:i:s'));
                                 break;
                             default:
                                 $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string)$value);
