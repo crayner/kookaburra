@@ -69,13 +69,6 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
 
         $strings = $this->getStrings();
 
-        $sr = new StringReplacement();
-        $sr->setOriginal('Gibbon')->setReplacement('Kookaurra')->setMode('Partial')->setCaseSensitive('Y');
-        $strings->add($sr);
-        $sr = new StringReplacement();
-        $sr->setOriginal('gibbon')->setReplacement('kookaurra')->setMode('Partial')->setCaseSensitive('Y');
-        $strings->add($sr);
-
         if ((! empty($strings) || $strings->count() > 0) && $strings instanceof ArrayCollection) {
             foreach ($strings->toArray() AS $replacement) {
                 if ($replacement->getMode() === "Partial") { //Partial match
@@ -138,6 +131,13 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
             }
         else
             return $this->strings = $this->strings instanceof ArrayCollection ? $this->strings : new ArrayCollection();
+
+        $sr = new StringReplacement();
+        $sr->setOriginal('Gibbon')->setReplacement('Kookaburra')->setMode('Partial')->setCaseSensitive('Y');
+        $this->strings->add($sr);
+        $sr = new StringReplacement();
+        $sr->setOriginal('gibbon')->setReplacement('kookaburra')->setMode('Partial')->setCaseSensitive('Y');
+        $this->strings->add($sr);
 
         $this->stack->getCurrentRequest()->getSession()->set('stringReplacement', $this->strings);
 
