@@ -57,7 +57,7 @@ class ImportStep1Type extends AbstractType
                     'label' => 'File',
                     'help' => 'See Notes below for specification.',
                     'constraints' => [
-                        new File(['mimeTypes' => ['text/csv','application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','application/xml','text/xml','application/vnd.oasis.opendocument.spreadsheet']]),
+                        new File(['mimeTypes' => ['text/csv', 'text/xml', 'text/comma-separated-values', 'text/x-comma-separated-values', 'application/vnd.ms-excel', 'application/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'application/msexcel', 'application/x-msexcel', 'application/x-ms-excel', 'application/x-excel', 'application/x-dos_ms_excel', 'application/xls', 'application/x-xls', 'application/vnd.oasis.opendocument.spreadsheet', 'application/octet-stream']]),
                     ],
                 ]
             )

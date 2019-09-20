@@ -12,6 +12,8 @@
 
 namespace App\Form\Entity;
 
+use Symfony\Component\HttpFoundation\File\File;
+
 /**
  * Class ImportRun
  * @package App\Form\Entity
@@ -29,7 +31,7 @@ class ImportRun
     private $columnOrder = 'guess';
 
     /**
-     * @var string
+     * @var File
      */
     private $file;
 
@@ -42,6 +44,21 @@ class ImportRun
      * @var string
      */
     private $stringEnclosure = '"';
+
+    /**
+     * @var bool
+     */
+    private $ignoreErrors = false;
+
+    /**
+     * @var bool
+     */
+    private $syncField = false;
+
+    /**
+     * @var null|string
+     */
+    private $syncColumn;
 
     /**
      * @return string
@@ -84,9 +101,9 @@ class ImportRun
     }
 
     /**
-     * @return null|string
+     * @return null|File
      */
-    public function getFile(): ?string
+    public function getFile(): ?File
     {
         return $this->file;
     }
@@ -94,10 +111,10 @@ class ImportRun
     /**
      * File.
      *
-     * @param string $file
+     * @param File $file
      * @return ImportRun
      */
-    public function setFile(string $file): ImportRun
+    public function setFile(File $file): ImportRun
     {
         $this->file = $file;
         return $this;
@@ -140,6 +157,66 @@ class ImportRun
     public function setStringEnclosure(string $stringEnclosure): ImportRun
     {
         $this->stringEnclosure = $stringEnclosure;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIgnoreErrors(): bool
+    {
+        return $this->ignoreErrors = $this->ignoreErrors ? true : false;
+    }
+
+    /**
+     * IgnoreErrors.
+     *
+     * @param bool $ignoreErrors
+     * @return ImportRun
+     */
+    public function setIgnoreErrors(bool $ignoreErrors): ImportRun
+    {
+        $this->ignoreErrors = $ignoreErrors ? true : false;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSyncField(): bool
+    {
+        return $this->syncField;
+    }
+
+    /**
+     * SyncField.
+     *
+     * @param bool $syncField
+     * @return ImportRun
+     */
+    public function setSyncField(bool $syncField): ImportRun
+    {
+        $this->syncField = $syncField;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSyncColumn(): ?string
+    {
+        return $this->syncColumn;
+    }
+
+    /**
+     * SyncColumn.
+     *
+     * @param string|null $syncColumn
+     * @return ImportRun
+     */
+    public function setSyncColumn(?string $syncColumn): ImportRun
+    {
+        $this->syncColumn = $syncColumn;
         return $this;
     }
 }

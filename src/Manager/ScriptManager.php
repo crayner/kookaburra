@@ -188,10 +188,12 @@ class ScriptManager
     /**
      * addPageScript
      * @param string $script
+     * @param array $params
      * @return ScriptManager
      */
-    public function addPageScript(string $script): ScriptManager
+    public function addPageScript(string $script, array $params = []): ScriptManager
     {
+        $script = [$script, $params];
         if ($this->getPageScripts()->contains($script))
             return $this;
 

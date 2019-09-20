@@ -57,7 +57,7 @@ table:
         desc: ""
         args: { filter: yesno, custom: true }
         select: c.map
-    YearGroupList:
+    yearGroupList:
         name: "Year Groups"
         desc: "Enrolable year groups."
         args: { filter: yearlist, custom: true }

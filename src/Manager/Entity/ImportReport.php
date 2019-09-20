@@ -282,10 +282,10 @@ class ImportReport
             $columnFieldName = lcfirst(stripos($fieldName, '.') !== false ? trim(strrchr($fieldName, '.'), '.') : $fieldName);
 
             if (in_array($columnFieldName, $metaData->getAssociationNames())) {
-                $definition = $metaData->getAssociationMapping($fieldName);
-                dump($definition);
+ //               $definition = $metaData->getAssociationMapping($fieldName);
                 $validatedFields++;
             } elseif (in_array($columnFieldName, $metaData->getFieldNames())) {
+                if ($fieldName === 'YearGroupList') dump($metaData);
                 $definition = $metaData->getFieldMapping($fieldName);
                 if (isset($definition['length'])) {
                     $this->setField($fieldName, 'length', $definition['length']);

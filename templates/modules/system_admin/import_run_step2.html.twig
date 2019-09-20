@@ -1,0 +1,14 @@
+<ul class="multiPartForm"><li class="step active">{{ 'Select File'|trans }}</li><li class="step active">{{ 'Confirm Data'|trans }}</li><li class="step ">{{ 'Dry Run'|trans }}</li><li class="step ">{{ 'Live Run'|trans }}</li></ul>
+
+<h3>{{ 'Step {number}'|trans({'{number}': step}) ~ ' - ' ~ 'Confirm Data'|trans }}</h3>
+
+{{ form_start(form) }}
+<table class="smallIntBorder fullWidth relative">
+    <tbody>
+        {{ form_row(form.syncField) }}
+        {{ form_row(form.syncColumn) }}
+        <tr><td class=" px-2 border-b-0 sm:border-b border-t-0 " colspan="2">&nbsp;</td></tr>
+        {{ form_row(form.submit) }}
+    </tbody>
+</table>
+{{ form_end(form) }}
