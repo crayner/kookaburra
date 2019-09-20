@@ -41,5 +41,5 @@
 {% endif %}
 
 {% for script in getPageScripts() %}
-    {% include script %}
+    {% include script[0] with script[1] %}
 {% endfor %}

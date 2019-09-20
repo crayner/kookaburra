@@ -67,8 +67,45 @@
     <!-- Rounded switch -->
     <label class="switch">
         <input type="hidden" class="slider_input" id="{{ id }}" name="{{ full_name }}"{% if value is defined %} value="{{ value }}"{% endif %}/>
-        <span class="slider round"></span>
+        <span class="slider round" onclick="toggle_{{ id }}()"></span>
     </label>
+    <script>
+        function toggle_{{ id }}(swap = true)
+        {
+            let toggle = document.getElementById('{{ id }}')
+            let value = toggle.value
+            if (typeof value === 'undefined' || value === '' || value === null)
+                value = false
+            if (value === '{{ values[1] }}')
+                value = false
+
+            if (swap === true) {
+                if (value === false)
+                    value = '{{ values[0] }}'
+                else
+                    value = '{{ values[1] }}'
+            } else {
+                if (value === false)
+                    value = '{{ values[1] }}'
+                else
+                    value = '{{ values[0] }}'
+            }
+
+            toggle.value = value
+
+            {% if visibleByClass is not same as(false) %}
+            let className = '{{ visibleByClass }}'
+            let elements = document.getElementsByClassName(className)
+            for(let element of elements) {
+                if (value === '{{ visibleWhen }}') {
+                    element.style.display = 'flex'
+                } else {
+                    element.style.display = 'none'
+                }
+            }
+            {% endif %}
+        }
+    </script>
 {%- endblock toggle_widget %}
 
 {% block toggle_row -%}
