@@ -140,7 +140,7 @@
 
 {% block form_help -%}
     {%- if help is not empty -%}
-        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-text')|trim}) -%}
+        {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0 help-text')|trim}) -%}
         <span id="{{ id }}_help"{% with { attr: help_attr } %}{{ block('attributes') }}{% endwith %}>
             {%- if translation_domain is same as(false) -%}
                 {%- if help_html is same as(false) -%}

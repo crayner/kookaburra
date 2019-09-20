@@ -1417,6 +1417,9 @@ input[value="1"] + .slider:before {
 .close > span {
     font-size: 20px;
 }
+[data-title]:hover {
+    cursor: pointer;
+}
 [data-title]:hover:after {
     opacity: 1;
     transition: all 0.1s ease 0.5s;

@@ -29,6 +29,17 @@
     {% endfor %}
 {% endif %}
 
+{% if moduleName is defined and asset_exists('/modules/' ~ moduleName ~ '/css/module.css') %}
+    <script type="application/javascript" lang="js">
+        var newLink = document.createElement("link");
+        newLink.href = '{{ asset('/modules/' ~ moduleName ~ '/css/module.css') }}'
+        newLink.rel = 'stylesheet'
+        newLink.type = 'text/css'
+        newLink.media = 'screen'
+        document.head.appendChild(newLink)
+    </script>
+{% endif %}
+
 {% for script in getPageScripts() %}
     {% include script %}
 {% endfor %}

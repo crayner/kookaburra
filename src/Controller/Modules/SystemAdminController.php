@@ -20,9 +20,11 @@ use App\Entity\NotificationEvent;
 use App\Entity\NotificationListener;
 use App\Entity\Setting;
 use App\Entity\StringReplacement;
+use App\Form\Entity\ImportRun;
 use App\Form\Modules\SystemAdmin\DisplaySettingsType;
 use App\Form\Modules\SystemAdmin\EmailSettingsType;
 use App\Form\Modules\SystemAdmin\GoogleIntegationType;
+use App\Form\Modules\SystemAdmin\ImportStep1Type;
 use App\Form\Modules\SystemAdmin\LocalisationSettingsType;
 use App\Form\Modules\SystemAdmin\MiscellaneousSettingsType;
 use App\Form\Modules\SystemAdmin\NotificationEventType;
@@ -664,7 +666,14 @@ class SystemAdminController extends AbstractController
 
     /**
      * exportRun
+     * @param string $report
      * @param ImportManager $manager
+     * @param ExcelManager $excel
+     * @param Request $request
+     * @param bool $data
+     * @param bool $all
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @Route("/export/{report}/{data}/run/{all}", name="export_run")
      * @IsGranted("ROLE_ROUTE")
      */
@@ -831,5 +840,29 @@ class SystemAdminController extends AbstractController
         $excel->setActiveSheetIndex(0);
 
         $excel->exportWorksheet();
+    }
+
+    /**
+     * importRun
+     * @param string $report
+     * @param ImportManager $manager
+     * @param ExcelManager $excel
+     * @param Request $request
+     * @Route("/import/{report}/run/{step}", name="import_run")
+     * @IsGranted("ROLE_ROUTE")
+     */
+    public function importRun(string $report, ImportManager $manager, int $step = 1)
+    {
+        $report = $manager->getImportReport($report);
+        $importRun = new ImportRun();
+
+        $form = $this->createForm(ImportStep1Type::class, $importRun, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => 2])]);
+        return $this->render('modules/system_admin/import_run.html.twig',
+            [
+                'report' => $report,
+                'step' => $step,
+                'form' => $form->createView(),
+            ]
+        );
     }
 }

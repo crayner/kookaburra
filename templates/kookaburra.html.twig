@@ -8,137 +8,137 @@
     </head>
 
     <body style="background: url('{{ asset(getBackgroundImage()) }}') repeat fixed center top olivedrab!important;">
-    <div id="wrapOuter" class="sm:px-6">
-        {% include 'default/minor_links.html.twig' %}
+        <div id="wrapOuter" class="sm:px-6">
+            {% include 'default/minor_links.html.twig' %}
 
-        <div id="wrap" class="mx-auto max-w-6xl m-2 shadow-container rounded">
-            {% block header %}
-                <div id="header" class="relative bg-white flex justify-between items-center rounded-t h-24 sm:h-32">
+            <div id="wrap" class="mx-auto max-w-6xl m-2 shadow-container rounded">
+                {% block header %}
+                    <div id="header" class="relative bg-white flex justify-between items-center rounded-t h-24 sm:h-32">
 
-                    <a id="header-logo" class="block max-w-xs sm:max-w-full leading-none" href="{{ absoluteURL }}">
-                        <img class="block max-w-full" alt="{{ app.request.session.get('organisationName') }}" src="{{ asset(organisationLogo|default("/themes/Default/img/logo.png"), null, true) }}" width="400"/>
-                    </a>
+                        <a id="header-logo" class="block max-w-xs sm:max-w-full leading-none" href="{{ absoluteURL }}">
+                            <img class="block max-w-full" alt="{{ app.request.session.get('organisationName') }}" src="{{ asset(organisationLogo|default("/themes/Default/img/logo.png"), null, true) }}" width="400"/>
+                        </a>
 
-                    <div id="fastFinderWrapper" class="flex-grow flex justify-end"></div>
-                </div>
-
-                <nav id="header-menu" class="w-full bg-gray-200 justify-between">
-                    {% include 'default/menu.html.twig'  %}
-                </nav>
-
-            {% endblock header %}
-
-            <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
-
-                {% if getSidebar().isValid() or not is_granted('IS_AUTHENTICATED_FULLY') or sideBarOn is defined %}
-                    <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
-                        {% block sidebar %}
-                            {% include 'default/sidebar/sidebar.html.twig' %}
-                        {% endblock sidebar %}
+                        <div id="fastFinderWrapper" class="flex-grow flex justify-end"></div>
                     </div>
-                    <br style="clear: both">
-                {% endif %}
 
-                <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
+                    <nav id="header-menu" class="w-full bg-gray-200 justify-between">
+                        {% include 'default/menu.html.twig'  %}
+                    </nav>
 
-                    {% block page %}
+                {% endblock header %}
 
-                        {% block soft_error %}
-                            {% if softError is defined and softError|length > 0 %}
-                                <div class="error">{{ softError|trans(softErrorParams|default({})) }}</div>
+                <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
+
+                    {% if getSidebar().isValid() or not is_granted('IS_AUTHENTICATED_FULLY') or sideBarOn is defined %}
+                        <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
+                            {% block sidebar %}
+                                {% include 'default/sidebar/sidebar.html.twig' %}
+                            {% endblock sidebar %}
+                        </div>
+                        <br style="clear: both">
+                    {% endif %}
+
+                    <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
+
+                        {% block page %}
+
+                            {% block soft_error %}
+                                {% if softError is defined and softError|length > 0 %}
+                                    <div class="error">{{ softError|trans(softErrorParams|default({})) }}</div>
+                                {% endif %}
+                                {% for label, messages in app.flashes %}
+                                    {% for message in messages %}
+                                        <div class="{{ label }}">
+                                            {{ message|trans }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endblock soft_error %}
+
+                            {% if content() and not app.request.attributes.has('sidebar') %}
+                                {% include 'default/module_menu.html.twig' %}
                             {% endif %}
-                            {% for label, messages in app.flashes %}
-                                {% for message in messages %}
-                                    <div class="{{ label }}">
-                                        {{ message|trans }}
+
+                            {% if breadcrumbs is defined %}
+                                <div class="sm:pt-10 lg:pt-0">
+                                    <div class="absolute lg:static top-0 my-6 text-xs text-blue-700">
+                                        {% if breadcrumbs is same as('new') %}
+                                            {% for crumb in createBreadCrumbs(module) %}
+                                                {% if loop.last %}
+                                                    <span class="trailEnd">{{ crumb.name|trans(crumb.transParams) }}</span>
+                                                {% elseif loop.revindex > 5 and loop.index != 1 %}
+                                                    <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.uriParams) }}">...</a> >
+                                                {% else %}
+                                                    <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.uriParams) }}">{{ crumb.name|trans(crumb.transParams) }}</a> >
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            {% for title, src in breadcrumbs %}
+                                                {% if loop.last %}
+                                                    <span class="trailEnd">{{ title }}</span>
+                                                {% elseif loop.revindex > 5 and loop.index != 1 %}
+                                                    <a class="text-blue-700 underline" href="/{{ src }}">...</a> >
+                                                {% else %}
+                                                    <a class="text-blue-700 underline" href="{{ src }}">{{ title }}</a> >
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
                                     </div>
+                                </div>
+                            {% endif %}
+
+
+                            {% for type, alerts in alerts() %}
+                                {% for text in alerts %}
+                                    <div class="{{ type }}">{{ text|raw }}</div>
                                 {% endfor %}
                             {% endfor %}
-                        {% endblock soft_error %}
-
-                        {% if content() and not app.request.attributes.has('sidebar') %}
-                            {% include 'default/module_menu.html.twig' %}
-                        {% endif %}
-
-                        {% if breadcrumbs is defined %}
-                            <div class="sm:pt-10 lg:pt-0">
-                                <div class="absolute lg:static top-0 my-6 text-xs text-blue-700">
-                                    {% if breadcrumbs is same as('new') %}
-                                        {% for crumb in createBreadCrumbs(module) %}
-                                            {% if loop.last %}
-                                                <span class="trailEnd">{{ crumb.name|trans(crumb.transParams) }}</span>
-                                            {% elseif loop.revindex > 5 and loop.index != 1 %}
-                                                <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.uriParams) }}">...</a> >
-                                            {% else %}
-                                                <a class="text-blue-700 underline" href="{{ path(crumb.uri, crumb.uriParams) }}">{{ crumb.name|trans(crumb.transParams) }}</a> >
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% else %}
-                                        {% for title, src in breadcrumbs %}
-                                            {% if loop.last %}
-                                                <span class="trailEnd">{{ title }}</span>
-                                            {% elseif loop.revindex > 5 and loop.index != 1 %}
-                                                <a class="text-blue-700 underline" href="/{{ src }}">...</a> >
-                                            {% else %}
-                                                <a class="text-blue-700 underline" href="{{ src }}">{{ title }}</a> >
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        {% endif %}
+                            {% block content %}
+                            {{ content()|join("\n")|raw }}
+                            {% endblock content %}
+                        {% endblock page %}
+                    </div>
 
 
-                        {% for type, alerts in alerts() %}
-                            {% for text in alerts %}
-                                <div class="{{ type }}">{{ text|raw }}</div>
-                            {% endfor %}
-                        {% endfor %}
-                        {% block content %}
-                        {{ content()|join("\n")|raw }}
-                        {% endblock content %}
-                    {% endblock page %}
                 </div>
 
-
-            </div>
-
-            {% block footer %}
-                <div class="relative bg-transparent-600 text-white text-center text-sm p-6 mb-10 leading-normal rounded-b">
-                    <span class="inline-block">
-                        {{ 'Powered by'|trans }} <a class="link-white" target='_blank' href='http://help.craigrayner.com'>{{ 'Kookaburra'|trans }}</a> {{ version }}</span>
-                    <span class="inline-block">|  &#169; <a class="link-white" target='_blank' href='http://www.craigrayner.com'>Craig Rayner</a> 2019-{{ 'now'|date('Y') }}</span>
-                    <br/>
-                    <span class="text-xs">
-                        {{ 'Created under the'|trans }} <a class="link-white" target='_blank' href='https://opensource.org/licenses/MIT'>MIT</a> {{ 'licence' }},
-                        {{ 'from a fork of '|trans({},'kookaburra') }} <a class="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon v18.0.00</a>
+                {% block footer %}
+                    <div class="relative bg-transparent-600 text-white text-center text-sm p-6 mb-10 leading-normal rounded-b">
+                        <span class="inline-block">
+                            {{ 'Powered by'|trans }} <a class="link-white" target='_blank' href='http://help.craigrayner.com'>{{ 'Kookaburra'|trans }}</a> {{ version }}</span>
+                        <span class="inline-block">|  &#169; <a class="link-white" target='_blank' href='http://www.craigrayner.com'>Craig Rayner</a> 2019-{{ 'now'|date('Y') }}</span>
                         <br/>
-                        {{ footerThemeAuthor|default('') }}<br/>
-                    </span>
+                        <span class="text-xs">
+                            {{ 'Created under the'|trans }} <a class="link-white" target='_blank' href='https://opensource.org/licenses/MIT'>MIT</a> {{ 'licence' }},
+                            {{ 'from a fork of '|trans({},'kookaburra') }} <a class="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon v18.0.00</a>
+                            <br/>
+                            {{ footerThemeAuthor|default('') }}<br/>
+                        </span>
 
-                    <img class="absolute right-0 top-0 -mt-2 sm:mr-0 md:mr-12 opacity-75 hidden sm:block" alt="Logo Small" src="{{ absoluteURL }}/themes/{{ gibbonThemeName|default("Default") }}/img/logoFooter.png"/>
-                </div>
-            {% endblock %}
-        </div>
-    </div>
-
-    {% block popUpContent %}
-        <div id="popupExample" class="overlay">
-            <div class="popup">
-                <h2>Here i am</h2>
-                <a class="close" href="#">&times;</a>
-                <div class="content">
-                    Thank to pop me out of that button, but now i'm done so you can close this window.
-                </div>
+                        <img class="absolute right-0 top-0 -mt-2 sm:mr-0 md:mr-12 opacity-75 hidden sm:block" alt="Logo Small" src="{{ absoluteURL }}/themes/{{ gibbonThemeName|default("Default") }}/img/logoFooter.png"/>
+                    </div>
+                {% endblock %}
             </div>
-        </div>{% endblock popUpContent %}
-    <div id="dumpStuff"></div>
-    <div id="idleTimeout"></div>
-    {% block foot %}
-        {{ encore_entry_script_tags('app') }}
-        {{ encore_entry_script_tags(getThemeName()) }}
-        {% include 'default/scripts.html.twig' %}
-    {% endblock foot %}
+        </div>
+
+        {% block popUpContent %}
+            <div id="popupExample" class="overlay">
+                <div class="popup">
+                    <h2>Here i am</h2>
+                    <a class="close" href="#">&times;</a>
+                    <div class="content">
+                        Thank to pop me out of that button, but now i'm done so you can close this window.
+                    </div>
+                </div>
+            </div>{% endblock popUpContent %}
+        <div id="dumpStuff"></div>
+        <div id="idleTimeout"></div>
+        {% block foot %}
+            {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags(getThemeName()) }}
+            {% include 'default/scripts.html.twig' %}
+        {% endblock foot %}
     </body>
     </html>
 {% endblock full_document %}

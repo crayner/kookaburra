@@ -528,3 +528,25 @@ User - Data - Full: User - Data - Full
 User - Data - Parent: User - Data - Parent
 User - Data - Staff: User - Data - Staff
 User - Password: User - Password
+Year Groups: Year Groups
+Select File: Select File
+Confirm Data: Confirm Data
+Dry Run: Dry Run
+Live Run: Live Run
+Step {number}: Step {number}
+"Always backup your database before performing any imports. You will have the opportunity to review the data on the next step, however there's no guarantee the import won't change or overwrite important data.": "Always backup your database before performing any imports. You will have the opportunity to review the data on the next step, however there's no guarantee the import won't change or overwrite important data."
+Update & Insert: Update & Insert
+Insert: Insert
+Column Order: Column Order
+Best Guess: Best Guess
+From Exported Data: From Exported Data
+From Default Order (see notes): From Default Order (see notes)
+Skip Non-Required Fields: Skip Non-Required Fields
+See Notes below for specification.: See Notes below for specification.
+Field Delimiter: Field Delimiter
+String Enclosure: String Enclosure
+Notes: Notes
+Always include a header row in the uploaded file.: Always include a header row in the uploaded file.
+"Imports cannot be run concurrently (e.g. make sure you are the only person importing at any one time).": "Imports cannot be run concurrently (e.g. make sure you are the only person importing at any one time)."
+"Dates are converted based on the separator used: American mm/dd/yy or mm/dd/yyyy, European dd.mm.yy, dd.mm.yyyy or dd-mm-yyyy. To avoid potential ambiguity, it's best to use ISO 8601 YYYY-MM-DD.": "Dates are converted based on the separator used: American mm/dd/yy or mm/dd/yyyy, European dd.mm.yy, dd.mm.yyyy or dd-mm-yyyy. To avoid potential ambiguity, it's best to use ISO 8601 YYYY-MM-DD."
+More Info: More Info

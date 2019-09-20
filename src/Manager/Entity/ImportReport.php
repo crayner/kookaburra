@@ -180,7 +180,6 @@ class ImportReport
             $this->tablesUsed = array_unique($this->tablesUsed);
         }
 
-        /**
         foreach ($this->tables as $tableName => $table) {
             $this->switchTable($tableName);
             $this->validated = true;
@@ -192,7 +191,6 @@ class ImportReport
                 $this->validated &= $this->validateWithDatabase();
             }
         }
-        */
 
         $this->loadAccessData();
 
@@ -266,15 +264,16 @@ class ImportReport
         $table = $this->getDetail('table');
         $className = '\App\Entity\\' . $table;
 
-        if (!class_exists('\App\Entity\\' . $table))
+        if (!class_exists($className))
             return false;
 
         $em = ProviderFactory::getEntityManager();
         $metaData = $em->getClassMetadata($className);
 
         $validatedFields = 0;
-        foreach ($this->table as $fieldName => $field) {
+        foreach ($this->getFields() as $fieldName=>$field) {
             if ($this->isFieldReadOnly($fieldName)) {
+                $this->fields[$fieldName];
                 $this->setValueTypeByFilter($fieldName);
                 $validatedFields++;
                 continue;
@@ -283,11 +282,20 @@ class ImportReport
             $columnFieldName = lcfirst(stripos($fieldName, '.') !== false ? trim(strrchr($fieldName, '.'), '.') : $fieldName);
 
             if (in_array($columnFieldName, $metaData->getAssociationNames())) {
+                $definition = $metaData->getAssociationMapping($fieldName);
+                dump($definition);
                 $validatedFields++;
             } elseif (in_array($columnFieldName, $metaData->getFieldNames())) {
+                $definition = $metaData->getFieldMapping($fieldName);
+                if (isset($definition['length'])) {
+                    $this->setField($fieldName, 'length', $definition['length']);
+                    if ($definition['type'] === 'string') {
+                        $this->setField($fieldName, 'kind', 'char');
+                        $this->setField($fieldName, 'type', 'text');
+                    }
+                }
                 $validatedFields++;
             } else {
-                dd($fieldName, $field, $columnFieldName, $metaData);
                 echo '<div class="error">Invalid field ' . $fieldName . '</div>';
             }
         }
@@ -583,14 +591,19 @@ class ImportReport
      * Create a human friendly representation of the field value type
      *
      * @param string  Field name
-     * @return  string
+     * @return  array
      */
-    public function readableFieldType($fieldName)
+    public function readableFieldType($fieldName): array
     {
         $filter = $this->getField($fieldName, 'filter');
         $kind = $this->getField($fieldName, 'kind');
         $length = $this->getField($fieldName, 'length');
 
+        if ($kind === '') {
+            $this->setValueTypeByFilter($fieldName);
+            $kind = $this->getField($fieldName, 'kind');
+            $length = $this->getField($fieldName, 'length');
+        }
         if ($this->isFieldRelational($fieldName)) {
             extract($this->getField($fieldName, 'relationship'));
             $field = is_array($field) ? current($field) : $field;
@@ -601,7 +614,12 @@ class ImportReport
                 'table' => !empty($join) ? $join : $table,
             ]);
 
-            return '<abbr title="' . $helpText . '">' . __('Text') . ' (' . $field . ')</abbr>';
+            return [
+                'prompt' => 'Text',
+                'title' => 'Each {name} value should match an existing {field} in {table}.',
+                'titleParams' => ['{name}' => $this->getField($fieldName, 'name'), '{field}' => $field, '{table}' => !empty($join) ? $join : $table,],
+                'extra' => $field,
+            ];
         }
 
         switch ($filter) {
@@ -612,12 +630,16 @@ class ImportReport
                 return __('URL ({number} chars)', ['number' => $length]);
 
             case 'numeric':
-                return __('Number');
+                return ['prompt' =>'Number'];
         }
 
         switch ($kind) {
             case 'char':
-                return __('Text ({number} chars)', ['number' => $length]);
+                dump($filter,$kind,$length);
+                return [
+                    'prompt' => 'Text ({number} chars)',
+                    'promptParams' => ['{number}' => $length],
+                ];
 
             case 'text':
                 return $filter != 'string' ? __('Text') . ' (' . $filter . ')' : __('Text');
@@ -641,13 +663,15 @@ class ImportReport
 
             case 'enum':
                 $options = implode('<br/>', $this->getField($fieldName, 'elements'));
-                return '<abbr title="' . $options . '">' . __('Options') . '</abbr>';
+                return '<attr data-title="' . $options . '" style="text-decoration: underline;">' . __('Options') . '</attr>';
 
             default:
                 return __(ucfirst($kind));
         }
 
-        return '';
+        return [
+            'prompt' => ''
+        ];
     }
 
     /**
@@ -794,5 +818,18 @@ class ImportReport
     {
         $field = isset($this->fields[$name]) ? $this->fields[$name] : null;
         return null !== $field && isset($field['args']['filter']) ? $field['args']['filter'] : 'string';
+    }
+
+    /**
+     * usesDates
+     * @return bool
+     */
+    public function usesDates(): bool
+    {
+        foreach($this->fields as $field)
+            if (in_array($field['args']['filter'], ['date', 'time', 'datetime']))
+                return true;
+
+        return false;
     }
 }

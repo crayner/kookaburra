@@ -149,6 +149,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getActiveLanguages', [$this, 'getActiveLanguages']),
             new TwigFunction('getBackgroundImage', [$this, 'getBackgroundImage']),
             new TwigFunction('version_compare', [$this, 'version_compare']),
+            new TwigFunction('asset_exists', [$this, 'asset_exists']),
         ];
     }
 
@@ -376,5 +377,15 @@ class PageExtension extends AbstractExtension
     public function version_compare(?string $version, string $required, string $compare = '=='): bool
     {
         return version_compare($version ?: '0.0', $required, $compare);
+    }
+
+    /**
+     * asset_exists
+     * @param string $asset
+     * @return bool
+     */
+    public function asset_exists(string $asset): bool
+    {
+        return realpath(__DIR__ . '/../../../public/' . ltrim($asset, '/')) ? true : false;
     }
 }
