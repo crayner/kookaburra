@@ -20,8 +20,9 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% dump(form.columnCollection) %}
                     {% for child in form.columnCollection.children %}
-                        {%  set value = child.vars.value %}
+                        {%  set value = child.vars.data %}
                         <tr>
                             <td>
                                 {% if value.flags.unique is defined %}
@@ -38,7 +39,7 @@
                             <td>{% include 'modules/system_admin/field_type_component.html.twig' with {type: value.fieldType} %}</td>
                             <td class="columnOrder mediumWidth">
                                 <div class="flex-1 relative">
-                                    <select id="import_step2_columnCollection_{{ loop.index0 }}_columnOrder" name="import_step2[columnCollection][{{ loop.index0 }}][columnOrder]" class="columnOrder mediumWidth">
+                                    <select id="import_step2_columnCollection_{{ child.vars.name }}" name="import_step2[columnCollection][{{ loop.index0 }}]" class="columnOrder mediumWidth" required>
                                         <option >{{ 'Please select...'|trans }}</option>
                                         {% for option,prompt in value.columnChoices %}
                                             <option value="{{ option }}"{{ value.name is same as(prompt) ? ' selected' : '' }}{{ option < 0 ? ' class="text-red-500"' : '' }}>{{ prompt|trans }}</option>

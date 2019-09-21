@@ -24,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -266,7 +267,7 @@ class ImportManager
      * @param ImportRun $importRun
      * @param FormInterface $form
      */
-    public function prepareStep2(ImportReport $record, ImportRun $importRun, FormInterface $form)
+    public function prepareStep2(ImportReport $record, ImportRun $importRun, FormInterface $form, Request $request)
     {
         $columnOrderLast = [];
         if ($importRun->getColumnOrder() === 'last') {
@@ -276,8 +277,18 @@ class ImportManager
 
         $this->getImporter()->setFieldDelimiter($importRun->getFieldDelimiter());
         $this->getImporter()->setStringEnclosure($importRun->getStringEnclosure());
-        
-        $importRun->setCsvData($this->getImporter()->readFileIntoCSV($importRun->getFile()));
+
+        if ($importRun->getCsvData() === null && $importRun->getFile() !== null) {
+            $importRun->setCsvData($this->getImporter()->readFileIntoCSV($importRun->getFile()));
+            unlink($importRun->getFile()->getRealPath());
+            $importRun->setFile(null);
+        }
+        if ($importRun->getCsvData() === null) {
+            $importStep2 = $request->get('import_step2');
+            $importRun->setCsvData($importStep2['csvData']);
+            $this->getImporter()->setHeaderFirstLine($importRun->getCsvData());
+        }
+
         $headings = $this->getImporter()->getHeaderRow();
         $headers = [];
         foreach($headings as $name)
@@ -396,6 +407,11 @@ class ImportManager
         $form->add('columnCollection', CollectionType::class,
             [
                 'label' => false,
+                'entry_type' => ChoiceType::class,
+                'entry_options' => [
+                    'choices' => array_flip($row->getColumnChoices()),
+                    'placeholder' => 'Please select...',
+                ],
             ]
         );
 
@@ -410,5 +426,16 @@ class ImportManager
                 ],
             ]
         );
+    }
+
+    /**
+     * prepareStep2
+     * @param ImportReport $record
+     * @param ImportRun $importRun
+     * @param FormInterface $form
+     */
+    public function prepareStep3(ImportReport $record, ImportRun $importRun, FormInterface $form, Request $request)
+    {
+
     }
 }

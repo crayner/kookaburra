@@ -98,6 +98,7 @@ class ImportStep1Type extends AbstractType
                     'autocomplete' => 'on',
                     'enctype' => 'multipart/form-data',
                     'id' => 'importStep1',
+                    'novalidate' => 'novalidate',
                 ],
                 'translation_domain' => 'messages',
             ]

@@ -27,7 +27,6 @@ class IntegerToStringTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        dump($value);
         if (null === $value)
             return $value;
         return strval($value);
@@ -40,7 +39,6 @@ class IntegerToStringTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        dump($value);
         if (null === $value)
             return $value;
         return intval($value);

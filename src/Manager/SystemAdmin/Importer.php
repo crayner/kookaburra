@@ -16,6 +16,9 @@ namespace App\Manager\SystemAdmin;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class Importer
 {
@@ -172,20 +175,17 @@ class Importer
         $data = '';
 
         if ($file->guessExtension() === 'csv') {
-            dd($this);
             $opts = array('http' => array('header' => "Accept-Charset: utf-8;q=0.7,*;q=0.7\r\n"."Content-Type: text/html; charset =utf-8\r\n"));
             $context = stream_context_create($opts);
 
-            $data = file_get_contents($_FILES['file']['tmp_name'], false, $context);
+            $data = file_get_contents($file->getRealPath(), false, $context);
             if (mb_check_encoding($data, 'UTF-8') == false) {
                 $data = mb_convert_encoding($data, 'UTF-8');
             }
 
             // Grab the header & first row for Step 1
-            if ($this->openCSVFile($_FILES['file']['tmp_name'])) {
-                $this->headerRow = $this->getCSVLine();
-                $this->firstRow = $this->getCSVLine();
-                $this->closeCSVFile();
+            if ($csvData = $this->readCSVFile($file->getRealPath())) {
+                $this->setHeaderFirstLine($csvData);
             } else {
                 $this->errorID = Importer::ERROR_IMPORT_FILE;
                 return false;
@@ -226,5 +226,31 @@ class Importer
         }
 
         return $data;
+    }
+
+
+    /**
+     * Read CSV File
+     *
+     * @param  string  Full File Path
+     * @return  bool  true on success
+     */
+    public function readCSVFile($csvFile)
+    {
+        return file_get_contents($csvFile);
+    }
+
+    /**
+     * setHeaderFirstLine
+     * @param string $data
+     * @return $this
+     */
+    public function setHeaderFirstLine(string $data): Importer
+    {
+        $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
+        $data = $serializer->decode($data, 'csv');
+        $this->setHeaderRow(array_keys($data[0]));
+        $this->setFirstRow(array_values($data[0]));
+        return $this;
     }
 }

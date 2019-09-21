@@ -16,12 +16,14 @@
     trans_params: {"{number}": step}
 } %}
 {% set breadcrumbs = 'new' %}
-
 {% block content %}
     {% if step is same as (1) %}
         {% include 'modules/system_admin/import_run_step1.html.twig' %}
     {% endif %}
     {% if step is same as (2) %}
         {% include 'modules/system_admin/import_run_step2.html.twig' %}
+    {% endif %}
+    {% if step is same as (3) %}
+        {% include 'modules/system_admin/import_run_step3.html.twig' %}
     {% endif %}
 {% endblock content %}

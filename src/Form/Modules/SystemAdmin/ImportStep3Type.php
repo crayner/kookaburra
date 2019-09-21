@@ -14,17 +14,16 @@ namespace App\Form\Modules\SystemAdmin;
 
 use App\Form\Type\ToggleType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\DataTransformer\BooleanToStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ImportStep2Type
+ * Class ImportStep3Type
  * @package App\Form\Modules\SystemAdmin
  */
-class ImportStep2Type extends AbstractType
+class ImportStep3Type extends AbstractType
 {
     /**
      * buildForm
@@ -55,7 +54,6 @@ class ImportStep2Type extends AbstractType
                 ]
             )
         ;
-        $builder->get('ignoreErrors')->addViewTransformer(new BooleanToStringTransformer('1', [null,'0']));
     }
 
     /**
@@ -71,7 +69,6 @@ class ImportStep2Type extends AbstractType
                     'autocomplete' => 'on',
                     'enctype' => 'multipart/form-data',
                     'id' => 'importStep2',
-                    'novalidate' => 'novalidate',
                 ],
                 'translation_domain' => 'messages',
             ]

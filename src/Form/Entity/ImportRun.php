@@ -124,10 +124,10 @@ class ImportRun
     /**
      * File.
      *
-     * @param File $file
+     * @param null|File $file
      * @return ImportRun
      */
-    public function setFile(File $file): ImportRun
+    public function setFile(?File $file): ImportRun
     {
         $this->file = $file;
         return $this;

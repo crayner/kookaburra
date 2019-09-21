@@ -26,6 +26,7 @@ use App\Form\Modules\SystemAdmin\EmailSettingsType;
 use App\Form\Modules\SystemAdmin\GoogleIntegationType;
 use App\Form\Modules\SystemAdmin\ImportStep1Type;
 use App\Form\Modules\SystemAdmin\ImportStep2Type;
+use App\Form\Modules\SystemAdmin\ImportStep3Type;
 use App\Form\Modules\SystemAdmin\LocalisationSettingsType;
 use App\Form\Modules\SystemAdmin\MiscellaneousSettingsType;
 use App\Form\Modules\SystemAdmin\NotificationEventType;
@@ -867,10 +868,31 @@ class SystemAdminController extends AbstractController
                     'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1]),
                     'importReport' => $report
                 ]);
-                $manager->prepareStep2($report, $importRun, $form);
+                $manager->prepareStep2($report, $importRun, $form, $request);
             } else {
-                $form = $this->createForm(ImportStep1Type::class, $importRun, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => 2])]);
                 $step = 1;
+                $form = $this->createForm(ImportStep1Type::class, $importRun, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1])]);
+            }
+        } elseif ($step === 3) {
+            $form = $this->createForm(ImportStep2Type::class, $importRun, [
+                'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step]),
+                'importReport' => $report
+            ]);
+            $manager->prepareStep2($report, $importRun, $form, $request);
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $manager->prepareStep3($report, $importRun, $form, $request);
+                $form = $this->createForm(ImportStep3Type::class, $importRun, [
+                    'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1]),
+                    'importReport' => $report
+                ]);
+            } else {
+                $step = 2;
+                $form = $this->createForm(ImportStep2Type::class, $importRun, [
+                    'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1]),
+                    'importReport' => $report
+                ]);
+                $manager->prepareStep2($report, $importRun, $form);
             }
         }
 
