@@ -15,7 +15,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,Form/Entity,Manager/Entity}'
 
     Gibbon\:
         resource: '../Gibbon/src/*'
@@ -138,3 +138,6 @@ services:
     App\Form\EventSubscriber\FileOrLinkURLSubscriber:
         arguments:
             $targetDir: '%kernel.public_dir%/%upload_path%'
+
+    App\Manager\Entity\BreadCrumbs:
+        class: App\Manager\Entity\BreadCrumbs

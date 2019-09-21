@@ -550,3 +550,24 @@ Always include a header row in the uploaded file.: Always include a header row i
 "Imports cannot be run concurrently (e.g. make sure you are the only person importing at any one time).": "Imports cannot be run concurrently (e.g. make sure you are the only person importing at any one time)."
 "Dates are converted based on the separator used: American mm/dd/yy or mm/dd/yyyy, European dd.mm.yy, dd.mm.yyyy or dd-mm-yyyy. To avoid potential ambiguity, it's best to use ISO 8601 YYYY-MM-DD.": "Dates are converted based on the separator used: American mm/dd/yy or mm/dd/yyyy, European dd.mm.yy, dd.mm.yyyy or dd-mm-yyyy. To avoid potential ambiguity, it's best to use ISO 8601 YYYY-MM-DD."
 More Info: More Info
+Sync?: Sync?
+Only rows with a matching database ID will be imported.: Only rows with a matching database ID will be imported.
+Primary Key: Primary Key
+Short Name: Short Name
+Sequence Number: Sequence Number
+Head of Year: Head of Year
+Field Name: Field Name
+Type: Type
+Column: Column
+Example: Example
+Must be Unique: Must be Unique
+Text ({number} chars): Text ({number} chars)
+Number: Number
+Skip this Column: Skip this Column
+'Relationship: {field} of {table}': 'Relationship: {field} of {table}'
+Each {name} value should match an existing {field} in {table}.: Each {name} value should match an existing {field} in {table}.
+Text: Text
+Custom: Custom
+Data: Data
+This value cannot be changed.: This value cannot be changed.
+'{table} has a primary key of {key}': '{table} has a primary key of {key}'

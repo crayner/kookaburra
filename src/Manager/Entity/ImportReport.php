@@ -635,7 +635,6 @@ class ImportReport
 
         switch ($kind) {
             case 'char':
-                dump($filter,$kind,$length);
                 return [
                     'prompt' => 'Text ({number} chars)',
                     'promptParams' => ['{number}' => $length],
@@ -831,5 +830,16 @@ class ImportReport
                 return true;
 
         return false;
+    }
+
+    /**
+     * Is Field Required
+     *
+     * @param   string  Field name
+     * @return  bool
+     */
+    public function isFieldUniqueKey($fieldName)
+    {
+        return (in_array($fieldName, $this->keyFields)) ;
     }
 }

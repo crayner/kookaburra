@@ -12,6 +12,9 @@
 
 namespace App\Form\Entity;
 
+use App\Manager\Entity\ImportRow;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -59,6 +62,16 @@ class ImportRun
      * @var null|string
      */
     private $syncColumn;
+
+    /**
+     * @var Collection
+     */
+    private $columnCollection;
+
+    /**
+     * @var null|string
+     */
+    private $csvData;
 
     /**
      * @return string
@@ -217,6 +230,58 @@ class ImportRun
     public function setSyncColumn(?string $syncColumn): ImportRun
     {
         $this->syncColumn = $syncColumn;
+        return $this;
+    }
+
+    /**
+     * getColumnCollection
+     * @return Collection
+     */
+    public function getColumnCollection(): Collection
+    {
+        return $this->columnCollection = $this->columnCollection ?: new ArrayCollection();
+    }
+
+    /**
+     * ColumnCollection.
+     *
+     * @param Collection $columnCollection
+     * @return ImportRun
+     */
+    public function setColumnCollection(Collection $columnCollection): ImportRun
+    {
+        $this->columnCollection = $columnCollection;
+        return $this;
+    }
+
+    /**
+     * addColumnRow
+     * @param ImportRow $row
+     * @return ImportRun
+     */
+    public function addColumnRow(ImportRow $row): ImportRun
+    {
+        $this->getColumnCollection()->add($row);
+        return $this;
+    }
+
+    /**
+     * getCsvData
+     * @return string|null
+     */
+    public function getCsvData(): ?string
+    {
+        return $this->csvData;
+    }
+
+    /**
+     * setCsvData
+     * @param string|null $csvData
+     * @return ImportRun
+     */
+    public function setCsvData(?string $csvData): ImportRun
+    {
+        $this->csvData = $csvData;
         return $this;
     }
 }

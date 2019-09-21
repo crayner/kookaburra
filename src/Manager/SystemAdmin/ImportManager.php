@@ -15,11 +15,14 @@ namespace App\Manager\SystemAdmin;
 use App\Entity\ImportRecord;
 use App\Entity\Setting;
 use App\Form\Entity\ImportRun;
+use App\Manager\Entity\ImportRow;
 use App\Manager\Entity\ImportReport;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -274,7 +277,7 @@ class ImportManager
         $this->getImporter()->setFieldDelimiter($importRun->getFieldDelimiter());
         $this->getImporter()->setStringEnclosure($importRun->getStringEnclosure());
         
-        $csvData = $this->getImporter()->readFileIntoCSV($importRun->getFile());
+        $importRun->setCsvData($this->getImporter()->readFileIntoCSV($importRun->getFile()));
         $headings = $this->getImporter()->getHeaderRow();
         $headers = [];
         foreach($headings as $name)
@@ -304,126 +307,108 @@ class ImportManager
                 ]
             );
         }
-/**
-        $form->addRow()->addContent('&nbsp;');
 
-        // COLUMN SELECTION
-        if (!empty($record->getAllFields())) {
-            $table = $form->addRow()->addTable()->setClass('colorOddEven fullWidth');
+        $count = 0;
 
-            $header = $table->addHeaderRow();
-            $header->addContent(__('Field Name'));
-            $header->addContent(__('Type'));
-            $header->addContent(__('Column'));
-            $header->addContent(__('Example'));
+        $defaultColumns = function ($fieldName) use ($record, $importRun) {
+            $columns = [];
 
-            $count = 0;
-
-            $defaultColumns = function ($fieldName) use (&$record, $mode) {
-                $columns = [];
-
-                if ($record->isFieldRequired($fieldName) == false || ($mode == 'update' && !$record->isFieldUniqueKey($fieldName))) {
-                    $columns[Importer::COLUMN_DATA_SKIP] = '[ '.__('Skip this Column').' ]';
-                }
-                if ($record->getField($fieldName, 'custom')) {
-                    $columns[Importer::COLUMN_DATA_CUSTOM] = '[ '.__('Custom').' ]';
-                }
-                if ($record->getField($fieldName, 'function')) {
-                    $columns[Importer::COLUMN_DATA_FUNCTION] = '[ '.__('Generate').' ]';
-                    //data-function='". $record->getField($fieldName, 'function') ."'
-                }
-                return $columns;
-            };
-
-            $columns = array_reduce(range(0, count($headings)-1), function ($group, $index) use (&$headings) {
-                $group[strval($index)." "] = $headings[$index];
-                return $group;
-            }, array());
-
-            $columnIndicators = function ($fieldName) use (&$record, $mode) {
-                $output = '';
-                if ($record->isFieldRequired($fieldName) && !($mode == 'update' && !$record->isFieldUniqueKey($fieldName))) {
-                    $output .= " <strong class='highlight'>*</strong>";
-                }
-                if ($record->isFieldUniqueKey($fieldName)) {
-                    $output .= "<img title='" . __('Must be unique') . "' src='./themes/Default/img/target.png' style='float: right; width:14px; height:14px;margin-left:4px;'>";
-                }
-                if ($record->isFieldRelational($fieldName)) {
-                    $relationalTable = $record->getField($fieldName, 'relationship')['table'] ?? '';
-                    $output .= "<img title='" .__('Relationship') .': '.$relationalTable. "' src='./themes/Default/img/refresh.png' style='float: right; width:14px; height:14px;margin-left:4px;'>";
-                }
-                return $output;
-            };
-
-            foreach ($record->getAllFields() as $fieldName) {
-                if ($record->isFieldHidden($fieldName)) {
-                    $columnIndex = Importer::COLUMN_DATA_HIDDEN;
-                    if ($record->isFieldLinked($fieldName)) {
-                        $columnIndex = Importer::COLUMN_DATA_LINKED;
-                    }
-                    if (!empty($record->getField($fieldName, 'function'))) {
-                        $columnIndex = Importer::COLUMN_DATA_FUNCTION;
-                    }
-
-                    $form->addHiddenValue("columnOrder[$count]", $columnIndex);
-                    $count++;
-                    continue;
-                }
-
-                $selectedColumn = '';
-                if ($columnOrder == 'linear' || $columnOrder == 'linearplus') {
-                    $selectedColumn = ($columnOrder == 'linearplus')? $count+1 : $count;
-                } elseif ($columnOrder == 'last') {
-                    $selectedColumn = isset($columnOrderLast[$count])? $columnOrderLast[$count] : '';
-                } elseif ($columnOrder == 'guess' || $columnOrder == 'skip') {
-                    foreach ($headings as $index => $columnName) {
-                        if (mb_strtolower($columnName) == mb_strtolower($fieldName) || mb_strtolower($columnName) == mb_strtolower($record->getField($fieldName, 'name'))) {
-                            $selectedColumn = $index;
-                            break;
-                        }
-                    }
-                }
-
-                if ($columnOrder == 'skip' && !($record->isFieldRequired($fieldName) && !($mode == 'update' && !$record->isFieldUniqueKey($fieldName)))) {
-                    $selectedColumn = Importer::COLUMN_DATA_SKIP;
-                }
-
-                $row = $table->addRow();
-                $row->addContent(__($record->getField($fieldName, 'name')))
-                    ->wrap('<span class="'.$record->getField($fieldName, 'desc').'">', '</span>')
-                    ->append($columnIndicators($fieldName));
-                $row->addContent($record->readableFieldType($fieldName));
-                $row->addSelect('columnOrder['.$count.']')
-                    ->setID('columnOrder'.$count)
-                    ->fromArray($defaultColumns($fieldName))
-                    ->fromArray($columns)
-                    ->required()
-                    ->setClass('columnOrder mediumWidth')
-                    ->selected($selectedColumn)
-                    ->placeholder();
-                $row->addTextField('columnText['.$count.']')
-                    ->setID('columnText'.$count)
-                    ->setClass('shortWidth columnText')
-                    ->readonly()
-                    ->disabled();
-
-                $count++;
+            if (!$record->isFieldRequired($fieldName) || ($importRun->getModes() === 'update' && !$record->isFieldUniqueKey($fieldName))) {
+                $columns[Importer::COLUMN_DATA_SKIP] = 'Skip this Column';
             }
+            if ($record->getField($fieldName, 'custom')) {
+                $columns[Importer::COLUMN_DATA_CUSTOM] = 'Custom';
+            }
+            if ($record->getField($fieldName, 'function')) {
+                $columns[Importer::COLUMN_DATA_FUNCTION] = 'Generate';
+            }
+            return $columns;
+        };
+
+        $columns = array_reduce(range(0, count($headings)-1), function ($group, $index) use (&$headings) {
+            $group[strval($index)." "] = $headings[$index];
+            return $group;
+        }, array());
+
+        $columnIndicators = function ($fieldName) use ($record, $importRun) {
+            $output = [];
+            if ($record->isFieldRequired($fieldName) && !($importRun->getModes() === 'update' && !$record->isFieldUniqueKey($fieldName))) {
+                $output[] = 'required';
+            }
+            if ($record->isFieldUniqueKey($fieldName)) {
+                $output[] = 'unique';
+            }
+            if ($record->isFieldRelational($fieldName)) {
+                $relationalTable = $record->getField($fieldName, 'relationship')['table'] ?? '';
+                $output[] = 'relational';
+            }
+            return $output;
+        };
+
+        foreach ($record->getAllFields() as $fieldName) {
+            $row = new ImportRow();
+            $row->setFlags($columnIndicators($fieldName));
+            if ($record->isFieldHidden($fieldName)) {
+                $columnIndex = Importer::COLUMN_DATA_HIDDEN;
+                if ($record->isFieldLinked($fieldName)) {
+                    $columnIndex = Importer::COLUMN_DATA_LINKED;
+                }
+                if (!empty($record->getField($fieldName, 'function'))) {
+                    $columnIndex = Importer::COLUMN_DATA_FUNCTION;
+                }
+                $row->setOrder($columnIndex)->setCount($count++);
+                $importRun->addColumnRow($row);
+                continue;
+            }
+
+            $selectedColumn = '';
+            if ($importRun->getColumnOrder() === 'linear' || $importRun->getColumnOrder() === 'linearplus') {
+                $selectedColumn = ($importRun->getColumnOrder() === 'linearplus')? ++$count : $count;
+            } elseif ($importRun->getColumnOrder() === 'last') {
+                $selectedColumn = isset($columnOrderLast[$count])? $columnOrderLast[$count] : '';
+            } elseif ($importRun->getColumnOrder() === 'guess' || $importRun->getColumnOrder() === 'skip') {
+                foreach ($headings as $index => $columnName) {
+                    if (mb_strtolower($columnName) == mb_strtolower($fieldName) || mb_strtolower($columnName) == mb_strtolower($record->getField($fieldName, 'name'))) {
+                        $selectedColumn = $index;
+                        break;
+                    }
+                }
+            }
+
+            if ($importRun->getColumnOrder() === 'skip' && !($record->isFieldRequired($fieldName) && !($importRun->getModes() === 'update' && !$record->isFieldUniqueKey($fieldName)))) {
+                $selectedColumn = Importer::COLUMN_DATA_SKIP;
+            }
+
+            $key = array_search($record->getField($fieldName, 'name'), $headings);
+
+            $row->setName($record->getField($fieldName, 'name'))
+                ->setFieldType($record->readableFieldType($fieldName))
+                ->setCount($count++)
+                ->setOrder($selectedColumn)
+                ->setColumnChoices($defaultColumns($fieldName), $columns)
+                ->setExample($firstLine[$key] ?: null)
+            ;
+
+            $importRun->addColumnRow($row);
+
         }
 
-        $form->addRow()->addContent('&nbsp;');
+        $form->add('columnCollection', CollectionType::class,
+            [
+                'label' => false,
+            ]
+        );
 
-        // CSV PREVIEW
-        $table = $form->addRow()->addTable()->setClass('smallIntBorder fullWidth');
-
-        $row = $table->addRow();
-        $row->addLabel('csvData', __('Data'));
-        $row->addTextArea('csvData')->setRows(4)->setCols(74)->setClass('')->readonly()->setValue($csvData);
-
-        $row = $table->addRow();
-        $row->addFooter();
-        $row->addSubmit();
-
-        echo $form->getOutput();  */
+        $form->add('csvData', TextareaType::class,
+            [
+                'label' => 'Data',
+                'help' => 'This value cannot be changed.',
+                'attr' => [
+                    'rows' => 4,
+                    'cols' => 74,
+                    'readonly' => 'readonly',
+                ],
+            ]
+        );
     }
 }

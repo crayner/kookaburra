@@ -52,16 +52,7 @@
                     <td class="p-2 sm:p-3">{{ loop.index0 + 1 }}</td>
                     <td class="p-2 sm:p-3">{{ report.getField(fieldName, 'name') }}{{ report.isFieldRequired(fieldName) ? ' <strong class="highlight">*</strong>' : '' }}</td>
                     <td class="p-2 sm:p-3 hidden sm:table-cell">{{ report.getField(fieldName, 'desc') }}</td>
-                    {% set type = report.readableFieldType(fieldName) %}
-                    {% if type.title is not defined or type.title is same as('') %}
-                        <td class="p-2 sm:p-3 hidden sm:table-cell">{{ type.prompt|trans(type.promptParams|default({})) }}
-                        </td>
-                    {% else %}
-                        <td class="p-2 sm:p-3 hidden sm:table-cell"><attr data-title="{{ type.title|trans(type.titleParams|default({})) }}" style="text-decoration: underline;">{{ type.prompt|trans(type.promptParams|default({})) }}
-                                {{ type.extra is defined ? ' (' ~ type.extra ~ ')': '' }}
-                            </attr>
-                        </td>
-                    {% endif %}
+                    <td class="p-2 sm:p-3 hidden sm:table-cell">{% include 'modules/system_admin/field_type_component.html.twig' with {type: report.readableFieldType(fieldName)} %}</td>
                 </tr>
             {% endif %}
         {% endfor %}
