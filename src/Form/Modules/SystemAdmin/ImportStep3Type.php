@@ -16,8 +16,10 @@ use App\Form\Type\ToggleType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class ImportStep3Type
@@ -33,24 +35,39 @@ class ImportStep3Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('modes', HiddenType::class)
+            ->add('mode', HiddenType::class)
             ->add('columnOrder', HiddenType::class)
             ->add('fieldDelimiter', HiddenType::class)
             ->add('stringEnclosure', HiddenType::class)
-            ->add('ignoreErrors', HiddenType::class)
-            ->add('syncField', ToggleType::class,
+            ->add('ignoreErrors', ToggleType::class,
                 [
-                    'label' => 'Sync?',
-                    'help' => 'Only rows with a matching database ID will be imported.',
-                    'visibleByClass' => 'syncDetails',
+                    'label' => 'Ignore Errors? (ExpertOnly)',
+                    'visibleByClass' => 'ignoreErrors',
                     'visibleWhen' => '1',
-                    'wrapper_class' => 'flex-1 relative right',
                     'values' => ['1', '0'],
+                    'wrapper_class' => 'flex-1 relative right',
+                ]
+            )
+            ->add('syncField', HiddenType::class)
+            ->add('csvData', TextareaType::class,
+                [
+                    'label' => 'Data',
+                    'help' => 'This value cannot be changed.',
+                    'attr' => [
+                        'rows' => 4,
+                        'cols' => 74,
+                        'readonly' => 'readonly',
+                    ],
+                    'required' => false,
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
                 ]
             )
             ->add('submit', SubmitType::class,
                 [
                     'label' => 'Submit',
+                    'row_class' => 'ignoreErrors'
                 ]
             )
         ;
@@ -68,7 +85,7 @@ class ImportStep3Type extends AbstractType
                     'class' => 'smallIntBorder fullWidth standardForm',
                     'autocomplete' => 'on',
                     'enctype' => 'multipart/form-data',
-                    'id' => 'importStep2',
+                    'id' => 'importStep3',
                 ],
                 'translation_domain' => 'messages',
             ]

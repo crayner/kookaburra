@@ -7,7 +7,9 @@
     <tbody>
         {{ form_row(form.syncField) }}
         {{ form_row(form.syncColumn) }}
+        {% if 'toggle' in form.syncField.vars.block_prefixes %}
         <tr><td class="px-2 border-b-0 sm:border-b border-t-0 " colspan="2">&nbsp;</td></tr>
+        {% endif %}
         <tr>
             <td class="px-2 border-b-0 sm:border-b border-t-0 fullWidth" colspan="2">
                 <table class="striped fullWidth">
@@ -20,9 +22,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% dump(form.columnCollection) %}
-                    {% for child in form.columnCollection.children %}
-                        {%  set value = child.vars.data %}
+                    {% for child in form.columns.children %}
+                        {% set value = child.vars.data %}
                         <tr>
                             <td>
                                 {% if value.flags.unique is defined %}
@@ -31,30 +32,32 @@
                                 {% if value.flags.relational is defined %}
                                     <span class="fas fa-sync fa-fw text-gray-600" style="float: right;" title="{{ 'Relationship: {field} of {table}'|trans(value.fieldType.titleParams) }}"></span>
                                 {% endif %}
-                                {{ value.name }}
+                                {{ value.label|trans }}
+                                <input type="hidden" id="import_step2_columns_{{ child.vars.name }}_name" name="import_step2[columns][{{ loop.index0 }}][name]" value="{{ value.name }}" />
                                 {% if value.flags.required is defined %}
-                                &nbsp;<strong class="highlight">*</strong>
+                                <strong class="highlight">&nbsp;*</strong>
                                 {% endif %}
                             </td>
                             <td>{% include 'modules/system_admin/field_type_component.html.twig' with {type: value.fieldType} %}</td>
                             <td class="columnOrder mediumWidth">
                                 <div class="flex-1 relative">
-                                    <select id="import_step2_columnCollection_{{ child.vars.name }}" name="import_step2[columnCollection][{{ loop.index0 }}]" class="columnOrder mediumWidth" required>
+                                    <select id="import_step2_columns_{{ child.vars.name }}_order" name="import_step2[columns][{{ loop.index0 }}][order]" class="columnOrder mediumWidth" required>
                                         <option >{{ 'Please select...'|trans }}</option>
                                         {% for option,prompt in value.columnChoices %}
-                                            <option value="{{ option }}"{{ value.name is same as(prompt) ? ' selected' : '' }}{{ option < 0 ? ' class="text-red-500"' : '' }}>{{ prompt|trans }}</option>
+                                            <option value="{{ option }}"{{ value.label is same as(prompt) ? ' selected' : '' }}{{ option < 0 ? ' class="text-red-500"' : '' }}>{{ prompt|trans }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
                             </td>
                             <td class="shortWidth columnText">
-                                <div class="flex-1 relative text-gray-500">
-                                    {{ value.example }}
+                                <div class="flex-1 relative text-gray-600">
+                                    <input type="hidden" id="import_step2_columns_{{ child.vars.name }}_text" name="import_step2[columns][{{ loop.index0 }}][text]" value="{{ value.text }}" />
+                                    {{ value.text }}
                                 </div>
                             </td>
                         </tr>
                     {% endfor %}
-                    {% do form.columnCollection.setRendered %}
+                    {% do form.columns.setRendered %}
                     </tbody>
                 </table>
             </td>

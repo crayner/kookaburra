@@ -12,13 +12,16 @@
 
 namespace App\Form\Modules\SystemAdmin;
 
-use App\Form\Type\ToggleType;
+use App\Form\Entity\ImportControl;
+use App\Validator\SystemAdmin\ImportStep2;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\BooleanToStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class ImportStep2Type
@@ -34,28 +37,37 @@ class ImportStep2Type extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('modes', HiddenType::class)
-            ->add('columnOrder', HiddenType::class)
-            ->add('fieldDelimiter', HiddenType::class)
-            ->add('stringEnclosure', HiddenType::class)
-            ->add('ignoreErrors', HiddenType::class)
-            ->add('syncField', ToggleType::class,
+            ->add('mode', HiddenType::class,
                 [
-                    'label' => 'Sync?',
-                    'help' => 'Only rows with a matching database ID will be imported.',
-                    'visibleByClass' => 'syncDetails',
-                    'visibleWhen' => '1',
-                    'wrapper_class' => 'flex-1 relative right',
-                    'values' => ['1', '0'],
+                    'constraints' => [
+                        new NotBlank(),
+                        new Choice(['choices' => ["sync","insert","update"]])
+                    ],
                 ]
             )
+            ->add('columnOrder', HiddenType::class)
+            ->add('fieldDelimiter', HiddenType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
+            ->add('stringEnclosure', HiddenType::class,
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                    ],
+                ]
+            )
+            ->add('ignoreErrors', HiddenType::class)
             ->add('submit', SubmitType::class,
                 [
                     'label' => 'Submit',
                 ]
             )
         ;
-        $builder->get('ignoreErrors')->addViewTransformer(new BooleanToStringTransformer('1', [null,'0']));
+        $builder->get('ignoreErrors')->addViewTransformer(new BooleanToStringTransformer('1', [null,'0','']));
     }
 
     /**
@@ -74,6 +86,10 @@ class ImportStep2Type extends AbstractType
                     'novalidate' => 'novalidate',
                 ],
                 'translation_domain' => 'messages',
+                'data_class' => ImportControl::class,
+                'constraints' => [
+                    new ImportStep2(),
+                ],
             ]
         );
         $resolver->setRequired(

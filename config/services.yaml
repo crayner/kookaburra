@@ -141,3 +141,9 @@ services:
 
     App\Manager\Entity\BreadCrumbs:
         class: App\Manager\Entity\BreadCrumbs
+
+    App\Manager\SystemAdmin\Importer:
+        arguments:
+            $logger: '@logger'
+        tags:
+            - { name: monolog.logger, channel: importer }

@@ -17,13 +17,13 @@ use App\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class ImportRecord
+ * Class ImportHistory
  * @package App\Entity
- * @ORM\Entity(repositoryClass="App\Repository\ImportRecordRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="ImportRecord")
+ * @ORM\Entity(repositoryClass="App\Repository\ImportHistoryRepository")
+ * @ORM\Table(options={"auto_increment": 1}, name="ImportHistory")
  * @ORM\HasLifecycleCallbacks()
  */
-class ImportRecord implements EntityInterface
+class ImportHistory implements EntityInterface
 {
     /**
      * @var integer|null
@@ -70,9 +70,9 @@ class ImportRecord implements EntityInterface
      * Id.
      *
      * @param int|null $id
-     * @return ImportRecord
+     * @return ImportHistory
      */
-    public function setId(?int $id): ImportRecord
+    public function setId(?int $id): ImportHistory
     {
         $this->id = $id;
         return $this;
@@ -90,9 +90,9 @@ class ImportRecord implements EntityInterface
      * ImportType.
      *
      * @param string|null $importType
-     * @return ImportRecord
+     * @return ImportHistory
      */
-    public function setImportType(?string $importType): ImportRecord
+    public function setImportType(?string $importType): ImportHistory
     {
         $this->importType = $importType;
         return $this;
@@ -112,9 +112,9 @@ class ImportRecord implements EntityInterface
      * @param \DateTime|null $lastModified
      * @ORM\PreUpdate()
      * @ORM\PrePersist()
-     * @return ImportRecord
+     * @return ImportHistory
      */
-    public function setLastModified(?\DateTime $lastModified): ImportRecord
+    public function setLastModified(?\DateTime $lastModified): ImportHistory
     {
         if (null === $lastModified && null === $this->getLastModified())
             $lastModified = new \DateTime();
@@ -133,12 +133,12 @@ class ImportRecord implements EntityInterface
     /**
      * setPerformedBy
      * @param Person|null $performedBy
-     * @return ImportRecord
+     * @return ImportHistory
      * @ORM\PreUpdate()
      * @ORM\PrePersist()
      * @throws \Exception
      */
-    public function setPerformedBy(?Person $performedBy): ImportRecord
+    public function setPerformedBy(?Person $performedBy): ImportHistory
     {
         if (null === $performedBy && null === $this->getPerformedBy())
             $performedBy = UserHelper::getCurrentUser();
@@ -158,9 +158,9 @@ class ImportRecord implements EntityInterface
      * ColumnOrder.
      *
      * @param array $columnOrder
-     * @return ImportRecord
+     * @return ImportHistory
      */
-    public function setColumnOrder(array $columnOrder): ImportRecord
+    public function setColumnOrder(array $columnOrder): ImportHistory
     {
         $this->columnOrder = $columnOrder;
         return $this;

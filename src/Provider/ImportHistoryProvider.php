@@ -12,18 +12,21 @@
 
 namespace App\Provider;
 
-
-use App\Entity\ImportRecord;
+use App\Entity\ImportHistory;
 use App\Manager\Traits\EntityTrait;
 
-class ImportRecordProvider implements EntityProviderInterface
+/**
+ * Class ImportHistoryProvider
+ * @package App\Provider
+ */
+class ImportHistoryProvider implements EntityProviderInterface
 {
     use EntityTrait;
 
     /**
      * @var string
      */
-    private $entityName = ImportRecord::class;
+    private $entityName = ImportHistory::class;
 
     /**
      * findLastModifiedByName

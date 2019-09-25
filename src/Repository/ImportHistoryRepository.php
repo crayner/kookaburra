@@ -12,15 +12,15 @@
 
 namespace App\Repository;
 
-use App\Entity\ImportRecord;
+use App\Entity\ImportHistory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * Class ImportRecordRepository
+ * Class ImportHistoryRepository
  * @package App\Repository
  */
-class ImportRecordRepository extends ServiceEntityRepository
+class ImportHistoryRepository extends ServiceEntityRepository
 {
     /**
      * GroupRepository constructor.
@@ -28,16 +28,16 @@ class ImportRecordRepository extends ServiceEntityRepository
      */
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, ImportRecord::class);
+        parent::__construct($registry, ImportHistory::class);
     }
 
     /**
      * findLastModifiedByName
      * @param $name
-     * @return ImportRecord|null
+     * @return ImportHistory|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findLastModifiedByName($name): ?ImportRecord
+    public function findLastModifiedByName($name): ?ImportHistory
     {
         return $this->createQueryBuilder('ir')
             ->where('ir.importType = :name')

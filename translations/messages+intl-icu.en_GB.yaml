@@ -571,3 +571,7 @@ Custom: Custom
 Data: Data
 This value cannot be changed.: This value cannot be changed.
 '{table} has a primary key of {key}': '{table} has a primary key of {key}'
+The purpose of this installation of Kookaburra: The purpose of this installation of Kookaburra
+Export Columns: Export Columns
+Must be unique.: Must be unique.
+Must be unique. Controls chronological ordering.: Must be unique. Controls chronological ordering.

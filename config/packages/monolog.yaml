@@ -4,6 +4,7 @@ monolog:
         - 'gibbon'
         - 'setting'
         - 'mailer'
+        - 'importer'
     handlers:
         security:
             # log all messages (since debug is the lowest level)
@@ -48,3 +49,9 @@ monolog:
             path:     '%kernel.logs_dir%/setting.%kernel.environment%.log'
             channels: [setting]
             max_files: 7
+        importer:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/importer.%kernel.environment%.log'
+            channels: [importer]
+            max_files: 1

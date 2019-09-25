@@ -12,21 +12,20 @@
 
 namespace App\Form\Entity;
 
-use App\Manager\Entity\ImportRow;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * Class ImportRun
+ * Class ImportControl
  * @package App\Form\Entity
  */
-class ImportRun
+class ImportControl
 {
     /**
      * @var string
      */
-    private $modes = 'sync';
+    private $mode = 'sync';
 
     /**
      * @var string
@@ -64,9 +63,9 @@ class ImportRun
     private $syncColumn;
 
     /**
-     * @var Collection
+     * @var Collection|ImportColumn[]
      */
-    private $columnCollection;
+    private $columns;
 
     /**
      * @var null|string
@@ -76,20 +75,20 @@ class ImportRun
     /**
      * @return string
      */
-    public function getModes(): string
+    public function getMode(): string
     {
-        return $this->modes;
+        return $this->mode;
     }
 
     /**
-     * Modes.
+     * Mode.
      *
-     * @param string $modes
-     * @return ImportRun
+     * @param string $mode
+     * @return ImportControl
      */
-    public function setModes(string $modes): ImportRun
+    public function setMode(string $mode): ImportControl
     {
-        $this->modes = $modes;
+        $this->mode = $mode;
         return $this;
     }
 
@@ -105,9 +104,9 @@ class ImportRun
      * ColumnOrder.
      *
      * @param string $columnOrder
-     * @return ImportRun
+     * @return ImportControl
      */
-    public function setColumnOrder(string $columnOrder): ImportRun
+    public function setColumnOrder(string $columnOrder): ImportControl
     {
         $this->columnOrder = $columnOrder;
         return $this;
@@ -125,9 +124,9 @@ class ImportRun
      * File.
      *
      * @param null|File $file
-     * @return ImportRun
+     * @return ImportControl
      */
-    public function setFile(?File $file): ImportRun
+    public function setFile(?File $file): ImportControl
     {
         $this->file = $file;
         return $this;
@@ -145,9 +144,9 @@ class ImportRun
      * FieldDelimiter.
      *
      * @param string $fieldDelimiter
-     * @return ImportRun
+     * @return ImportControl
      */
-    public function setFieldDelimiter(string $fieldDelimiter): ImportRun
+    public function setFieldDelimiter(string $fieldDelimiter): ImportControl
     {
         $this->fieldDelimiter = $fieldDelimiter;
         return $this;
@@ -165,9 +164,9 @@ class ImportRun
      * StringEnclosure.
      *
      * @param string $stringEnclosure
-     * @return ImportRun
+     * @return ImportControl
      */
-    public function setStringEnclosure(string $stringEnclosure): ImportRun
+    public function setStringEnclosure(string $stringEnclosure): ImportControl
     {
         $this->stringEnclosure = $stringEnclosure;
         return $this;
@@ -185,9 +184,9 @@ class ImportRun
      * IgnoreErrors.
      *
      * @param bool $ignoreErrors
-     * @return ImportRun
+     * @return ImportControl
      */
-    public function setIgnoreErrors(bool $ignoreErrors): ImportRun
+    public function setIgnoreErrors(bool $ignoreErrors): ImportControl
     {
         $this->ignoreErrors = $ignoreErrors ? true : false;
         return $this;
@@ -205,9 +204,9 @@ class ImportRun
      * SyncField.
      *
      * @param bool $syncField
-     * @return ImportRun
+     * @return ImportControl
      */
-    public function setSyncField(bool $syncField): ImportRun
+    public function setSyncField(bool $syncField): ImportControl
     {
         $this->syncField = $syncField;
         return $this;
@@ -225,43 +224,44 @@ class ImportRun
      * SyncColumn.
      *
      * @param string|null $syncColumn
-     * @return ImportRun
+     * @return ImportControl
      */
-    public function setSyncColumn(?string $syncColumn): ImportRun
+    public function setSyncColumn(?string $syncColumn): ImportControl
     {
         $this->syncColumn = $syncColumn;
         return $this;
     }
 
     /**
-     * getColumnCollection
-     * @return Collection
+     * getColumns
+     * @return Collection|ImportColumn[]
      */
-    public function getColumnCollection(): Collection
+    public function getColumns(): Collection
     {
-        return $this->columnCollection = $this->columnCollection ?: new ArrayCollection();
+        return $this->columns = $this->columns ?: new ArrayCollection();
     }
 
     /**
-     * ColumnCollection.
-     *
-     * @param Collection $columnCollection
-     * @return ImportRun
+     * setColumns
+     * @param Collection|ImportColumn[] $columns
+     * @return ImportControl
      */
-    public function setColumnCollection(Collection $columnCollection): ImportRun
+    public function setColumns(Collection $columns): ImportControl
     {
-        $this->columnCollection = $columnCollection;
+        $this->columns = $columns;
         return $this;
     }
 
     /**
-     * addColumnRow
-     * @param ImportRow $row
-     * @return ImportRun
+     * addColumn
+     * @param ImportColumn $column
+     * @return ImportControl
      */
-    public function addColumnRow(ImportRow $row): ImportRun
+    public function addColumn(ImportColumn $column): ImportControl
     {
-        $this->getColumnCollection()->add($row);
+        if ($this->getColumns()->contains($column))
+            return $this;
+        $this->getColumns()->add($column);
         return $this;
     }
 
@@ -277,9 +277,9 @@ class ImportRun
     /**
      * setCsvData
      * @param string|null $csvData
-     * @return ImportRun
+     * @return ImportControl
      */
-    public function setCsvData(?string $csvData): ImportRun
+    public function setCsvData(?string $csvData): ImportControl
     {
         $this->csvData = $csvData;
         return $this;

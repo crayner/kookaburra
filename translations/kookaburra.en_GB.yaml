@@ -52,3 +52,6 @@ Google API Key: Google API Key
 'Your requested did not included a valid Google Secret File. All other Google changes where saved.': 'Your requested did not included a valid Google Secret File. All other Google changes where saved.'
 'Your request failed due to a file transfer issue.': Your request failed due to a file transfer issue.
 Changing the default language will give strange translation results until the cache is fully rebuilt.: Changing the default language will give strange translation results until the cache is fully rebuilt.
+system_admin:
+    importer:
+        log_details: 'Full details of all errors and warnings are logged to the importer log at "{path}".'

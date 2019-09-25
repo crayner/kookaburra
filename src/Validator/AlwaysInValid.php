@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * Class AlwaysInValid
  * @package Hillrange\Form\Validator
+ * @Annotation
  */
 class AlwaysInValid extends Constraint
 {

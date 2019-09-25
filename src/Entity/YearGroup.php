@@ -14,12 +14,13 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class YearGroup
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\YearGroupRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="YearGroup", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name","nameShort","sequenceNumber"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="YearGroup", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}),@ORM\UniqueConstraint(name="nameShort", columns={"nameShort"}),@ORM\UniqueConstraint(name="sequenceNumber", columns={"sequenceNumber"})})
  */
 class YearGroup implements EntityInterface
 {
@@ -33,19 +34,24 @@ class YearGroup implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=15)
+     * @ORM\Column(length=15,unique=true)
+     * @Assert\NotBlank(message="Your request failed because your inputs were invalid.")
      */
     private $name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=4, name="nameShort")
+     * @ORM\Column(length=4,name="nameShort",unique=true)
+     * @Assert\NotBlank(message="Your request failed because your inputs were invalid.")
      */
     private $nameShort;
 
     /**
      * @var integer
-     * @ORM\Column(type="smallint",columnDefinition="INT(3)",name="sequenceNumber")
+     * @ORM\Column(type="smallint",columnDefinition="INT(3) UNSIGNED",name="sequenceNumber",unique=true)
+     * @Assert\NotBlank(message="Your request failed because your inputs were invalid.")
+     * @Assert\Range(min=1,max=999)
+    ")
      */
     private $sequenceNumber;
 
@@ -53,6 +59,7 @@ class YearGroup implements EntityInterface
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
      * @ORM\JoinColumn(name="gibbonPersonIDHOY",referencedColumnName="gibbonPersonID")
+     * @Assert\Valid
      */
     private $headOfYear;
 
@@ -144,5 +151,14 @@ class YearGroup implements EntityInterface
     {
         $this->headOfYear = $headOfYear;
         return $this;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

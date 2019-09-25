@@ -5,7 +5,7 @@
 {{ form_start(form) }}
 <table class="smallIntBorder fullWidth standardForm relative">
     <tbody>
-        {{ form_row(form.modes) }}
+        {{ form_row(form.mode) }}
         {{ form_row(form.columnOrder) }}
         {{ form_row(form.file) }}
         {{ form_row(form.fieldDelimiter) }}
@@ -24,7 +24,7 @@
 </ol>
 <header class="relative">
     <div class="linkTop">
-        <a href="{{ path('system_admin__export_run', {report: report.getDetail('type'), data: 0, all: 0}) }}" title="{{ 'Export Columns'|trans }}"><span class="fas fa-file-export fa-fw fa-1-5x text-gray-600"></span></a>
+        <a href="{{ path('system_admin__export_run', {report: report.getDetail('name'), data: 0, all: 0}) }}" title="{{ 'Export Columns'|trans }}"><span class="fas fa-file-export fa-fw fa-1-5x text-gray-600"></span></a>
     </div>
 </header>
 <table class="w-full striped" >
@@ -46,13 +46,13 @@
     </thead>
 
     <tbody>
-        {% for fieldName in report.getAllFields() %}
-            {% if report.fieldHidden(fieldName) is not same as (true) %}
+        {% for field in report.fields %}
+            {% if field.fieldHidden() is not same as (true) %}
                 <tr>
                     <td class="p-2 sm:p-3">{{ loop.index0 + 1 }}</td>
-                    <td class="p-2 sm:p-3">{{ report.getField(fieldName, 'name') }}{{ report.isFieldRequired(fieldName) ? ' <strong class="highlight">*</strong>' : '' }}</td>
-                    <td class="p-2 sm:p-3 hidden sm:table-cell">{{ report.getField(fieldName, 'desc') }}</td>
-                    <td class="p-2 sm:p-3 hidden sm:table-cell">{% include 'modules/system_admin/field_type_component.html.twig' with {type: report.readableFieldType(fieldName)} %}</td>
+                    <td class="p-2 sm:p-3">{{ field.label|trans }}{{ field.isRequired() ? ' <strong class="highlight">*</strong>' : '' }}</td>
+                    <td class="p-2 sm:p-3 hidden sm:table-cell">{{ field.desc|trans }}</td>
+                    <td class="p-2 sm:p-3 hidden sm:table-cell">{% include 'modules/system_admin/field_type_component.html.twig' with {type: field.readableFieldType} %}</td>
                 </tr>
             {% endif %}
         {% endfor %}

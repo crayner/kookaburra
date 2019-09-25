@@ -1,41 +1,40 @@
 details:
-    type: yearGroups
-    name: Year Groups
+    name: yearGroups
+    title: Year Groups
     table: YearGroup
     modes: { update: true, insert: true, export: true }
     alias: yg
-access:
+security:
     module: School Admin
     action: Manage Year Groups
-primaryKey:
-    id
-uniqueKeys:
-    - name
-    - nameShort
 join:
     HeadOfYear:
         table: YearGroup
         alias: p
-        type: leftJoin
+        joinType: leftJoin
         targetTable: Person
-table:
+uniqueKeys:
+    - name
+    - nameShort
+    - sequenceNumber
+fields:
     name: 
-        name: "Name"
+        label: "Name"
         desc: "Must be unique."
         args: { filter: string, required: true }
         select: yg.name
     nameShort: 
-        name: "Short Name"
+        label: "Short Name"
         desc: "Must be unique."
         args: { filter: string, required: true }
         select: yg.nameShort
     sequenceNumber:
-        name: "Sequence Number"
+        label: "Sequence Number"
         desc: "Must be unique. Controls chronological ordering."
         args: { filter: numeric }
         select: yg.sequenceNumber
     headOfYear:
-        name: "Head of Year"
+        label: "Head of Year"
         desc: "Username"
         args: { filter: string, custom: true }
         relationship: { table: Person, key: id, field: username }

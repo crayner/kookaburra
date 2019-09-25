@@ -20,7 +20,7 @@ use App\Entity\NotificationEvent;
 use App\Entity\NotificationListener;
 use App\Entity\Setting;
 use App\Entity\StringReplacement;
-use App\Form\Entity\ImportRun;
+use App\Form\Entity\ImportControl;
 use App\Form\Modules\SystemAdmin\DisplaySettingsType;
 use App\Form\Modules\SystemAdmin\EmailSettingsType;
 use App\Form\Modules\SystemAdmin\GoogleIntegationType;
@@ -36,10 +36,9 @@ use App\Form\Modules\SystemAdmin\SecuritySettingsType;
 use App\Form\Modules\SystemAdmin\SMSSettingsType;
 use App\Form\Modules\SystemAdmin\StringReplacementType;
 use App\Form\Modules\SystemAdmin\SystemSettingsType;
-use App\Manager\Entity\ImportReport;
+use App\Manager\Entity\SystemAdmin\ImportReport;
 use App\Manager\ExcelManager;
 use App\Manager\SystemAdmin\GoogleSettingManager;
-use App\Manager\SystemAdmin\Importer;
 use App\Manager\SystemAdmin\ImportManager;
 use App\Manager\SystemAdmin\LanguageManager;
 use App\Manager\SystemAdmin\MailerSettingsManager;
@@ -673,6 +672,7 @@ class SystemAdminController extends AbstractController
      * @param ImportManager $manager
      * @param ExcelManager $excel
      * @param Request $request
+     * @param TranslatorInterface $translator
      * @param bool $data
      * @param bool $all
      * @return \Symfony\Component\HttpFoundation\Response
@@ -680,7 +680,7 @@ class SystemAdminController extends AbstractController
      * @Route("/export/{report}/{data}/run/{all}", name="export_run")
      * @IsGranted("ROLE_ROUTE")
      */
-    public function exportRun(string $report, ImportManager $manager, ExcelManager $excel, Request $request, bool $data = false, bool $all = false)
+    public function exportRun(string $report, ImportManager $manager, ExcelManager $excel, Request $request, TranslatorInterface $translator, bool $data = false, bool $all = false)
     {
         $manager->setDataExport($data || true);
         $manager->setDataExportAll($all);
@@ -719,28 +719,28 @@ class SystemAdminController extends AbstractController
         $count = 0;
         $rowData = [];
         $queryFields = [];
-        $columnFields = $report->getAllFields();
+        $columnFields = $report->getFields();
 
-        $columnFields = array_filter($columnFields, function ($fieldName) use ($report) {
-            return !$report->isFieldHidden($fieldName);
+        $columnFields = $columnFields->filter(function ($field) {
+            return !$field->isFieldHidden();
         });
 
         // Create the header row
-        foreach ($columnFields as $fieldName) {
-            $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($count) . '1', $report->getField($fieldName, 'name', $fieldName));
+        foreach ($columnFields as $field) {
+            $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($count) . '1', $translator->trans($field->getLabel()));
             $excel->getActiveSheet()->getStyle(GlobalHelper::num2alpha($count) . '1')->applyFromArray($style_head_fill);
 
             // Dont auto-size giant text fields
-            if ($report->getField($fieldName, 'kind') == 'text') {
+            if ($field->getArg('kind') === 'text') {
                 $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setWidth(25);
             } else {
                 $excel->getActiveSheet()->getColumnDimension(GlobalHelper::num2alpha($count))->setAutoSize(true);
             }
 
             // Add notes to column headings
-            $info = ($report->isFieldRequired($fieldName)) ? "* required\n" : '';
-            $info .= $report->readableFieldType($fieldName) . "\n";
-            $info .= $report->getField($fieldName, 'desc', '');
+            $info = ($field->isRequired()) ? "* required\n" : '';
+            $info .= $this->renderView('modules/system_admin/field_type_component.html.twig',['type' => $field->readableFieldType()]) . "\n";
+            $info .= $field->getArg('desc');
             $info = strip_tags($info);
 
             if (!empty($info)) {
@@ -758,26 +758,14 @@ class SystemAdminController extends AbstractController
             $query->from('\App\Entity\\' . $tableName, $report->getJoinAlias($tableName));
 
             foreach ($report->getJoin() as $fieldName => $join) {
-                $type = $join['type'];
-                $query->$type($report->getJoinAlias($join['table']) . '.' . $join['reference'], $join['alias']);
+                $type = $join->getJoinType();
+                $query->$type($report->getJoinAlias($join->getTable()) . '.' . $join->getReference(), $join->getAlias());
             }
 
             $select = [];
             foreach ($report->getFields() as $name=>$field) {
-                if (!$report->isFieldHidden($name)) {
-                    $w = '';
-                    if (is_array($field['select'])) {
-                        $w .= "CONCAT(";
-                        foreach ($field['select'] as $name)
-                            $w .= $name . ", ' ',";
-                        $w = rtrim($w, "', ") . ")'";
-                    } elseif (!isset($field['select'])) {
-                        $w = "''";
-                    } else {
-                        $w .= $field['select'];
-                    }
-
-                    $w .= ' AS ' . $name;
+                if (!$field->isFieldHidden()) {
+                    $w = $field->getSelect() . ' AS ' . $name;
                     $select[] = $w;
                 }
             }
@@ -794,9 +782,6 @@ class SystemAdminController extends AbstractController
                     $query->where($report->getJoinAlias('SchoolYear') . '.id = :schoolYear');
                 }
             }
-
-            if (null !== $report->getPrimaryKey())
-                $query->setParameters($data)->orderBy($report->getJoinAlias($tableName) . '.' . $report->getPrimaryKey(), 'ASC');
 
             try {
                 $result = $query->getQuery()->getResult();
@@ -834,7 +819,7 @@ class SystemAdminController extends AbstractController
             }
         }
 
-        $filename = ($manager->isDataExport()) ? 'DataExport'.'-'.$report->getDetail('type') : 'DataStructure'.'-'.$report->getDetail('type');
+        $filename = ($manager->isDataExport()) ? 'DataExport' . '-' . $report->getDetails()->getName() : 'DataStructure' . '-' . $report->getDetails()->getName();
 
         $excel->setFileName($filename);
 
@@ -856,51 +841,51 @@ class SystemAdminController extends AbstractController
      */
     public function importRun(string $report, ImportManager $manager, Request $request, int $step = 1)
     {
+        $memoryStart = memory_get_usage();
+        $timeStart = microtime(true);
         $report = $manager->getImportReport($report);
-        $importRun = new ImportRun();
+        $importControl = new ImportControl();
 
-        $form = $this->createForm(ImportStep1Type::class, $importRun, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1])]);
-
-        if ($step === 2) {
+        if ($step === 1) {
+            $form = $this->createForm(ImportStep1Type::class, $importControl, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step + 1])]);
+        } elseif ($step === 2) {
+            $form = $this->createForm(ImportStep1Type::class, $importControl, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step])]);
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $form = $this->createForm(ImportStep2Type::class, $importRun, [
-                    'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1]),
+                $form = $this->createForm(ImportStep2Type::class, $importControl, [
+                    'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step + 1]),
                     'importReport' => $report
                 ]);
-                $manager->prepareStep2($report, $importRun, $form, $request);
+                $manager->prepareStep2($report, $importControl, $form, $request);
             } else {
                 $step = 1;
-                $form = $this->createForm(ImportStep1Type::class, $importRun, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1])]);
             }
         } elseif ($step === 3) {
-            $form = $this->createForm(ImportStep2Type::class, $importRun, [
-                'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step]),
+            $form = $this->createForm(ImportStep2Type::class, $importControl, [
+                'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step]),
                 'importReport' => $report
             ]);
-            $manager->prepareStep2($report, $importRun, $form, $request);
+            $manager->prepareStep2($report, $importControl, $form, $request);
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $manager->prepareStep3($report, $importRun, $form, $request);
-                $form = $this->createForm(ImportStep3Type::class, $importRun, [
-                    'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1]),
+                $manager->prepareStep3($report, $importControl, $form, $request);
+                $form = $this->createForm(ImportStep3Type::class, $importControl, [
+                    'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step + 1]),
                     'importReport' => $report
                 ]);
             } else {
                 $step = 2;
-                $form = $this->createForm(ImportStep2Type::class, $importRun, [
-                    'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetail('type'), 'step' => $step + 1]),
-                    'importReport' => $report
-                ]);
-                $manager->prepareStep2($report, $importRun, $form);
             }
         }
 
         return $this->render('modules/system_admin/import_run.html.twig',
             [
                 'report' => $report,
+                'manager' => $manager,
                 'step' => $step,
                 'form' => $form->createView(),
+                'executionTime' => mb_substr(microtime(true) - $timeStart, 0, 6),
+                'memoryUsage' => $manager->readableFileSize(max(0, memory_get_usage() - $memoryStart)),
             ]
         );
     }

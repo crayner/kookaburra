@@ -12,19 +12,24 @@
 
 namespace App\Manager\SystemAdmin;
 
-use App\Entity\ImportRecord;
+use App\Entity\ImportHistory;
 use App\Entity\Setting;
-use App\Form\Entity\ImportRun;
-use App\Manager\Entity\ImportRow;
-use App\Manager\Entity\ImportReport;
+use App\Form\Entity\ImportColumn;
+use App\Form\Entity\ImportControl;
+use App\Form\Modules\SystemAdmin\ImportStepColumnType;
+use App\Form\Type\ToggleType;
+use App\Manager\Entity\SystemAdmin\ImportReport;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -65,8 +70,9 @@ class ImportManager
     /**
      * Loads all YAML files from a folder and creates an ImportReport object for each
      *
-     * @param   Object  PDO Connection
-     * @return  array   2D array of ImportReport objects
+     * @param bool $validateStructure
+     * @return ArrayCollection
+     * @throws \Exception
      */
     public function loadImportReportList(bool $validateStructure = false): ArrayCollection
     {
@@ -77,12 +83,8 @@ class ImportManager
         // Create ImportReport objects for each file
         if ($finder->hasResults()) {
             foreach ($defaultFiles as $file) {
-                $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
-
-                if (isset($fileData['details']) && isset($fileData['details']['type'])) {
-                    $fileData['details']['grouping'] = (isset($fileData['access']['module'])) ? $fileData['access']['module'] : 'General';
-                    $this->addImportReport($fileData['details']['type'], new ImportReport($fileData, $validateStructure));
-                }
+                $report = new ImportReport($file);
+                $this->addImportReport($report);
             }
         }
 
@@ -95,13 +97,8 @@ class ImportManager
 
         if ($finder->hasResults()) {
             foreach ($customFiles as $file) {
-                $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
-
-                if (isset($fileData['details']) && isset($fileData['details']['type'])) {
-                    $fileData['details']['grouping'] = '* Custom Imports';
-                    $fileData['details']['custom'] = true;
-                    $this->addImportReport($fileData['details']['type'], new ImportReport($fileData, $validateStructure));
-                }
+                $report = new ImportReport($file);
+                $this->addImportReport($report);
             }
         }
 
@@ -142,13 +139,15 @@ class ImportManager
 
     /**
      * addImportReport
-     * @param string $key
-     * @param ImportReport $type
+     * @param ImportReport $report
      * @return ImportManager
      */
-    public function addImportReport(string $key, ImportReport $type): ImportManager
+    public function addImportReport(ImportReport $report): ImportManager
     {
-        $this->getImportReports()->set($key,$type);
+        $this->getImportReports()->add($report);
+
+        $report->loadAccessData();
+
         return $this;
     }
 
@@ -248,9 +247,8 @@ class ImportManager
             }
         }
 
-        $fileData = Yaml::parse(file_get_contents($path));
-
-        return new ImportReport($fileData);
+        $file = new File($path, true);
+        return new ImportReport($file, true);
     }
 
     /**
@@ -263,74 +261,102 @@ class ImportManager
 
     /**
      * prepareStep2
-     * @param ImportReport $record
-     * @param ImportRun $importRun
+     * @param ImportReport $report
+     * @param ImportControl $importControl
      * @param FormInterface $form
      */
-    public function prepareStep2(ImportReport $record, ImportRun $importRun, FormInterface $form, Request $request)
+    public function prepareStep2(ImportReport $report, ImportControl $importControl, FormInterface $form, Request $request)
     {
         $columnOrderLast = [];
-        if ($importRun->getColumnOrder() === 'last') {
-            $columnOrderLast = ProviderFactory::create(ImportRecord::class)->findLastColumnOrderByName($record->getDetail('type'));
+        if ($importControl->getColumnOrder() === 'last') {
+            $columnOrderLast = ProviderFactory::create(ImportHistory::class)->findLastColumnOrderByName($report->getDetail('type'));
         }
 
+        $this->getImporter()->setFieldDelimiter($importControl->getFieldDelimiter());
+        $this->getImporter()->setStringEnclosure($importControl->getStringEnclosure());
 
-        $this->getImporter()->setFieldDelimiter($importRun->getFieldDelimiter());
-        $this->getImporter()->setStringEnclosure($importRun->getStringEnclosure());
-
-        if ($importRun->getCsvData() === null && $importRun->getFile() !== null) {
-            $importRun->setCsvData($this->getImporter()->readFileIntoCSV($importRun->getFile()));
-            unlink($importRun->getFile()->getRealPath());
-            $importRun->setFile(null);
-        }
-        if ($importRun->getCsvData() === null) {
+        if ($importControl->getCsvData() === null && $importControl->getFile() !== null) {
+            $importControl->setCsvData($this->getImporter()->readFileIntoCSV($importControl->getFile()));
+            unlink($importControl->getFile()->getRealPath());
+            $importControl->setFile(null);
+            if ('' === $importControl->getCsvData())
+                throw new \Exception('No data was imported.');
+            $this->getImporter()->setImportControl($importControl)->setHeaderFirstLine();
+        } elseif ($importControl->getCsvData() === null) {
             $importStep2 = $request->get('import_step2');
-            $importRun->setCsvData($importStep2['csvData']);
-            $this->getImporter()->setHeaderFirstLine($importRun->getCsvData());
+            $importControl->setCsvData($importStep2['csvData']);
+            $this->getImporter()->setImportControl($importControl)->setHeaderFirstLine();
+        } elseif ($importControl->getCsvData() !== null) {
+            $this->getImporter()->setImportControl($importControl)->setHeaderFirstLine();
         }
 
         $headings = $this->getImporter()->getHeaderRow();
+
         $headers = [];
-        foreach($headings as $name)
-            $headers[$name] = $name;
+
+        foreach($headings as $name) {
+            $fields = $report->getFields()->filter(function($field) use ($name) {
+                return $field->getLabel() === $name;
+            });
+            $headers[$name] = $fields->first()->getName();
+        }
 
         $firstLine = $this->getImporter()->getFirstRow();
 
         // SYNC SETTINGS
-        if (in_array($importRun->getModes(), ["sync", "update"])) {
-            $lastFieldValue = ($importRun->getColumnOrder() === 'last' && isset($columnOrderLast['syncField'])) ? $columnOrderLast['syncField'] : 'N';
-            $lastColumnValue = ($importRun->getColumnOrder() === 'last' && isset($columnOrderLast['syncColumn'])) ? $columnOrderLast['syncColumn'] : '';
+        if (in_array($importControl->getMode(), ["sync", "update"])) {
+            $lastFieldValue = ($importControl->getColumnOrder() === 'last' && isset($columnOrderLast['syncField'])) ? $columnOrderLast['syncField'] : 'N';
+            $lastColumnValue = ($importControl->getColumnOrder() === 'last' && isset($columnOrderLast['syncColumn'])) ? $columnOrderLast['syncColumn'] : '';
 
-            if ($importRun->getColumnOrder() == 'linearplus') {
+            if ($importControl->getColumnOrder() == 'linearplus') {
                 $lastFieldValue = true;
-                $lastColumnValue = $record->getPrimaryKey();
+                $lastColumnValue = $report->getPrimaryKey();
             }
 
-            $form->add('syncColumn', ChoiceType::class,
+            $form->add('syncField', ToggleType::class,
+                [
+                    'label' => 'Sync?',
+                    'help' => 'Only rows with a matching database ID will be imported.',
+                    'visibleByClass' => 'syncDetails',
+                    'visibleWhen' => '1',
+                    'wrapper_class' => 'flex-1 relative right',
+                    'values' => ['1', '0'],
+                ]
+            )->add('syncColumn', ChoiceType::class,
                 [
                     'label' => 'Primary Key',
                     'data' => $lastColumnValue,
                     'help' => '{table} has a primary key of {key}',
-                    'help_translation_parameters' => ['{table}' => $record->getDetail('table'), '{key}' => $record->getPrimaryKey()],
+                    'help_translation_parameters' => ['{table}' => $report->getDetail('table'), '{key}' => $report->getPrimaryKey()],
                     'choices' => $headers,
                     'placeholder' => 'Please select...',
                     'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 syncDetails',
+                ]
+            );
+        } else {
+            $form->add('syncField', HiddenType::class,
+                [
+                    'data' => 0,
+                ]
+            )->add('syncColumn', HiddenType::class,
+                [
+                    'data' => null,
                 ]
             );
         }
 
         $count = 0;
 
-        $defaultColumns = function ($fieldName) use ($record, $importRun) {
+        $defaultColumns = function ($field) use ($report, $importControl) {
             $columns = [];
 
-            if (!$record->isFieldRequired($fieldName) || ($importRun->getModes() === 'update' && !$record->isFieldUniqueKey($fieldName))) {
+            if (!$field->isRequired() || ($importControl->getMode() === 'update' && !$report->isUniqueKey($field->getName()))) {
                 $columns[Importer::COLUMN_DATA_SKIP] = 'Skip this Column';
             }
-            if ($record->getField($fieldName, 'custom')) {
+            if ($field->getArg('custom')) {
                 $columns[Importer::COLUMN_DATA_CUSTOM] = 'Custom';
             }
-            if ($record->getField($fieldName, 'function')) {
+            if ($field->getArg('function')) {
                 $columns[Importer::COLUMN_DATA_FUNCTION] = 'Generate';
             }
             return $columns;
@@ -341,77 +367,73 @@ class ImportManager
             return $group;
         }, array());
 
-        $columnIndicators = function ($fieldName) use ($record, $importRun) {
+        $columnIndicators = function ($field) use ($report, $importControl) {
             $output = [];
-            if ($record->isFieldRequired($fieldName) && !($importRun->getModes() === 'update' && !$record->isFieldUniqueKey($fieldName))) {
+            if ($field->isRequired() && !($importControl->getMode() === 'update' && !$report->isUniqueKey($field->getName()))) {
                 $output[] = 'required';
             }
-            if ($record->isFieldUniqueKey($fieldName)) {
+            if ($report->isUniqueKey($field->getName())) {
                 $output[] = 'unique';
             }
-            if ($record->isFieldRelational($fieldName)) {
-                $relationalTable = $record->getField($fieldName, 'relationship')['table'] ?? '';
+            if ($field->isRelational()) {
+                $relationalTable = $field->getRelationship()['table'] ?? '';
                 $output[] = 'relational';
             }
             return $output;
         };
 
-        foreach ($record->getAllFields() as $fieldName) {
-            $row = new ImportRow();
-            $row->setFlags($columnIndicators($fieldName));
-            if ($record->isFieldHidden($fieldName)) {
+        foreach ($report->getFields() as $field) {
+            $column = new ImportColumn();
+            $column->setFlags($columnIndicators($field));
+            if ($field->isHidden()) {
                 $columnIndex = Importer::COLUMN_DATA_HIDDEN;
-                if ($record->isFieldLinked($fieldName)) {
+                if ($field->isLinked()) {
                     $columnIndex = Importer::COLUMN_DATA_LINKED;
                 }
-                if (!empty($record->getField($fieldName, 'function'))) {
+                if ($field->getArg('function') !== false) {
                     $columnIndex = Importer::COLUMN_DATA_FUNCTION;
                 }
-                $row->setOrder($columnIndex)->setCount($count++);
-                $importRun->addColumnRow($row);
+                $column->setOrder($columnIndex)->setCount($count++);
+                $importControl->addColumn($column);
                 continue;
             }
 
             $selectedColumn = '';
-            if ($importRun->getColumnOrder() === 'linear' || $importRun->getColumnOrder() === 'linearplus') {
-                $selectedColumn = ($importRun->getColumnOrder() === 'linearplus')? ++$count : $count;
-            } elseif ($importRun->getColumnOrder() === 'last') {
-                $selectedColumn = isset($columnOrderLast[$count])? $columnOrderLast[$count] : '';
-            } elseif ($importRun->getColumnOrder() === 'guess' || $importRun->getColumnOrder() === 'skip') {
+            if ($importControl->getColumnOrder() === 'linear' || $importControl->getColumnOrder() === 'linearplus') {
+                $selectedColumn = ($importControl->getColumnOrder() === 'linearplus') ? ++$count : $count;
+            } elseif ($importControl->getColumnOrder() === 'last') {
+                $selectedColumn = isset($columnOrderLast[$count]) ? $columnOrderLast[$count] : '';
+            } elseif ($importControl->getColumnOrder() === 'guess' || $importControl->getColumnOrder() === 'skip') {
                 foreach ($headings as $index => $columnName) {
-                    if (mb_strtolower($columnName) == mb_strtolower($fieldName) || mb_strtolower($columnName) == mb_strtolower($record->getField($fieldName, 'name'))) {
+                    if (mb_strtolower($columnName) == mb_strtolower($field->getName()) || mb_strtolower($columnName) == mb_strtolower($field->getName())) {
                         $selectedColumn = $index;
                         break;
                     }
                 }
             }
 
-            if ($importRun->getColumnOrder() === 'skip' && !($record->isFieldRequired($fieldName) && !($importRun->getModes() === 'update' && !$record->isFieldUniqueKey($fieldName)))) {
+            if ($importControl->getColumnOrder() === 'skip' && !($field->isRequired() && !($importControl->getModes() === 'update' && !$field->isUniqueKey()))) {
                 $selectedColumn = Importer::COLUMN_DATA_SKIP;
             }
 
-            $key = array_search($record->getField($fieldName, 'name'), $headings);
-
-            $row->setName($record->getField($fieldName, 'name'))
-                ->setFieldType($record->readableFieldType($fieldName))
-                ->setCount($count++)
-                ->setOrder($selectedColumn)
-                ->setColumnChoices($defaultColumns($fieldName), $columns)
-                ->setExample($firstLine[$key] ?: null)
+            $key = array_search($field->getLabel(), $headings);
+            $column = new ImportColumn();
+            $column->setOrder($selectedColumn)
+                ->setFieldType($field->readableFieldType())
+                ->setName($field->getName())
+                ->setColumnChoices($defaultColumns($field), $columns)
+                ->setLabel($field->getLabel())
+                ->setText($firstLine[$key] ?: null)
             ;
 
-            $importRun->addColumnRow($row);
-
+            $importControl->addColumn($column);
         }
 
-        $form->add('columnCollection', CollectionType::class,
+        $form->add('columns', CollectionType::class,
             [
                 'label' => false,
-                'entry_type' => ChoiceType::class,
-                'entry_options' => [
-                    'choices' => array_flip($row->getColumnChoices()),
-                    'placeholder' => 'Please select...',
-                ],
+                'entry_type' => ImportStepColumnType::class,
+                'data' => $importControl->getColumns(),
             ]
         );
 
@@ -424,18 +446,34 @@ class ImportManager
                     'cols' => 74,
                     'readonly' => 'readonly',
                 ],
+                'constraints' => [
+                    new NotBlank(),
+                ],
             ]
         );
     }
 
     /**
-     * prepareStep2
-     * @param ImportReport $record
-     * @param ImportRun $importRun
+     * prepareStep3
+     * @param ImportReport $report
+     * @param ImportControl $importControl
      * @param FormInterface $form
+     * @param Request $request
+     * @return bool
      */
-    public function prepareStep3(ImportReport $record, ImportRun $importRun, FormInterface $form, Request $request)
+    public function prepareStep3(ImportReport $report, ImportControl $importControl, FormInterface $form, Request $request): bool
     {
+        return $this->getImporter()->setImportControl($importControl)->setReport($report)->validateImport();
+    }
 
+    /**
+     * readableFileSize
+     * @param $bytes
+     * @return string
+     */
+    public function readableFileSize($bytes)
+    {
+        $unit=array('bytes','KB','MB','GB','TB','PB');
+        return @round($bytes/pow(1024, ($i=floor(log($bytes, 1024)))), 2).' '.$unit[$i];
     }
 }
