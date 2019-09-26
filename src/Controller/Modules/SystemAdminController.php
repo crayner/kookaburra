@@ -49,6 +49,7 @@ use App\Util\GlobalHelper;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationsHelper;
 use App\Util\UserHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
 use Doctrine\ORM\Query\QueryException;
 use PhpOffice\PhpSpreadsheet\Style\Border;
@@ -875,6 +876,17 @@ class SystemAdminController extends AbstractController
                 ]);
             } else {
                 $step = 2;
+            }
+        } elseif ($step === 4) {
+            $form = $this->createForm(ImportStep3Type::class, $importControl, [
+                'action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => 4]),
+                'importReport' => $report
+            ]);
+            $form->handleRequest($request);
+            if ($form->isValid()){
+                $manager->prepareStep3($report, $importControl, $form, $request, true);
+                if ($form->get('ignoreErrors') === '1')
+                    $this->addFlash('warning', 'Imported with errors ignored.');
             }
         }
 

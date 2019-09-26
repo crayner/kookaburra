@@ -575,3 +575,28 @@ The purpose of this installation of Kookaburra: The purpose of this installation
 Export Columns: Export Columns
 Must be unique.: Must be unique.
 Must be unique. Controls chronological ordering.: Must be unique. Controls chronological ordering.
+importer_database_commit: "{count, plural,
+        =0 {No records where committed to the database.}
+        one {A record was committed to the database.}
+        other {# records were committed to the database.}
+    }"
+Reading File: Reading File
+Success: Success
+Execution Time: Execution Time
+sec: sec
+Memory Usage: Memory Usage
+Validating Data: Validating Data
+Rows Processed: Rows Processed
+Rows with Errors: Rows with Errors
+Querying Database: Querying Database
+Simulated: Simulated
+Database Inserts: Database Inserts
+Database Updates: Database Updates
+'The import is attempting to write to the database for table "{table}"': 'The import is attempting to write to the database for table "{table}"'
+'The importer updated a record "{id}" into the table "{table}"': 'The importer updated a record "{id}" into the table "{table}"'
+This value is already used.: This value is already used.
+A duplicate entry already exists for this record. Record skipped.: A duplicate entry already exists for this record. Record skipped.
+Row: Row
+Field: Field
+Total Warnings: Total Warnings
+skipped: skipped

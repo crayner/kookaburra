@@ -459,11 +459,12 @@ class ImportManager
      * @param ImportControl $importControl
      * @param FormInterface $form
      * @param Request $request
+     * @param bool $persist
      * @return bool
      */
-    public function prepareStep3(ImportReport $report, ImportControl $importControl, FormInterface $form, Request $request): bool
+    public function prepareStep3(ImportReport $report, ImportControl $importControl, FormInterface $form, Request $request, bool $persist = false): bool
     {
-        return $this->getImporter()->setImportControl($importControl)->setReport($report)->validateImport();
+        return $this->getImporter()->setImportControl($importControl)->setReport($report)->validateImport($persist);
     }
 
     /**

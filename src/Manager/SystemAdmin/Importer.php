@@ -426,6 +426,7 @@ class Importer
 
     /**
      * validateImport
+     * @param bool $persist
      * @return bool
      */
     public function validateImport(bool $persist = false): bool
@@ -454,7 +455,9 @@ class Importer
                     $line++;
                     continue;
                 } else {
-                    $value = $data[$field->getLabel()] ?: null;
+                    $value = null;
+                    if (null !== $field)
+                        $value = $data[$field->getLabel()] ?: null;
                     $search = [$syncColumn => $value];
                     $entity = ProviderFactory::getRepository($table)->findOneBy($search);
                 }
@@ -532,7 +535,7 @@ class Importer
                     $this->incrementUpdates();
                     if ($persist) {
                         $em->persist($entity);
-                        $this->getLogger()->notice(TranslationsHelper::translate('The importer updated a record "{id}" into the table "{table}"', ['{id}' => $entity->__toString(), get_class($entity)]), ['target' => $table]);
+                        $this->getLogger()->notice(TranslationsHelper::translate('The importer updated a record "{id}" into the table "{table}"', ['{id}' => $entity->__toString(), '{table}' => get_class($entity)]), ['target' => $table, 'id' => $entity->__toString()]);
                     }
                 }
             } else {
@@ -542,7 +545,7 @@ class Importer
                     $this->incrementInserts();
                     if ($persist) {
                         $em->persist($entity);
-                        $this->getLogger()->notice(TranslationsHelper::translate('The importer inserted a record "{id}" into the table "{table}"', ['{id}' => $entity->__toString(), get_class($entity)]), ['target' => $table]);
+                        $this->getLogger()->notice(TranslationsHelper::translate('The importer inserted a record "{id}" into the table "{table}"', ['{id}' => $entity->__toString(), '{table}' => get_class($entity)]), ['target' => $table, 'id' => $entity->__toString()]);
                     }
                 }
             }
@@ -556,12 +559,15 @@ class Importer
             try {
                 $em->flush();
                 $em->commit();
+                $this->getLogger()->notice(TranslationsHelper::translate('importer_database_commit', ['count' => $this->getInserts() + $this->getUpdates()]), ['target' => $table]);
             } catch (PDOException $e) {
                 $em->rollback();
                 $this->setImportSuccess(false);
-                $this->getLogger()->notice(TranslationsHelper::translate('The database failed to import, and was rolled back.'), ['target' => $table]);
+                $this->getLogger()->error(TranslationsHelper::translate('The database failed to import, and was rolled back.'), ['target' => $table]);
             }
-        }
+        } elseif ($persist)
+            $this->getLogger()->notice(TranslationsHelper::translate('importer_database_commit', ['count' => 0]), ['target' => $table]);
+
 
         return $this->isImportSuccess();
     }
@@ -631,7 +637,6 @@ class Importer
             'cause' => $violation->getCause(),
             'constraint' => get_class($violation->getConstraint()),
         ]);
-        dump($level, $violation);
         return $this;
     }
 

@@ -1,6 +1,6 @@
-<ul class="multiPartForm"><li class="step active">{{ 'Select File'|trans }}</li><li class="step active">{{ 'Confirm Data'|trans }}</li><li class="step active">{{ 'Dry Run'|trans }}</li><li class="step ">{{ 'Live Run'|trans }}</li></ul>
+<ul class="multiPartForm"><li class="step active">{{ 'Select File'|trans }}</li><li class="step active">{{ 'Confirm Data'|trans }}</li><li class="step active">{{ 'Dry Run'|trans }}</li><li class="step {{ step is same as(4) ? ' active' : '' }}">{{ 'Live Run'|trans }}</li></ul>
 
-<h3>{{ 'Step {number}'|trans({'{number}': step}) ~ ' - ' ~ 'Dry Run'|trans }}</h3>
+<h3>{{ 'Step {number}'|trans({'{number}': step}) ~ ' - ' ~ (step is same as(4) ? 'Live Run' : 'Dry Run'|trans) }}</h3>
 
 {% if manager.importer.violations|length > 0 %}
 <div class="overflow-x-auto overflow-y-visible">
@@ -149,25 +149,27 @@
 
 </table>
 <br/>
-{{ form_start(form) }}
-<table class="w-full blank relative">
-    <tbody>
-        <tr>
-            <td class="px-2 border-b-0 sm:border-b border-t-0 smallIntBorder fullWidth">
-                <table class="smallIntBorder fullWidth">
-                    <tbody>
-                        {{ form_row(form.csvData) }}
-                        {% if manager.importer.processedErrors is same as(0) %}
-                            {% do form.ignoreErrors.setRendered %}
-                            {{ form_row(form.submit) }}
-                        {% else %}
-                            {{ form_row(form.ignoreErrors) }}
-                            {{ form_row(form.submit, {label: 'Failed'}) }}
-                        {% endif %}
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </tbody>
-</table>
-{{ form_end(form) }}
+{% if step is same as(3) %}
+    {{ form_start(form) }}
+        <table class="w-full blank relative">
+            <tbody>
+                <tr>
+                    <td class="px-2 border-b-0 sm:border-b border-t-0 smallIntBorder fullWidth">
+                        <table class="smallIntBorder fullWidth">
+                            <tbody>
+                                {{ form_row(form.csvData) }}
+                                {% if manager.importer.processedErrors is same as(0) %}
+                                    {% do form.ignoreErrors.setRendered %}
+                                    {{ form_row(form.submit) }}
+                                {% else %}
+                                    {{ form_row(form.ignoreErrors) }}
+                                    {{ form_row(form.submit, {label: 'Failed'}) }}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    {{ form_end(form) }}
+{% endif %}

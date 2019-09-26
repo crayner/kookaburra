@@ -12,6 +12,9 @@
 
 namespace App\Form\Modules\SystemAdmin;
 
+use App\Form\Entity\ImportColumn;
+use App\Form\Entity\ImportControl;
+use App\Form\Transform\ArrayCollectionToStringTransformer;
 use App\Form\Type\ToggleType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -39,6 +42,9 @@ class ImportStep3Type extends AbstractType
             ->add('columnOrder', HiddenType::class)
             ->add('fieldDelimiter', HiddenType::class)
             ->add('stringEnclosure', HiddenType::class)
+            ->add('syncField', HiddenType::class)
+            ->add('syncColumn', HiddenType::class)
+            ->add('columns', HiddenType::class)
             ->add('ignoreErrors', ToggleType::class,
                 [
                     'label' => 'Ignore Errors? (ExpertOnly)',
@@ -71,6 +77,7 @@ class ImportStep3Type extends AbstractType
                 ]
             )
         ;
+        $builder->get('columns')->addViewTransformer(new ArrayCollectionToStringTransformer(ImportColumn::class));
     }
 
     /**

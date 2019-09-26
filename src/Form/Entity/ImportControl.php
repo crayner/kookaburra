@@ -63,7 +63,7 @@ class ImportControl
     private $syncColumn;
 
     /**
-     * @var Collection|ImportColumn[]
+     * @var string|Collection|ImportColumn[]
      */
     private $columns;
 
@@ -183,10 +183,10 @@ class ImportControl
     /**
      * IgnoreErrors.
      *
-     * @param bool $ignoreErrors
+     * @param bool|null $ignoreErrors
      * @return ImportControl
      */
-    public function setIgnoreErrors(bool $ignoreErrors): ImportControl
+    public function setIgnoreErrors(?bool $ignoreErrors): ImportControl
     {
         $this->ignoreErrors = $ignoreErrors ? true : false;
         return $this;
@@ -206,9 +206,9 @@ class ImportControl
      * @param bool $syncField
      * @return ImportControl
      */
-    public function setSyncField(bool $syncField): ImportControl
+    public function setSyncField(?bool $syncField): ImportControl
     {
-        $this->syncField = $syncField;
+        $this->syncField = $syncField ? true : false;
         return $this;
     }
 
@@ -236,7 +236,7 @@ class ImportControl
      * getColumns
      * @return Collection|ImportColumn[]
      */
-    public function getColumns(): Collection
+    public function getColumns()
     {
         return $this->columns = $this->columns ?: new ArrayCollection();
     }
@@ -246,7 +246,7 @@ class ImportControl
      * @param Collection|ImportColumn[] $columns
      * @return ImportControl
      */
-    public function setColumns(Collection $columns): ImportControl
+    public function setColumns($columns): ImportControl
     {
         $this->columns = $columns;
         return $this;
