@@ -291,22 +291,17 @@ class ImportManager
         }
 
         $headings = $this->getImporter()->getHeaderRow();
-
-        $headers = [];
-
-        foreach($headings as $name) {
-            $fields = $report->getFields()->filter(function($field) use ($name) {
-                return $field->getLabel() === $name;
-            });
-            $headers[$name] = $fields->first()->getName();
-        }
-
         $firstLine = $this->getImporter()->getFirstRow();
+        $syncKeys = [];
+        foreach($report->getUniqueKeys() as $uniqueKey)
+        {
+            $syncKeys[$uniqueKey['label']] = $uniqueKey['name'];
+        }
 
         // SYNC SETTINGS
         if (in_array($importControl->getMode(), ["sync", "update"])) {
             $lastFieldValue = ($importControl->getColumnOrder() === 'last' && isset($columnOrderLast['syncField'])) ? $columnOrderLast['syncField'] : 'N';
-            $lastColumnValue = ($importControl->getColumnOrder() === 'last' && isset($columnOrderLast['syncColumn'])) ? $columnOrderLast['syncColumn'] : '';
+            $lastColumnValue = ($importControl->getColumnOrder() === 'last' && isset($columnOrderLast['syncKey'])) ? $columnOrderLast['syncKey'] : '';
 
             if ($importControl->getColumnOrder() == 'linearplus') {
                 $lastFieldValue = true;
@@ -322,13 +317,13 @@ class ImportManager
                     'wrapper_class' => 'flex-1 relative right',
                     'values' => ['1', '0'],
                 ]
-            )->add('syncColumn', ChoiceType::class,
+            )->add('syncKey', ChoiceType::class,
                 [
-                    'label' => 'Primary Key',
+                    'label' => 'Primary or Unique Key',
                     'data' => $lastColumnValue,
-                    'help' => '{table} has a primary key of {key}',
-                    'help_translation_parameters' => ['{table}' => $report->getDetail('table'), '{key}' => $report->getPrimaryKey()],
-                    'choices' => $headers,
+                    'help' => '{table} has these primary and unique keys "{keys}"',
+                    'help_translation_parameters' => ['{table}' => $report->getDetail('table'), '{keys}' => implode('", "', array_merge([$report->getPrimaryKey()], array_keys($report->getUniqueKeys())))],
+                    'choices' => $syncKeys,
                     'placeholder' => 'Please select...',
                     'row_class' => 'flex flex-col sm:flex-row justify-between content-center p-0 syncDetails',
                 ]
@@ -338,7 +333,7 @@ class ImportManager
                 [
                     'data' => 0,
                 ]
-            )->add('syncColumn', HiddenType::class,
+            )->add('syncKey', HiddenType::class,
                 [
                     'data' => null,
                 ]

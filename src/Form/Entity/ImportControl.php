@@ -60,7 +60,7 @@ class ImportControl
     /**
      * @var null|string
      */
-    private $syncColumn;
+    private $syncKey;
 
     /**
      * @var string|Collection|ImportColumn[]
@@ -215,20 +215,20 @@ class ImportControl
     /**
      * @return string|null
      */
-    public function getSyncColumn(): ?string
+    public function getSyncKey(): ?string
     {
-        return $this->syncColumn;
+        return $this->syncKey;
     }
 
     /**
-     * SyncColumn.
+     * SyncKey.
      *
-     * @param string|null $syncColumn
+     * @param string|null $syncKey
      * @return ImportControl
      */
-    public function setSyncColumn(?string $syncColumn): ImportControl
+    public function setSyncKey(?string $syncKey): ImportControl
     {
-        $this->syncColumn = $syncColumn;
+        $this->syncKey = $syncKey;
         return $this;
     }
 

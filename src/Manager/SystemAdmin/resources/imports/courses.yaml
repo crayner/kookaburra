@@ -1,17 +1,19 @@
 details:
-    type: courses
-    name: Courses
+    name: courses
+    title: Courses
     table: Course
     modes: { update: true, insert: true, export: true }
     alias: c
-access:
+security:
     module: Timetable Admin
     action: Manage Courses & Classes
-primaryKey:
-    id
 uniqueKeys:
-    - [ SchoolYear, name ]
-    - [ SchoolYear, nameShort ]
+    nameYear:
+        label: Name in Year
+        fields: [ schoolYear, name ]
+    nameShortYear:
+        fields: [ schoolYear, nameShort ]
+        label: Short Name in Year
 join:
     SchoolYear:
         table: Course
@@ -19,46 +21,46 @@ join:
     Department:
         table: Course
         alias: d
-table:
+fields:
     schoolYear:
-        name: "School Year"
+        label: "School Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, required: true, custom: true }
         relationship: { table: SchoolYear, key: id, field: name  }
         select: sy.name
     department:
-        name: "Learning Area"
+        label: "Learning Area"
         desc: "Short Name"
         args: { filter: string, custom: true }
         relationship: { table: Department, key: id, field: nameShort  }
         select: d.nameShort
     name: 
-        name: "Name"
+        label: "Name"
         desc: "Must be unique for this school year."
         args: { filter: string, required: true }
         select: c.name
     nameShort: 
-        name: "Short Name"
+        label: "Short Name"
         desc: "Must be unique for this school year."
         args: { filter: string, required: true }
         select: c.nameShort
     orderBy: 
-        name: "Order By"
+        label: "Order By"
         desc: "May be used to adjust arrangement of courses in reports."
         args: { filter: numeric }
         select: c.orderBy
     description: 
-        name: "Blurb"
+        label: "Blurb"
         desc: ""
         args: { filter: html }
         select: c.description
     map: 
-        name: "Include In Curriculum Map"
+        label: "Include In Curriculum Map"
         desc: ""
         args: { filter: yesno, custom: true }
         select: c.map
     yearGroupList:
-        name: "Year Groups"
+        label: "Year Groups"
         desc: "Enrolable year groups."
         args: { filter: yearlist, custom: true }
         select: c.yearGroupList

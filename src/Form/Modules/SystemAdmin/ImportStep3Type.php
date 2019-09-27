@@ -43,7 +43,7 @@ class ImportStep3Type extends AbstractType
             ->add('fieldDelimiter', HiddenType::class)
             ->add('stringEnclosure', HiddenType::class)
             ->add('syncField', HiddenType::class)
-            ->add('syncColumn', HiddenType::class)
+            ->add('syncKey', HiddenType::class)
             ->add('columns', HiddenType::class)
             ->add('ignoreErrors', ToggleType::class,
                 [

@@ -14,6 +14,7 @@ namespace App\Manager\SystemAdmin;
 
 use App\Form\Entity\ImportControl;
 use App\Manager\Entity\SystemAdmin\ImportReport;
+use App\Manager\Entity\SystemAdmin\ImportReportField;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationsHelper;
 use Doctrine\DBAL\Driver\PDOException;
@@ -443,38 +444,40 @@ class Importer
         {
             $columnID = 0;
             $entity = new $table();
+            $rowError = false;
             if (in_array($this->getImportControl()->getMode(), ['sync','update'])) {
-                $syncColumn = 'id';
+                $syncKey = 'id';
                 if ($this->getImportControl()->isSyncField())
-                    $syncColumn = $this->getImportControl()->getSyncColumn();
-                $field = $this->getReport()->getFields()->get($syncColumn) ?: null;
-                if (null === $field && $this->getImportControl()->getMode() === 'update') {
+                    $syncKey = $this->getImportControl()->getSyncKey();
+                $uniqueKey = $this->getReport()->getUniqueKey($syncKey);
+                if (null === $uniqueKey && $this->getImportControl()->getMode() === 'update') {
                     $this->incrementUpdatesSkipped()
                         ->incrementProcessedRows();
-                    $this->getLogger()->warning(TranslationsHelper::translate('Missing value for a required field.'), ['line' => $line, 'cause' => $table, 'propertyPath' => $syncColumn]);
+                    $this->getLogger()->warning(TranslationsHelper::translate('Missing value for a required field.'), ['line' => $line, 'cause' => $table, 'propertyPath' => $uniqueKey]);
                     $line++;
                     continue;
-                } else {
-                    $value = null;
-                    if (null !== $field)
-                        $value = $data[$field->getLabel()] ?: null;
-                    $search = [$syncColumn => $value];
+                } elseif (null !== $uniqueKey) {
+                    $search = [];
+                    foreach($uniqueKey['fields'] as $fieldName) {
+                        $field = $this->getReport()->getField($fieldName);
+                        $this->getValue($field, $data);
+                        $search[$fieldName] = $field->getValue($data[$field->getLabel()]);
+                    }
                     $entity = ProviderFactory::getRepository($table)->findOneBy($search);
                 }
                 if (null === $entity && $this->getImportControl()->getMode() === 'update') {
                     $this->incrementUpdatesSkipped()
                         ->incrementProcessedRows();
-                    $this->getLogger()->warning(TranslationsHelper::translate('A database entry for this record could not be found. Record skipped.'), ['line' => $line, 'cause' => $table, 'propertyPath' => $syncColumn, 'value' => $value]);
+                    $this->getLogger()->warning(TranslationsHelper::translate('A database entry for this record could not be found. Record skipped.'), ['line' => $line, 'cause' => $table, 'propertyPath' => $uniqueKey, 'value' => $field->getValue($data[$field->getLabel()])]);
                     $line++;
                     continue;
                 }
 
-                if (null === $entity)
+                if (null === $entity && $this->getImportControl()->getMode() === 'insert')
                     $entity = new $table();
-
             }
+
             $orderData = array_values($data);
-            $rowError = false;
 
             foreach($data as $value)
             {
@@ -484,18 +487,55 @@ class Importer
 
                 $setName = 'set' . ucfirst($importColumn->getName());
 
-                if ($field->isRelational())
+                if ($field->isRelational() && !in_array($value, ['', null]))
                 {
+                    $search = [];
                     $relationship = $field->getRelationship();
                     $relTable = '\App\Entity\\' . $relationship['table'];
-                    $relFind = 'findOneBy' . ucfirst($relationship['field']);
-                    $orderData[$importColumn->getOrder()] = ProviderFactory::getRepository($relTable)->$relFind($value ?: null);
+                    $search[$relationship['field']] = $value;
+                    $orderData[$importColumn->getOrder()] = ProviderFactory::getRepository($relTable)->findOneBy($search);
+                    if (!$orderData[$importColumn->getOrder()] instanceof $relTable) {
+                        $this->getLogger()->warning(TranslationsHelper::translate('Each {name} value should match an existing {field} in {table}.', [
+                            '{name}' => $field->getName(),
+                            '{field}' => $relationship['field'],
+                            '{table}' => $relTable,
+                        ]),
+                            [
+                                'line' => $line,
+                                'cause' => $table,
+                                'propertyPath' => $field->getName(),
+                                'value' => $value
+                            ]
+                        );
+                        $this->getViolations()->add($withLine = new ConstraintViolation(
+                            'Each {name} value should match an existing {field} in {table}.',
+                            'Each {name} value should match an existing {field} in {table}.',
+                            [
+                                '{name}' => $field->getName(),
+                                '{field}' => $relationship['field'],
+                                '{table}' => $relTable,
+                                'line' => $line,
+                                'level' => 'error',
+                            ],
+                            $value,
+                            $field->getName(),
+                            $value,
+                            null,
+                            null,
+                            null,
+                            'Relation not found.'
+                        ));
+                        $this->incrementProcessedErrors();
+                        $rowError = true;
+                    }
+                } elseif ($field->isRelational()) {
+                    $orderData[$importColumn->getOrder()] = null;
                 }
                 $entity->$setName($orderData[$importColumn->getOrder()]);
                 $columnID++;
             }
 
-            foreach($violations = $this->getValidator()->validate($entity) as $violation)
+            foreach($this->getValidator()->validate($entity) as $violation)
             {
                 $message = $violation->getMessage();
                 $level = 'error';
@@ -524,12 +564,18 @@ class Importer
                 } else
                     $this->incrementProcessedWarnings();
             }
-            if ($rowError)
+
+            if ($rowError) {
                 $this->incrementProcessedErrorRows();
+            }
+
             $line++;
             $this->incrementProcessedRows();
+            if ($rowError && $entity->getId() > 0 && $persist)
+                $em->refresh($entity);
+
             if ($entity->getId() > 0) {
-                if ($violations->count() > 0)
+                if ($rowError)
                     $this->incrementUpdatesSkipped();
                 else {
                     $this->incrementUpdates();
@@ -539,7 +585,7 @@ class Importer
                     }
                 }
             } else {
-                if ($violations->count() > 0)
+                if ($rowError)
                     $this->incrementInsertsSkipped();
                 else {
                     $this->incrementInserts();
@@ -550,7 +596,6 @@ class Importer
                 }
             }
         }
-
 
         $this->setImportSuccess(true);
 
@@ -582,6 +627,7 @@ class Importer
     }
 
     /**
+     * getViolations
      * @return ConstraintViolationList
      */
     public function getViolations(): ConstraintViolationList
@@ -933,5 +979,25 @@ class Importer
     {
         $this->updates_skipped = $updates_skipped;
         return $this;
+    }
+
+    /**
+     * getValue
+     * @param $field
+     * @param $data
+     */
+    public function getValue($field, $data)
+    {
+        if ($field instanceof ImportReportField)
+            $field = $field->getName();
+
+        $control = $this->getImportControl()->getColumns()->filter(function($control) use ($field) {
+            return $control->getName() === $field;
+        });
+
+        $control = $this->getImportControl()->getColumns()->get($control->first()->getOrder());
+        $field = $this->getReport()->getField($control->getName());
+
+        return $data[$field->getLabel()];
     }
 }

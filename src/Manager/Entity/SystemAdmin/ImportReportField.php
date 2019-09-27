@@ -193,9 +193,11 @@ class ImportReportField
                 "unique" => false,
                 'columnDefinition' => '',
                 'function' => false,
+                'options' => [],
+                'readonly' => false,
             ]
         );
-        $resolver->setAllowedValues('filter', ['string', 'numeric']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -426,5 +428,23 @@ class ImportReportField
     public function isHidden(): bool
     {
         return (bool) $this->getArg('hidden');
+    }
+
+    /**
+     * isFieldReadOnly
+     * @return bool
+     */
+    public function isFieldReadOnly(): bool
+    {
+        return (bool) $this->getArg('readonly');
+    }
+
+    public function getValue($value)
+    {
+        if ($this->isRelational()) {
+            $rel = $this->getRelationship();
+            dd($rel, $value);
+        }
+        return $value;
     }
 }

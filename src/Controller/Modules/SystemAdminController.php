@@ -777,15 +777,15 @@ class SystemAdminController extends AbstractController
             {
                 // Optionally limit all exports to the current school year by default, to avoid massive files
                 $schoolYear = $report->getTablesUsed();
-
-                if (in_array('SchoolYear', $report->getTablesUsed()) && !$report->isFieldReadOnly('SchoolYear')) {
+                $field = $report->findFieldByArg('filter', 'schoolyear');
+                if (in_array('SchoolYear', $report->getTablesUsed()) && !$field->isFieldReadOnly()) {
                     $data['schoolYear'] = $session->get('schoolYearCurrent')->getId();
                     $query->where($report->getJoinAlias('SchoolYear') . '.id = :schoolYear');
                 }
             }
 
             try {
-                $result = $query->getQuery()->getResult();
+                $result = $query->setParameters($data ?: [])->getQuery()->getResult();
             } catch (QueryException $e) {
                 dd($tableName, $report, $query, $e->getMessage());
             }

@@ -438,11 +438,22 @@ class ImportReport
     }
 
     /**
+     * getUniqueKey
+     * @param string $name
+     * @return array|null
+     */
+    public function getUniqueKey(string $name): ?array
+    {
+        return $this->isUniqueKey($name) ? $this->getUniqueKeys()[$name] : null;
+    }
+
+    /**
+     * getUniqueKeys
      * @return array
      */
     public function getUniqueKeys(): array
     {
-        return $this->uniqueKeys;
+        return $this->uniqueKeys = $this->uniqueKeys ?: [];
     }
 
     /**
@@ -452,7 +463,7 @@ class ImportReport
      */
     public function isUniqueKey(string $name): bool
     {
-        return in_array($name, $this->uniqueKeys);
+        return isset($this->getUniqueKeys()[$name]);
     }
 
     /**
@@ -463,6 +474,19 @@ class ImportReport
      */
     public function setUniqueKeys(array $uniqueKeys): ImportReport
     {
+        foreach($uniqueKeys as $q=>$w){
+            $resolver = new OptionsResolver();
+            $resolver->setRequired([
+                'label',
+            ]);
+            $resolver->setDefaults([
+                'name' => $q,
+                'fields' => [$q],
+            ]);
+            $resolver->setAllowedTypes('fields', ['array']);
+            $uniqueKeys[$q] = $resolver->resolve($w);
+        }
+
         $this->uniqueKeys = $uniqueKeys;
         return $this;
     }
@@ -485,5 +509,29 @@ class ImportReport
     {
         $this->primaryKey = $primaryKey;
         return $this;
+    }
+
+    /**
+     * findFieldByArg
+     * @param string $argName
+     * @param string $value
+     * @return ImportReportField|null
+     */
+    public function findFieldByArg(string $argName, string $value): ?ImportReportField
+    {
+        $field = $this->getFields()->filter(function(ImportReportField $field) use ($argName, $value) {
+            return $field->getArg($argName) === $value;
+        });
+        return $field->first() ?: null;
+    }
+
+    /**
+     * getField
+     * @param string $fieldName
+     * @return ImportReportField|null
+     */
+    public function getField(string $fieldName): ?ImportReportField
+    {
+        return $this->getFields()->get($fieldName) ?: null;
     }
 }

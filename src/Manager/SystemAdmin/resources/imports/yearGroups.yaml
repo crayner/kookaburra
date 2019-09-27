@@ -14,9 +14,12 @@ join:
         joinType: leftJoin
         targetTable: Person
 uniqueKeys:
-    - name
-    - nameShort
-    - sequenceNumber
+    name:
+        label: 'Name'
+    nameShort:
+        label: 'Short Name'
+    sequenceNumber:
+        label: "Sequence Number"
 fields:
     name: 
         label: "Name"

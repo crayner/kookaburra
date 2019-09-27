@@ -20,12 +20,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class Course
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Course", indexes={@ORM\Index(name="gibbonSchoolYearID", columns={"gibbonSchoolYearID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameYear",columns={ "gibbonSchoolYearID", "name"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Course", indexes={@ORM\Index(name="gibbonSchoolYearID", columns={"gibbonSchoolYearID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameYear",columns={ "gibbonSchoolYearID", "name"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameShortYear",columns={ "gibbonSchoolYearID", "nameShort"})})
+ * @UniqueEntity({"schoolYear", "name"})
+ * @UniqueEntity({"schoolYear", "nameShort"})
  */
 class Course implements EntityInterface
 {

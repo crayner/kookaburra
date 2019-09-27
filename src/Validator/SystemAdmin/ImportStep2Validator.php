@@ -33,9 +33,9 @@ class ImportStep2Validator extends ConstraintValidator
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
 
-        if (in_array($value->getMode(), ['sync', 'update']) && ($value->isSyncField() && $value->getSyncColumn() < 0))
+        if (in_array($value->getMode(), ['sync', 'update']) && ($value->isSyncField() && in_array($value->getSyncKey(),['',null])))
             $this->context->buildViolation($constraint->message)
-                ->atPath('syncColumn')
+                ->atPath('syncKey')
                 ->addViolation();
     }
 
