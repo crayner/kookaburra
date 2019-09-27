@@ -600,3 +600,17 @@ Row: Row
 Field: Field
 Total Warnings: Total Warnings
 skipped: skipped
+Learning Area: Learning Area
+Primary or Unique Key: Primary or Unique Key
+'{table} has these primary and unique keys "{keys}"': '{table} has these primary and unique keys "{keys}"'
+Name in Year: Name in Year
+Short Name in Year: Short Name in Year
+'Each {name} value should match an existing {field} in table {table}.': 'Each {name} value should match an existing {field} in table {table}.'
+Order By: Order By
+Blurb: Blurb
+nclude In Curriculum Map: Include In Curriculum Map
+Safe HTML usage is defined as System/AllowableHTML in the Settings.: Safe HTML usage is defined as System/AllowableHTML in the Settings.
+HTML Description: HTML Description
+Y or N: Y or N
+Comma separated list of Year Group ID: Comma separated list of Year Group ID
+Year List: Year List

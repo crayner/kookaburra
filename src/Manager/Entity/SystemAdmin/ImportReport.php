@@ -534,4 +534,17 @@ class ImportReport
     {
         return $this->getFields()->get($fieldName) ?: null;
     }
+
+    /**
+     * findFieldByLabel
+     * @param string $label
+     * @return ImportReportField|null
+     */
+    public function findFieldByLabel(string $label): ?ImportReportField
+    {
+        $field = $this->getFields()->filter(function(ImportReportField $field) use ($label) {
+            return $field->getLabel() === $label;
+        });
+        return $field->first() ?: null;
+    }
 }

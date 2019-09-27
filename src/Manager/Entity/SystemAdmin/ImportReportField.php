@@ -233,7 +233,8 @@ class ImportReportField
         }
 
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['table', 'key', 'field']);
+        $resolver->setRequired(['table', 'field']);
+        $resolver->setDefault('key', 'id');
 
         $this->relationship = $resolver->resolve($relationship);
         return $this;
@@ -455,16 +456,29 @@ class ImportReportField
     /**
      * getValue
      * @param $value
-     * @return mixed
+     * @param ArrayCollection $data
+     * @return object|null
      */
-    public function getValue($value)
+    public function getValue($value, ArrayCollection $data)
     {
         if ($this->isRelational()) {
             extract($this->getRelationship());
-            $search = [$field => $value];
+            if (is_string($field))
+                $field = [$field];
+            $search = [];
+            foreach($field as $q=>$name) {
+                if ($q === 0) {
+                    $search[$name] = $value;
+                } else {
+                    $subField = $data->filter(function(\stdClass $class) use ($name) {
+                        return $class->field->getName() === $name;
+                    })->first();
+                    $search[$name] = $subField->value;
+                }
+            }
             $table = '\App\Entity\\'.$table;
-            $entity = $this->getRelationalEntity($table, $field, $value) ?: ProviderFactory::getRepository($table)->findOneBy($search);
-            $this->addRelationalEntity($table, $field, $value, $entity);
+            $entity = $this->getRelationalEntity($table, $field, $search) ?: ProviderFactory::getRepository($table)->findOneBy($search);
+            $this->addRelationalEntity($table, $field, $search, $entity);
             return $entity;
         }
         return $value;
@@ -499,8 +513,10 @@ class ImportReportField
      * @param $entity
      * @return ImportReportField
      */
-    public function addRelationalEntity(string $table, string $field, string $value, $entity): ImportReportField
+    public function addRelationalEntity(string $table, $field, array $value, $entity): ImportReportField
     {
+        $field = is_string($field) ? $field : implode('_',$field);
+        $value = is_string($value) ? $value : implode('_',$value);
         $fieldCollection = $this->getRelationalEntities()->get($table) ?: new ArrayCollection();
         $valueCollection = $fieldCollection->get($field) ?: new ArrayCollection();
         $valueCollection->set($value, $entity);
@@ -515,8 +531,10 @@ class ImportReportField
      * @param ArrayCollection $relational
      * @return ImportReportField
      */
-    public function getRelationalEntity(string $table, string $field, string $value)
+    public function getRelationalEntity(string $table, $field, array $value)
     {
+        $field = is_string($field) ? $field : implode('_',$field);
+        $value = is_string($value) ? $value : implode('_',$value);
         $fieldCollection = $this->getRelationalEntities()->get($table) ?: new ArrayCollection();
         $valueCollection = $fieldCollection->get($field) ?: new ArrayCollection();
         return $valueCollection->get($value);

@@ -15,12 +15,15 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class CourseClassPerson
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseClassPersonRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="CourseClassPerson", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID", "role"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="CourseClassPerson", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID", "role"})}, uniqueConstraints={@ORM\UniqueConstraint(name="courseClassPerson",columns={ "gibbonCourseClassID", "gibbonPersonID"})})
+ * @UniqueEntity({"courseClass","person"})
  */
 class CourseClassPerson implements EntityInterface
 {
@@ -38,6 +41,7 @@ class CourseClassPerson implements EntityInterface
      * @var CourseClass|null
      * @ORM\ManyToOne(targetEntity="CourseClass", inversedBy="courseClassPeople")
      * @ORM\JoinColumn(name="gibbonCourseClassID", referencedColumnName="gibbonCourseClassID", nullable=false)
+     * @Assert\NotBlank()
      */
     private $courseClass;
 
@@ -45,12 +49,15 @@ class CourseClassPerson implements EntityInterface
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="courseClassPerson")
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
+     * @Assert\NotBlank()
      */
     private $person;
 
     /**
      * @var string|null
      * @ORM\Column(length=16)
+     * @Assert\NotBlank()
+     * @Assert\Choice({"Student","Teacher","Assistant","Technician","Parent","Student - Left","Teacher - Left"})
      */
     private $role = '';
 
@@ -62,6 +69,7 @@ class CourseClassPerson implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"})
+     * @Assert\Choice({"Y","N"})
      */
     private $reportable = 'Y';
 

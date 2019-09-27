@@ -17,6 +17,7 @@ use App\Manager\Entity\SystemAdmin\ImportReport;
 use App\Manager\Entity\SystemAdmin\ImportReportField;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationsHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
@@ -44,17 +45,8 @@ class Importer
     const COLUMN_DATA_HIDDEN = -5;
 
     const ERROR_IMPORT_FILE = 'There was an error reading the file {value}.';
-    const ERROR_REQUIRED_FIELD_MISSING = 205;
-    const ERROR_INVALID_FIELD_VALUE = 206;
-    const ERROR_DATABASE_GENERIC = 208;
-    const ERROR_DATABASE_FAILED_INSERT = 209;
-    const ERROR_DATABASE_FAILED_UPDATE = 210;
-    const ERROR_NON_UNIQUE_KEY =212;
-    const ERROR_RELATIONAL_FIELD_MISMATCH = 213;
-    const ERROR_INVALID_HAS_SPACES = 214;
 
     const WARNING_DUPLICATE = 'A duplicate entry already exists for this record. Record skipped.';
-    const WARNING_RECORD_NOT_FOUND = 102;
 
     /**
      * @var int
@@ -160,6 +152,11 @@ class Importer
      * @var int
      */
     private $updates_skipped = 0;
+
+    /**
+     * @var array
+     */
+    private $trueValues = [];
 
     /**
      * Importer constructor.
@@ -442,7 +439,7 @@ class Importer
         }
         foreach($this->readCSVString() as $data)
         {
-            $columnID = 0;
+            $this->convertData($data);
             $entity = new $table();
             $rowError = false;
             if (in_array($this->getImportControl()->getMode(), ['sync','update'])) {
@@ -460,8 +457,7 @@ class Importer
                     $search = [];
                     foreach($uniqueKey['fields'] as $fieldName) {
                         $field = $this->getReport()->getField($fieldName);
-                        $this->getValue($field, $data);
-                        $search[$fieldName] = $field->getValue($data[$field->getLabel()]);
+                        $search[$fieldName] = $this->getValue($field, $data);
                     }
                     $entity = ProviderFactory::getRepository($table)->findOneBy($search);
                 }
@@ -477,57 +473,16 @@ class Importer
                     $entity = new $table();
             }
 
-            $orderData = array_values($data);
-
-            foreach($data as $value)
+            $columnID = 0;
+            foreach($this->getTrueValues() as $label=>$value)
             {
                 $importColumn = $this->getImportControl()->getColumns()->get($columnID);
-
-                $field = $this->getReport()->getFields()->get($importColumn->getName());
+                $value = $this->getTrueValues()->slice($importColumn->getOrder(), 1);
+                $value = reset($value);
 
                 $setName = 'set' . ucfirst($importColumn->getName());
 
-                if ($field->isRelational() && !in_array($value, ['', null]))
-                {
-                    $orderData[$importColumn->getOrder()] = $field->getValue($value);
-                    if (null === $orderData[$importColumn->getOrder()]) {
-                        $this->getLogger()->warning(TranslationsHelper::translate('Each {name} value should match an existing {field} in {table}.', [
-                            '{name}' => $field->getName(),
-                            '{field}' => $field->getRelationship()['field'],
-                            '{table}' => $field->getRelationship()['table'],
-                        ]),
-                            [
-                                'line' => $line,
-                                'cause' => $field->getRelationship()['table'],
-                                'propertyPath' => $field->getName(),
-                                'value' => $value
-                            ]
-                        );
-                        $this->getViolations()->add($withLine = new ConstraintViolation(
-                            'Each {name} value should match an existing {field} in {table}.',
-                            'Each {name} value should match an existing {field} in {table}.',
-                            [
-                                '{name}' => $field->getName(),
-                                '{field}' => $field->getRelationship()['field'],
-                                '{table}' => $field->getRelationship()['table'],
-                                'line' => $line,
-                                'level' => 'error',
-                            ],
-                            $value,
-                            $field->getName(),
-                            $value,
-                            null,
-                            null,
-                            null,
-                            'Relation not found.'
-                        ));
-                        $this->incrementProcessedErrors();
-                        $rowError = true;
-                    }
-                } elseif ($field->isRelational()) {
-                    $orderData[$importColumn->getOrder()] = null;
-                }
-                $entity->$setName($orderData[$importColumn->getOrder()]);
+                $entity->$setName($value->value);
                 $columnID++;
             }
 
@@ -993,12 +948,12 @@ class Importer
 
         $control = $this->getImportControl()->getColumns()->filter(function($control) use ($field) {
             return $control->getName() === $field;
-        });
+        })->first();
 
-        $control = $this->getImportControl()->getColumns()->get($control->first()->getOrder());
+        $control = $this->getImportControl()->getColumns()->get($control->getOrder());
         $field = $this->getReport()->getField($control->getName());
 
-        return $data[$field->getLabel()];
+        return $field->getValue($data[$field->getLabel()], $this->getTrueValues());
     }
 
     /**
@@ -1052,5 +1007,67 @@ class Importer
         }
 
         return trim($result, ', ');
+    }
+
+    /**
+     * convertData
+     * @param array $data
+     */
+    private function convertData(array $data)
+    {
+        $this->setTrueValues(new ArrayCollection());
+        $count = 0;
+        foreach ($data as $label=>$value)
+        {
+            $this->trueValues[$label] = new \stdClass();
+            $this->trueValues[$label]->count = $count++;
+            $this->trueValues[$label]->found = false;
+            $this->trueValues[$label]->field = $this->getReport()->findFieldByLabel($label);
+            $this->trueValues[$label]->value = null;
+            $this->trueValues[$label]->was = $value;
+        }
+        $again = false;
+        $loop = 0;
+        do {
+            foreach($this->getTrueValues() as $label=>$w)
+            {
+                if (!$w->found) {
+                    $value = $w->field->getValue($data[$label], $this->getTrueValues());
+                    if (null !== $value)
+                    {
+                        $w->found = true;
+                        $w->value = $value;
+                    } else {
+                        if (in_array($data[$label], ['',null, 0]))
+                            $w->found = true;
+                    }
+                }
+
+                if (!$w->found)
+                    $again = true;
+                if (++$loop > 3)
+                    $again = false;
+            }
+        } while ($again);
+    }
+
+    /**
+     * getTrueValues
+     * @return ArrayCollection
+     */
+    public function getTrueValues(): ArrayCollection
+    {
+        return $this->trueValues;
+    }
+
+    /**
+     * setTrueValues
+     * @param ArrayCollection $trueValues
+     * @return Importer
+     */
+    public function setTrueValues(ArrayCollection $trueValues): Importer
+    {
+        $this->trueValues = $trueValues;
+        return $this;
     }
 }

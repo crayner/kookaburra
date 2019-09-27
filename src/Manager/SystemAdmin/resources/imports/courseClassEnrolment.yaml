@@ -1,16 +1,18 @@
 details:
-    type: courseClassEnrolment
-    name: Course Enrolment by Class
+    name: courseClassEnrolment
+    title: Course Enrolment by Class
     table: CourseClassPerson
     modes: { update: true, insert: true, export: true }
     alias: ccp
-access:
+security:
     module: Timetable Admin
     action: Course Enrolment by Class
 primaryKey:
     id
 uniqueKeys:
-    - [ courseClass, person ]
+    courseClassPerson:
+        label: Person in Course Class
+        fields: [ courseClass, person ]
 join:
     CourseClass:
         table: CourseClassPerson
@@ -24,38 +26,38 @@ join:
     Person:
         table: CourseClassPerson
         alias: p
-table:
-    SchoolYear:
-        name: "School Year"
+fields:
+    schoolYear:
+        label: "School Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, required: true, readonly: true, custom: true }
         relationship: { table: SchoolYear, key: id, field: name }
         select: sy.name
-    Course:
-        name: "Course"
+    course:
+        label: "Course"
         desc: "Short Name"
         args: { filter: string, required: true, readonly: true }
-        relationship: { table: Course, key: id, field: [ nameShort, SchoolYear ]  }
+        relationship: { table: Course, key: id, field: [ nameShort, schoolYear ]  }
         select: c.nameShort
-    CourseClass:
-        name: "Class"
+    courseClass:
+        label: "Class"
         desc: "Short Name"
         args: { filter: string, required: true }
-        relationship: { table: CourseClass, key: id, field: [ nameShort, Course ]  }
+        relationship: { table: CourseClass, key: id, field: [ nameShort, course ]  }
         select: cc.nameShort
-    Person:
-        name: "Participant"
+    person:
+        label: "Participant"
         desc: "Username"
-        args: { filter: nospaces, required: true }
-        relationship: { table: Person, key: id, field: username  }
+        args: { filter: string, required: true }
+        relationship: { table: Person, field: username  }
         select: p.username
     role:
-        name: "Role"
+        label: "Role"
         desc: ""
-        args: { filter: string, required: true, custom: true }
+        args: { filter: string, required: true }
         select: ccp.role
     reportable:
-        name: "Reportable"
+        label: "Reportable"
         desc: "Should this class show in reports?"
         args: { filter: yesno, custom: true }
         select: ccp.reportable
