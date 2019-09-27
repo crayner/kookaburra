@@ -122,7 +122,16 @@ final class Version20000101000000 extends AbstractMigration
   UNIQUE KEY `nameShort` (`nameShort`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonDepartmentResource (gibbonDepartmentResourceID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(16) NOT NULL, name VARCHAR(100) NOT NULL, url VARCHAR(255) NOT NULL, gibbonDepartmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_276BB0276DFE7E92 (gibbonDepartmentID), PRIMARY KEY(gibbonDepartmentResourceID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonDepartmentStaff (gibbonDepartmentStaffID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, role VARCHAR(24) NOT NULL, gibbonDepartmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_EE77E05B6DFE7E92 (gibbonDepartmentID), INDEX IDX_EE77E05BCC6782D6 (gibbonPersonID), PRIMARY KEY(gibbonDepartmentStaffID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE `gibbonDepartmentStaff` (
+  `gibbonDepartmentStaffID` int(6) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `role` varchar(24) COLLATE utf8_unicode_ci NOT NULL,
+  `gibbonDepartmentID` int(4) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonID` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  PRIMARY KEY (`gibbonDepartmentStaffID`),
+  UNIQUE KEY `departmentPerson` (`gibbonDepartmentID`,`gibbonPersonID`),
+  KEY `IDX_EE77E05B6DFE7E92` (`gibbonDepartmentID`),
+  KEY `IDX_EE77E05BCC6782D6` (`gibbonPersonID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonDistrict (gibbonDistrictID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, PRIMARY KEY(gibbonDistrictID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonExternalAssessment (gibbonExternalAssessmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, nameShort VARCHAR(10) NOT NULL, description VARCHAR(255) NOT NULL, website LONGTEXT NOT NULL, active VARCHAR(1) NOT NULL, allowFileUpload VARCHAR(1) DEFAULT \'N\' NOT NULL, PRIMARY KEY(gibbonExternalAssessmentID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonExternalAssessmentField (gibbonExternalAssessmentFieldID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, category VARCHAR(50) NOT NULL, `order` INT(4), gibbonYearGroupIDList VARCHAR(255) DEFAULT NULL, gibbonExternalAssessmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_A03EECA95F72BC3 (gibbonScaleID), INDEX gibbonExternalAssessmentID (gibbonExternalAssessmentID), PRIMARY KEY(gibbonExternalAssessmentFieldID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');

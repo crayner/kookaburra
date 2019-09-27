@@ -13,12 +13,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class DepartmentStaff
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\DepartmentStaffRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="DepartmentStaff")
+ * @ORM\Table(options={"auto_increment": 1}, name="DepartmentStaff", uniqueConstraints={@ORM\UniqueConstraint(name="departmentPerson",columns={"department","person"})})
+ * @UniqueEntity({"department","person"})
  */
 class DepartmentStaff
 {
@@ -47,6 +50,8 @@ class DepartmentStaff
     /**
      * @var string|null
      * @ORM\Column(length=24)
+     * @Assert\NotBlank()
+     * @Assert\Choice({"Coordinator","Assistant Coordinator","Teacher (Curriculum)","Teacher","Director","Manager","Administrator","Other"})
      */
     private $role;
 
@@ -133,5 +138,14 @@ class DepartmentStaff
     public static function getRoleList(): array
     {
         return self::$roleList;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getDepartment()->__toString() . ': ' . $this->getPerson()->formatName();
     }
 }

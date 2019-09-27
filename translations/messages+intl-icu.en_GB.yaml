@@ -630,3 +630,5 @@ Should this class allow attendance to be taken?: Should this class allow attenda
 Subject Listing: Subject Listing
 string filter not defined.: string filter not defined.
 125x125px jpg/png/gif: 125x125px jpg/png/gif
+Department: Department
+"Use one of 'Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator' or 'Other'": "Use one of 'Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator' or 'Other'"

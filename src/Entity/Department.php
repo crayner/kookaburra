@@ -23,9 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Department
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\DepartmentRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Department")
- * @UniqueEntity({"name"})
- * @UniqueEntity({"nameShort"})
+ * @ORM\Table(options={"auto_increment": 1}, name="Department", uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={ "name"}), @ORM\UniqueConstraint(name="nameShort",columns={ "nameShort"})})
  */
 class Department
 {
@@ -51,14 +49,14 @@ class Department
 
     /**
      * @var string
-     * @ORM\Column(length=40, unique=true)
+     * @ORM\Column(length=40,unique=true)
      * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string
-     * @ORM\Column(length=4, name="nameShort", unique=true)
+     * @ORM\Column(length=4,name="nameShort",unique=true)
      * @Assert\NotBlank()
      */
     private $nameShort;
