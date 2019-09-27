@@ -45,7 +45,6 @@ class ImportStep2Type extends AbstractType
                     ],
                 ]
             )
-            ->add('columnOrder', HiddenType::class)
             ->add('fieldDelimiter', HiddenType::class,
                 [
                     'constraints' => [

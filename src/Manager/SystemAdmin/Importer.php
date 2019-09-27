@@ -479,10 +479,10 @@ class Importer
                 $importColumn = $this->getImportControl()->getColumns()->get($columnID);
                 $value = $this->getTrueValues()->slice($importColumn->getOrder(), 1);
                 $value = reset($value);
-
-                $setName = 'set' . ucfirst($importColumn->getName());
-
-                $entity->$setName($value->value);
+                if (!$value->field->getArg('readonly')) {
+                    $setName = 'set' . ucfirst($importColumn->getName());
+                    $entity->$setName($value->value);
+                }
                 $columnID++;
             }
 

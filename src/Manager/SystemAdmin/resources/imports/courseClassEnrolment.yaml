@@ -53,7 +53,7 @@ fields:
         select: p.username
     role:
         label: "Role"
-        desc: ""
+        desc: "Use one of 'Student','Teacher','Assistant','Technician','Parent','Student - Left' or 'Teacher - Left'"
         args: { filter: string, required: true }
         select: ccp.role
     reportable:

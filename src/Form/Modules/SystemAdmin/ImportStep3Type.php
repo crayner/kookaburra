@@ -39,7 +39,6 @@ class ImportStep3Type extends AbstractType
     {
         $builder
             ->add('mode', HiddenType::class)
-            ->add('columnOrder', HiddenType::class)
             ->add('fieldDelimiter', HiddenType::class)
             ->add('stringEnclosure', HiddenType::class)
             ->add('syncField', HiddenType::class)

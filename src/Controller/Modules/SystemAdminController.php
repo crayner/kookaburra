@@ -848,9 +848,9 @@ class SystemAdminController extends AbstractController
         $importControl = new ImportControl();
 
         if ($step === 1) {
-            $form = $this->createForm(ImportStep1Type::class, $importControl, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step + 1])]);
+            $form = $this->createForm(ImportStep1Type::class, $importControl, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step + 1]), 'importReport' => $report]);
         } elseif ($step === 2) {
-            $form = $this->createForm(ImportStep1Type::class, $importControl, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step])]);
+            $form = $this->createForm(ImportStep1Type::class, $importControl, ['action' => $this->generateUrl('system_admin__import_run', ['report' => $report->getDetails()->getName(), 'step' => $step]), 'importReport' => $report]);
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $form = $this->createForm(ImportStep2Type::class, $importControl, [

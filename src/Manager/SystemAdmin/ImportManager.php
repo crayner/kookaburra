@@ -267,10 +267,6 @@ class ImportManager
      */
     public function prepareStep2(ImportReport $report, ImportControl $importControl, FormInterface $form, Request $request)
     {
-        $columnOrderLast = [];
-        if ($importControl->getColumnOrder() === 'last') {
-            $columnOrderLast = ProviderFactory::create(ImportHistory::class)->findLastColumnOrderByName($report->getDetail('type'));
-        }
 
         $this->getImporter()->setFieldDelimiter($importControl->getFieldDelimiter());
         $this->getImporter()->setStringEnclosure($importControl->getStringEnclosure());
@@ -300,13 +296,8 @@ class ImportManager
 
         // SYNC SETTINGS
         if (in_array($importControl->getMode(), ["sync", "update"])) {
-            $lastFieldValue = ($importControl->getColumnOrder() === 'last' && isset($columnOrderLast['syncField'])) ? $columnOrderLast['syncField'] : 'N';
-            $lastColumnValue = ($importControl->getColumnOrder() === 'last' && isset($columnOrderLast['syncKey'])) ? $columnOrderLast['syncKey'] : '';
-
-            if ($importControl->getColumnOrder() == 'linearplus') {
-                $lastFieldValue = true;
-                $lastColumnValue = $report->getPrimaryKey();
-            }
+            $lastFieldValue = (isset($columnOrderLast['syncField'])) ? $columnOrderLast['syncField'] : 'N';
+            $lastColumnValue = (isset($columnOrderLast['syncKey'])) ? $columnOrderLast['syncKey'] : '';
 
             $form->add('syncField', ToggleType::class,
                 [
@@ -394,21 +385,11 @@ class ImportManager
             }
 
             $selectedColumn = '';
-            if ($importControl->getColumnOrder() === 'linear' || $importControl->getColumnOrder() === 'linearplus') {
-                $selectedColumn = ($importControl->getColumnOrder() === 'linearplus') ? ++$count : $count;
-            } elseif ($importControl->getColumnOrder() === 'last') {
-                $selectedColumn = isset($columnOrderLast[$count]) ? $columnOrderLast[$count] : '';
-            } elseif ($importControl->getColumnOrder() === 'guess' || $importControl->getColumnOrder() === 'skip') {
-                foreach ($headings as $index => $columnName) {
-                    if (mb_strtolower($columnName) == mb_strtolower($field->getName()) || mb_strtolower($columnName) == mb_strtolower($field->getName())) {
-                        $selectedColumn = $index;
-                        break;
-                    }
+            foreach ($headings as $index => $columnName) {
+                if (mb_strtolower($columnName) == mb_strtolower($field->getName()) || mb_strtolower($columnName) == mb_strtolower($field->getName())) {
+                    $selectedColumn = $index;
+                    break;
                 }
-            }
-
-            if ($importControl->getColumnOrder() === 'skip' && !($field->isRequired() && !($importControl->getModes() === 'update' && !$field->isUniqueKey()))) {
-                $selectedColumn = Importer::COLUMN_DATA_SKIP;
             }
 
             $key = array_search($field->getLabel(), $headings);

@@ -614,3 +614,11 @@ HTML Description: HTML Description
 Y or N: Y or N
 Comma separated list of Year Group ID: Comma separated list of Year Group ID
 Year List: Year List
+School year name, as set in School Admin. Must already exist.: School year name, as set in School Admin. Must already exist.
+Course: Course
+Participant: Participant
+Role: Role
+"Use one of 'Student','Teacher','Assistant','Technician','Parent','Student - Left' or 'Teacher - Left'": "Use one of 'Student','Teacher','Assistant','Technician','Parent','Student - Left' or 'Teacher - Left'"
+Reportable: Reportable
+Should this class show in reports?: Should this class show in reports?
+Person in Course Class: Person in Course Class

@@ -28,11 +28,6 @@ class ImportControl
     private $mode = 'sync';
 
     /**
-     * @var string
-     */
-    private $columnOrder = 'guess';
-
-    /**
      * @var File
      */
     private $file;
@@ -89,26 +84,6 @@ class ImportControl
     public function setMode(string $mode): ImportControl
     {
         $this->mode = $mode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getColumnOrder(): string
-    {
-        return $this->columnOrder;
-    }
-
-    /**
-     * ColumnOrder.
-     *
-     * @param string $columnOrder
-     * @return ImportControl
-     */
-    public function setColumnOrder(string $columnOrder): ImportControl
-    {
-        $this->columnOrder = $columnOrder;
         return $this;
     }
 

@@ -29,27 +29,27 @@ class ImportStep1Type extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $modeChoices = [
+            'Update & Insert' => 'sync',
+            'Update' => 'update',
+            'Insert' => 'insert',
+        ];
+        if (!$options['importReport']->getDetail('modes')['update']) {
+            $modeChoices = [
+                'Insert' => 'insert',
+            ];
+        }
+        if (!$options['importReport']->getDetail('modes')['insert']) {
+            $modeChoices = [
+                'Update' => 'update',
+            ];
+        }
+
         $builder
             ->add('mode', ChoiceType::class,
                 [
                     'label' => 'Mode',
-                    'choices' => [
-                        'Update & Insert' => 'sync',
-                        'Update' => 'update',
-                        'Insert' => 'insert',
-                    ],
-                ]
-            )
-            ->add('columnOrder', ChoiceType::class,
-                [
-                    'label' => 'Column Order',
-                    'choices' => [
-                        'Best Guess' => 'guess',
-                        'Last Import' => 'last',
-                        'From Exported Data' => 'linearplus',
-                        'From Default Order (see notes)' => 'linear',
-                        'Skip Non-Required Fields' => 'skip',
-                    ],
+                    'choices' => $modeChoices,
                 ]
             )
             ->add('file', FileType::class,
@@ -103,5 +103,8 @@ class ImportStep1Type extends AbstractType
                 'translation_domain' => 'messages',
             ]
         );
+        $resolver->setRequired([
+            'importReport',
+        ]);
     }
 }

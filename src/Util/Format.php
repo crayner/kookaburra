@@ -122,10 +122,10 @@ class Format
 
         } elseif ($roleCategory == 'Parent') {
             $format = (!$informal? '{oneString} ' : '') . ($reverse? '{threeString}, {twoString}' : '{twoString} {threeString}');
-            $output = sprintf($format, $title, $preferredName, $surname);
+            $output = str_replace(['{threeString}','{twoString}','{oneString}'], [$surname, $preferredName, $title], $format);
         } elseif ($roleCategory == 'Student') {
             $format = $reverse ? '{twoString}, {oneString}' : '{oneString} {twoString}';
-            $output = sprintf($format, $preferredName, $surname);
+            $output = str_replace(['{twoString}','{oneString}'], [$surname, $preferredName], $format);
         }
 
         return trim($output, ' ');

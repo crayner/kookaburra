@@ -457,7 +457,7 @@ class ImportReportField
      * getValue
      * @param $value
      * @param ArrayCollection $data
-     * @return object|null
+     * @return object|string|null
      */
     public function getValue($value, ArrayCollection $data)
     {
@@ -480,6 +480,12 @@ class ImportReportField
             $entity = $this->getRelationalEntity($table, $field, $search) ?: ProviderFactory::getRepository($table)->findOneBy($search);
             $this->addRelationalEntity($table, $field, $search, $entity);
             return $entity;
+        }
+        switch ($this->getArg('filter')) {
+            case 'yesno':
+                $value = strtolower($value);
+                $value = in_array($value,  ['true','y','yes','1']) ? 'Y' : 'N';
+                break;
         }
         return $value;
     }

@@ -170,4 +170,13 @@ class CourseClassPerson implements EntityInterface
     {
         return self::$roleList;
     }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getCourseClass()->courseClassName(true) . ': ' . $this->getPerson()->formatName();
+    }
 }
