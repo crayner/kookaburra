@@ -79,13 +79,13 @@ final class Version20000101000000 extends AbstractMigration
   UNIQUE KEY `nameShortYear` (`gibbonSchoolYearID`,`nameShort`),
   KEY `IDX_D9B3D8B96DFE7E92` (`gibbonDepartmentID`),
   KEY `gibbonSchoolYearID` (`gibbonSchoolYearID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1');
-        $this->addSql(CREATE TABLE `gibbonCourseClass` (
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE `gibbonCourseClass` (
     `gibbonCourseClassID` int(8) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `nameShort` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `reportable` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `attendance` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+  `reportable` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `attendance` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
   `gibbonCourseID` int(8) UNSIGNED ZEROFILL DEFAULT NULL,
   `gibbonScaleIDTarget` int(5) UNSIGNED ZEROFILL DEFAULT NULL,
   PRIMARY KEY (`gibbonCourseClassID`),
@@ -143,15 +143,6 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('CREATE TABLE gibbonHook (gibbonHookID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, type VARCHAR(20) DEFAULT NULL, options LONGTEXT NOT NULL, gibbonModuleID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_5418FD5ECB86AD4B (gibbonModuleID), UNIQUE INDEX name (name, type), PRIMARY KEY(gibbonHookID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonHouse (gibbonHouseID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, nameShort VARCHAR(10) NOT NULL, logo VARCHAR(255) NOT NULL, UNIQUE INDEX name (name, nameShort), PRIMARY KEY(gibbonHouseID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibboni18n (gibboni18nID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, code VARCHAR(5) NOT NULL, name VARCHAR(100) NOT NULL, version VARCHAR(10) DEFAULT NULL, active VARCHAR(1) DEFAULT \'Y\' NOT NULL, installed VARCHAR(1) DEFAULT \'N\' NOT NULL, systemDefault VARCHAR(1) DEFAULT \'N\' NOT NULL, dateFormat VARCHAR(20) NOT NULL, dateFormatRegEx LONGTEXT NOT NULL, dateFormatPHP VARCHAR(20) NOT NULL, rtl VARCHAR(1) DEFAULT \'N\' NOT NULL, PRIMARY KEY(gibboni18nID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE `gibbonImportRecord` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `import_type` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `last_modified` datetime NOT NULL,
-  `performed_by` int(10) UNSIGNED ZEROFILL NOT NULL,
-  `column_order` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:array)\',
-  PRIMARY KEY (`id`),
-  KEY `FK_91B9AB6F99EB8EA2` (`performed_by`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonINArchive (gibbonINArchiveID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, strategies LONGTEXT NOT NULL, targets LONGTEXT NOT NULL, notes LONGTEXT NOT NULL, descriptors LONGTEXT NOT NULL COMMENT \'Serialised array of descriptors.\', archiveTitle VARCHAR(50) NOT NULL, archiveTimestamp DATETIME DEFAULT NULL, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_43A82C35CC6782D6 (gibbonPersonID), PRIMARY KEY(gibbonINArchiveID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonINAssistant (gibbonINAssistantID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, comment LONGTEXT NOT NULL, gibbonPersonIDStudent INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDAssistant INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_9A5EAC8FF47CEFE0 (gibbonPersonIDStudent), INDEX IDX_9A5EAC8F1E50E8C2 (gibbonPersonIDAssistant), PRIMARY KEY(gibbonINAssistantID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonINDescriptor (gibbonINDescriptorID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, nameShort VARCHAR(5) NOT NULL, description LONGTEXT NOT NULL, sequenceNumber INT(3), PRIMARY KEY(gibbonINDescriptorID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
@@ -382,7 +373,6 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('ALTER TABLE gibbonGroupPerson ADD CONSTRAINT FK_15367BAAD62085CF FOREIGN KEY (gibbonGroupID) REFERENCES gibbonGroup (gibbonGroupID)');
         $this->addSql('ALTER TABLE gibbonGroupPerson ADD CONSTRAINT FK_15367BAACC6782D6 FOREIGN KEY (gibbonPersonID) REFERENCES gibbonPerson (gibbonPersonID)');
         $this->addSql('ALTER TABLE gibbonHook ADD CONSTRAINT FK_5418FD5ECB86AD4B FOREIGN KEY (gibbonModuleID) REFERENCES gibbonModule (gibbonModuleID)');
-        $this->addSql('ALTER TABLE gibbonImportRecord ADD CONSTRAINT FK_91B9AB6F99EB8EA2 FOREIGN KEY (performed_by) REFERENCES gibbonPerson (gibbonPersonID)');
         $this->addSql('ALTER TABLE gibbonINArchive ADD CONSTRAINT FK_43A82C35CC6782D6 FOREIGN KEY (gibbonPersonID) REFERENCES gibbonPerson (gibbonPersonID)');
         $this->addSql('ALTER TABLE gibbonINAssistant ADD CONSTRAINT FK_9A5EAC8FF47CEFE0 FOREIGN KEY (gibbonPersonIDStudent) REFERENCES gibbonPerson (gibbonPersonID)');
         $this->addSql('ALTER TABLE gibbonINAssistant ADD CONSTRAINT FK_9A5EAC8F1E50E8C2 FOREIGN KEY (gibbonPersonIDAssistant) REFERENCES gibbonPerson (gibbonPersonID)');
@@ -715,7 +705,6 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('ALTER TABLE gibbonFirstAid DROP FOREIGN KEY FK_ABF0052722759506');
         $this->addSql('ALTER TABLE gibbonGroup DROP FOREIGN KEY FK_FAE2DDF3659378D6');
         $this->addSql('ALTER TABLE gibbonGroupPerson DROP FOREIGN KEY FK_15367BAACC6782D6');
-        $this->addSql('ALTER TABLE gibbonImportRecord DROP FOREIGN KEY FK_91B9AB6F99EB8EA2');
         $this->addSql('ALTER TABLE gibbonINArchive DROP FOREIGN KEY FK_43A82C35CC6782D6');
         $this->addSql('ALTER TABLE gibbonINAssistant DROP FOREIGN KEY FK_9A5EAC8FF47CEFE0');
         $this->addSql('ALTER TABLE gibbonINAssistant DROP FOREIGN KEY FK_9A5EAC8F1E50E8C2');
@@ -960,7 +949,6 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('DROP TABLE gibbonHook');
         $this->addSql('DROP TABLE gibbonHouse');
         $this->addSql('DROP TABLE gibboni18n');
-        $this->addSql('DROP TABLE gibbonImportRecord');
         $this->addSql('DROP TABLE gibbonINArchive');
         $this->addSql('DROP TABLE gibbonINAssistant');
         $this->addSql('DROP TABLE gibbonINDescriptor');
