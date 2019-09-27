@@ -12,6 +12,9 @@
 
 namespace App\Manager\Entity\SystemAdmin;
 
+use App\Provider\ProviderFactory;
+use App\Util\TranslationsHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -49,6 +52,11 @@ class ImportReportField
      * @var string
      */
     private $select;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $relationalEntities;
 
     /**
      * ImportReportField constructor.
@@ -311,16 +319,10 @@ class ImportReportField
             extract($this->getRelationship());
             $field = is_array($field) ? current($field) : $field;
 
-            $helpText = __('Each {name} value should match an existing {field} in {table}.', [
-                'name' => $this->getLabel(),
-                'field' => $field,
-                'table' => !empty($join) ? $join : $table,
-            ]);
-
             return [
                 'prompt' => 'Text',
-                'title' => 'Each {name} value should match an existing {field} in {table}.',
-                'titleParams' => ['{name}' => $this->getName(), '{field}' => $field, '{table}' => !empty($join) ? $join : $table,],
+                'title' => 'Each {name} value should match an existing {field} in table {table}.',
+                'titleParams' => ['{name}' => TranslationsHelper::translate($this->getLabel()), '{field}' => $field, '{table}' => !empty($join) ? $join : $table,],
                 'extra' => $field,
             ];
         }
@@ -328,14 +330,28 @@ class ImportReportField
         switch ($filter) {
             case 'email':
                 return __('Email ({number} chars)', ['number' => $length]);
-
             case 'url':
                 return __('URL ({number} chars)', ['number' => $length]);
-
             case 'numeric':
                 return ['prompt' =>'Number'];
+            case 'yesno':
+                return [
+                    'prompt' => 'Y or N',
+                ];
+            case 'html':
+                return [
+                    'prompt' => 'HTML Description',
+                    'title' => 'Safe HTML usage is defined as System/AllowableHTML in the Settings.',
+                ];
+            case 'yearlist':
+                return [
+                    'prompt' => 'Year List',
+                    'title' => 'Comma separated list of Year Group ID',
+                ];
         }
 
+        if ($kind === '')
+            dump($filter,$this);
         switch ($kind) {
             case 'char':
                 return [
@@ -357,9 +373,6 @@ class ImportReportField
             case 'date':
                 return __('Date');
 
-            case 'yesno':
-                return __('Y or N');
-
             case 'boolean':
                 return __('True or False');
 
@@ -369,12 +382,12 @@ class ImportReportField
 
             default:
                 return [
-                    'prompt' => ucfirst($kind),
+                    'prompt' => $filter . ' filter not defined.',
                 ];
         }
 
         return [
-            'prompt' => ''
+            'prompt' => 'Abandon Hope'
         ];
     }
 
@@ -439,12 +452,73 @@ class ImportReportField
         return (bool) $this->getArg('readonly');
     }
 
+    /**
+     * getValue
+     * @param $value
+     * @return mixed
+     */
     public function getValue($value)
     {
         if ($this->isRelational()) {
-            $rel = $this->getRelationship();
-            dd($rel, $value);
+            extract($this->getRelationship());
+            $search = [$field => $value];
+            $table = '\App\Entity\\'.$table;
+            $entity = $this->getRelationalEntity($table, $field, $value) ?: ProviderFactory::getRepository($table)->findOneBy($search);
+            $this->addRelationalEntity($table, $field, $value, $entity);
+            return $entity;
         }
         return $value;
+    }
+
+    /**
+     * getRelationalEntities
+     * @return ArrayCollection
+     */
+    public function getRelationalEntities(): ArrayCollection
+    {
+        return $this->relationalEntities = $this->relationalEntities ?: new ArrayCollection();
+    }
+
+    /**
+     * RelationalEntities.
+     *
+     * @param ArrayCollection $relationalEntities
+     * @return ImportReportField
+     */
+    public function setRelationalEntities(ArrayCollection $relationalEntities): ImportReportField
+    {
+        $this->relationalEntities = $relationalEntities;
+        return $this;
+    }
+
+    /**
+     * addRelationalEntity
+     * @param string $table
+     * @param string $field
+     * @param string $value
+     * @param $entity
+     * @return ImportReportField
+     */
+    public function addRelationalEntity(string $table, string $field, string $value, $entity): ImportReportField
+    {
+        $fieldCollection = $this->getRelationalEntities()->get($table) ?: new ArrayCollection();
+        $valueCollection = $fieldCollection->get($field) ?: new ArrayCollection();
+        $valueCollection->set($value, $entity);
+        $fieldCollection->set($field, $valueCollection);
+        $this->getRelationalEntities()->set($table, $fieldCollection);
+        return $this;
+    }
+
+    /**
+     * Relational.
+     *
+     * @param ArrayCollection $relational
+     * @return ImportReportField
+     */
+    public function getRelationalEntity(string $table, string $field, string $value)
+    {
+        $fieldCollection = $this->getRelationalEntities()->get($table) ?: new ArrayCollection();
+        $valueCollection = $fieldCollection->get($field) ?: new ArrayCollection();
+        return $valueCollection->get($value);
     }
 }

@@ -7,10 +7,10 @@
     <table class="w-full">
         <thead>
             <tr class="head text-xs">
-                <th class="column" style="width: auto">
+                <th class="column" style="width: 5%">
                     {{ 'Row'|trans }}
                 </th>
-                <th class="column" style="width: auto">
+                <th class="column" style="width: 40%">
                     {{ 'Field'|trans }}
                 </th>
                 <th class="column hidden sm:table-cell" colspan="1" rowspan="1" style="width: auto">
@@ -30,7 +30,7 @@
                             {{ violation.parameters.line }}
                         </td>
                         <td class="p-2 sm:p-3">
-                            {{ violation.propertyPath }} ({{ violation.invalidValue }})
+                            {{ violation.propertyPath }} ({{ violation.invalidValue.__toString is defined ? violation.invalidValue.__toString : violation.invalidValue }})
                         </td>
                         <td class="p-2 sm:p-3 hidden sm:table-cell">
                             {{ violation.message|trans(violation.parameters) }}

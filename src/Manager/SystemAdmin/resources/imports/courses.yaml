@@ -64,3 +64,4 @@ fields:
         desc: "Enrolable year groups."
         args: { filter: yearlist, custom: true }
         select: c.yearGroupList
+

@@ -207,4 +207,13 @@ class SchoolYear implements EntityInterface
 
         return true;
     }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+       return $this->getName();
+    }
 }

@@ -16,11 +16,13 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Util\EntityHelper;
+use App\Validator as Validator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Course
@@ -51,19 +53,21 @@ class Course implements EntityInterface
     /**
      * @var Department|null
      * @ORM\ManyToOne(targetEntity="Department")
-     * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="gibbonDepartmentID")
+     * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="gibbonDepartmentID",nullable=true)
      */
     private $department;
 
     /**
      * @var string|null
      * @ORM\Column(length=60)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=12, name="nameShort")
+     * @Assert\NotBlank
      */
     private $nameShort;
 
@@ -76,18 +80,20 @@ class Course implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"comment": "Should this course be included in curriculum maps and other summaries?", "default": "Y"})
+     * @Assert\Choice({"Y", "N"})
      */
     private $map = 'Y';
 
     /**
      * @var string|null
      * @ORM\Column(name="gibbonYearGroupIDList")
+     * @Validator\YearGroupList()
      */
     private $yearGroupList;
 
     /**
      * @var integer|null
-     * @ORM\Column(type="smallint", name="orderBy", columnDefinition="INT(3)")
+     * @ORM\Column(type="smallint", name="orderBy", columnDefinition="INT(3)", nullable=true)
      */
     private $orderBy;
 
@@ -97,6 +103,14 @@ class Course implements EntityInterface
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $courseClasses;
+
+    /**
+     * Course constructor.
+     */
+    public function __construct()
+    {
+        $this->courseClasses = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -281,7 +295,7 @@ class Course implements EntityInterface
      */
     public function setCourseClasses(?Collection $courseClasses): Course
     {
-        $this->courseClasses = $courseClasses;
+        $this->courseClasses = $courseClasses ?: new ArrayCollection();
         return $this;
     }
 
@@ -293,5 +307,14 @@ class Course implements EntityInterface
     public function __toArray(array $ignore = []): array
     {
         return EntityHelper::__toArray(Course::class, $this, $ignore);
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName() . ' ('. $this->getNameShort(). ')';
     }
 }

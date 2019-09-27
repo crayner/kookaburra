@@ -489,20 +489,16 @@ class Importer
 
                 if ($field->isRelational() && !in_array($value, ['', null]))
                 {
-                    $search = [];
-                    $relationship = $field->getRelationship();
-                    $relTable = '\App\Entity\\' . $relationship['table'];
-                    $search[$relationship['field']] = $value;
-                    $orderData[$importColumn->getOrder()] = ProviderFactory::getRepository($relTable)->findOneBy($search);
-                    if (!$orderData[$importColumn->getOrder()] instanceof $relTable) {
+                    $orderData[$importColumn->getOrder()] = $field->getValue($value);
+                    if (null === $orderData[$importColumn->getOrder()]) {
                         $this->getLogger()->warning(TranslationsHelper::translate('Each {name} value should match an existing {field} in {table}.', [
                             '{name}' => $field->getName(),
-                            '{field}' => $relationship['field'],
-                            '{table}' => $relTable,
+                            '{field}' => $field->getRelationship()['field'],
+                            '{table}' => $field->getRelationship()['table'],
                         ]),
                             [
                                 'line' => $line,
-                                'cause' => $table,
+                                'cause' => $field->getRelationship()['table'],
                                 'propertyPath' => $field->getName(),
                                 'value' => $value
                             ]
@@ -512,8 +508,8 @@ class Importer
                             'Each {name} value should match an existing {field} in {table}.',
                             [
                                 '{name}' => $field->getName(),
-                                '{field}' => $relationship['field'],
-                                '{table}' => $relTable,
+                                '{field}' => $field->getRelationship()['field'],
+                                '{table}' => $field->getRelationship()['table'],
                                 'line' => $line,
                                 'level' => 'error',
                             ],
@@ -538,11 +534,15 @@ class Importer
             foreach($this->getValidator()->validate($entity) as $violation)
             {
                 $message = $violation->getMessage();
+                $invalidValue = $violation->getInvalidValue();
+                $propertyPath = $violation->getPropertyPath();
                 $level = 'error';
                 if ($violation->getConstraint() instanceof UniqueEntity)
                 {
                     $message = Importer::WARNING_DUPLICATE;
                     $level = 'warning';
+                    $invalidValue = $this->correctUniqueInvalidValue($violation);
+                    $propertyPath = $this->correctUniquePropertyPath($violation);
                 }
 
                 $this->getViolations()->add($withLine = new ConstraintViolation(
@@ -550,8 +550,8 @@ class Importer
                     $violation->getMessageTemplate(),
                     array_merge($violation->getParameters(), ['line' => $line, 'level' => $level]),
                     $violation->getRoot(),
-                    $violation->getPropertyPath(),
-                    $violation->getInvalidValue(),
+                    $propertyPath,
+                    $invalidValue,
                     $violation->getPlural(),
                     $violation->getCode(),
                     $violation->getConstraint(),
@@ -999,5 +999,58 @@ class Importer
         $field = $this->getReport()->getField($control->getName());
 
         return $data[$field->getLabel()];
+    }
+
+    /**
+     * correctUniqueInvalidValue
+     * @param ConstraintViolation $violation
+     * @return string
+     */
+    private function correctUniqueInvalidValue(ConstraintViolation $violation): string
+    {
+        $result = $violation->getInvalidValue();
+        if (count($violation->getConstraint()->fields) > 1){
+            $result = '';
+            $root = $violation->getRoot();
+            foreach($violation->getConstraint()->fields as $fieldName) {
+                $get = 'get'.ucfirst($fieldName);
+                if (method_exists($root, $get)){
+                    $value = $root->$get();
+                    if (is_string($value)) {
+                        $result .= $value . ', ';
+                    } else {
+                        if (method_exists($value, '__toString'))
+                            $value = $value->__toString();
+                        elseif (method_exists($value, 'getName'))
+                            $value = $value->getName();
+                        elseif (method_exists($value, 'getId'))
+                            $value = $value->getId();
+                        else
+                            $value = '';
+                        $result .= $value . ', ';
+                    }
+                }
+            }
+        }
+
+        return trim($result, ', ');
+    }
+
+    /**
+     * correctUniqueInvalidValue
+     * @param ConstraintViolation $violation
+     * @return string
+     */
+    private function correctUniquePropertyPath(ConstraintViolation $violation): string
+    {
+        $result = $violation->getPropertyPath();
+        if (count($violation->getConstraint()->fields) > 1){
+            $result = '';
+            foreach($violation->getConstraint()->fields as $fieldName) {
+                $result .= $fieldName . ', ';
+            }
+        }
+
+        return trim($result, ', ');
     }
 }
