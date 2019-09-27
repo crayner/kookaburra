@@ -19,12 +19,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class CourseClass
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseClassRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="CourseClass", indexes={@ORM\Index(name="gibbonCourseID", columns={"gibbonCourseID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="CourseClass", indexes={@ORM\Index(name="gibbonCourseID", columns={"gibbonCourseID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameCourse",columns={ "name", "gibbonCourseID"}), @ORM\UniqueConstraint(name="nameShortCourse",columns={ "nameShort", "gibbonCourseID"})})
+ * @UniqueEntity({"name","course"})
+ * @UniqueEntity({"nameShort","course"})
  */
 class CourseClass implements EntityInterface
 {
@@ -41,31 +45,35 @@ class CourseClass implements EntityInterface
     /**
      * @var Course|null
      * @ORM\ManyToOne(targetEntity="Course", inversedBy="courseClasses")
-     * @ORM\JoinColumn(name="gibbonCourseID", referencedColumnName="gibbonCourseID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonCourseID", referencedColumnName="gibbonCourseID", nullable=true)
      */
     private $course;
 
     /**
      * @var string|null
      * @ORM\Column(length=30)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=8, name="nameShort")
+     * @Assert\NotBlank()
      */
     private $nameShort;
 
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"})
+     * @Assert\Choice({"Y","N"})
      */
     private $reportable = 'Y';
 
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"})
+     * @Assert\Choice({"Y","N"})
      */
     private $attendance = 'Y';
 
@@ -87,6 +95,14 @@ class CourseClass implements EntityInterface
      * @ORM\OneToMany(targetEntity="TTDayRowClass", mappedBy="courseClass")
      */
     private $TTDayRowClasses;
+
+    /**
+     * CourseClass constructor.
+     */
+    public function __construct()
+    {
+        $this->TTDayRowClasses = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -359,5 +375,14 @@ class CourseClass implements EntityInterface
     public function courseClassName(bool $short = false): string
     {
         return $short ? $this->getCourse()->getNameShort() . '.' . $this->getNameShort() : $this->getCourse()->getName() . '.' . $this->getName();
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->courseClassName(true);
     }
 }

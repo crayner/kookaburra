@@ -622,3 +622,7 @@ Role: Role
 Reportable: Reportable
 Should this class show in reports?: Should this class show in reports?
 Person in Course Class: Person in Course Class
+Import: Import
+Must be unique for this course.: Must be unique for this course.
+Track Attendance: Track Attendance
+Should this class allow attendance to be taken?: Should this class allow attendance to be taken?
