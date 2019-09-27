@@ -16,12 +16,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Department
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\DepartmentRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Department")
+ * @UniqueEntity({"name"})
+ * @UniqueEntity({"nameShort"})
  */
 class Department
 {
@@ -36,6 +40,7 @@ class Department
     /**
      * @var string
      * @ORM\Column(length=16, options={"default": "Learning Area"})
+     * @Assert\Choice({"Learning Area","Administration"})
      */
     private $type = "Learning Area";
 
@@ -46,13 +51,15 @@ class Department
 
     /**
      * @var string
-     * @ORM\Column(length=40)
+     * @ORM\Column(length=40, unique=true)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string
-     * @ORM\Column(length=4, name="nameShort")
+     * @ORM\Column(length=4, name="nameShort", unique=true)
+     * @Assert\NotBlank()
      */
     private $nameShort;
 
@@ -85,6 +92,14 @@ class Department
      * @ORM\OneToMany(targetEntity="DepartmentResource", mappedBy="department", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $resources;
+
+    /**
+     * Department constructor.
+     */
+    public function __construct()
+    {
+        $this->resources = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -271,5 +286,14 @@ class Department
     {
         $this->resources = $resources;
         return $this;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName() . ' (' . $this->getNameShort() . ')';
     }
 }

@@ -109,7 +109,18 @@ final class Version20000101000000 extends AbstractMigration
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1');
         $this->addSql('CREATE TABLE gibbonCrowdAssessDiscuss (gibbonCrowdAssessDiscussID INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, comment LONGTEXT NOT NULL, gibbonPlannerEntryHomeworkID INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonCrowdAssessDiscussIDReplyTo INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_D17E708617B9ED44 (gibbonPlannerEntryHomeworkID), INDEX IDX_D17E7086CC6782D6 (gibbonPersonID), INDEX IDX_D17E7086D96E9809 (gibbonCrowdAssessDiscussIDReplyTo), PRIMARY KEY(gibbonCrowdAssessDiscussID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonDaysOfWeek (gibbonDaysOfWeekID INT(2) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(10) NOT NULL, nameShort VARCHAR(4) NOT NULL, sequenceNumber INT(2), schoolDay VARCHAR(1) DEFAULT \'Y\' NOT NULL, schoolOpen TIME DEFAULT NULL, schoolStart TIME DEFAULT NULL, schoolEnd TIME DEFAULT NULL, schoolClose TIME DEFAULT NULL, UNIQUE INDEX name (name, nameShort), UNIQUE INDEX nameShort (nameShort), UNIQUE INDEX sequenceNumber (sequenceNumber), PRIMARY KEY(gibbonDaysOfWeekID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonDepartment (gibbonDepartmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(16) DEFAULT \'Learning Area\' NOT NULL, name VARCHAR(40) NOT NULL, nameShort VARCHAR(4) NOT NULL, subjectListing VARCHAR(255) NOT NULL, blurb LONGTEXT NULL, logo VARCHAR(255) NOT NULL, PRIMARY KEY(gibbonDepartmentID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE `gibbonDepartment` (
+  `gibbonDepartmentID` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `type` varchar(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Learning Area\',
+  `name` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `nameShort` varchar(4) COLLATE utf8_unicode_ci NOT NULL,
+  `subjectListing` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `blurb` longtext COLLATE utf8_unicode_ci,
+  `logo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`gibbonDepartmentID`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `nameShort` (`nameShort`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonDepartmentResource (gibbonDepartmentResourceID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(16) NOT NULL, name VARCHAR(100) NOT NULL, url VARCHAR(255) NOT NULL, gibbonDepartmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_276BB0276DFE7E92 (gibbonDepartmentID), PRIMARY KEY(gibbonDepartmentResourceID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonDepartmentStaff (gibbonDepartmentStaffID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, role VARCHAR(24) NOT NULL, gibbonDepartmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_EE77E05B6DFE7E92 (gibbonDepartmentID), INDEX IDX_EE77E05BCC6782D6 (gibbonPersonID), PRIMARY KEY(gibbonDepartmentStaffID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonDistrict (gibbonDistrictID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, PRIMARY KEY(gibbonDistrictID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
