@@ -121,4 +121,13 @@ class FamilyChild
         $this->comment = $comment;
         return $this;
     }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getFamily()->getName() . ': ' . $this->getPerson()->formatName();
+    }
 }

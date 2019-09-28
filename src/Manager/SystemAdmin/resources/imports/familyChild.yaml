@@ -1,17 +1,17 @@
 details:
-    type: familyChild
-    name: Children
+    name: familyChild
+    title: Family Children
     category: Family
     table: FamilyChild
     modes: { update: true, insert: true, export: true }
     alias: fc
-access:
+security:
     module: User Admin
     action: Manage Families
-primaryKey:
-    id
 uniqueKeys:
-    - [ family, person ]
+    familyMember:
+        label: Family Member
+        fields: [ family, person ]
 join:
     Family:
         table: FamilyChild
@@ -19,21 +19,21 @@ join:
     Person:
         table: FamilyChild
         alias: p
-table:
+fields:
     family:
-        name: "Family Sync Key"
+        label: "Family Sync Key"
         desc: "Unique ID for family, according to source system."
         args: { filter: string, required: true }
-        relationship: { table: Family, key: FamilyID, field: familySync  }
+        relationship: { table: Family, field: familySync  }
         select: f.familySync
     person:
-        name: "Child"
+        label: "Child"
         desc: "Username"
-        args: { filter: nospaces, required: true }
-        relationship: { table: Person, key: PersonID, field: username  }
+        args: { filter: string, required: true }
+        relationship: { table: Person, field: username  }
         select: p.username
     comment:
-        name: "Comment"
+        label: "Comment"
         desc: ""
         args: { filter: string }
         select: fc.comment
