@@ -432,7 +432,7 @@ class Importer
     {
         $table = '\App\Entity\\' . $this->getReport()->getDetail('table');
 
-        $line = 1;
+        $line = 2;
         if ($persist) {
             $em = ProviderFactory::getEntityManager();
             $em->beginTransaction();
@@ -507,6 +507,7 @@ class Importer
                     $level = 'warning';
                     $invalidValue = $this->correctUniqueInvalidValue($violation);
                     $propertyPath = $this->correctUniquePropertyPath($violation);
+                    $rowError = true;
                 }
 
                 $this->getViolations()->add($withLine = new ConstraintViolation(
@@ -529,7 +530,7 @@ class Importer
                     $this->incrementProcessedWarnings();
             }
 
-            if ($rowError) {
+            if ($rowError && $level === 'error') {
                 $this->incrementProcessedErrorRows();
             }
 
@@ -1028,6 +1029,8 @@ class Importer
         $count = 0;
         foreach ($data as $label=>$value)
         {
+            if ($label === '')
+                continue;
             $this->trueValues[$label] = new \stdClass();
             $this->trueValues[$label]->count = $count++;
             $this->trueValues[$label]->found = false;
@@ -1041,7 +1044,12 @@ class Importer
             foreach($this->getTrueValues() as $label=>$w)
             {
                 if (!$w->found) {
-                    $value = $w->field->getValue($data[$label], $this->getTrueValues());
+                    if ($w->field instanceof ImportReportField) {
+                        $value = $w->field->getValue($data[$label], $this->getTrueValues());
+                    } else {
+
+                        dd($w,$label);
+                    }
                     if (null !== $value)
                     {
                         $w->found = true;

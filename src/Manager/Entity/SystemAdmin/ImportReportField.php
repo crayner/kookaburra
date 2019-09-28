@@ -207,7 +207,7 @@ class ImportReportField
                 'readonly' => false,
             ]
         );
-        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -337,6 +337,8 @@ class ImportReportField
                 return __('URL ({number} chars)', ['number' => $length]);
             case 'numeric':
                 return ['prompt' =>'Number'];
+            case 'integer':
+                return ['prompt' =>'Integer'];
             case 'yesno':
                 return [
                     'prompt' => 'Y or N',
@@ -531,6 +533,13 @@ class ImportReportField
                         break;
                 }
                 break;
+            case 'integer':
+                $value = intval($value);
+                break;
+            case 'string':
+                break;
+            default:
+                dd($this->getArg('filter'), $this);
         }
         return $value;
     }

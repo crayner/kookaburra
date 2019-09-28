@@ -137,8 +137,38 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('CREATE TABLE gibbonExternalAssessmentField (gibbonExternalAssessmentFieldID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, category VARCHAR(50) NOT NULL, `order` INT(4), gibbonYearGroupIDList VARCHAR(255) DEFAULT NULL, gibbonExternalAssessmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_A03EECA95F72BC3 (gibbonScaleID), INDEX gibbonExternalAssessmentID (gibbonExternalAssessmentID), PRIMARY KEY(gibbonExternalAssessmentFieldID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonExternalAssessmentStudent (gibbonExternalAssessmentStudentID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, date DATE NOT NULL, attachment VARCHAR(255) NOT NULL, gibbonExternalAssessmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX gibbonExternalAssessmentID (gibbonExternalAssessmentID), INDEX gibbonPersonID (gibbonPersonID), PRIMARY KEY(gibbonExternalAssessmentStudentID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonExternalAssessmentStudentEntry (gibbonExternalAssessmentStudentEntryID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonExternalAssessmentStudentID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonExternalAssessmentFieldID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleGradeID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX gibbonExternalAssessmentStudentID (gibbonExternalAssessmentStudentID), INDEX gibbonExternalAssessmentFieldID (gibbonExternalAssessmentFieldID), INDEX gibbonScaleGradeID (gibbonScaleGradeID), PRIMARY KEY(gibbonExternalAssessmentStudentEntryID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonFamily (gibbonFamilyID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(100) NOT NULL, nameAddress VARCHAR(100) NOT NULL COMMENT \'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)\', homeAddress LONGTEXT NOT NULL, homeAddressDistrict VARCHAR(255) NOT NULL, homeAddressCountry VARCHAR(255) NOT NULL, status VARCHAR(12) NOT NULL, languageHomePrimary VARCHAR(30) NOT NULL, languageHomeSecondary VARCHAR(30) DEFAULT NULL, familySync VARCHAR(50) DEFAULT NULL, PRIMARY KEY(gibbonFamilyID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonFamilyAdult (gibbonFamilyAdultID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, comment LONGTEXT NOT NULL, childDataAccess VARCHAR(1) NOT NULL, contactPriority INT(2), contactCall VARCHAR(1) NOT NULL, contactSMS VARCHAR(1) NOT NULL, contactEmail VARCHAR(1) NOT NULL, contactMail VARCHAR(1) NOT NULL, gibbonFamilyID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_EEF67AB51F0BB1F (gibbonFamilyID), INDEX gibbonFamilyID (gibbonFamilyID, contactPriority), INDEX gibbonPersonIndex (gibbonPersonID), PRIMARY KEY(gibbonFamilyAdultID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE `gibbonFamily` (
+  `gibbonFamilyID` int(7) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `nameAddress` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT \'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)\',
+  `homeAddress` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `homeAddressDistrict` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `homeAddressCountry` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `status` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `languageHomePrimary` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `languageHomeSecondary` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `familySync` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`gibbonFamilyID`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `familySync` (`familySync`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE `gibbonFamilyAdult` (
+  `gibbonFamilyAdultID` int(8) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `comment` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `childDataAccess` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `contactPriority` int(2) DEFAULT NULL,
+  `contactCall` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `contactSMS` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `contactEmail` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `contactMail` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `gibbonFamilyID` int(7) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonID` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  PRIMARY KEY (`gibbonFamilyAdultID`),
+  UNIQUE KEY `familyMember` (`gibbonFamilyID`,`gibbonPersonID`),
+  KEY `IDX_EEF67AB51F0BB1F` (`gibbonFamilyID`),
+  KEY `gibbonPersonIndex` (`gibbonPersonID`),
+  KEY `familyContactPriority` (`gibbonFamilyID`,`contactPriority`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonFamilyChild (gibbonFamilyChildID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, comment LONGTEXT NOT NULL, gibbonFamilyID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX gibbonFamilyIndex (gibbonFamilyID), INDEX gibbonPersonIndex (gibbonPersonID), PRIMARY KEY(gibbonFamilyChildID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonFamilyRelationship (gibbonFamilyRelationshipID INT(9) UNSIGNED ZEROFILL AUTO_INCREMENT, relationship VARCHAR(50) NOT NULL, gibbonFamilyID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID1 INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID2 INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_D6CA42151F0BB1F (gibbonFamilyID), INDEX IDX_D6CA421ECA0FFD4 (gibbonPersonID1), INDEX IDX_D6CA42175A9AE6E (gibbonPersonID2), PRIMARY KEY(gibbonFamilyRelationshipID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonFamilyUpdate (gibbonFamilyUpdateID INT(9) UNSIGNED ZEROFILL AUTO_INCREMENT, status VARCHAR(8) DEFAULT \'Pending\' NOT NULL, nameAddress VARCHAR(100) NOT NULL, homeAddress LONGTEXT NOT NULL, homeAddressDistrict VARCHAR(255) NOT NULL, homeAddressCountry VARCHAR(255) NOT NULL, languageHomePrimary VARCHAR(30) NOT NULL, languageHomeSecondary VARCHAR(30) NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonFamilyID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDUpdater INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_438A3D3B71FA7520 (gibbonSchoolYearID), INDEX IDX_438A3D3B51F0BB1F (gibbonFamilyID), INDEX IDX_438A3D3B71106375 (gibbonPersonIDUpdater), INDEX gibbonFamilyIndex (gibbonFamilyID, gibbonSchoolYearID), PRIMARY KEY(gibbonFamilyUpdateID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');

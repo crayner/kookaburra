@@ -14,12 +14,16 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class FamilyAdult
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FamilyAdultRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="FamilyAdult", indexes={@ORM\Index(name="gibbonFamilyID", columns={"gibbonFamilyID","contactPriority"}),@ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="FamilyAdult", indexes={@ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="familyContactPriority", columns={"gibbonFamilyID","contactPriority"}), @ORM\UniqueConstraint(name="familymember", columns={"gibbonFamilyID","gibbonPersonID"})})
+ * @UniqueEntity({"family","person"})
+ * @UniqueEntity({"family","contactPriority"})
  */
 class FamilyAdult
 {
@@ -56,36 +60,42 @@ class FamilyAdult
     /**
      * @var string|null
      * @ORM\Column(length=1, name="childDataAccess")
+     * @Assert\Choice({"Y","N"})
      */
     private $childDataAccess;
 
     /**
-     * @var string|null
-     * @ORM\Column(type="smallint", name="contactPriority", options={"default": 1}, columnDefinition="INT(2)")
+     * @var int|null
+     * @ORM\Column(type="smallint", name="contactPriority", options={"default": 1}, columnDefinition="INT(2)", nullable=true)
+     * @Assert\Range(min=1,max=99)
      */
     private $contactPriority;
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="contactCall")
+     * @Assert\Choice({"Y","N"})
      */
     private $contactCall;
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="contactSMS")
+     * @Assert\Choice({"Y","N"})
      */
     private $contactSMS;
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="contactEmail")
+     * @Assert\Choice({"Y","N"})
      */
     private $contactEmail;
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="contactMail")
+     * @Assert\Choice({"Y","N"})
      */
     private $contactMail;
 
@@ -180,18 +190,18 @@ class FamilyAdult
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getContactPriority(): ?string
+    public function getContactPriority(): ?int
     {
         return $this->contactPriority;
     }
 
     /**
-     * @param string|null $contactPriority
+     * @param int|null $contactPriority
      * @return FamilyAdult
      */
-    public function setContactPriority(?string $contactPriority): FamilyAdult
+    public function setContactPriority(?int $contactPriority): FamilyAdult
     {
         $this->contactPriority = $contactPriority;
         return $this;
@@ -267,5 +277,14 @@ class FamilyAdult
     {
         $this->contactMail = $contactMail;
         return $this;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getFamily()->getName() . ': ' . $this->getPerson()->formatName();
     }
 }

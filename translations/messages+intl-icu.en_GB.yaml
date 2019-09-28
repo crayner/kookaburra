@@ -658,3 +658,22 @@ Country per ISO 3166: Country per ISO 3166
 Family Sync Key: Family Sync Key
 Unique ID for family, according to source system.: Unique ID for family, according to source system.
 Family Sync: Family Sync
+Adult: Adult
+Comment: Comment
+Data displayed in full Student Profile: Data displayed in full Student Profile
+Data Access?: Data Access?
+Access data on family's children?: Access data on family's children?
+Contact Priority: Contact Priority
+The order in which school should contact family members.: The order in which school should contact family members.
+Integer: Integer
+Call?: Call?
+Receive non-emergency phone calls from school?: Receive non-emergency phone calls from school?
+SMS?: SMS?
+Receive non-emergency SMS messages from school?: Receive non-emergency SMS messages from school?
+Email?: Email?
+Receive non-emergency emails from school?: Receive non-emergency emails from school?
+Mail?: Mail?
+Receive postage mail from school?: Receive postage mail from school?
+Family Contact Priority: Family Contact Priority
+Family Member: Family Member
+Family Adults: Family Adults

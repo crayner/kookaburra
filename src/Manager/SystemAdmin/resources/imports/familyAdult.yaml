@@ -1,18 +1,20 @@
 details:
-    type: familyAdult
-    name: Adults
+    name: familyAdult
+    title: Family Adults
     category: Family
     table: FamilyAdult
     modes: { update: true, insert: true, export: true }
     alias: fa
-access:
+security:
     module: User Admin
     action: Manage Families
-primaryKey:
-    id
 uniqueKeys:
-    - [ family, contactPriority ]
-    - [ family, person ]
+    familyContactPriority:
+        label: Family Contact Priority
+        fields: [ contactPriority, family ]
+    familyMember:
+        label: Family Member
+        fields: [ family, person ]
 join:
     Family:
         table: FamilyAdult
@@ -20,51 +22,51 @@ join:
     Person:
         table: FamilyAdult
         alias: p
-table:
+fields:
     family:
-        name: "Family Sync Key"
+        label: "Family Sync Key"
         desc: "Unique ID for family, according to source system."
         args: { filter: string, required: true }
-        relationship: { table: Family, key: Family, field: familySync  }
+        relationship: { table: Family, field: familySync  }
         select: f.familySync
     person:
-        name: "Adult"
+        label: "Adult"
         desc: "Username"
-        args: { filter: nospaces, required: true }
-        relationship: { table: Person, key: PersonID, field: username  }
+        args: { filter: string, required: true }
+        relationship: { table: Person, field: username  }
         select: p.username
     comment:
-        name: "Comment"
+        label: "Comment"
         desc: "Data displayed in full Student Profile"
         args: { filter: string }
         select: fa.comment
     childDataAccess:
-        name: "Data Access?"
+        label: "Data Access?"
         desc: "Access data on family's children?"
         args: { filter: yesno, custom: true }
         select: fa.childDataAccess
     contactPriority:
-        name: "Contact Priority"
+        label: "Contact Priority"
         desc: "The order in which school should contact family members."
-        args: { filter: numeric, custom: true, required: true }
+        args: { filter: integer, custom: true, required: true }
         select: fa.contactPriority
     contactCall:
-        name: "Call?"
+        label: "Call?"
         desc: "Receive non-emergency phone calls from school?"
         args: { filter: yesno, custom: true }
         select: fa.contactCall
     contactSMS:
-        name: "SMS?"
+        label: "SMS?"
         desc: "Receive non-emergency SMS messages from school?"
         args: { filter: yesno, custom: true }
         select: fa.contactSMS
     contactEmail:
-        name: "Email?"
+        label: "Email?"
         desc: "Receive non-emergency emails from school?"
         args: { filter: yesno, custom: true }
         select: fa.contactEmail
     contactMail:
-        name: "Mail?"
+        label: "Mail?"
         desc: "Receive postage mail from school?"
         args: { filter: yesno, custom: true }
         select: fa.contactMail
