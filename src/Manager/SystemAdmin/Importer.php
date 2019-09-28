@@ -447,6 +447,7 @@ class Importer
                 if ($this->getImportControl()->isSyncField())
                     $syncKey = $this->getImportControl()->getSyncKey();
                 $uniqueKey = $this->getReport()->getUniqueKey($syncKey);
+
                 if (null === $uniqueKey && $this->getImportControl()->getMode() === 'update') {
                     $this->incrementUpdatesSkipped()
                         ->incrementProcessedRows();
@@ -461,10 +462,11 @@ class Importer
                     }
                     $entity = ProviderFactory::getRepository($table)->findOneBy($search);
                 }
+
                 if (null === $entity && $this->getImportControl()->getMode() === 'update') {
                     $this->incrementUpdatesSkipped()
                         ->incrementProcessedRows();
-                    $this->getLogger()->warning(TranslationsHelper::translate('A database entry for this record could not be found. Record skipped.'), ['line' => $line, 'cause' => $table, 'propertyPath' => $uniqueKey, 'value' => $field->getValue($data[$field->getLabel()])]);
+                    $this->getLogger()->warning(TranslationsHelper::translate('A database entry for this record could not be found. Record skipped.'), ['line' => $line, 'cause' => $table, 'propertyPath' => $uniqueKey, 'value' => $field->getValue($data[$field->getLabel()], $this->getTrueValues())]);
                     $line++;
                     continue;
                 }
@@ -474,6 +476,10 @@ class Importer
             }
 
             $columnID = 0;
+            if (!$entity) {
+                $this->incrementProcessedRows();
+                continue;
+            }
             foreach($this->getTrueValues() as $label=>$value)
             {
                 $importColumn = $this->getImportControl()->getColumns()->get($columnID);
@@ -481,6 +487,8 @@ class Importer
                 $value = reset($value);
                 if (!$value->field->getArg('readonly') && Importer::COLUMN_DATA_SKIP !== $importColumn->getOrder()) {
                     $setName = 'set' . ucfirst($importColumn->getName());
+                    if (!method_exists($entity, $setName))
+                        dd($entity, $setName, $this, 'The entity should have a method '.$setName.'!');
                     $entity->$setName($value->value);
                 }
                 $columnID++;

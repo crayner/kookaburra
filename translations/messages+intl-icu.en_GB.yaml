@@ -632,3 +632,29 @@ string filter not defined.: string filter not defined.
 125x125px jpg/png/gif: 125x125px jpg/png/gif
 Department: Department
 "Use one of 'Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator' or 'Other'": "Use one of 'Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator' or 'Other'"
+Assessment Date: Assessment Date
+Field Name Category: Field Name Category
+Result: Result
+Date (YYYY-MM-DD): Date (YYYY-MM-DD)
+'Text ({length} chars)': "{count, plural,
+         =0 {Text}
+         one {Text (# char)}
+         other {Text (# chars)}
+     }"
+Family Name: Family Name
+Marital Status: Marital Status
+"Use one of 'Married','Separated','Divorced','De Facto' or 'Other'": "Use one of 'Married','Separated','Divorced','De Facto' or 'Other'"
+Home Language - Primary: Home Language - Primary
+Valid Unicode Language: Valid Unicode Language
+Home Language - Secondary: Home Language - Secondary
+Address Name: Address Name
+Formal name to address parents with.: Formal name to address parents with.
+Home Address: Home Address
+Unit, Building, Street: Unit, Building, Street
+Home Address (District): Home Address (District)
+County, State, District: County, State, District
+Home Address (Country): Home Address (Country)
+Country per ISO 3166: Country per ISO 3166
+Family Sync Key: Family Sync Key
+Unique ID for family, according to source system.: Unique ID for family, according to source system.
+Family Sync: Family Sync

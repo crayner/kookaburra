@@ -17,12 +17,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Family
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FamilyRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Family")
+ * @ORM\Table(options={"auto_increment": 1}, name="Family", uniqueConstraints={@ORM\UniqueConstraint(name="name",columns={"name"})})
  */
 class Family
 {
@@ -36,7 +38,8 @@ class Family
 
     /**
      * @var string|null
-     * @ORM\Column(length=100)
+     * @ORM\Column(length=100, unique=true)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -61,12 +64,14 @@ class Family
     /**
      * @var string|null
      * @ORM\Column(name="homeAddressCountry")
+     * @Assert\Country()
      */
     private $homeAddressCountry;
 
     /**
      * @var string|null
      * @ORM\Column(length=12)
+     * @Assert\Choice({"Married","Separated","Divorced","De Facto","Other"})
      */
     private $status = 'Unknown';
 
@@ -78,18 +83,20 @@ class Family
     /**
      * @var string|null
      * @ORM\Column(length=30, name="languageHomePrimary")
+     * @Assert\Language()
      */
     private $languageHomePrimary;
 
     /**
      * @var string|null
      * @ORM\Column(length=30, name="languageHomeSecondary", nullable=true)
+     * @Assert\Language()
      */
     private $languageHomeSecondary;
 
     /**
      * @var string|null
-     * @ORM\Column(length=50, name="familySync", nullable=true)
+     * @ORM\Column(length=50, name="familySync", nullable=true, unique=true)
      */
     private $familySync;
 
@@ -104,6 +111,24 @@ class Family
      * @ORM\OneToMany(mappedBy="family", targetEntity="App\Entity\FamilyChild")
      */
     private $children;
+
+    /**
+     * Family constructor.
+     */
+    public function __construct()
+    {
+        $this->adults = new ArrayCollection();
+        $this->children = new ArrayCollection();
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 
     /**
      * @return int|null

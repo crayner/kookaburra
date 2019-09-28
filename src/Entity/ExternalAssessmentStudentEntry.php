@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ExternalAssessmentStudentEntry
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ExternalAssessmentStudentEntryRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="ExternalAssessmentStudentEntry", indexes={@ORM\Index(name="gibbonExternalAssessmentStudentID", columns={"gibbonExternalAssessmentStudentID"}),@ORM\Index(name="gibbonExternalAssessmentFieldID", columns={"gibbonExternalAssessmentFieldID"}),@ORM\Index(name="gibbonScaleGradeID", columns={"gibbonScaleGradeID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="ExternalAssessmentStudentEntry", indexes={@ORM\Index(name="gibbonExternalAssessmentStudentID", columns={"gibbonExternalAssessmentStudentID"}),@ORM\Index(name="gibbonExternalAssessmentFieldID", columns={"gibbonExternalAssessmentFieldID"}), @ORM\Index(name="gibbonScaleGradeID", columns={"gibbonScaleGradeID"})})
  */
 class ExternalAssessmentStudentEntry
 {

@@ -15,6 +15,8 @@ namespace App\Manager\Entity\SystemAdmin;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationsHelper;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Languages;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -205,7 +207,7 @@ class ImportReportField
                 'readonly' => false,
             ]
         );
-        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -349,6 +351,23 @@ class ImportReportField
                     'prompt' => 'Year List',
                     'title' => 'Comma separated list of Year Group ID',
                 ];
+            case 'date':
+                return [
+                    'prompt' => 'Date (YYYY-MM-DD)',
+                ];
+            case 'language':
+                return [
+                    'prompt' => 'Valid Unicode Language',
+                ];
+            case 'country':
+                return [
+                    'prompt' => 'Country per ISO 3166',
+                ];
+            case 'string':
+                return [
+                    'prompt' => 'Text ({length} chars)',
+                    'promptParams' => ['count' => intval($this->getArg('length'))],
+                ];
         }
 
         if ($kind === '')
@@ -485,6 +504,32 @@ class ImportReportField
             case 'yesno':
                 $value = strtolower($value);
                 $value = in_array($value,  ['true','y','yes','1']) ? 'Y' : 'N';
+                break;
+            case 'date':
+                $value = new \DateTime($value . ' 00:00:00');
+                break;
+            case 'language':
+                if (!in_array($value, ['',null])) {
+                    $languages = Languages::getNames();
+                    if (in_array($value, $languages)) {
+                        $value = array_search($value, $languages);
+                        break;
+                    }
+                    if (isset($languages[$value]))
+                        break;
+
+                }
+                break;
+            case 'country':
+                if (!in_array($value, ['',null])) {
+                    $countries = Countries::getNames();
+                    if (in_array($value, $countries)) {
+                        $value = array_search($value, $countries);
+                        break;
+                    }
+                    if (isset($countries[$value]))
+                        break;
+                }
                 break;
         }
         return $value;
