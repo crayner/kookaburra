@@ -55,7 +55,9 @@ class Kernel extends BaseKernel
             $this->temporaryParameters($container);
 
         $timezone = $container->getParameter('timezone', 'UTC');
+
         date_default_timezone_set($timezone ?: 'UTC');
+        putenv("TZ=".($timezone ?: 'UTC'));
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void

@@ -162,10 +162,11 @@ class Importer
      * Importer constructor.
      * @param Validation $validation
      */
-    public function __construct(ValidatorInterface $validator, LoggerInterface $logger)
+    public function __construct(ValidatorInterface $validator, LoggerInterface $logger, string $timeZone)
     {
         $this->validator = $validator;
         $this->logger = $logger;
+        $this->logger::setTimeZone(new \DateTimeZone($timeZone));
     }
 
     /**
