@@ -1,16 +1,16 @@
 details:
-    type: internalAssessment
-    name: Internal Assessments
+    name: internalAssessment
+    title: Internal Assessments
     table: InternalAssessmentEntry
     modes: { update: true, insert: true, export: true }
     alias: iae
-access:
+security:
     module: Formal Assessment
     action: Manage Internal Assessments
-primaryKey:
-    id
 uniqueKeys:
-    - [ internalAssessmentColumn, student ]
+    studentAssessmentColumn:
+        fields: [ internalAssessmentColumn, student ]
+        label: Student in Assessment Column
 join:
     InternalAssessmentColumn:
         table: InternalAssessmentEntry
@@ -32,67 +32,67 @@ join:
         table: InternalAssessmentEntry
         alias: le
         targetTable: Person
-table:
+fields:
     schoolYear:
-        name: "School Year"
+        label: "School Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, required: true, custom: true, readonly: true }
-        relationship: { table: SchoolYear, key: SchoolYearID, field: name  }
+        relationship: { table: SchoolYear, field: name  }
         select: sy.name
     course:
-        name: "Course"
+        label: "Course"
         desc: "Short Name"
         args: { filter: string, required: true, custom: true, readonly: true }
-        relationship: { table: Course, key: CourseID, field: [ nameShort, schoolYear ]  }
+        relationship: { table: Course, field: [ nameShort, schoolYear ]  }
         select: c.nameShort
     courseClass:
-        name: "Class"
+        label: "Class"
         desc: "Short Name"
         args: { filter: string, required: true, custom: true, readonly: true }
-        relationship: { table: CourseClass, key: CourseClassID, field: [ nameShort, course ]  }
+        relationship: { table: CourseClass, field: [ nameShort, course ]  }
         select: cc.nameShort
     internalAssessmentColumn:
-        name: "Internal Assessment"
+        label: "Internal Assessment"
         desc: "Assessment Column Name"
         args: { filter: string, custom: true, required: true }
-        relationship: { table: InternalAssessmentColumn, key: InternalAssessmentColumnID, field: [name, courseClass]  }
+        relationship: { table: InternalAssessmentColumn, field: [name, courseClass]  }
         select: iac.name
     student:
-        name: "Student"
+        label: "Student"
         desc: "Username"
         args: { filter: string, required: true }
-        relationship: { table: Person, key: PersonID, field: username }
+        relationship: { table: Person, field: username }
         select: p.username
     attainmentValue:
-        name: "Attainment Value"
+        label: "Attainment Value"
         desc: ""
         args: { filter: string, custom: true }
         select: iae.attainmentValue
     attainmentDescriptor:
-        name: "Attainment Descriptor"
+        label: "Attainment Descriptor"
         desc: ""
         args: { filter: string, linked: attainmentValue }
-        relationship: { table: ScaleGrade, key: descriptor, join: InternalAssessmentColumn, on: [scaleAttainment, scale], field: [ value, internalAssessmentColumn ] }
+        relationship: { table: ScaleGrade, field: [ value, internalAssessmentColumn ] }
         select: iae.attainmentDescriptor
     effortValue:
-        name: "Effort Value"
+        label: "Effort Value"
         desc: ""
         args: { filter: string, custom: true }
         select: iae.effortValue
     effortDescriptor:
-        name: "Effort Descriptor"
+        label: "Effort Descriptor"
         desc: ""
         args: { filter: string, linked: effortValue }
-        relationship: { table: ScaleGrade, key: descriptor, join: InternalAssessmentColumn, on: [scaleEffort, scale], field: [ value, internalAssessmentColumn ] }
+        relationship: { table: ScaleGrade, field: [ value, internalAssessmentColumn ] }
         select: iae.effortDescriptor
     comment:
-        name: "Comment"
+        label: "Comment"
         desc: ""
         args: { filter: string, custom: true }
         select: iae.comment
     lastEdit:
-        name: "Created By"
+        label: "Created By"
         desc: "Username"
         args: { filter: string, custom: true }
-        relationship: { table: Person, key: id, field: username }
+        relationship: { table: Person, field: username }
         select: le.username

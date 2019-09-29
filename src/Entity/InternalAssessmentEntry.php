@@ -12,13 +12,18 @@
  */
 namespace App\Entity;
 
+use App\Util\SecurityHelper;
+use App\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class InternalAssessmentEntry
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\InternalAssessmentEntryRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="InternalAssessmentEntry")
+ * @ORM\Table(options={"auto_increment": 1}, name="InternalAssessmentEntry", uniqueConstraints={@ORM\UniqueConstraint(name="studentAssessmentColumn", columns={"gibbonPersonIDStudent","gibbonInternalAssessmentColumnID"})})
+ * @UniqueEntity({"student","internalAssessmentColumn"})
+ * @ORM\HasLifecycleCallbacks()
  */
 class InternalAssessmentEntry
 {
@@ -265,5 +270,25 @@ class InternalAssessmentEntry
     {
         $this->lastEdit = $lastEdit;
         return $this;
+    }
+
+    /**
+     * generateLastEdit
+     * @return InternalAssessmentEntry
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function generateLastEdit(): InternalAssessmentEntry
+    {
+        return $this->setLastEdit(UserHelper::getCurrentUser());
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getAttainmentValue() . ' for ' . $this->getStudent()->formatName();
     }
 }
