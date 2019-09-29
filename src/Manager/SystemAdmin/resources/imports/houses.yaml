@@ -1,30 +1,32 @@
 details:
-    type: houses
-    name: Houses
+    name: houses
+    title: Houses
     table: House
     modes: { update: true, insert: true, export: true }
     alias: h
-access:
+security:
     module: School Admin
     action: Manage Houses
 primaryKey:
     id
 uniqueKeys:
-    - name
-    - nameShort
-table:
+    name:
+        label: Name
+    nameShort:
+        label: Short Name
+fields:
     name: 
-        name: "Name"
+        label: "Name"
         desc: "Must be unique."
         args: { filter: string, required: true }
         select: h.name
     nameShort: 
-        name: "Short Name"
+        label: "Short Name"
         desc: "Must be unique."
         args: { filter: string, required: true }
         select: h.nameShort
     logo:
-        name: "Logo"
+        label: "Logo"
         desc: ""
         args: { filter: string, custom: true }
         select: h.logo

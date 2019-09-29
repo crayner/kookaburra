@@ -16,12 +16,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class House
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\HouseRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="House", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name","nameShort"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="House", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"})})
  */
 class House
 {
@@ -35,13 +36,15 @@ class House
 
     /**
      * @var string|null
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30, unique=true)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=10, name="nameShort")
+     * @ORM\Column(length=10, name="nameShort",unique=true)
+     * @Assert\NotBlank()
      */
     private $nameShort;
 
@@ -121,5 +124,14 @@ class House
     {
         $this->logo = $logo;
         return $this;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName() . ' (' . $this->getNameShort() . ')';
     }
 }
