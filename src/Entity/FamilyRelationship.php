@@ -14,12 +14,15 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class FamilyRelationship
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FamilyRelationshipRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="FamilyRelationship")
+ * @ORM\Table(options={"auto_increment": 1}, name="FamilyRelationship", uniqueConstraints={@ORM\UniqueConstraint(name="familyAdultChild", columns={"gibbonFamilyID","gibbonPersonID1","gibbonPersonID2"})})
+ * @UniqueEntity({"family","person1","person2"})
  */
 class FamilyRelationship
 {
@@ -55,8 +58,40 @@ class FamilyRelationship
     /**
      * @var string|null
      * @ORM\Column(length=50)
+     * @Assert\NotBlank()
+     * @Assert\Choice({"Mother",
+    "Father",
+    "Step-Mother",
+    "Step-Father",
+    "Adoptive Parent",
+    "Guardian",
+    "Grandmother",
+    "Grandfather",
+    "Aunt",
+    "Uncle",
+    "Nanny/Helper",
+    "Other"})
      */
     private $relationship;
+
+    /**
+     * @var array
+     */
+    private static $relationshipList = [
+        'Mother',
+        'Father',
+        'Step-Mother',
+        'Step-Father',
+        'Adoptive Parent',
+        'Guardian',
+        'Grandmother',
+        'Grandfather',
+        'Aunt',
+        'Uncle',
+        'Nanny/Helper',
+        'Other',
+    ];
+
 
     /**
      * @return int|null
@@ -146,5 +181,22 @@ class FamilyRelationship
     {
         $this->relationship = $relationship;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getRelationshipList(): array
+    {
+        return self::$relationshipList;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getFamily()->__toString() . ': ' . $this->getPerson1()->formatName() . ' is ' . $this->getRelationship() . ' of ' . $this->getPerson2()->formatName();
     }
 }

@@ -43,6 +43,11 @@ class ImportReportField
     /**
      * @var array
      */
+    private $desc_params = [];
+
+    /**
+     * @var array
+     */
     private $args;
 
     /**
@@ -72,6 +77,7 @@ class ImportReportField
             [
                 'desc' => '',
                 'relationship' => [],
+                'descParams' => [],
             ]
         );
         $details = $resolver->resolve($details);
@@ -207,7 +213,7 @@ class ImportReportField
                 'readonly' => false,
             ]
         );
-        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer', 'enum']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -369,6 +375,10 @@ class ImportReportField
                 return [
                     'prompt' => 'Text ({length} chars)',
                     'promptParams' => ['count' => intval($this->getArg('length'))],
+                ];
+            case 'enum':
+                return [
+                    'prompt' => 'Choose One',
                 ];
         }
 
@@ -536,6 +546,7 @@ class ImportReportField
             case 'integer':
                 $value = intval($value);
                 break;
+            case 'enum':
             case 'string':
                 break;
             default:
@@ -598,5 +609,25 @@ class ImportReportField
         $fieldCollection = $this->getRelationalEntities()->get($table) ?: new ArrayCollection();
         $valueCollection = $fieldCollection->get($field) ?: new ArrayCollection();
         return $valueCollection->get($value);
+    }
+
+    /**
+     * @return array
+     */
+    public function getDescParams(): array
+    {
+        return $this->desc_params;
+    }
+
+    /**
+     * DescParams.
+     *
+     * @param array $desc_params
+     * @return ImportReportField
+     */
+    public function setDescParams(array $desc_params): ImportReportField
+    {
+        $this->desc_params = $desc_params;
+        return $this;
     }
 }

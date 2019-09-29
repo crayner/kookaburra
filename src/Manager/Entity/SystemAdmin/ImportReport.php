@@ -223,6 +223,14 @@ class ImportReport
         {
             foreach($fields as $name=>$field)
             {
+                if (isset($field['args']['filter']) && $field['args']['filter'] === 'enum')
+                {
+                    $table = $this->getTableFromSelect($field['select']);
+                    $listName = 'get' . ucfirst(explode('.',$field['select'])[1]).'List';
+                    $table = '\App\Entity\\'.$table['tableName'];
+                    $list = $table::$listName();
+                    $field['descParams'] = ['{list}' => implode('","', $list)];
+                }
                 $field = new ImportReportField($name, $field);
                 $this->addField($name, $field);
             }
@@ -273,6 +281,12 @@ class ImportReport
             throw new Exception(sprintf('The alias %s is already in use in this Report', $alias));
         $this->aliasList->set($alias['alias'], $alias);
         return $this;
+    }
+
+    public function getTableFromSelect(string $select): array
+    {
+        $alias = explode('.',$select)[0];
+        return $this->getAliasList()->get($alias);
     }
 
     /**
