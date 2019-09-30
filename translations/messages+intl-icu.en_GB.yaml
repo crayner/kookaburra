@@ -746,3 +746,18 @@ Warranty Number: Warranty Number
 Warranty Expiry: Warranty Expiry
 Repair Log/Notes: Repair Log/Notes
 Import cannot proceed, as the file contains no data.: Import cannot proceed, as the file contains no data.
+Form Factor: Form Factor
+Operating System: Operating System
+CPU Type: CPU Type
+CPU Speed: CPU Speed
+In GHz.: In GHz.
+Memory: Memory
+Total RAM, in GB.: Total RAM, in GB.
+Storage Type: Storage Type
+Primary internal storage type.: Primary internal storage type.
+Storage: Storage
+Total HDD/SDD capacity, in GB.: Total HDD/SDD capacity, in GB.
+Wireless MAC Address: Wireless MAC Address
+Wired MAC Address: Wired MAC Address
+Any chargers, display dongles, remotes etc?: Any chargers, display dongles, remotes etc?
+Last Reinstall Date: Last Reinstall Date

@@ -1,128 +1,137 @@
 details:
-    type: libraryRecordComputer
-    name: Records - Computer
+    name: libraryRecordComputer
+    title: Records - Computer
     table: LibraryItem
     modes: { update: true, insert: true, export: true }
     alias: li
-access:
+security:
     module: Library
     action: Manage Catalog
-primaryKey:
-    id
 uniqueKeys:
-    - identifier
+    identifier:
+        label: Identifier
+fixedData:
+    itemType: Computer
 join:
     LibraryType:
         table: LibraryItem
         alias: lt
+        with: lt.name = :itemType
     Space:
         table: LibraryItem
         alias: s
+        with: "(li.space = s.id OR li.space IS NULL)"
+        joinType: leftJoin
     Ownership:
         table: LibraryItem
         alias: o
         targetTable: Person
+        with: "(li.ownership = o.id OR li.ownership IS NULL)"
+        joinType: leftJoin
     Department:
         table: LibraryItem
         alias: d
+        with: "(li.department = d.id OR li.department IS NULL)"
+        joinType: leftJoin
     ReplacementYear:
         table: LibraryItem
         alias: ry
         targetTable: SchoolYear
-table:
+        with: "(li.replacementYear = ry.id OR li.replacementYear IS NULL)"
+        joinType: leftJoin
+fields:
     libraryType:
-        name: "Type"
+        label: "Type"
         desc: ""
-        value: "Audio/Visual Hardware"
         args: { filter: string, required: true, custom: true, hidden: true }
         relationship: { table: LibraryType, key: id, field: name  }
         select: lt.name
     name:
-        name: "Name"
+        label: "Name"
         desc: "Volume or product name."
         args: { filter: string, required: true }
         select: li.name
     identifier:
-        name: "Identifier"
+        label: "Identifier"
         desc: "Must be unique, or will lead to update not insert."
         args: { filter: string, required: true }
         select: li.identifier
     producer:
-        name: "Author/Brand"
+        label: "Author/Brand"
         desc: "Who created the item?"
         args: { filter: string, required: true, custom: true }
         select: li.producer
     vendor:
-        name: "Vendor"
+        label: "Vendor"
         desc: "Who supplied the item?"
         args: { filter: string, custom: true }
         select: li.vendor
     purchaseDate:
-        name: "Purchase Date"
+        label: "Purchase Date"
         desc: ""
         args: { filter: date, custom: true }
         select: li.purchaseDate
     invoiceNumber:
-        name: "Invoice Number"
+        label: "Invoice Number"
         desc: ""
         args: { filter: string, custom: true }
         select: li.invoiceNumber
     space:
-        name: "Location"
+        label: "Location"
         desc: "Name"
         args: { filter: string, custom: true }
         relationship: { table: Space, key: SpaceID, field: name }
         select: s.name
     locationDetail:
-        name: "Location Detail"
+        label: "Location Detail"
         desc: "Shelf, cabinet, sector, etc"
         args: { filter: string, custom: true }
         select: li.locationDetail
     ownershipType:
-        name: "Ownership Type"
+        label: "Ownership Type"
         desc: ""
         args: { filter: string, custom: true }
         select: li.ownershipType
     ownership:
-        name: "Main User"
+        label: "Main User"
         desc: "Username of person the device is assigned to."
         args: { filter: string, custom: true }
         relationship: { table: Person, key: id, field: username  }
         select: o.username
     department:
-        name: "Department"
+        label: "Department"
         desc: "Short Name"
         args: { filter: string, custom: true }
         relationship: { table: Department, key: id, field: nameShort  }
         select: d.nameShort
     borrowable:
-        name: "Borrowable?"
+        label: "Borrowable?"
         desc: "Is item available for loan?"
         args: { filter: yesno, custom: true }
         select: li.borrowable
     status:
-        name: "Status?"
+        label: "Status?"
         desc: ""
         args: { filter: string, custom: true }
         select: li.status
     replacement:
-        name: "Replacement?"
+        label: "Replacement?"
         desc: ""
         args: { filter: yesno, custom: true }
         select: li.replacement
     replacementCost:
-        name: "Replacement Cost"
+        label: "Replacement Cost"
         desc: ""
         args: { filter: numeric, custom: true }
         select: li.replacementCost
     replacementYear :
-        name: "Replacement Year"
+        label: "Replacement Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, custom: true }
         relationship: { table: SchoolYear, key: SchoolYearID, field: name  }
         select: ry.name
     comment:
-        name: "Comments/Notes"
+        label: "Comments/Notes"
         desc: ""
         args: { filter: string, custom: true  }
         select: li.comment
@@ -130,76 +139,93 @@ table:
     # Type-Specific Serializable Fields
 
     fieldFormFactor: 
-        name: "Form Factor"
+        label: "Form Factor"
         desc: ""
-        args: { filter: string, required: true, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, required: true, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldOperatingSystem: 
-        name: "Operating System"
+        label: "Operating System"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldSerialNumber: 
-        name: "Serial Number"
+        label: "Serial Number"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
-    fieldModelName: 
-        name: "Model Name"
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
+    fieldModelLabel: 
+        label: "Model Name"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldModelID: 
-        name: "Model ID"
+        label: "Model ID"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldCPUType: 
-        name: "CPU Type"
+        label: "CPU Type"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldCPUSpeed: 
-        name: "CPU Speed"
+        label: "CPU Speed"
         desc: "In GHz."
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldMemory: 
-        name: "Memory"
+        label: "Memory"
         desc: "Total RAM, in GB."
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldStorageType: 
-        name: "Storage Type"
+        label: "Storage Type"
         desc: "Primary internal storage type."
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldStorage: 
-        name: "Storage"
+        label: "Storage"
         desc: "Total HDD/SDD capacity, in GB."
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldWirelessMACAddress: 
-        name: "Wireless MAC Address"
+        label: "Wireless MAC Address"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldWiredMACAddress: 
-        name: "Wired MAC Address"
+        label: "Wired MAC Address"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldAccessories: 
-        name: "Accessories"
+        label: "Accessories"
         desc: "Any chargers, display dongles, remotes etc?"
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldWarrantyNumber: 
-        name: "Warranty Number"
+        label: "Warranty Number"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldWarrantyExpiry: 
-        name: "Warranty Expiry"
+        label: "Warranty Expiry"
         desc: ""
-        args: { filter: date, custom: true, readonly: true, serialize: fields  }
+        args: { filter: date, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldLastReinstallDate: 
-        name: "Last Reinstall Date"
+        label: "Last Reinstall Date"
         desc: ""
-        args: { filter: date, custom: true, readonly: true, serialize: fields  }
+        args: { filter: date, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
     fieldRepairLog: 
-        name: "Repair Log/Notes"
+        label: "Repair Log/Notes"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: lt.fields
 
     fields:
-        name: "Type-Specific Details"
+        label: "Type-Specific Details"
         desc: ""
-        args: { filter: string, serialize: fields, hidden: true, custom: true }
+        args: { filter: string, serialise: fields, hidden: true, custom: true }
         select: li.fields

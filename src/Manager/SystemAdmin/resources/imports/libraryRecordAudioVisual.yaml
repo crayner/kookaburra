@@ -9,7 +9,7 @@ security:
     action: Manage Catalog
 uniqueKeys:
     identifier:
-        label: identifier
+        label: Identifier
 fixedData:
     itemType: Audio/Visual Hardware
 join:
