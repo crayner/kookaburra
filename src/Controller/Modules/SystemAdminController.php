@@ -37,6 +37,7 @@ use App\Form\Modules\SystemAdmin\SMSSettingsType;
 use App\Form\Modules\SystemAdmin\StringReplacementType;
 use App\Form\Modules\SystemAdmin\SystemSettingsType;
 use App\Manager\Entity\SystemAdmin\ImportReport;
+use App\Manager\Entity\SystemAdmin\ImportReportField;
 use App\Manager\ExcelManager;
 use App\Manager\SystemAdmin\GoogleSettingManager;
 use App\Manager\SystemAdmin\ImportManager;
@@ -51,6 +52,7 @@ use App\Util\TranslationsHelper;
 use App\Util\UserHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\QueryException;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -722,7 +724,7 @@ class SystemAdminController extends AbstractController
         $queryFields = [];
         $columnFields = $report->getFields();
 
-        $columnFields = $columnFields->filter(function ($field) {
+        $columnFields = $columnFields->filter(function (ImportReportField $field) {
             return !$field->isFieldHidden();
         });
 
@@ -760,15 +762,20 @@ class SystemAdminController extends AbstractController
 
             foreach ($report->getJoin() as $fieldName => $join) {
                 $type = $join->getJoinType();
-                $query->$type($report->getJoinAlias($join->getTable()) . '.' . $join->getReference(), $join->getAlias());
+                if ($join->getWith() === false)
+                    $query->$type($report->getJoinAlias($join->getTable()) . '.' . $join->getReference(), $join->getAlias());
+                else
+                    $query->$type($report->getJoinAlias($join->getTable()) . '.' . $join->getReference(), $join->getAlias(), Join::WITH, $join->getWith());
             }
 
             $select = [];
+            $additional = [];
             foreach ($report->getFields() as $name=>$field) {
-                if (!$field->isFieldHidden()) {
+                if (!$field->getArg('serialise')) {
                     $w = $field->getSelect() . ' AS ' . $name;
                     $select[] = $w;
-                }
+                } elseif (is_string($field->getArg('serialise')))
+                    $additional[] = $field->getLabel();
             }
 
             $query->select($select);
@@ -778,14 +785,14 @@ class SystemAdminController extends AbstractController
                 // Optionally limit all exports to the current school year by default, to avoid massive files
                 $schoolYear = $report->getTablesUsed();
                 $field = $report->findFieldByArg('filter', 'schoolyear');
-                if (in_array('SchoolYear', $report->getTablesUsed()) && !$field->isFieldReadOnly()) {
+                if ($field && in_array('SchoolYear', $report->getTablesUsed()) && !$field->isFieldReadOnly()) {
                     $data['schoolYear'] = $session->get('schoolYearCurrent')->getId();
                     $query->where($report->getJoinAlias('SchoolYear') . '.id = :schoolYear');
                 }
             }
 
             try {
-                $result = $query->setParameters($data ?: [])->getQuery()->getResult();
+                $result = $query->setParameters(array_merge($data ?: [], $report->getFixedData()))->getQuery()->getResult();
             } catch (QueryException $e) {
                 dd($tableName, $report, $query, $e->getMessage());
             }
@@ -795,24 +802,36 @@ class SystemAdminController extends AbstractController
 
                 $rowCount = 2;
                 foreach ($result as $row) {
-
+                    $row = $report->parseData($row);
                     $i = 0;
                     foreach ($row as $name=>$value) {
-                        switch ($report->getFieldFilter($name)) {
-                            case 'date':
-                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('Y-m-d'));
-                                break;
-                            case 'time':
-                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('H:i:s'));
-                                break;
-                            case 'timestamp':
-                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('Y-m-d H:i:s'));
-                                break;
-                            case 'yesno':
-                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, strtolower($value) === 'y' ? 'Yes' : 'No');
-                                break;
-                            default:
-                                $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string)$value);
+                        if (!$report->isHiddenField($name)) {
+                            switch ($report->getFieldFilter($name)) {
+                                case 'date':
+                                    if (is_string($value)) {
+                                        $value = \date_create_from_format($request->getSession()->get('i18n')['dateFormatPHP'] . ' H:i:s', $value . ' 00:00:00');
+                                    }
+                                    if ($value instanceof \DateTime)
+                                        $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, $value->format('Y-m-d'));
+                                    else
+                                        $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, '');
+                                    break;
+                                case 'time':
+                                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('H:i:s'));
+                                    break;
+                                case 'timestamp':
+                                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, null === $value ? '' : $value->format('Y-m-d H:i:s'));
+                                    break;
+                                case 'yesno':
+                                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, strtolower($value) === 'y' ? 'Yes' : 'No');
+                                    break;
+                                case 'array':
+                                    dd($value, $row, $result);
+                                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, strtolower($value) === 'y' ? 'Yes' : 'No');
+                                    break;
+                                default:
+                                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string) $value);
+                            }
                         }
                     }
                     $rowCount++;

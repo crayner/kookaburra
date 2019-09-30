@@ -679,3 +679,60 @@ Family Member: Family Member
 Family Adults: Family Adults
 Family Children: Family Children
 Child: Child
+'URL (# chars)': "{count, plural,
+         =0 {URL}
+         one {URL (# char)}
+         other {URL (# chars)}
+     }"
+Volume or product name.: Volume or product name.
+Identifier: Identifier
+Must be unique, or will lead to update not insert.: Must be unique, or will lead to update not insert.
+Author/Brand: Author/Brand
+Who created the item?: Who created the item?
+Vendor: Vendor
+Who supplied the item?: Who supplied the item?
+Purchase Date: Purchase Date
+Invoice Number: Invoice Number
+Location Detail: Location Detail
+Shelf, cabinet, sector, etc: Shelf, cabinet, sector, etc
+Ownership Type: Ownership Type
+Main User: Main User
+Username of person the device is assigned to.: Username of person the device is assigned to.
+Borrowable?: Borrowable?
+Is item available for loan?: Is item available for loan?
+Status?: Status?
+Replacement?: Replacement?
+Replacement Cost: Replacement Cost
+Replacement Year: Replacement Year
+Comments/Notes: Comments/Notes
+Format: Format
+Publisher: Publisher
+Name of the company who published the volume.: Name of the company who published the volume.
+Publication Date: Publication Date
+Country of Publication: Country of Publication
+Edition: Edition
+ISBN10: ISBN10
+10-digit unique ISBN number.: 10-digit unique ISBN number.
+ISBN13: ISBN13
+13-digit unique ISBN number.: 13-digit unique ISBN number.
+A brief blurb describing the volume.: A brief blurb describing the volume.
+Subjects: Subjects
+Comma separated list of subjects.: Comma separated list of subjects.
+Collection: Collection
+Control Number: Control Number
+Cataloging Authority: Cataloging Authority
+Reader Age (Youngest): Reader Age (Youngest)
+Age in years, youngest reading age recommendation.: Age in years, youngest reading age recommendation.
+Reader Age (Oldest): Reader Age (Oldest)
+Age in years, oldest reading age recommendation.: Age in years, oldest reading age recommendation.
+Page Count: Page Count
+The number of pages in the volume.: The number of pages in the volume.
+Height: Height
+The physical height of the volume, in cm.: The physical height of the volume, in cm.
+Width: Width
+The physical width of the volume, in cm.: The physical width of the volume, in cm.
+Thickness: Thickness
+The physical thickness of the volume, in cm.: The physical thickness of the volume, in cm.
+The primary language of the volume.: The primary language of the volume.
+Link to web-based information on the volume.: Link to web-based information on the volume.
+Issuing authority for Control Number.:  Issuing authority for Control Number.

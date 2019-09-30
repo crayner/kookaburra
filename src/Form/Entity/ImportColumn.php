@@ -12,7 +12,10 @@
 
 namespace App\Form\Entity;
 
-
+/**
+ * Class ImportColumn
+ * @package App\Form\Entity
+ */
 class ImportColumn
 {
     /**
@@ -21,7 +24,7 @@ class ImportColumn
     private $order;
 
     /**
-     * @var null|string
+     * @var mixed
      */
     private $text;
 
@@ -43,7 +46,7 @@ class ImportColumn
     /**
      * @var array
      */
-    private $columnChoices;
+    private $columnChoices = [];
 
     /**
      * @var array
@@ -71,9 +74,9 @@ class ImportColumn
     }
 
     /**
-     * @return string|null
+     * @return mixed
      */
-    public function getText(): ?string
+    public function getText()
     {
         return $this->text;
     }
@@ -81,10 +84,10 @@ class ImportColumn
     /**
      * Text.
      *
-     * @param string|null $text
+     * @param $text
      * @return ImportColumn
      */
-    public function setText(?string $text): ImportColumn
+    public function setText($text): ImportColumn
     {
         $this->text = $text;
         return $this;
@@ -95,7 +98,7 @@ class ImportColumn
      */
     public function getFieldType(): array
     {
-        return $this->fieldType;
+        return $this->fieldType = $this->fieldType ?: [];
     }
 
     /**
@@ -113,9 +116,9 @@ class ImportColumn
     /**
      * @return null|array
      */
-    public function getColumnChoices(): ?array
+    public function getColumnChoices(): array
     {
-        return $this->columnChoices;
+        return $this->columnChoices = $this->columnChoices ?: [];
     }
 
     /**

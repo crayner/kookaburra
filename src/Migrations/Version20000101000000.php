@@ -228,7 +228,54 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('CREATE TABLE gibbonInternalAssessmentColumn (gibbonInternalAssessmentColumnID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, groupingID INT(8) UNSIGNED ZEROFILL, name VARCHAR(20) NOT NULL, description LONGTEXT NOT NULL, type VARCHAR(50) NOT NULL, attachment VARCHAR(255) NOT NULL, attainment VARCHAR(1) DEFAULT \'Y\' NOT NULL, effort VARCHAR(1) DEFAULT \'Y\' NOT NULL, comment VARCHAR(1) DEFAULT \'Y\' NOT NULL, uploadedResponse VARCHAR(1) DEFAULT \'N\' NOT NULL, complete VARCHAR(1) NOT NULL, completeDate DATE DEFAULT NULL, viewableStudents VARCHAR(1) NOT NULL, viewableParents VARCHAR(1) NOT NULL, gibbonCourseClassID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleIDAttainment INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleIDEffort INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDCreator INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDLastEdit INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_E0A1D88AB67991E (gibbonCourseClassID), INDEX IDX_E0A1D88A2C639785 (gibbonScaleIDAttainment), INDEX IDX_E0A1D88AD395ACF8 (gibbonScaleIDEffort), INDEX IDX_E0A1D88AFF59AAB0 (gibbonPersonIDCreator), INDEX IDX_E0A1D88A519966BA (gibbonPersonIDLastEdit), PRIMARY KEY(gibbonInternalAssessmentColumnID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonInternalAssessmentEntry (gibbonInternalAssessmentEntryID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, attainmentValue VARCHAR(10) DEFAULT NULL, attainmentDescriptor VARCHAR(100) DEFAULT NULL, effortValue VARCHAR(10) DEFAULT NULL, effortDescriptor VARCHAR(100) DEFAULT NULL, comment LONGTEXT DEFAULT NULL, response LONGTEXT DEFAULT NULL, gibbonInternalAssessmentColumnID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStudent INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDLastEdit INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_B09C6F558B7A9BC (gibbonInternalAssessmentColumnID), INDEX IDX_B09C6F5F47CEFE0 (gibbonPersonIDStudent), INDEX IDX_B09C6F5519966BA (gibbonPersonIDLastEdit), PRIMARY KEY(gibbonInternalAssessmentEntryID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonLanguage (gibbonLanguageID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, PRIMARY KEY(gibbonLanguageID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonLibraryItem (gibbonLibraryItemID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL COMMENT \'Name for book, model for computer, etc.\', producer VARCHAR(255) NOT NULL COMMENT \'Author for book, manufacturer for computer, etc\', fields LONGTEXT NOT NULL, vendor VARCHAR(100) NOT NULL, purchaseDate DATE DEFAULT NULL, invoiceNumber VARCHAR(50) NOT NULL, imageType VARCHAR(4) NOT NULL COMMENT \'Type of image. Image should be 240px x 240px, or smaller.\', imageLocation VARCHAR(255) NOT NULL COMMENT \'URL or local FS path of image.\', comment LONGTEXT NOT NULL, locationDetail VARCHAR(255) NOT NULL, ownershipType VARCHAR(12) DEFAULT \'School\' NOT NULL, replacement VARCHAR(1) DEFAULT \'Y\' NOT NULL, replacementCost NUMERIC(10, 2) DEFAULT NULL, physicalCondition VARCHAR(16) NOT NULL, bookable VARCHAR(1) DEFAULT \'N\' NOT NULL, borrowable VARCHAR(1) DEFAULT \'Y\' NOT NULL, status VARCHAR(16) DEFAULT \'Available\' NOT NULL COMMENT \'The current status of the item.\', timestampStatus DATETIME DEFAULT NULL COMMENT \'The time the status was recorded\', returnExpected DATE DEFAULT NULL COMMENT \'The time when the event expires.\', returnAction VARCHAR(16) DEFAULT NULL COMMENT \'What to do when the item is returned?\', timestampCreator DATETIME NOT NULL, timestampUpdate DATETIME DEFAULT NULL, gibbonLibraryTypeID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonSpaceID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDOwnership INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonDepartmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonSchoolYearIDReplacement INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStatusResponsible INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStatusRecorder INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDReturnAction INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDCreator INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDUpdate INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_7D8DF16EE1BB9F5 (gibbonLibraryTypeID), INDEX IDX_7D8DF16ED8D64BA0 (gibbonSpaceID), INDEX IDX_7D8DF16EC4597887 (gibbonPersonIDOwnership), INDEX IDX_7D8DF16E6DFE7E92 (gibbonDepartmentID), INDEX IDX_7D8DF16E2797629C (gibbonSchoolYearIDReplacement), INDEX IDX_7D8DF16EE0330702 (gibbonPersonIDStatusResponsible), INDEX IDX_7D8DF16ECCCD7B64 (gibbonPersonIDStatusRecorder), INDEX IDX_7D8DF16EFA1AE1AB (gibbonPersonIDReturnAction), INDEX IDX_7D8DF16EFF59AAB0 (gibbonPersonIDCreator), INDEX IDX_7D8DF16EAE8C8C10 (gibbonPersonIDUpdate), UNIQUE INDEX id (id), PRIMARY KEY(gibbonLibraryItemID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE `gibbonLibraryItem` (
+  `gibbonLibraryItemID` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `id` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT \'Name for book, model for computer, etc.\',
+  `producer` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT \'Author for book, manufacturer for computer, etc\',
+  `fields` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT \'(DC2Type:array)\',
+  `vendor` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `purchaseDate` date DEFAULT NULL,
+  `invoiceNumber` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `imageType` varchar(4) COLLATE utf8_unicode_ci NOT NULL COMMENT \'Type of image. Image should be 240px x 240px, or smaller.\',
+  `imageLocation` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT \'URL or local FS path of image.\',
+  `comment` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `locationDetail` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `ownershipType` varchar(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'School\',
+  `replacement` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `replacementCost` decimal(10,2) DEFAULT NULL,
+  `physicalCondition` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
+  `bookable` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'N\',
+  `borrowable` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `status` varchar(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Available\' COMMENT \'The current status of the item.\',
+  `timestampStatus` datetime DEFAULT NULL COMMENT \'The time the status was recorded\',
+  `returnExpected` date DEFAULT NULL COMMENT \'The time when the event expires.\',
+  `returnAction` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT \'What to do when the item is returned?\',
+  `timestampCreator` datetime NOT NULL,
+  `timestampUpdate` datetime DEFAULT NULL,
+  `gibbonLibraryTypeID` int(5) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonSpaceID` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDOwnership` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonDepartmentID` int(4) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonSchoolYearIDReplacement` int(3) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDStatusResponsible` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDStatusRecorder` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDReturnAction` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDCreator` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDUpdate` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  PRIMARY KEY (`gibbonLibraryItemID`),
+  UNIQUE KEY `identifier` (`id`) USING BTREE,
+  KEY `IDX_7D8DF16EE1BB9F5` (`gibbonLibraryTypeID`),
+  KEY `IDX_7D8DF16ED8D64BA0` (`gibbonSpaceID`),
+  KEY `IDX_7D8DF16EC4597887` (`gibbonPersonIDOwnership`),
+  KEY `IDX_7D8DF16E6DFE7E92` (`gibbonDepartmentID`),
+  KEY `IDX_7D8DF16E2797629C` (`gibbonSchoolYearIDReplacement`),
+  KEY `IDX_7D8DF16EE0330702` (`gibbonPersonIDStatusResponsible`),
+  KEY `IDX_7D8DF16ECCCD7B64` (`gibbonPersonIDStatusRecorder`),
+  KEY `IDX_7D8DF16EFA1AE1AB` (`gibbonPersonIDReturnAction`),
+  KEY `IDX_7D8DF16EFF59AAB0` (`gibbonPersonIDCreator`),
+  KEY `IDX_7D8DF16EAE8C8C10` (`gibbonPersonIDUpdate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonLibraryItemEvent (gibbonLibraryItemEventID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(12) DEFAULT \'Other\' NOT NULL COMMENT \'This is maintained even after the item is returned, so we know what type of event it was.\', status VARCHAR(16) DEFAULT \'Available\' NOT NULL, timestampOut DATETIME DEFAULT NULL COMMENT \'The time the event was recorded\', returnExpected DATE DEFAULT NULL COMMENT \'The time when the event expires.\', returnAction VARCHAR(16) DEFAULT NULL COMMENT \'What to do when the item is returned?\', timestampReturn DATETIME DEFAULT NULL, gibbonLibraryItemID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStatusResponsible INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDOut INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDReturnAction INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDIn INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_91CB122520179A14 (gibbonLibraryItemID), INDEX IDX_91CB1225E0330702 (gibbonPersonIDStatusResponsible), INDEX IDX_91CB1225D2C06C05 (gibbonPersonIDOut), INDEX IDX_91CB1225FA1AE1AB (gibbonPersonIDReturnAction), INDEX IDX_91CB12251EBCE61E (gibbonPersonIDIn), PRIMARY KEY(gibbonLibraryItemEventID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonLibraryType (gibbonLibraryTypeID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, active VARCHAR(1) DEFAULT \'Y\' NOT NULL, fields LONGTEXT NOT NULL, PRIMARY KEY(gibbonLibraryTypeID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonLog (gibbonLogID INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, title VARCHAR(50) NOT NULL, serialisedArray LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\', ip VARCHAR(15) DEFAULT NULL, gibbonModuleID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_C0122755CB86AD4B (gibbonModuleID), INDEX IDX_C0122755CC6782D6 (gibbonPersonID), INDEX IDX_C012275571FA7520 (gibbonSchoolYearID), PRIMARY KEY(gibbonLogID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');

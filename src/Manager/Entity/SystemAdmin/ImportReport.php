@@ -75,6 +75,11 @@ class ImportReport
     private $primaryKey = 'id';
 
     /**
+     * @var array
+     */
+    private $fixedData = [];
+
+    /**
      * ImportReport constructor.
      * @param $file
      * @throws \Exception
@@ -84,7 +89,7 @@ class ImportReport
         $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
         $resolver = new OptionsResolver();
         $resolver->setRequired(["details", "security", "fields"]);
-        $resolver->setDefaults(["join" => [], 'uniqueKeys' => [], 'primaryKey' => 'id']);
+        $resolver->setDefaults(["join" => [], 'uniqueKeys' => [], 'primaryKey' => 'id', 'fixedData' => []]);
         $fileData = $resolver->resolve($fileData);
 
         foreach($fileData as $name=>$value)
@@ -560,5 +565,58 @@ class ImportReport
             return $field->getLabel() === $label;
         });
         return $field->first() ?: null;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFixedData(): array
+    {
+        return $this->fixedData;
+    }
+
+    /**
+     * FixedData.
+     *
+     * @param array $fixedData
+     * @return ImportReport
+     */
+    public function setFixedData(array $fixedData): ImportReport
+    {
+        $this->fixedData = $fixedData;
+        return $this;
+    }
+
+    /**
+     * isHiddenField
+     * @param string $name
+     * @return bool
+     */
+    public function isHiddenField(string $name): bool
+    {
+        $field = $this->getFields()->get($name);
+        return $field->getArg('hidden');
+    }
+
+    /**
+     * parseData
+     *
+     * Take serialised data and add to result.
+     * @param array $row
+     * @return array
+     */
+    public function parseData(array $row): array
+    {
+        foreach($this->getFields() as $name=>$field)
+        {
+            if (is_string($field->getArg('serialise')))
+            {
+                $source = $field->getArg('serialise');
+                $fieldName = $field->getLabel();
+                $row[$name] = $row[$source][$fieldName];
+            }
+        }
+
+        return $row;
     }
 }

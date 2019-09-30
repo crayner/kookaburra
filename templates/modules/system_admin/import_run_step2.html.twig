@@ -24,6 +24,7 @@
                     <tbody>
                     {% for child in form.columns.children %}
                         {% set value = child.vars.data %}
+                        {% if value.fieldType|length > 0 %}
                         <tr>
                             <td>
                                 {% if value.flags.unique is defined %}
@@ -56,6 +57,7 @@
                                 </div>
                             </td>
                         </tr>
+                        {% endif %}
                     {% endfor %}
                     {% do form.columns.setRendered %}
                     </tbody>

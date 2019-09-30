@@ -12,9 +12,12 @@
 
 namespace App\Manager\Entity\SystemAdmin;
 
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class ImportReportJoin
+ * @package App\Manager\Entity\SystemAdmin
+ */
 class ImportReportJoin
 {
     /**
@@ -48,6 +51,11 @@ class ImportReportJoin
     private $reference;
 
     /**
+     * @var string|boolean
+     */
+    private $with;
+
+    /**
      * ImportReportJoin constructor.
      * @param string $name
      * @param array $details
@@ -61,8 +69,11 @@ class ImportReportJoin
                 'joinType' => 'join',
                 'targetTable' => $name,
                 'reference' => lcfirst($name),
+                'with' => false,
             ]
         );
+        $resolver->setAllowedTypes('with', ['boolean','string']);
+        $resolver->setAllowedValues('joinType',  ['join', 'leftJoin']);
         $details = $resolver->resolve($details);
 
         $this->setName($name);
@@ -191,6 +202,26 @@ class ImportReportJoin
     public function setReference(string $reference): ImportReportJoin
     {
         $this->reference = $reference;
+        return $this;
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getWith()
+    {
+        return $this->with;
+    }
+
+    /**
+     * With.
+     *
+     * @param bool|string $with
+     * @return ImportReportJoin
+     */
+    public function setWith($with)
+    {
+        $this->with = $with;
         return $this;
     }
 }

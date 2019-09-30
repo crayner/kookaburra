@@ -12,6 +12,7 @@
 
 namespace App\Manager\SystemAdmin;
 
+use App\Form\Entity\ImportColumn;
 use App\Form\Entity\ImportControl;
 use App\Manager\Entity\SystemAdmin\ImportReport;
 use App\Manager\Entity\SystemAdmin\ImportReportField;
@@ -481,6 +482,7 @@ class Importer
                 $this->incrementProcessedRows();
                 continue;
             }
+
             foreach($this->getTrueValues() as $label=>$value)
             {
                 $importColumn = $this->getImportControl()->getColumns()->get($columnID);
@@ -1031,21 +1033,39 @@ class Importer
         {
             if ($label === '')
                 continue;
-            $this->trueValues[$label] = new \stdClass();
-            $this->trueValues[$label]->count = $count++;
-            $this->trueValues[$label]->found = false;
-            $this->trueValues[$label]->field = $this->getReport()->findFieldByLabel($label);
-            $this->trueValues[$label]->value = null;
-            $this->trueValues[$label]->was = $value;
+
+            if ($this->getReport()->findFieldByLabel($label)->getArg('serialise') === false) {
+                $this->trueValues[$label] = new \stdClass();
+                $this->trueValues[$label]->count = $count++;
+                $this->trueValues[$label]->found = false;
+                $this->trueValues[$label]->field = $this->getReport()->findFieldByLabel($label);
+                $this->trueValues[$label]->value = null;
+                $this->trueValues[$label]->was = $value;
+            }
+            else
+            {
+                $serialise = $this->getReport()->findFieldByLabel($label)->getArg('serialise');
+                if (!isset($this->trueValues[$serialise]))
+                {
+                    $this->trueValues[$serialise] = new \stdClass();
+                    $this->trueValues[$serialise]->count = $count++;
+                    $this->trueValues[$serialise]->found = false;
+                    $this->trueValues[$serialise]->field = $this->getReport()->findFieldByLabel($label);
+                    $this->trueValues[$serialise]->value = null;
+                    $this->trueValues[$serialise]->was = [];
+                }
+                $this->trueValues[$serialise]->was = array_merge($this->trueValues[$serialise]->was, [$label => $value]);
+            }
         }
-        $again = false;
-        $loop = 0;
+
         do {
+            $again = false;
+            $loop = 0;
             foreach($this->getTrueValues() as $label=>$w)
             {
                 if (!$w->found) {
                     if ($w->field instanceof ImportReportField) {
-                        $value = $w->field->getValue($data[$label], $this->getTrueValues());
+                        $value = $w->field->getValue($this->getTrueValues()[$label]->was, $this->getTrueValues());
                     } else {
 
                         dd($w,$label);
@@ -1066,6 +1086,36 @@ class Importer
                     $again = false;
             }
         } while ($again);
+        $columns = new ArrayCollection();
+        $count = 0;
+        foreach($this->getTrueValues() as $label=>$W) {
+            $wasColumn = $this->getImportControl()->getColumns()->filter(function(ImportColumn $column) use ($label) {
+                return $column->getLabel() === $label;
+            });
+            $column = new ImportColumn();
+            if ($wasColumn->count() === 1) {
+                $wasColumn = $wasColumn->first();
+                $column->setName($wasColumn->getName());
+                $column->setOrder($wasColumn->getOrder());
+                $column->setText($w->value);
+                $column->setColumnChoices($wasColumn->getColumnChoices(), []);
+                $column->setFlags($wasColumn->getFlags());
+                $column->setFieldType($wasColumn->getFieldType());
+                $column->setLabel($label);
+            } else {
+                $field = $this->getReport()->getFields()->get($label);
+                $column->setName($field->getName());
+                $column->setOrder($count);
+                $column->setText($w->value);
+                $column->setColumnChoices([], []);
+                $column->setFlags([]);
+                $column->setFieldType([]);
+                $column->setLabel($label);
+            }
+            $columns->add($column);
+            $count++;
+        }
+        $this->getImportControl()->setColumns($columns);
     }
 
     /**
@@ -1074,7 +1124,7 @@ class Importer
      */
     public function getTrueValues(): ArrayCollection
     {
-        return $this->trueValues;
+        return $this->trueValues = $this->trueValues ?: new ArrayCollection();
     }
 
     /**

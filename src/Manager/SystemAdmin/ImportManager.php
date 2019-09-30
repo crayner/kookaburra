@@ -373,13 +373,13 @@ class ImportManager
             $column->setFlags($columnIndicators($field));
             if ($field->isHidden()) {
                 $columnIndex = Importer::COLUMN_DATA_HIDDEN;
-                if ($field->isLinked()) {
+                if ($field->getArg('linked')) {
                     $columnIndex = Importer::COLUMN_DATA_LINKED;
                 }
                 if ($field->getArg('function') !== false) {
                     $columnIndex = Importer::COLUMN_DATA_FUNCTION;
                 }
-                $column->setOrder($columnIndex)->setCount($count++);
+                $column->setOrder($columnIndex);
                 $importControl->addColumn($column);
                 continue;
             }

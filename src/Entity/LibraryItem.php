@@ -13,13 +13,16 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use App\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class LibraryItem
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\LibraryItemRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="LibraryItem", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
+ * @ORM\HasLifecycleCallbacks()
  */
 class LibraryItem
 {
@@ -37,30 +40,34 @@ class LibraryItem
      * @var LibraryType|null
      * @ORM\ManyToOne(targetEntity="LibraryType")
      * @ORM\JoinColumn(name="gibbonLibraryTypeID", referencedColumnName="gibbonLibraryTypeID", nullable=false)
+     * @Assert\NotBlank()
      */
     private $libraryType;
 
     /**
      * @var string|null
-     * @ORM\Column(name="id")
+     * @ORM\Column(name="id",unique=true)
+     * @Assert\NotBlank()
      */
     private $identifier;
 
     /**
      * @var string|null
      * @ORM\Column(options={"comment": "Name for book, model for computer, etc."}))
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string|null
      * @ORM\Column(options={"comment": "Author for book, manufacturer for computer, etc"}))
+     * @Assert\NotBlank()
      */
     private $producer;
 
     /**
-     * @var string|null
-     * @ORM\Column(type="text")
+     * @var array
+     * @ORM\Column(type="array")
      */
     private $fields;
 
@@ -85,6 +92,7 @@ class LibraryItem
     /**
      * @var string|null
      * @ORM\Column(name="imageType", length=4, options={"comment": "Type of image. Image should be 240px x 240px, or smaller."})
+     * @Assert\Choice(callback="getImageTypeList")
      */
     private $imageType = '';
 
@@ -96,6 +104,7 @@ class LibraryItem
     /**
      * @var string|null
      * @ORM\Column(name="imageLocation", options={"comment": "URL or local FS path of image."})
+     * @Assert\Url()
      */
     private $imageLocation;
 
@@ -121,6 +130,7 @@ class LibraryItem
     /**
      * @var string|null
      * @ORM\Column(name="ownershipType", length=12, options={"default": "School"})
+     * @Assert\Choice(callback="getOwnershipTypeList")
      */
     private $ownershipType = 'School';
     
@@ -148,11 +158,12 @@ class LibraryItem
     /**
      * @var string|null
      * @ORM\Column(name="replacement", length=1, options={"default": "Y"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $replacement = 'Y';
 
     /**
-     * @var float|null
+     * @var string|null
      * @ORM\Column(name="replacementCost", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $replacementCost;
@@ -167,6 +178,7 @@ class LibraryItem
     /**
      * @var string|null
      * @ORM\Column(name="physicalCondition", length=16)
+     * @Assert\Choice(callback="getPhysicalConditionList")
      */
     private $physicalCondition = '';
 
@@ -178,18 +190,21 @@ class LibraryItem
     /**
      * @var string|null
      * @ORM\Column(name="bookable", length=1, options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $bookable = 'N';
 
     /**
      * @var string|null
      * @ORM\Column(name="borrowable", length=1, options={"default": "Y"}))
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $borrowable = 'Y';
 
     /**
      * @var string|null
      * @ORM\Column(name="status", length=16, options={"comment": "The current status of the item.", "default": "Available"})
+     * @Assert\Choice(callback="getStatusList")
      */
     private $status = 'Available';
 
@@ -229,6 +244,7 @@ class LibraryItem
     /**
      * @var string|null
      * @ORM\Column(name="returnAction", length=16, options={"comment": "What to do when the item is returned?"}, nullable=true)
+     * @Assert\Choice(callback="getReturnActionList")
      */
     private $returnAction;
 
@@ -247,7 +263,7 @@ class LibraryItem
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="gibbonPersonID")
      */
     private $personCreator;
 
@@ -361,18 +377,18 @@ class LibraryItem
     }
 
     /**
-     * @return string|null
+     * @return array
      */
-    public function getFields(): ?string
+    public function getFields(): array
     {
-        return $this->fields;
+        return $this->fields = $this->fields ?: [];
     }
 
     /**
-     * @param string|null $fields
+     * @param array|null $fields
      * @return LibraryItem
      */
-    public function setFields(?string $fields): LibraryItem
+    public function setFields(?array $fields): LibraryItem
     {
         $this->fields = $fields;
         return $this;
@@ -595,18 +611,18 @@ class LibraryItem
     }
 
     /**
-     * @return float|null
+     * @return string|null
      */
-    public function getReplacementCost(): ?float
+    public function getReplacementCost(): ?string
     {
         return $this->replacementCost;
     }
 
     /**
-     * @param float|null $replacementCost
+     * @param string|null $replacementCost
      * @return LibraryItem
      */
-    public function setReplacementCost(?float $replacementCost): LibraryItem
+    public function setReplacementCost(?string $replacementCost): LibraryItem
     {
         $this->replacementCost = $replacementCost;
         return $this;
@@ -920,5 +936,35 @@ class LibraryItem
     public static function getReturnActionList(): array
     {
         return self::$returnActionList;
+    }
+
+    /**
+     * update
+     * @return LibraryItem
+     * @ORM\PreUpdate()
+     */
+    public function update(): LibraryItem
+    {
+        return $this->setTimestampUpdate(new \DateTime())->setPersonUpdate(UserHelper::getCurrentUser());
+    }
+
+    /**
+     * persist
+     * @return LibraryItem
+     * @throws \Exception
+     * @ORM\PrePersist()
+     */
+    public function persist(): LibraryItem
+    {
+        return $this->update()->setPersonCreator(UserHelper::getCurrentUser())->setTimestampCreator(new \DateTime());
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getIdentifier() . ': ' . $this->getName();
     }
 }

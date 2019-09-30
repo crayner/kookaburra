@@ -66,6 +66,11 @@ class ImportReportField
     private $relationalEntities;
 
     /**
+     * @var string|bool
+     */
+    private $fixedValue;
+
+    /**
      * ImportReportField constructor.
      */
     public function __construct(string $name, array $details)
@@ -78,8 +83,10 @@ class ImportReportField
                 'desc' => '',
                 'relationship' => [],
                 'descParams' => [],
+                'fixedValue' => false,
             ]
         );
+        $resolver->setAllowedTypes('fixedValue', ['boolean','string']);
         $details = $resolver->resolve($details);
 
         foreach($details as $name=>$value)
@@ -198,22 +205,23 @@ class ImportReportField
                 'hidden' => false,
                 'kind' => '',
                 'length' => false,
-                'scale' => 0,
+                'scale' => null,
                 'elements' => [],
                 'desc' => '',
                 "columnName" => '',
                 "fieldName" => '',
                 "nullable" => false,
-                "precision" => 0,
+                "precision" => null,
                 "type" => 'string',
                 "unique" => false,
                 'columnDefinition' => '',
                 'function' => false,
                 'options' => [],
                 'readonly' => false,
+                'serialise' => false,
             ]
         );
-        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer', 'enum']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer','enum','url','array']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -340,7 +348,10 @@ class ImportReportField
             case 'email':
                 return __('Email ({number} chars)', ['number' => $length]);
             case 'url':
-                return __('URL ({number} chars)', ['number' => $length]);
+                return [
+                    'prompt' => 'URL (# chars)',
+                    'promptParams' => ['count' => $length],
+                ];
             case 'numeric':
                 return ['prompt' =>'Number'];
             case 'integer':
@@ -518,7 +529,10 @@ class ImportReportField
                 $value = in_array($value,  ['true','y','yes','1']) ? 'Y' : 'N';
                 break;
             case 'date':
-                $value = new \DateTime($value . ' 00:00:00');
+                if ($this->getArg('nullable') && ('' === $value || null === $value)) {
+                    $value = null;
+                } else
+                    $value = new \DateTime($value . ' 00:00:00');
                 break;
             case 'language':
                 if (!in_array($value, ['',null])) {
@@ -547,7 +561,12 @@ class ImportReportField
                 $value = intval($value);
                 break;
             case 'enum':
+            case 'url':
             case 'string':
+            case 'numeric':
+                if ($this->getArg('nullable') && ('' === $value || null === $value)) {
+                    $value = null;
+                }
                 break;
             default:
                 dd($this->getArg('filter'), $this);
@@ -628,6 +647,26 @@ class ImportReportField
     public function setDescParams(array $desc_params): ImportReportField
     {
         $this->desc_params = $desc_params;
+        return $this;
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getFixedValue()
+    {
+        return $this->fixed_value;
+    }
+
+    /**
+     * FixedValue.
+     *
+     * @param bool|string $fixed_value
+     * @return ImportReportField
+     */
+    public function setFixedValue($fixed_value)
+    {
+        $this->fixed_value = $fixed_value;
         return $this;
     }
 }
