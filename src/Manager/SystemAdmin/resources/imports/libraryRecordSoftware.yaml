@@ -1,128 +1,137 @@
 details:
-    type: libraryRecordSoftware
-    name: Records - Software
+    name: libraryRecordSoftware
+    title: Records - Software
     table: LibraryItem
     modes: { update: true, insert: true, export: true }
     alias: li
-access:
+security:
     module: Library
     action: Manage Catalog
-primaryKey:
-    id
 uniqueKeys:
-    - identifier
+    identifier:
+        label: Identifier
+fixedData:
+    itemType: Software
 join:
     LibraryType:
         table: LibraryItem
         alias: lt
+        with: lt.name = :itemType
     Space:
         table: LibraryItem
         alias: s
+        with: "(li.space = s.id OR li.space IS NULL)"
+        joinType: leftJoin
     Ownership:
         table: LibraryItem
         alias: o
         targetTable: Person
+        with: "(li.ownership = o.id OR li.ownership IS NULL)"
+        joinType: leftJoin
     Department:
         table: LibraryItem
         alias: d
+        with: "(li.department = d.id OR li.department IS NULL)"
+        joinType: leftJoin
     ReplacementYear:
         table: LibraryItem
         alias: ry
         targetTable: SchoolYear
-table:
+        with: "(li.replacementYear = ry.id OR li.replacementYear IS NULL)"
+        joinType: leftJoin
+fields:
     libraryType:
-        name: "Type"
+        label: "Type"
         desc: ""
-        value: "Audio/Visual Hardware"
         args: { filter: string, required: true, custom: true, hidden: true }
         relationship: { table: LibraryType, key: id, field: name  }
         select: lt.name
     name:
-        name: "Name"
+        label: "Name"
         desc: "Volume or product name."
         args: { filter: string, required: true }
         select: li.name
     identifier:
-        name: "Identifier"
+        label: "Identifier"
         desc: "Must be unique, or will lead to update not insert."
         args: { filter: string, required: true }
         select: li.identifier
     producer:
-        name: "Author/Brand"
+        label: "Author/Brand"
         desc: "Who created the item?"
         args: { filter: string, required: true, custom: true }
         select: li.producer
     vendor:
-        name: "Vendor"
+        label: "Vendor"
         desc: "Who supplied the item?"
         args: { filter: string, custom: true }
         select: li.vendor
     purchaseDate:
-        name: "Purchase Date"
+        label: "Purchase Date"
         desc: ""
         args: { filter: date, custom: true }
         select: li.purchaseDate
     invoiceNumber:
-        name: "Invoice Number"
+        label: "Invoice Number"
         desc: ""
         args: { filter: string, custom: true }
         select: li.invoiceNumber
     space:
-        name: "Location"
+        label: "Location"
         desc: "Name"
         args: { filter: string, custom: true }
         relationship: { table: Space, key: SpaceID, field: name }
         select: s.name
     locationDetail:
-        name: "Location Detail"
+        label: "Location Detail"
         desc: "Shelf, cabinet, sector, etc"
         args: { filter: string, custom: true }
         select: li.locationDetail
     ownershipType:
-        name: "Ownership Type"
+        label: "Ownership Type"
         desc: ""
         args: { filter: string, custom: true }
         select: li.ownershipType
     ownership:
-        name: "Main User"
+        label: "Main User"
         desc: "Username of person the device is assigned to."
         args: { filter: string, custom: true }
         relationship: { table: Person, key: id, field: username  }
         select: o.username
     department:
-        name: "Department"
+        label: "Department"
         desc: "Short Name"
         args: { filter: string, custom: true }
         relationship: { table: Department, key: id, field: nameShort  }
         select: d.nameShort
     borrowable:
-        name: "Borrowable?"
+        label: "Borrowable?"
         desc: "Is item available for loan?"
         args: { filter: yesno, custom: true }
         select: li.borrowable
     status:
-        name: "Status?"
+        label: "Status?"
         desc: ""
         args: { filter: string, custom: true }
         select: li.status
     replacement:
-        name: "Replacement?"
+        label: "Replacement?"
         desc: ""
         args: { filter: yesno, custom: true }
         select: li.replacement
     replacementCost:
-        name: "Replacement Cost"
+        label: "Replacement Cost"
         desc: ""
         args: { filter: numeric, custom: true }
         select: li.replacementCost
     replacementYear :
-        name: "Replacement Year"
+        label: "Replacement Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, custom: true }
         relationship: { table: SchoolYear, key: SchoolYearID, field: name  }
         select: ry.name
     comment:
-        name: "Comments/Notes"
+        label: "Comments/Notes"
         desc: ""
         args: { filter: string, custom: true  }
         select: li.comment
@@ -130,35 +139,43 @@ table:
     # Type-Specific Serializable Fields
 
     fieldVersion: 
-        name: "Version"
+        label: "Version"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
-    fieldOS: 
-        name: "Operating System"
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: li.fields
+    fieldOS:
+        label: "Operating System"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
-    fieldLicenseType: 
-        name: "License Type"
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: li.fields
+    fieldLicenseType:
+        label: "License Type"
         desc: "E.g. Open Source, Site License, number of users."
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
-    fieldLicenseName: 
-        name: "License Name"
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: li.fields
+    fieldLicenseLabel:
+        label: "License Name"
         desc: "If the software is registered, who is it registered to?"
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
-    fieldSerialNumber: 
-        name: "License Serial Number"
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: li.fields
+    fieldSerialNumber:
+        label: "License Serial Number"
         desc: ""
-        args: { filter: string, custom: true, readonly: true, serialize: fields  }
-    fieldExpiry: 
-        name: "License Expiry"
+        args: { filter: string, custom: true, readonly: true, serialise: fields  }
+        select: li.fields
+    fieldExpiry:
+        label: "License Expiry"
         desc: ""
-        args: { filter: date, custom: true, readonly: true, serialize: fields  }
-    fieldLink: 
-        name: "License Management Link"
+        args: { filter: date, custom: true, readonly: true, serialise: fields  }
+        select: li.fields
+    fieldLink:
+        label: "License Management Link"
         desc: "Link to web-based management tool."
-        args: { filter: url, custom: true, readonly: true, serialize: fields  }
+        args: { filter: url, custom: true, readonly: true, serialise: fields  }
+        select: li.fields
+
     fields:
-        name: "Type-Specific Details"
+        label: "Type-Specific Details"
         desc: ""
-        args: { filter: string, serialize: fields, hidden: true, custom: true }
+        args: { filter: string, serialise: fields, hidden: true, custom: true }
         select: li.fields
