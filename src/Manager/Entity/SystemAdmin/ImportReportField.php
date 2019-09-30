@@ -66,11 +66,6 @@ class ImportReportField
     private $relationalEntities;
 
     /**
-     * @var string|bool
-     */
-    private $fixedValue;
-
-    /**
      * ImportReportField constructor.
      */
     public function __construct(string $name, array $details)
@@ -83,10 +78,8 @@ class ImportReportField
                 'desc' => '',
                 'relationship' => [],
                 'descParams' => [],
-                'fixedValue' => false,
             ]
         );
-        $resolver->setAllowedTypes('fixedValue', ['boolean','string']);
         $details = $resolver->resolve($details);
 
         foreach($details as $name=>$value)
@@ -499,7 +492,8 @@ class ImportReportField
      * getValue
      * @param $value
      * @param ArrayCollection $data
-     * @return object|string|null
+     * @return \DateTime|false|int|object|string|null
+     * @throws \Exception
      */
     public function getValue($value, ArrayCollection $data)
     {
@@ -529,12 +523,13 @@ class ImportReportField
                 $value = in_array($value,  ['true','y','yes','1']) ? 'Y' : 'N';
                 break;
             case 'date':
-                if ($this->getArg('nullable') && ('' === $value || null === $value)) {
-                    $value = null;
-                } else
-                    $value = new \DateTime($value . ' 00:00:00');
+                if ($this->getArg('nullable') && ('' === $value || null === $value))
+                    return null;
+                $value = new \DateTime($value . ' 00:00:00');
                 break;
             case 'language':
+                if ($this->getArg('nullable') && ('' === $value || null === $value))
+                    return null;
                 if (!in_array($value, ['',null])) {
                     $languages = Languages::getNames();
                     if (in_array($value, $languages)) {
@@ -543,10 +538,11 @@ class ImportReportField
                     }
                     if (isset($languages[$value]))
                         break;
-
                 }
                 break;
             case 'country':
+                if ($this->getArg('nullable') && ('' === $value || null === $value))
+                    return null;
                 if (!in_array($value, ['',null])) {
                     $countries = Countries::getNames();
                     if (in_array($value, $countries)) {
@@ -558,6 +554,8 @@ class ImportReportField
                 }
                 break;
             case 'integer':
+                if ($this->getArg('nullable') && ('' === $value || null === $value))
+                    return null;
                 $value = intval($value);
                 break;
             case 'enum':
@@ -565,10 +563,12 @@ class ImportReportField
             case 'string':
             case 'numeric':
                 if ($this->getArg('nullable') && ('' === $value || null === $value)) {
-                    $value = null;
+                    return null;
                 }
                 break;
             default:
+                if ($this->getArg('nullable') && ('' === $value || null === $value))
+                    return null;
                 dd($this->getArg('filter'), $this);
         }
         return $value;
@@ -647,26 +647,6 @@ class ImportReportField
     public function setDescParams(array $desc_params): ImportReportField
     {
         $this->desc_params = $desc_params;
-        return $this;
-    }
-
-    /**
-     * @return bool|string
-     */
-    public function getFixedValue()
-    {
-        return $this->fixed_value;
-    }
-
-    /**
-     * FixedValue.
-     *
-     * @param bool|string $fixed_value
-     * @return ImportReportField
-     */
-    public function setFixedValue($fixed_value)
-    {
-        $this->fixed_value = $fixed_value;
         return $this;
     }
 }

@@ -160,6 +160,11 @@ class Importer
     private $trueValues = [];
 
     /**
+     * @var bool
+     */
+    private $emptyData = false;
+
+    /**
      * Importer constructor.
      * @param Validation $validation
      */
@@ -354,6 +359,8 @@ class Importer
     public function setHeaderFirstLine(?string $data = null): Importer
     {
         $data = $this->readCSVString($data);
+        if ([] === $data)
+            return $this->setEmptyData(true);
 
         $this->setHeaderRow(array_keys($data[0]));
         $this->setFirstRow(array_values($data[0]));
@@ -1137,4 +1144,25 @@ class Importer
         $this->trueValues = $trueValues;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isEmptyData(): bool
+    {
+        return $this->emptyData;
+    }
+
+    /**
+     * EmptyData.
+     *
+     * @param bool $emptyData
+     * @return Importer
+     */
+    public function setEmptyData(bool $emptyData): Importer
+    {
+        $this->emptyData = $emptyData;
+        return $this;
+    }
+
 }

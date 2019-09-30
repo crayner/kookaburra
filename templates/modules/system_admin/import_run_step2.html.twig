@@ -1,7 +1,9 @@
 <ul class="multiPartForm"><li class="step active">{{ 'Select File'|trans }}</li><li class="step active">{{ 'Confirm Data'|trans }}</li><li class="step ">{{ 'Dry Run'|trans }}</li><li class="step ">{{ 'Live Run'|trans }}</li></ul>
 
 <h3>{{ 'Step {number}'|trans({'{number}': step}) ~ ' - ' ~ 'Confirm Data'|trans }}</h3>
-
+{% if manager.importer.emptyData %}
+    <div class="warning">{{ 'Import cannot proceed, as the file contains no data.' }}</div>
+{% endif %}
 {{ form_start(form) }}
 <table class="smallIntBorder fullWidth relative">
     <tbody>
@@ -77,7 +79,7 @@
                 </table>
             </td>
         </tr>
-        {{ form_row(form.submit) }}
+        {{ form_row(form.submit, (manager.importer.emptyData ? {disabled: true} : {})) }}
     </tbody>
 </table>
 {{ form_end(form) }}

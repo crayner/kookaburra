@@ -736,3 +736,13 @@ The physical thickness of the volume, in cm.: The physical thickness of the volu
 The primary language of the volume.: The primary language of the volume.
 Link to web-based information on the volume.: Link to web-based information on the volume.
 Issuing authority for Control Number.:  Issuing authority for Control Number.
+What kind of product is this?: What kind of product is this?
+Serial Number: Serial Number
+Model Name: Model Name
+Model ID: Model ID
+Accessories: Accessories
+Any chargers, remotes controls, etc?: Any chargers, remotes controls, etc?
+Warranty Number: Warranty Number
+Warranty Expiry: Warranty Expiry
+Repair Log/Notes: Repair Log/Notes
+Import cannot proceed, as the file contains no data.: Import cannot proceed, as the file contains no data.
