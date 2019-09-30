@@ -182,5 +182,5 @@ fields:
     fields:
         label: "Type-Specific Details"
         desc: ""
-        args: { filter: string, serialize: fields, hidden: true, custom: true }
+        args: { filter: string, serialise: fields, hidden: true, custom: true }
         select: li.fields

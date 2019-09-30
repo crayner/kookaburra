@@ -195,7 +195,7 @@ fields:
         select: li.fields
     fieldCatalogingAuthority:
         label: "Cataloging Authority"
-        desc: " Issuing authority for Control Number."
+        desc: "Issuing authority for Control Number."
         args: { filter: string, custom: true, readonly: true, serialise: fields  }
         select: li.fields
     fieldReaderYoungest:
