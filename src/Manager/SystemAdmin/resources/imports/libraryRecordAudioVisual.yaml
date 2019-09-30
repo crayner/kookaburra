@@ -80,7 +80,7 @@ fields:
         label: "Location"
         desc: "Name"
         args: { filter: string, custom: true }
-        relationship: { table: Space, key: SpaceID, field: name }
+        relationship: { table: Space, field: name }
         select: s.name
     locationDetail: 
         label: "Location Detail"
@@ -96,13 +96,13 @@ fields:
         label: "Main User"
         desc: "Username of person the device is assigned to."
         args: { filter: string, custom: true }
-        relationship: { table: Person, key: id, field: username  }
+        relationship: { table: Person, field: username  }
         select: o.username
     department:
         label: "Department"
         desc: "Short Name"
         args: { filter: string, custom: true }
-        relationship: { table: Department, key: id, field: nameShort  }
+        relationship: { table: Department, field: nameShort  }
         select: d.nameShort
     borrowable: 
         label: "Borrowable?"
@@ -128,7 +128,7 @@ fields:
         label: "Replacement Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, custom: true }
-        relationship: { table: SchoolYear, key: SchoolYearID, field: name  }
+        relationship: { table: SchoolYear, field: name  }
         select: ry.name
     comment:
         label: "Comments/Notes"
