@@ -13,13 +13,18 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use App\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class MarkbookColumn
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\MarkbookColumnRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="MarkbookColumn", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="completeDate", columns={"completeDate"}), @ORM\Index(name="complete", columns={"complete"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="MarkbookColumn", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="completeDate", columns={"completeDate"}), @ORM\Index(name="complete", columns={"complete"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameCourseClass",columns={"name","gibbonCourseClassID"})})
+ * @UniqueEntity({"name","courseClass"})
+ * @ORM\HasLifecycleCallbacks()
  */
 class MarkbookColumn
 {
@@ -43,7 +48,7 @@ class MarkbookColumn
     /**
      * @var Hook|null
      * @ORM\ManyToOne(targetEntity="Hook")
-     * @ORM\JoinColumn(name="gibbonHookID", referencedColumnName="gibbonHookID")
+     * @ORM\JoinColumn(name="gibbonHookID", referencedColumnName="gibbonHookID", nullable=true)
      */
     private $hook;
 
@@ -83,6 +88,7 @@ class MarkbookColumn
     /**
      * @var string|null
      * @ORM\Column(length=20)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -94,13 +100,14 @@ class MarkbookColumn
 
     /**
      * @var \DateTime|null
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="date",nullable=true)
      */
     private $date;
 
     /**
      * @var int
      * @ORM\Column(type="smallint",columnDefinition="INT(3) UNSIGNED",name="sequenceNumber", options={"default": "0"})
+     * @Assert\Range({min: 0, max: 999})
      */
     private $sequenceNumber;
 
@@ -113,6 +120,7 @@ class MarkbookColumn
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $attainment = 'Y';
 
@@ -132,6 +140,7 @@ class MarkbookColumn
     /**
      * @var string|null
      * @ORM\Column(length=1, name="attainmentRaw", options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $attainmentRaw = 'N';
 
@@ -144,6 +153,7 @@ class MarkbookColumn
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $effort = 'Y';
 
@@ -171,18 +181,21 @@ class MarkbookColumn
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $comment = 'Y';
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="uploadedResponse", options={"default": "Y"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $uploadedResponse = 'Y';
 
     /**
      * @var string|null
      * @ORM\Column(length=1)
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $complete = 'N';
 
@@ -195,12 +208,14 @@ class MarkbookColumn
     /**
      * @var string|null
      * @ORM\Column(length=1, name="viewableStudents")
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $viewableStudents = 'N';
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="viewableParents")
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $viewableParents = 'N';
 
@@ -212,7 +227,7 @@ class MarkbookColumn
     private $creator;
 
     /**
-     * @var Person|null
+     * @var \DateTime|null
      * @ORM\ManyToOne(targetEntity="Person")
      * @ORM\JoinColumn(name="gibbonPersonIDLastEdit", referencedColumnName="gibbonPersonID", nullable=false)
      */
@@ -731,30 +746,49 @@ class MarkbookColumn
     }
 
     /**
+     * setCreator
      * @param Person|null $creator
      * @return MarkbookColumn
+     * @throws \Exception
      */
     public function setCreator(?Person $creator): MarkbookColumn
     {
+        if (null === $creator && null === $this->creator)
+            $creator = UserHelper::getCurrentUser();
+
         $this->creator = $creator;
         return $this;
     }
 
     /**
-     * @return Person|null
+     * getLastEdit
+     * @return \DateTime|null
      */
-    public function getLastEdit(): ?Person
+    public function getLastEdit(): ?\DateTime
     {
         return $this->lastEdit;
     }
 
     /**
-     * @param Person|null $lastEdit
+     * setLastEdit
+     * @param \DateTime|null $lastEdit
      * @return MarkbookColumn
      */
-    public function setLastEdit(?Person $lastEdit): MarkbookColumn
+    public function setLastEdit(?\DateTime $lastEdit): MarkbookColumn
     {
         $this->lastEdit = $lastEdit;
         return $this;
+    }
+
+    /**
+     * changeLastEdit
+     * @return MarkbookColumn
+     * @throws \Exception
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function changeLastEdit(): MarkbookColumn
+    {
+        return $this->setLastEdit(new \DateTime());
     }
 }

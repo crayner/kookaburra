@@ -1,16 +1,16 @@
 details:
-    type: markbookColumns
-    name: Markbook Columns
+    name: markbookColumns
+    title: Markbook Columns
     table: MarkbookColumn
     modes: { update: true, insert: true, export: true }
     alias: mc
-access:
+security:
     module: Markbook
     action: Edit Markbook_everything
-primaryKey:
-    id
 uniqueKeys:
-    - [ courseClass, name ]
+    nameCourseClass:
+        fields: [ name, courseClass ]
+        label: Column Name in Course Class
 join:
     CourseClass:
         alias: cc
@@ -43,138 +43,138 @@ join:
         alias: re
         table: MarkbookColumn
         targetTable: Rubric
-table:
+fields:
     schoolYear:
-        name: "School Year"
+        label: "School Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, required: true, custom: true, readonly: true }
-        relationship: { table: SchoolYear, key: id, field: name  }
+        relationship: { table: SchoolYear, field: name  }
         select: sy.name
     course:
-        name: "Course"
+        label: "Course"
         desc: "Short Name"
         args: { filter: string, required: true, custom: true, readonly: true }
-        relationship: { table: Course, key: id, field: [ nameShort, schoolYear ]  }
+        relationship: { table: Course, field: [ nameShort, schoolYear ]  }
         select: c.nameShort
     courseClass:
-        name: "Class"
+        label: "Class"
         desc: "Short Name"
         args: { filter: string, required: true, custom: true }
-        relationship: { table: CourseClass, key: id, field: [ nameShort, course ]  }
+        relationship: { table: CourseClass, field: [ nameShort, course ]  }
         select: cc.nameShort
     unit:
-        name: "Unit"
+        label: "Unit"
         desc: "Name"
         args: { filter: string, custom: true }
         relationship: { table: Unit, key: id, field: [ name, course ]  }
         select: u.name
     plannerEntry:
-        name: "Lesson"
+        label: "Lesson"
         desc: "Name"
         args: { filter: string, custom: true }
         relationship: { table: PlannerEntry, key: id, field: [ name, courseClass ]  }
         select: pe.name
-    name: 
-        name: "Name"
+    label: 
+        label: "Name"
         desc: ""
         args: { filter: string, required: true }
         select: mc.name
     description: 
-        name: "Description"
+        label: "Description"
         desc: ""
         args: { filter: string, required: true }
         select: mc.description
     type:
-        name: "Type"
+        label: "Type"
         desc: ""
         args: { filter: string, required: true, custom: true }
         select: mc.type
     date:
-        name: "Date Added"
+        label: "Date Added"
         desc: ""
         args: {filter: date, custom: true }
         select: mc.date
     attainment:
-        name: "Assess Attainment?"
+        label: "Assess Attainment?"
         desc: ""
         args: { filter: yesno, required: true, custom: true }
         select: mc.attainment
     scaleAttainment:
-        name: "Attainment Scale"
+        label: "Attainment Scale"
         desc: "Short Name"
         args: { filter: string, custom: true }
         relationship: { table: Scale, key: ScaleID, field: nameShort  }
         select: sa.nameShort
     attainmentRaw:
-        name: "Total Mark"
+        label: "Total Mark"
         desc: ""
         args: { filter: yesno, custom: true }
         select: mc.attainmentRaw
     attainmentRawMax:
-        name: "Attainment Total Mark"
+        label: "Attainment Total Mark"
         desc: ""
         args: { filter: string, custom: true }
         select: mc.attainmentRawMax
     attainmentWeighting:
-        name: "Attainment Weighting"
+        label: "Attainment Weighting"
         desc: ""
         args: { filter: numeric, custom: true }
         select: mc.attainmentWeighting
     rubricAttainment:
-        name: "Attainment Rubric"
+        label: "Attainment Rubric"
         desc: "Name"
         args: { filter: string, custom: true }
         relationship: { table: Rubric, key: RubricID, field: name  }
         select: ra.name
     effort:
-        name: "Assess Effort?"
+        label: "Assess Effort?"
         desc: ""
         args: { filter: yesno, required: true, custom: true }
         select: mc.effort
     scaleEffort:
-        name: "Effort Scale"
+        label: "Effort Scale"
         desc: "Short Name"
         args: { filter: string, custom: true }
         relationship: { table: Scale, key: ScaleID, field: nameShort  }
         select: se.nameShort
     rubricEffort:
-        name: "Effort Rubric"
+        label: "Effort Rubric"
         desc: "Name"
         args: { filter: string, custom: true }
         relationship: { table: Rubric, key: RubricID, field: name  }
         select: re.name
     comment:
-        name: "Include Comment?"
+        label: "Include Comment?"
         desc: ""
         args: { filter: yesno, required: true, custom: true }
         select: mc.comment
     uploadedResponse:
-        name: "Include Uploaded Response?"
+        label: "Include Uploaded Response?"
         desc: ""
         args: { filter: yesno, required: true, custom: true }
         select: mc.uploadedResponse
     viewableStudents:
-        name: "Viewable to Students"
+        label: "Viewable to Students"
         desc: ""
         args: { filter: yesno, required: true, custom: true }
         select: mc.viewableStudents
     viewableParents:
-        name: "Viewable to Parents"
+        label: "Viewable to Parents"
         desc: ""
         args: { filter: yesno, required: true, custom: true }
         select: mc.viewableParents
     completeDate:
-        name: "Go Live Date"
+        label: "Go Live Date"
         desc: "Column is hidden until date is reached."
         args: {filter: date, custom: true }
         select: mc.completeDate
     complete:
-        name: "Completed?"
+        label: "Completed?"
         desc: ""
         args: { filter: yesno, custom: true }
         select: mc.complete
     sequenceNumber:
-        name: "Sequence Number"
+        label: "Sequence Number"
         desc: ""
-        args: { filter: numeric }
+        args: { filter: integer }
         select: mc.sequenceNumber

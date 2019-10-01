@@ -279,7 +279,53 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('CREATE TABLE gibbonLibraryItemEvent (gibbonLibraryItemEventID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(12) DEFAULT \'Other\' NOT NULL COMMENT \'This is maintained even after the item is returned, so we know what type of event it was.\', status VARCHAR(16) DEFAULT \'Available\' NOT NULL, timestampOut DATETIME DEFAULT NULL COMMENT \'The time the event was recorded\', returnExpected DATE DEFAULT NULL COMMENT \'The time when the event expires.\', returnAction VARCHAR(16) DEFAULT NULL COMMENT \'What to do when the item is returned?\', timestampReturn DATETIME DEFAULT NULL, gibbonLibraryItemID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStatusResponsible INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDOut INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDReturnAction INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDIn INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_91CB122520179A14 (gibbonLibraryItemID), INDEX IDX_91CB1225E0330702 (gibbonPersonIDStatusResponsible), INDEX IDX_91CB1225D2C06C05 (gibbonPersonIDOut), INDEX IDX_91CB1225FA1AE1AB (gibbonPersonIDReturnAction), INDEX IDX_91CB12251EBCE61E (gibbonPersonIDIn), PRIMARY KEY(gibbonLibraryItemEventID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonLibraryType (gibbonLibraryTypeID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, active VARCHAR(1) DEFAULT \'Y\' NOT NULL, fields LONGTEXT NOT NULL, PRIMARY KEY(gibbonLibraryTypeID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonLog (gibbonLogID INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, title VARCHAR(50) NOT NULL, serialisedArray LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\', ip VARCHAR(15) DEFAULT NULL, gibbonModuleID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_C0122755CB86AD4B (gibbonModuleID), INDEX IDX_C0122755CC6782D6 (gibbonPersonID), INDEX IDX_C012275571FA7520 (gibbonSchoolYearID), PRIMARY KEY(gibbonLogID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonMarkbookColumn (gibbonMarkbookColumnID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, groupingID INT(8) UNSIGNED ZEROFILL, type VARCHAR(50) NOT NULL, name VARCHAR(20) NOT NULL, description LONGTEXT NOT NULL, date DATE DEFAULT NULL, sequenceNumber INT(3) UNSIGNED, attachment VARCHAR(255) NOT NULL, attainment VARCHAR(1) DEFAULT \'Y\' NOT NULL, attainmentWeighting NUMERIC(5, 2) DEFAULT NULL, attainmentRaw VARCHAR(1) DEFAULT \'N\' NOT NULL, attainmentRawMax NUMERIC(8, 2) DEFAULT NULL, effort VARCHAR(1) DEFAULT \'Y\' NOT NULL, comment VARCHAR(1) DEFAULT \'Y\' NOT NULL, uploadedResponse VARCHAR(1) DEFAULT \'Y\' NOT NULL, complete VARCHAR(1) NOT NULL, completeDate DATE DEFAULT NULL, viewableStudents VARCHAR(1) NOT NULL, viewableParents VARCHAR(1) NOT NULL, gibbonCourseClassID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonHookID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonUnitID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPlannerEntryID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonSchoolYearTermID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleIDAttainment INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleIDEffort INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonRubricIDAttainment INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonRubricIDEffort INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDCreator INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDLastEdit INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_AA57806EF6E7C959 (gibbonHookID), INDEX IDX_AA57806E46DE4A3D (gibbonUnitID), INDEX IDX_AA57806EFE417281 (gibbonPlannerEntryID), INDEX IDX_AA57806E88C7C454 (gibbonSchoolYearTermID), INDEX IDX_AA57806E2C639785 (gibbonScaleIDAttainment), INDEX IDX_AA57806ED395ACF8 (gibbonScaleIDEffort), INDEX IDX_AA57806E2151BB77 (gibbonRubricIDAttainment), INDEX IDX_AA57806EBA294907 (gibbonRubricIDEffort), INDEX IDX_AA57806EFF59AAB0 (gibbonPersonIDCreator), INDEX IDX_AA57806E519966BA (gibbonPersonIDLastEdit), INDEX gibbonCourseClassID (gibbonCourseClassID), INDEX completeDate (completeDate), INDEX complete (complete), PRIMARY KEY(gibbonMarkbookColumnID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE `gibbonMarkbookColumn` (
+  `gibbonMarkbookColumnID` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `groupingID` int(8) UNSIGNED ZEROFILL DEFAULT NULL,
+  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `date` date DEFAULT NULL,
+  `sequenceNumber` int(3) UNSIGNED DEFAULT NULL,
+  `attachment` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `attainment` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `attainmentWeighting` decimal(5,2) DEFAULT NULL,
+  `attainmentRaw` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'N\',
+  `attainmentRawMax` decimal(8,2) DEFAULT NULL,
+  `effort` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `comment` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `uploadedResponse` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `complete` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `completeDate` date DEFAULT NULL,
+  `viewableStudents` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `viewableParents` varchar(1) COLLATE utf8_unicode_ci NOT NULL,
+  `gibbonCourseClassID` int(8) UNSIGNED ZEROFILL NOT NULL,
+  `gibbonHookID` int(4) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonUnitID` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPlannerEntryID` int(14) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonSchoolYearTermID` int(5) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonScaleIDAttainment` int(5) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonScaleIDEffort` int(5) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonRubricIDAttainment` int(8) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonRubricIDEffort` int(8) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDCreator` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDLastEdit` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  PRIMARY KEY (`gibbonMarkbookColumnID`),
+  UNIQUE KEY `nameCourseClass` (`name`,`gibbonCourseClassID`),
+  KEY `IDX_AA57806EF6E7C959` (`gibbonHookID`),
+  KEY `IDX_AA57806E46DE4A3D` (`gibbonUnitID`),
+  KEY `IDX_AA57806EFE417281` (`gibbonPlannerEntryID`),
+  KEY `IDX_AA57806E88C7C454` (`gibbonSchoolYearTermID`),
+  KEY `IDX_AA57806E2C639785` (`gibbonScaleIDAttainment`),
+  KEY `IDX_AA57806ED395ACF8` (`gibbonScaleIDEffort`),
+  KEY `IDX_AA57806E2151BB77` (`gibbonRubricIDAttainment`),
+  KEY `IDX_AA57806EBA294907` (`gibbonRubricIDEffort`),
+  KEY `IDX_AA57806EFF59AAB0` (`gibbonPersonIDCreator`),
+  KEY `IDX_AA57806E519966BA` (`gibbonPersonIDLastEdit`),
+  KEY `gibbonCourseClassID` (`gibbonCourseClassID`),
+  KEY `completeDate` (`completeDate`),
+  KEY `complete` (`complete`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonMarkbookEntry (gibbonMarkbookEntryID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, modifiedAssessment VARCHAR(1) DEFAULT NULL, attainmentValue VARCHAR(10) DEFAULT NULL, attainmentValueRaw VARCHAR(10) DEFAULT NULL, attainmentDescriptor VARCHAR(100) DEFAULT NULL, attainmentConcern VARCHAR(1) DEFAULT NULL COMMENT \'\'\'P\'\' denotes that student has exceed their personal target\', effortValue VARCHAR(10) DEFAULT NULL, effortDescriptor VARCHAR(100) DEFAULT NULL, effortConcern VARCHAR(1) DEFAULT NULL, comment LONGTEXT DEFAULT NULL, response VARCHAR(255) DEFAULT NULL, gibbonMarkbookColumnID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStudent INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDLastEdit INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_22F46391519966BA (gibbonPersonIDLastEdit), INDEX gibbonPersonIDStudent (gibbonPersonIDStudent), INDEX gibbonMarkbookColumnID (gibbonMarkbookColumnID), PRIMARY KEY(gibbonMarkbookEntryID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonMarkbookTarget (gibbonMarkbookTargetID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonCourseClassID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStudent INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleGradeID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_916B28ECB67991E (gibbonCourseClassID), INDEX IDX_916B28ECF47CEFE0 (gibbonPersonIDStudent), INDEX IDX_916B28EC5E440573 (gibbonScaleGradeID), UNIQUE INDEX coursePerson (gibbonCourseClassID, gibbonPersonIDStudent), PRIMARY KEY(gibbonMarkbookTargetID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonMarkbookWeight (gibbonMarkbookWeightID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(50) NOT NULL, description VARCHAR(50) NOT NULL, reportable VARCHAR(1) DEFAULT \'Y\' NOT NULL, calculate VARCHAR(4) DEFAULT \'year\' NOT NULL, weighting NUMERIC(5, 2) NOT NULL, gibbonCourseClassID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_D0C95251B67991E (gibbonCourseClassID), PRIMARY KEY(gibbonMarkbookWeightID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
