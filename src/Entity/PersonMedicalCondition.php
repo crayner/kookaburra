@@ -13,12 +13,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class PersonMedicalCondition
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PersonMedicalConditionRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="PersonMedicalCondition", indexes={@ORM\Index(name="gibbonPersonMedicalID", columns={"gibbonPersonMedicalID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="PersonMedicalCondition", indexes={@ORM\Index(name="gibbonPersonMedicalID", columns={"gibbonPersonMedicalID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="personConditionLevelTrigger", columns={"gibbonPersonMedicalID","name","gibbonAlertLevelID","triggers"})})
+ * @UniqueEntity({"personMedical","name","alertLevel","triggers"})
  */
 class PersonMedicalCondition
 {
@@ -52,7 +54,7 @@ class PersonMedicalCondition
 
     /**
      * @var string|null
-     * @ORM\Column()
+     * @ORM\Column(length=191)
      */
     private $triggers;
 

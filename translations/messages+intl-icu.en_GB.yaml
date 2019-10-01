@@ -813,3 +813,12 @@ Surname, Preferred Name: Surname, Preferred Name
 Attainment Value: Attainment Value
 Attainment Raw Value: Attainment Raw Value
 Effort Value: Effort Value
+Condition Name: Condition Name
+Risk: Risk
+Triggers: Triggers
+Reaction: Reaction
+Response: Response
+Medication: Medication
+Last Episode: Last Episode
+Last Episode Treatment: Last Episode Treatment
+Person - Condition - Level - Triggers: Person - Condition - Risk - Triggers
