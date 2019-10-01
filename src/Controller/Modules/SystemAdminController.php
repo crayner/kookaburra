@@ -790,6 +790,15 @@ class SystemAdminController extends AbstractController
                     $query->where($report->getJoinAlias('SchoolYear') . '.id = :schoolYear');
                 }
             }
+            $i = 0;
+            foreach($report->getOrderBy() as $name=>$direction)
+            {
+                if ($i === 0)
+                    $query->orderBy($name, $direction === 'DESC' ? 'DESC' : 'ASC');
+                else
+                    $query->addOrderBy($name, $direction === 'DESC' ? 'DESC' : 'ASC');
+                $i = 1;
+            }
 
             try {
                 $result = $query->setParameters(array_merge($data ?: [], $report->getFixedData()))->getQuery()->getResult();

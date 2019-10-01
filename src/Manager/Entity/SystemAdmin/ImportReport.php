@@ -80,6 +80,11 @@ class ImportReport
     private $fixedData = [];
 
     /**
+     * @var array
+     */
+    private $orderBy = [];
+
+    /**
      * ImportReport constructor.
      * @param $file
      * @throws \Exception
@@ -89,7 +94,7 @@ class ImportReport
         $fileData = Yaml::parse(file_get_contents($file->getRealPath()));
         $resolver = new OptionsResolver();
         $resolver->setRequired(["details", "security", "fields"]);
-        $resolver->setDefaults(["join" => [], 'uniqueKeys' => [], 'primaryKey' => 'id', 'fixedData' => []]);
+        $resolver->setDefaults(["join" => [], 'uniqueKeys' => [], 'primaryKey' => 'id', 'fixedData' => [], 'orderBy' => []]);
         $fileData = $resolver->resolve($fileData);
 
         foreach($fileData as $name=>$value)
@@ -618,5 +623,25 @@ class ImportReport
         }
 
         return $row;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOrderBy(): array
+    {
+        return $this->orderBy;
+    }
+
+    /**
+     * OrderBy.
+     *
+     * @param array $orderBy
+     * @return ImportReport
+     */
+    public function setOrderBy(array $orderBy): ImportReport
+    {
+        $this->orderBy = $orderBy;
+        return $this;
     }
 }
