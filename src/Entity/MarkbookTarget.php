@@ -13,12 +13,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class MarkbookTarget
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\MarkbookTargetRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="MarkbookTarget", uniqueConstraints={@ORM\UniqueConstraint(name="coursePerson", columns={"gibbonCourseClassID", "gibbonPersonIDStudent"})})
+ * @UniqueEntity({"courseClass","student"})
  */
 class MarkbookTarget
 {

@@ -76,7 +76,7 @@ fields:
         select: mc.name
     student:
         label: "Student"
-        desc: "Surname, Preferred Name"
+        desc: "Username"
         args: { filter: string, required: true }
         relationship: { table: Person,  field: [ username ] }
         select: p.username
