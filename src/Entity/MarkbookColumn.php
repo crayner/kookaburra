@@ -107,7 +107,7 @@ class MarkbookColumn
     /**
      * @var int
      * @ORM\Column(type="smallint",columnDefinition="INT(3) UNSIGNED",name="sequenceNumber", options={"default": "0"})
-     * @Assert\Range({min: 0, max: 999})
+     * @Assert\Range(min = 0, max = 999)
      */
     private $sequenceNumber;
 

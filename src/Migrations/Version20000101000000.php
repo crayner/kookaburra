@@ -326,7 +326,27 @@ final class Version20000101000000 extends AbstractMigration
   KEY `completeDate` (`completeDate`),
   KEY `complete` (`complete`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonMarkbookEntry (gibbonMarkbookEntryID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, modifiedAssessment VARCHAR(1) DEFAULT NULL, attainmentValue VARCHAR(10) DEFAULT NULL, attainmentValueRaw VARCHAR(10) DEFAULT NULL, attainmentDescriptor VARCHAR(100) DEFAULT NULL, attainmentConcern VARCHAR(1) DEFAULT NULL COMMENT \'\'\'P\'\' denotes that student has exceed their personal target\', effortValue VARCHAR(10) DEFAULT NULL, effortDescriptor VARCHAR(100) DEFAULT NULL, effortConcern VARCHAR(1) DEFAULT NULL, comment LONGTEXT DEFAULT NULL, response VARCHAR(255) DEFAULT NULL, gibbonMarkbookColumnID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStudent INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDLastEdit INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_22F46391519966BA (gibbonPersonIDLastEdit), INDEX gibbonPersonIDStudent (gibbonPersonIDStudent), INDEX gibbonMarkbookColumnID (gibbonMarkbookColumnID), PRIMARY KEY(gibbonMarkbookEntryID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE IF NOT EXISTS `gibbonMarkbookEntry` (
+  `gibbonMarkbookEntryID` int(12) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `modifiedAssessment` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attainmentValue` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attainmentValueRaw` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attainmentDescriptor` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attainmentConcern` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT \'`P` denotes that student has exceed their personal target\',
+  `effortValue` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `effortDescriptor` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `effortConcern` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `comment` longtext COLLATE utf8_unicode_ci,
+  `response` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `gibbonMarkbookColumnID` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDStudent` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDLastEdit` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  PRIMARY KEY (`gibbonMarkbookEntryID`),
+  UNIQUE KEY `columnStudent` (`gibbonMarkbookColumnID`,`gibbonPersonIDStudent`),
+  KEY `IDX_22F46391519966BA` (`gibbonPersonIDLastEdit`),
+  KEY `gibbonPersonIDStudent` (`gibbonPersonIDStudent`),
+  KEY `gibbonMarkbookColumnID` (`gibbonMarkbookColumnID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonMarkbookTarget (gibbonMarkbookTargetID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonCourseClassID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStudent INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleGradeID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_916B28ECB67991E (gibbonCourseClassID), INDEX IDX_916B28ECF47CEFE0 (gibbonPersonIDStudent), INDEX IDX_916B28EC5E440573 (gibbonScaleGradeID), UNIQUE INDEX coursePerson (gibbonCourseClassID, gibbonPersonIDStudent), PRIMARY KEY(gibbonMarkbookTargetID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonMarkbookWeight (gibbonMarkbookWeightID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(50) NOT NULL, description VARCHAR(50) NOT NULL, reportable VARCHAR(1) DEFAULT \'Y\' NOT NULL, calculate VARCHAR(4) DEFAULT \'year\' NOT NULL, weighting NUMERIC(5, 2) NOT NULL, gibbonCourseClassID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_D0C95251B67991E (gibbonCourseClassID), PRIMARY KEY(gibbonMarkbookWeightID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonMedicalCondition (gibbonMedicalConditionID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(80) NOT NULL, UNIQUE INDEX name (name), PRIMARY KEY(gibbonMedicalConditionID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');

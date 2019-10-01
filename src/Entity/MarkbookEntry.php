@@ -13,13 +13,18 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use App\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class MarkbookEntry
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\MarkbookEntryRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="MarkbookEntry", indexes={@ORM\Index(name="gibbonPersonIDStudent", columns={"gibbonPersonIDStudent"}), @ORM\Index(name="gibbonMarkbookColumnID", columns={"gibbonMarkbookColumnID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="MarkbookEntry", indexes={@ORM\Index(name="gibbonPersonIDStudent", columns={"gibbonPersonIDStudent"}), @ORM\Index(name="gibbonMarkbookColumnID", columns={"gibbonMarkbookColumnID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="columnStudent", columns={"gibbonMarkbookColumnID","gibbonPersonIDStudent"})})
+ * @UniqueEntity({"markbookColumn","student"})
+ * @ORM\HasLifecycleCallbacks()
  */
 class MarkbookEntry
 {
@@ -50,6 +55,7 @@ class MarkbookEntry
     /**
      * @var string|null
      * @ORM\Column(length=1, name="modifiedAssessment", nullable=true)
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $modifiedAssessment = 'N';
 
@@ -74,6 +80,7 @@ class MarkbookEntry
     /**
      * @var string|null
      * @ORM\Column(length=1, name="attainmentConcern", options={"comment": "'P' denotes that student has exceed their personal target"}, nullable=true)
+     * @Assert\Choice(callback="getAttainmentConcernList")
      */
     private $attainmentConcern;
 
@@ -97,6 +104,7 @@ class MarkbookEntry
     /**
      * @var string|null
      * @ORM\Column(length=1, name="effortConcern", nullable=true)
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $effortConcern = 'N';
 
@@ -364,9 +372,13 @@ class MarkbookEntry
     /**
      * @param Person|null $lastEdit
      * @return MarkbookEntry
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
      */
     public function setLastEdit(?Person $lastEdit): MarkbookEntry
     {
+        if (null === $lastEdit)
+            $lastEdit = UserHelper::getCurrentUser();
         $this->lastEdit = $lastEdit;
         return $this;
     }

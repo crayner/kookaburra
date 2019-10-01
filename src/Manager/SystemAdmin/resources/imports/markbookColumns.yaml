@@ -1,6 +1,6 @@
 details:
     name: markbookColumns
-    title: Markbook Columns
+    title: Mark book Columns
     table: MarkbookColumn
     modes: { update: true, insert: true, export: true }
     alias: mc

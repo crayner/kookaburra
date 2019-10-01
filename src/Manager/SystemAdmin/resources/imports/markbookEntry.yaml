@@ -1,16 +1,16 @@
 details:
-    type: markbookEntry
-    name: Markbook - Marks
+    name: markbookEntry
+    title: Mark book - Marks
     table: MarkbookEntry
     modes: { update: true, insert: true, export: true }
     alias: me
-access:
+security:
     module: Markbook
     action: Edit Markbook_everything
-primaryKey:
-    id
 uniqueKeys:
-    - [ markbookColumn, student ]
+    studentMarkbookColumn:
+        fields: [ markbookColumn, student ]
+        label: Student in Markbook Column
 join:
     MarkbookColumn:
         table: MarkbookEntry
@@ -28,66 +28,84 @@ join:
         alias: p
         table: MarkbookEntry
         targetTable: Person
-table:
+    ScaleAttainment:
+        table: MarkbookColumn
+        alias: sa
+        targetTable: Scale
+    ScaleGradeAttainment:
+        table: ScaleAttainment
+        alias: sga
+        targetTable: ScaleGrade
+        reference: scaleGrades
+    ScaleEffort:
+        table: MarkbookColumn
+        alias: se
+        targetTable: Scale
+    ScaleGradeEffort:
+        table: ScaleEffort
+        targetTable: ScaleGrade
+        alias: sge
+        reference: scaleGrades
+fields:
     schoolYear:
-        name: "School Year"
+        label: "School Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, required: true, custom: true, readonly: true }
-        relationship: { table: SchoolYear, key: id, field: name  }
+        relationship: { table: SchoolYear, field: name  }
         select: sy.name
     course:
-        name: "Course"
+        label: "Course"
         desc: "Short Name"
         args: { filter: string, required: true, custom: true, readonly: true }
-        relationship: { table: Course, key: id, field: [ nameShort, schoolYear ]  }
+        relationship: { table: Course, field: [ nameShort, schoolYear ]  }
         select: c.nameShort
     courseClass:
-        name: "Class"
+        label: "Class"
         desc: "Short Name"
         args: { filter: string, required: true, custom: true, readonly: true }
-        relationship: { table: CourseClass, key: id, field: [ nameShort, CourseID ]  }
+        relationship: { table: CourseClass, field: [ nameShort, course ]  }
         select: cc.nameShort
     markbookColumn:
-        name: "Markbook Column"
+        label: "Mark book Column"
         desc: "Name"
         args: { filter: string, required: true }
-        relationship: { table: MarkbookColumn, key: id, field: [ name, courseClass ]  }
+        relationship: { table: MarkbookColumn, field: [ name, courseClass ]  }
         select: mc.name
     student:
-        name: "Student"
+        label: "Student"
         desc: "Surname, Preferred Name"
         args: { filter: string, required: true }
-        relationship: { table: Person, key: id, join: CourseClassPerson, on: [id, person], field: ["CONCAT(surname, ', ', preferredName)", courseClass] }
-        select: [ p.surname, p.preferredName ]
+        relationship: { table: Person, field: [ username ] }
+        select: p.username
     attainmentValue: 
-        name: "Attainment Value"
+        label: "Attainment Value"
         desc: ""
         args: { filter: string, custom: true }
         select: me.attainmentValue
     attainmentValueRaw: 
-        name: "Attainment Raw Value"
+        label: "Attainment Raw Value"
         desc: ""
         args: { filter: string, custom: true }
         select: me.attainmentValueRaw
     attainmentDescriptor:
-        name: "Attainment Descriptor"
+        label: "Attainment Descriptor"
         desc: ""
         args: { filter: string, linked: attainmentValue }
-        relationship: { table: ScaleGrade, key: descriptor, join: MarkbookColumn, on: [ScaleIDAttainment, ScaleID], field: [ value, MarkbookColumnID ] }
-        select: me.attainmentDescriptor
+        relationship: { table: ScaleGrade, field: [ value ] }
+        select: sga.value
     effortValue:
-        name: "Effort Value"
+        label: "Effort Value"
         desc: ""
         args: { filter: string, custom: true }
         select: me.effortValue
     effortDescriptor:
-        name: "Effort Descriptor"
+        label: "Effort Descriptor"
         desc: ""
         args: { filter: string, linked: effortValue }
-        relationship: { table: ScaleGrade, key: descriptor, join: MarkbookColumn, on: [ScaleIDEffort, ScaleID], field: [ value, MarkbookColumnID ] }
-        select: me.effortDescriptor
+        relationship: { table: ScaleGrade, field: [ value ] }
+        select: sge.value
     comment:
-        name: "Comment"
+        label: "Comment"
         desc: ""
         args: { filter: string, custom: true }
         select: me.comment
