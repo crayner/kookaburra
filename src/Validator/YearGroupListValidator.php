@@ -12,7 +12,6 @@
 
 namespace App\Validator;
 
-
 use App\Entity\YearGroup;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Validator\Constraint;
@@ -31,17 +30,24 @@ class YearGroupListValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ('' === $value || null === $value)
+        if ('' === $value || null === $value || [] === $value)
             return;
 
-        foreach(explode(',', $value) as $id)
+        if (!is_array($value))
+            $value = explode(',', $value);
+        while (isset($value[0]) && $value[0] === '')
+            unset($value[0]);
+
+        foreach($value as $id)
         {
-            $id = intval(trim($id));
-            $yearGroup = ProviderFactory::getRepository(YearGroup::class)->find($id);
+            if (intval(trim($id)) > 0)
+                $id = intval(trim($id));
+            $yearGroup = ProviderFactory::getRepository(YearGroup::class)->findOneBy([$constraint->fieldName => $id]);
             if (!$yearGroup instanceof YearGroup)
             {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{value}', $id)
+                    ->atPath($constraint->propertyPath)
                     ->setTranslationDomain('messages')
                     ->addViolation();
             }

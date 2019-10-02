@@ -13,7 +13,10 @@
 
 namespace App\Entity;
 
+use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Class Permission
@@ -21,7 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\PermissionRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Permission", indexes={@ORM\Index(name="gibbonRoleID", columns={"gibbonRoleID"}), @ORM\Index(name="gibbonActionID", columns={"gibbonActionID"})})
  */
-class Permission
+class Permission implements EntityInterface
 {
     /**
      * @var integer|null
@@ -35,6 +38,7 @@ class Permission
      * @var Role|null
      * @ORM\ManyToOne(targetEntity="Role", inversedBy="permissions")
      * @ORM\JoinColumn(name="gibbonRoleID", referencedColumnName="gibbonRoleID", nullable=false)
+     * @MaxDepth(2)
      */
     private $role;
 
@@ -42,6 +46,7 @@ class Permission
      * @var Action|null
      * @ORM\ManyToOne(targetEntity="Action", inversedBy="permissions")
      * @ORM\JoinColumn(name="gibbonActionID", referencedColumnName="gibbonActionID", nullable=false)
+     * @MaxDepth(2)
      */
     private $action;
 

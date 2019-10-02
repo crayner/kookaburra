@@ -54,6 +54,11 @@ class ImportColumn
     private $flags;
 
     /**
+     * @var string|null
+     */
+    private $textObjectName;
+
+    /**
      * @return int
      */
     public function getOrder(): int
@@ -127,7 +132,7 @@ class ImportColumn
      * @param array $choices2
      * @return ImportColumn
      */
-    public function setColumnChoices(array $choices1, array $choices2): ImportColumn
+    public function setColumnChoices(array $choices1, array $choices2 = []): ImportColumn
     {
         $columnChoices = [];
         $choices = $choices1 + $choices2;
@@ -198,6 +203,26 @@ class ImportColumn
         foreach($flags as $flag)
             $w[$flag] = true;
         $this->flags = $w;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTextObjectName(): ?string
+    {
+        return $this->textObjectName;
+    }
+
+    /**
+     * TextObjectName.
+     *
+     * @param string|null $textObjectName
+     * @return ImportColumn
+     */
+    public function setTextObjectName(?string $textObjectName): ImportColumn
+    {
+        $this->textObjectName = $textObjectName;
         return $this;
     }
 }

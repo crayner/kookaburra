@@ -12,12 +12,16 @@
 
 namespace App\Manager\Entity\SystemAdmin;
 
+use App\Entity\YearGroup;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationsHelper;
+use App\Validator\YearGroupList;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\Validation;
 
 /**
  * Class ImportReportField
@@ -64,6 +68,11 @@ class ImportReportField
      * @var ArrayCollection
      */
     private $relationalEntities;
+
+    /**
+     * @var ConstraintViolationList
+     */
+    private $violations;
 
     /**
      * ImportReportField constructor.
@@ -214,7 +223,7 @@ class ImportReportField
                 'serialise' => false,
             ]
         );
-        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer','enum','url','array']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer','enum','url','array','year_group_list']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -497,6 +506,13 @@ class ImportReportField
      */
     public function getValue($value, ArrayCollection $data)
     {
+        if ($this->getArg('filter') === 'year_group_list') {
+            $w = $this->reverseTransformYearGroups($value);
+            $data->get($this->getLabel())->violations = $this->getViolations();
+            $this->setViolations(null);
+            return $w;
+        }
+
         if ($this->isRelational()) {
             extract($this->getRelationship());
             if (is_string($field))
@@ -562,13 +578,22 @@ class ImportReportField
             case 'url':
             case 'string':
             case 'numeric':
+            case 'html':
                 if ($this->getArg('nullable') && ('' === $value || null === $value)) {
                     return null;
                 }
                 break;
+            case 'array':
+                if (is_array($value))
+                    break;
+                dd($this,$value);
+                break;
+            case 'simple_array':
+                if (is_array($value))
+                    break;
+                dd($this,$value);
+                break;
             default:
-                if ($this->getArg('nullable') && ('' === $value || null === $value))
-                    return null;
                 dd($this->getArg('filter'), $this);
         }
         return $value;
@@ -647,6 +672,64 @@ class ImportReportField
     public function setDescParams(array $desc_params): ImportReportField
     {
         $this->desc_params = $desc_params;
+        return $this;
+    }
+
+    /**
+     * transformYearGroups
+     * @param $name
+     * @param $value
+     * @return array
+     */
+    public function transformYearGroups($value): array
+    {
+        extract($this->getRelationship());
+        $yearGroups = ProviderFactory::getRepository(YearGroup::class)->findByYearGroupIDList($value, $field);
+
+        return array_keys($yearGroups);
+    }
+
+    /**
+     * reverseTransformYearGroups
+     * @param $name
+     * @param $value
+     * @return array
+     */
+    public function reverseTransformYearGroups($value): array
+    {
+        extract($this->getRelationship());
+        $value = explode(',', $value);
+        $yearGroups = ProviderFactory::getRepository(YearGroup::class)->findByYearGroupList($value, $field);
+
+        if (count($value) !== count($yearGroups))
+        {
+            // Validation Violation
+            $validator = Validation::createValidator();
+            $errors = $validator->validate($value, [new YearGroupList(['fieldName' => $field, 'message' => '{value} does not give a valid Year Group.', 'propertyPath' => $this->getName()])]);
+            if ($errors->count() > 0)
+                $this->getViolations()->addAll($errors);
+        }
+        return array_keys($yearGroups);
+    }
+
+    /**
+     * getViolations
+     * @return ConstraintViolationList
+     */
+    public function getViolations(): ConstraintViolationList
+    {
+        return $this->violations = $this->violations ?: new ConstraintViolationList();
+    }
+
+    /**
+     * Violations.
+     *
+     * @param null|ConstraintViolationList $violations
+     * @return ImportReportField
+     */
+    public function setViolations(?ConstraintViolationList $violations): ImportReportField
+    {
+        $this->violations = $violations;
         return $this;
     }
 }

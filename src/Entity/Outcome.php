@@ -13,14 +13,19 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use App\Validator as Correct;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Outcome
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\OutcomeRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Outcome")
- * */
+ * @ORM\Table(options={"auto_increment": 1}, name="Outcome", uniqueConstraints={@ORM\UniqueConstraint(name="nameDepartment", columns={"name","gibbonDepartmentID"}),@ORM\UniqueConstraint(name="nameShortDescription", columns={"nameShort","gibbonDepartmentID"})})
+ * @UniqueEntity({"name","department"})
+ * @UniqueEntity({"nameShort","department"})
+ */
 class Outcome
 {
     use BooleanList;
@@ -36,36 +41,42 @@ class Outcome
     /**
      * @var string|null
      * @ORM\Column(length=100)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=14, name="nameShort")
+     * @Assert\NotBlank()
      */
     private $nameShort;
 
     /**
      * @var string|null
      * @ORM\Column(length=50)
+     * @Assert\NotBlank()
      */
     private $category;
 
     /**
      * @var string|null
      * @ORM\Column(type="text")
+     * @Correct\HTMLTag()
      */
     private $description;
 
     /**
      * @var string|null
      * @ORM\Column(length=1)
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $active = 'N';
 
     /**
      * @var string|null
      * @ORM\Column(length=16)
+     * @Assert\Choice(callback="getScopeList")
      */
     private $scope;
 
@@ -82,8 +93,9 @@ class Outcome
     private $department;
 
     /**
-     * @var string|null
-     * @ORM\Column(name="gibbonYearGroupIDList")
+     * @var array
+     * @ORM\Column(type="simple_array", name="gibbonYearGroupIDList")
+     * @Correct\YearGroupList()
      */
     private $yearGroupList;
 
@@ -239,19 +251,24 @@ class Outcome
     }
 
     /**
-     * @return string|null
+     * @return array
      */
-    public function getYearGroupList(): ?string
+    public function getYearGroupList(): array
     {
-        return $this->yearGroupList;
+        return $this->yearGroupList = $this->yearGroupList ?: [];
     }
 
     /**
-     * @param string|null $yearGroupList
+     * YearGroupList.
+     *
+     * @param array|string $yearGroupList
      * @return Outcome
      */
-    public function setYearGroupList(?string $yearGroupList): Outcome
+    public function setYearGroupList($yearGroupList): Outcome
     {
+        if (!is_array($yearGroupList))
+            $yearGroupList = explode(',', $yearGroupList);
+
         $this->yearGroupList = $yearGroupList;
         return $this;
     }
@@ -280,5 +297,15 @@ class Outcome
     public static function getScopeList(): array
     {
         return self::$scopeList;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        dump($this);
+        return $this->getName() . ' -> ' . (null !== $this->getDepartment() ? $this->getDepartment()->__toString() : '');
     }
 }

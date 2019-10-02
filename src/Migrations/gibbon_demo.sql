@@ -11852,5 +11852,6 @@ ALTER TABLE `gibbonAttendanceCode` ENABLE KEYS;
 UNLOCK TABLES;
 
 DELETE FROM `gibbonDepartmentStaff` WHERE `gibbonPersonID` NOT IN (SELECT `gibbonPersonID` FROM `gibbonPerson`);
+DELETE FROM `gibbonPermission` WHERE `gibbonPermission`.`gibbonActionID` NOT IN (SELECT `gibbonAction`.`gibbonActionID` FROM `gibbonAction`);
 
 SET FOREIGN_KEY_CHECKS = 1;

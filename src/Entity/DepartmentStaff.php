@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class DepartmentStaff
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\DepartmentStaffRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="DepartmentStaff", uniqueConstraints={@ORM\UniqueConstraint(name="departmentPerson",columns={"department","person"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="DepartmentStaff", uniqueConstraints={@ORM\UniqueConstraint(name="departmentPerson",columns={"gibbonDepartmentID","gibbonPersonID"})})
  * @UniqueEntity({"department","person"})
  */
 class DepartmentStaff

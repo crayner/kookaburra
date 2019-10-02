@@ -720,8 +720,6 @@ class SystemAdminController extends AbstractController
         $excel->setActiveSheetIndex(0);
 
         $count = 0;
-        $rowData = [];
-        $queryFields = [];
         $columnFields = $report->getFields();
 
         $columnFields = $columnFields->filter(function (ImportReportField $field) {
@@ -803,7 +801,7 @@ class SystemAdminController extends AbstractController
             try {
                 $result = $query->setParameters(array_merge($data ?: [], $report->getFixedData()))->getQuery()->getResult();
             } catch (QueryException $e) {
-                dd($tableName, $report, $query, $e->getMessage());
+                throw $e;
             }
 
             // Continue if there's data
@@ -838,8 +836,17 @@ class SystemAdminController extends AbstractController
                                     dd($value, $row, $result);
                                     $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, strtolower($value) === 'y' ? 'Yes' : 'No');
                                     break;
-                                default:
+                                case 'year_group_list':
+                                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, implode(',', $report->transFormYearGroups($name, $value)));
+                                    break;
+                                case 'string':
+                                case 'numeric':
+                                case 'url':
+                                case 'html':
                                     $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string) $value);
+                                    break;
+                                default:
+                                    dd($report->getFieldFilter($name));
                             }
                         }
                     }

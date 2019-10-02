@@ -15,6 +15,7 @@ namespace App\Repository;
 use App\Entity\YearGroup;
 use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Connection;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -43,5 +44,37 @@ class YearGroupRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
         ;
+    }
+
+    /**
+     * findByYearGroupIDList
+     * @param $list
+     * @param $key
+     * @return array
+     */
+    public function findByYearGroupIDList($list, $key): array
+    {
+        return $this->createQueryBuilder('yg', 'yg.'.$key)
+            ->where('yg.id in (:list)')
+            ->select(['yg.id','yg.'.$key])
+            ->setParameter('list', $list, Connection::PARAM_INT_ARRAY)
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    /**
+     * findByYearGroupList
+     * @param $list
+     * @param $key
+     * @return array
+     */
+    public function findByYearGroupList($list, $key): array
+    {
+        return $this->createQueryBuilder('yg', 'yg.id')
+            ->where('yg.' . $key . ' in (:list)')
+            ->select(['yg.id','yg.' . $key])
+            ->setParameter('list', $list, Connection::PARAM_STR_ARRAY)
+            ->getQuery()
+            ->getArrayResult();
     }
 }

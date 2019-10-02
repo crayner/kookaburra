@@ -2838,10 +2838,16 @@ class Person implements EntityInterface
     private $adults;
 
     /**
-     * @return FamilyAdult|null
+     * @return Collection|FamilyAdult[]|null
      */
-    public function getAdults(): ?FamilyAdult
+    public function getAdults(): Collection
     {
+        if (!$this->adults)
+            $this->adults = new ArrayCollection();
+        
+        if ($this->adults instanceof PersistentCollection)
+            $this->adults->initialize();
+        
         return $this->adults;
     }
 
@@ -2864,10 +2870,16 @@ class Person implements EntityInterface
     private $children;
 
     /**
-     * @return FamilyChild|null
+     * @return Collection|FamilyChild[]|null
      */
-    public function getChildren(): ?FamilyChild
+    public function getChildren(): Collection
     {
+        if (!$this->children)
+            $this->children = new ArrayCollection();
+
+        if ($this->children instanceof PersistentCollection)
+            $this->children->initialize();
+
         return $this->children;
     }
 

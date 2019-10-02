@@ -492,11 +492,13 @@ class Importer
                 continue;
             }
 
+            $validationList = new ConstraintViolationList();
             foreach($this->getTrueValues() as $label=>$value)
             {
                 $importColumn = $this->getImportControl()->getColumns()->get($columnID);
                 $value = $this->getTrueValues()->slice($importColumn->getOrder(), 1);
                 $value = reset($value);
+
                 if (!$value->field->getArg('readonly') && Importer::COLUMN_DATA_SKIP !== $importColumn->getOrder()) {
                     $setName = 'set' . ucfirst($importColumn->getName());
                     if (!method_exists($entity, $setName))
@@ -504,9 +506,12 @@ class Importer
                     $entity->$setName($value->value);
                 }
                 $columnID++;
+                if (isset($value->violations) && $value->violations->count() > 0)
+                    $validationList->addAll($value->violations);
             }
 
-            foreach($this->getValidator()->validate($entity) as $violation)
+            $validationList->addAll($this->getValidator()->validate($entity));
+            foreach($validationList as $violation)
             {
                 $message = $violation->getMessage();
                 $invalidValue = $violation->getInvalidValue();
@@ -1059,7 +1064,7 @@ class Importer
                     $this->trueValues[$serialise] = new \stdClass();
                     $this->trueValues[$serialise]->count = $count++;
                     $this->trueValues[$serialise]->found = false;
-                    $this->trueValues[$serialise]->field = $this->getReport()->findFieldByLabel($label);
+                    $this->trueValues[$serialise]->field = new ImportReportField($serialise, ['label' => $serialise, 'select' => $this->getReport()->findFieldByLabel($label)->getSelect(), 'args' => ['filter' => 'array', 'hidden' => true]]);
                     $this->trueValues[$serialise]->value = null;
                     $this->trueValues[$serialise]->was = [];
                 }

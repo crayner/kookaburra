@@ -828,3 +828,8 @@ Choose One: Choose One
 Long Term Medication: Long Term Medication
 Medication Details: Medication Details
 Tetanus Within Last 10 Years?: Tetanus Within Last 10 Years?
+'The HTML contains tags that are not allowed. Valid tags are "{tags}"': 'The HTML contains tags that are not allowed. Valid tags are "{tags}"'
+'{value} is not a valid Year Group ID': '{value} is not a valid Year Group ID'
+Created By: Created By
+Failed: Failed
+Ignore Errors? (ExpertOnly): Ignore Errors? (ExpertOnly)

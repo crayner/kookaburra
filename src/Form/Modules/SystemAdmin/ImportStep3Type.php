@@ -12,9 +12,7 @@
 
 namespace App\Form\Modules\SystemAdmin;
 
-use App\Form\Entity\ImportColumn;
-use App\Form\Entity\ImportControl;
-use App\Form\Transform\ArrayCollectionToStringTransformer;
+use App\Form\Transform\ColumnsToStringTransformer;
 use App\Form\Type\ToggleType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -76,7 +74,7 @@ class ImportStep3Type extends AbstractType
                 ]
             )
         ;
-        $builder->get('columns')->addViewTransformer(new ArrayCollectionToStringTransformer(ImportColumn::class));
+        $builder->get('columns')->addViewTransformer(new ColumnsToStringTransformer());
     }
 
     /**
