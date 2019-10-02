@@ -822,3 +822,9 @@ Medication: Medication
 Last Episode: Last Episode
 Last Episode Treatment: Last Episode Treatment
 Person - Condition - Level - Triggers: Person - Condition - Risk - Triggers
+Blood Type: Blood Type
+Use one of {list}: Use one of {list}
+Choose One: Choose One
+Long Term Medication: Long Term Medication
+Medication Details: Medication Details
+Tetanus Within Last 10 Years?: Tetanus Within Last 10 Years?

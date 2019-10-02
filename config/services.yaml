@@ -146,3 +146,12 @@ services:
             $timeZone: "%timezone%"
         tags:
             - { name: monolog.logger, channel: importer }
+
+    monolog.formatter.importer:
+        class: Monolog\Formatter\LineFormatter
+        arguments:
+            - "[%%datetime%%] [%%extra.token%%] %%channel%%.%%level_name%%: %%message%% %%context%% %%extra%%\n"
+
+    App\Logger\UserDetailProcessor:
+        tags:
+            - { name: monolog.processor }

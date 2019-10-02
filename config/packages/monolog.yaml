@@ -55,3 +55,4 @@ monolog:
             path:     '%kernel.logs_dir%/importer.%kernel.environment%.log'
             channels: [importer]
             max_files: 1
+            formatter: monolog.formatter.importer
