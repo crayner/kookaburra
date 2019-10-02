@@ -361,6 +361,8 @@ class Importer
         $data = $this->readCSVString($data);
         if ([] === $data)
             return $this->setEmptyData(true);
+        if (!isset($data[0]))
+            $data[0] = $data;
 
         $this->setHeaderRow(array_keys($data[0]));
         $this->setFirstRow(array_values($data[0]));

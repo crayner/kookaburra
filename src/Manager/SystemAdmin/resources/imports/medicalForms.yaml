@@ -1,49 +1,51 @@
 details:
-    type: medicalForms
-    name: Medical Forms
+    name: medicalForms
+    title: Medical Forms
     table: PersonMedical
     modes: { update: true, insert: true, export: true }
     alias: pm
-access:
+security:
     module: Students
     action: Manage Medical Forms
-primaryKey:
-    id
 uniqueKeys:
-    - person
+    student:
+        fields: [ person ]
+        label: Student
 join:
-    Person:
+    Student:
         table: PersonMedical
         alias: p
-table:
+        targetTable: Person
+        reference: person
+fields:
     person:
-        name: "Student"
+        label: "Student"
         desc: "Username"
-        args: { filter: nospaces, required: true }
-        relationship: { table: Person, key: id, field: username  }
+        args: { filter: string, required: true }
+        relationship: { table: Person, field: username  }
         select: p.username
     bloodType:
-        name: "Blood Type"
-        desc: ""
-        args: {filter: string}
+        label: "Blood Type"
+        desc: "Use one of {list}"
+        args: {filter: enum }
         select: pm.bloodType
     longTermMedication:
-        name: "Long Term Medication"
+        label: "Long Term Medication"
         desc: ""
         args: {filter: yesno, custom: true}
         select: pm.longTermMedication
     longTermMedicationDetails:
-        name: "Medication Details"
+        label: "Medication Details"
         desc: ""
         args: {filter: string}
         select: pm.longTermMedicationDetails
     tetanusWithin10Years:
-        name: "Tetanus Within Last 10 Years?"
+        label: "Tetanus Within Last 10 Years?"
         desc: ""
         args: {filter: yesno, custom: true}
         select: pm.tetanusWithin10Years
     comment:
-        name: "Comment"
+        label: "Comment"
         desc: ""
         args: {filter: string}
         select: pm.comment

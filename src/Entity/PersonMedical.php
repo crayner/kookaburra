@@ -13,14 +13,17 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class PersonMedical
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PersonMedicalRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="PersonMedical", indexes={@ORM\Index(name="gibbonPersonID", columns={"gibbonPersonID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="PersonMedical", uniqueConstraints={@ORM\UniqueConstraint(name="student", columns={"gibbonPersonID"})})
  */
 class PersonMedical
 {
@@ -37,13 +40,14 @@ class PersonMedical
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="gibbonPersonID",nullable=false,unique=true)
      */
     private $person;
 
     /**
      * @var string
      * @ORM\Column(length=3, name="bloodType")
+     * @Assert\Choice(callback="getBloodTypeList")
      */
     private $bloodType = '';
 
@@ -56,7 +60,7 @@ class PersonMedical
      * @var string|null
      * @ORM\Column(length=1, name="longTermMedication")
      */
-    private $longTermMedication;
+    private $longTermMedication = 'N';
 
     /**
      * @var string|null
@@ -82,6 +86,23 @@ class PersonMedical
      * @ORM\JoinColumn(name="gibbonPersonMedicalID", referencedColumnName="gibbonPersonMedicalID", nullable=false)
      */
     private $personMedicalConditions;
+
+    /**
+     * PersonMedical constructor.
+     */
+    public function __construct()
+    {
+        $this->setPersonMedicalConditions(new ArrayCollection());
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getPerson()->formatName();
+    }
 
     /**
      * @return int|null
