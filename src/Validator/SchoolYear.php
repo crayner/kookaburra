@@ -7,7 +7,7 @@
  *
  * User: craig
  * Date: 3/10/2019
- * Time: 12:31
+ * Time: 13:44
  */
 
 namespace App\Validator;
@@ -15,11 +15,11 @@ namespace App\Validator;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Class ScaleGrade
+ * Class SchoolYear
  * @package App\Validator
  * @Annotation
  */
-class ScaleGrade extends Constraint
+class SchoolYear extends Constraint
 {
     /**
      * getTargets

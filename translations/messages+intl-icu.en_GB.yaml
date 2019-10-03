@@ -833,3 +833,11 @@ Tetanus Within Last 10 Years?: Tetanus Within Last 10 Years?
 Created By: Created By
 Failed: Failed
 Ignore Errors? (ExpertOnly): Ignore Errors? (ExpertOnly)
+School Year Name: School Year Name
+Status: Status
+First Day: First Day
+Last Day: Last Day
+'The first day must be before the last day.': The first day must be before the last day.
+'The school academic year should cover a whole year.': The school academic year should exactly cover a whole year.
+'The school academic year should not overlap another academic year.': The school academic year should not overlap another academic year.
+'The importer inserted a record "{id}" into the table "{table}"': 'The importer inserted a record "{id}" into the table "{table}"'

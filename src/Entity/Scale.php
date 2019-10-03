@@ -24,7 +24,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ScaleRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Scale")
- * @Check\ScaleGrade()
  */
 class Scale implements EntityInterface
 {

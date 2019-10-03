@@ -48,4 +48,14 @@ class SchoolYearProvider implements EntityProviderInterface
         return $row;
     }
 
+    /**
+     * isSchoolYearOverlap
+     * @param SchoolYear $year
+     * @return bool
+     */
+    public function isSchoolYearOverlap(SchoolYear $year): bool
+    {
+        $result = $this->getRepository()->findAllByOverlap($year);
+        return $result === [] ? false : true;
+    }
 }

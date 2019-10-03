@@ -384,6 +384,7 @@ class ImportReportField
                 return [
                     'prompt' => 'Country per ISO 3166',
                 ];
+            case 'schoolyear':
             case 'string':
                 return [
                     'prompt' => 'Text ({length} chars)',
@@ -578,6 +579,7 @@ class ImportReportField
             case 'url':
             case 'string':
             case 'numeric':
+            case 'schoolyear':
             case 'html':
                 if ($this->getArg('nullable') && ('' === $value || null === $value)) {
                     return null;

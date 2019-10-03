@@ -481,10 +481,10 @@ class Importer
                     $line++;
                     continue;
                 }
-
-                if (null === $entity && $this->getImportControl()->getMode() === 'insert')
-                    $entity = new $table();
             }
+
+            if (null === $entity && in_array($this->getImportControl()->getMode(), ['sync','insert']))
+                $entity = new $table();
 
             $columnID = 0;
             if (!$entity) {

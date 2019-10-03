@@ -16,13 +16,16 @@
 namespace App\Entity;
 
 use App\Manager\EntityInterface;
+use App\Validator as Check;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class SchoolYear
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SchoolYearRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="SchoolYear", uniqueConstraints={@ORM\UniqueConstraint(name="academicYearName", columns={"name"}), @ORM\UniqueConstraint(name="sequenceNumber", columns={"sequenceNumber"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="SchoolYear", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="sequence", columns={"sequenceNumber"})})
+ * @Check\SchoolYear()
  */
 class SchoolYear implements EntityInterface
 {
@@ -33,6 +36,46 @@ class SchoolYear implements EntityInterface
      * @ORM\GeneratedValue
      */
     private $id;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=9, unique=true)
+     * @Assert\NotBlank()
+     */
+    private $name;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=8, options={"default": "Upcoming"})
+     * @Assert\Choice(callback="getStatusList")
+     */
+    private $status = 'Upcoming';
+
+    /**
+     * @var array
+     */
+    private static $statusList = ['Past', 'Current', 'Upcoming'];
+
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(type="date", name="firstDay", nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $firstDay;
+
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(type="date", name="lastDay", nullable=true)
+     * @Assert\NotBlank()
+     */
+    private $lastDay;
+
+    /**
+     * @var integer
+     * @ORM\Column(type="smallint",columnDefinition="INT(3)",name="sequenceNumber",unique=true)
+     * @Assert\Range(min=1,max=999)
+     */
+    private $sequenceNumber;
 
     /**
      * @return array
@@ -61,12 +104,6 @@ class SchoolYear implements EntityInterface
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(length=9)
-     */
-    private $name;
-
-    /**
      * @return string|null
      */
     public function getName(): ?string
@@ -84,17 +121,6 @@ class SchoolYear implements EntityInterface
         return $this;
     }
 
-    /**
-     * @var string|null
-     * @ORM\Column(length=8, options={"default": "Upcoming"})
-     */
-    private $status = 'Upcoming';
-
-    /**
-     * @var array 
-     */
-    private static $statusList = ['Past', 'Current', 'Upcoming'];
-    
     /**
      * @return string|null
      */
@@ -115,12 +141,6 @@ class SchoolYear implements EntityInterface
     }
 
     /**
-     * @var \DateTime|null
-     * @ORM\Column(type="date", name="firstDay", nullable=true)
-     */
-    private $firstDay;
-
-    /**
      * @return \DateTime|null
      */
     public function getFirstDay(): ?\DateTime
@@ -139,12 +159,6 @@ class SchoolYear implements EntityInterface
     }
 
     /**
-     * @var \DateTime|null
-     * @ORM\Column(type="date", name="lastDay", nullable=true)
-     */
-    private $lastDay;
-
-    /**
      * @return \DateTime|null
      */
     public function getLastDay(): ?\DateTime
@@ -161,12 +175,6 @@ class SchoolYear implements EntityInterface
         $this->lastDay = $lastDay;
         return $this;
     }
-
-    /**
-     * @var integer
-     * @ORM\Column(type="smallint",columnDefinition="INT(3)",name="sequenceNumber")
-     */
-    private $sequenceNumber;
 
     /**
      * @return int

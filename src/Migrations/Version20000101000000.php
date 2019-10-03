@@ -457,7 +457,17 @@ final class Version20000101000000 extends AbstractMigration
   UNIQUE KEY `scaleSequence` (`gibbonScaleID`,`sequenceNumber`),
   KEY `IDX_262DE8A75F72BC3` (`gibbonScaleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonSchoolYear (gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(9) NOT NULL, status VARCHAR(8) DEFAULT \'Upcoming\' NOT NULL, firstDay DATE DEFAULT NULL, lastDay DATE DEFAULT NULL, sequenceNumber INT(3), UNIQUE INDEX academicYearName (name), UNIQUE INDEX sequenceNumber (sequenceNumber), PRIMARY KEY(gibbonSchoolYearID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
+        $this->addSql('CREATE TABLE `gibbonSchoolYear` (
+  `gibbonSchoolYearID` int(3) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `name` varchar(9) COLLATE utf8_unicode_ci NOT NULL,
+  `status` varchar(8) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Upcoming\',
+  `firstDay` date DEFAULT NULL,
+  `lastDay` date DEFAULT NULL,
+  `sequenceNumber` int(3) DEFAULT NULL,
+  PRIMARY KEY (`gibbonSchoolYearID`),
+  UNIQUE KEY `name` (`name`) USING BTREE,
+  UNIQUE KEY `sequence` (`sequenceNumber`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonSchoolYearSpecialDay (gibbonSchoolYearSpecialDayID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(14) NOT NULL, name VARCHAR(20) NOT NULL, description VARCHAR(255) NOT NULL, date DATE NOT NULL, schoolOpen TIME DEFAULT NULL, schoolStart TIME DEFAULT NULL, schoolEnd TIME DEFAULT NULL, schoolClose TIME DEFAULT NULL, gibbonSchoolYearTermID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_EB4E375D88C7C454 (gibbonSchoolYearTermID), UNIQUE INDEX date (date), PRIMARY KEY(gibbonSchoolYearSpecialDayID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonSchoolYearTerm (gibbonSchoolYearTermID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, sequenceNumber INT(5), name VARCHAR(20) NOT NULL, nameShort VARCHAR(4) NOT NULL, firstDay DATE NOT NULL, lastDay DATE NOT NULL, gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_41C4671071FA7520 (gibbonSchoolYearID), UNIQUE INDEX sequenceNumber (sequenceNumber, gibbonSchoolYearID), PRIMARY KEY(gibbonSchoolYearTermID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonSetting (gibbonSettingID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, scope VARCHAR(50) NOT NULL, name VARCHAR(50) NOT NULL, nameDisplay VARCHAR(60) NOT NULL, description VARCHAR(255) NOT NULL, value LONGTEXT NULL, UNIQUE INDEX scope (scope, nameDisplay), UNIQUE INDEX scope_2 (scope, name), PRIMARY KEY(gibbonSettingID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');

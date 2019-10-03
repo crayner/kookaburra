@@ -33,4 +33,21 @@ class SchoolYearRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, SchoolYear::class);
     }
+
+    /**
+     * findAllByOverlap
+     * @param SchoolYear $year
+     * @return array
+     */
+    public function findAllByOverlap(SchoolYear $year): array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.id <> :year')
+            ->setParameter('year', $year->getId())
+            ->andwhere('(s.firstDay <= :firstDay AND s.lastDay >= :firstDay) OR (s.firstDay <= :lastDay AND s.lastDay >= :lastDay)')
+            ->setParameter('firstDay', $year->getFirstDay())
+            ->setParameter('lastDay', $year->getLastDay())
+            ->getQuery()
+            ->getResult();
+    }
 }
