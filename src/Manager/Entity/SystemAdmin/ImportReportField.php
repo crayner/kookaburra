@@ -540,7 +540,7 @@ class ImportReportField
         }
         switch ($this->getArg('filter')) {
             case 'yesno':
-                $value = in_array(strtolower($value),  ['true','y','yes','1',true]) ? 'Y' : 'N';
+                $value = in_array(strtolower($value),  ['true','y','yes','1']) ? 'Y' : 'N';
                 break;
             case 'date':
                 if ($this->getArg('nullable') && ('' === $value || null === $value))

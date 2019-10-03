@@ -11853,5 +11853,6 @@ UNLOCK TABLES;
 
 DELETE FROM `gibbonDepartmentStaff` WHERE `gibbonPersonID` NOT IN (SELECT `gibbonPersonID` FROM `gibbonPerson`);
 DELETE FROM `gibbonPermission` WHERE `gibbonPermission`.`gibbonActionID` NOT IN (SELECT `gibbonAction`.`gibbonActionID` FROM `gibbonAction`);
+DELETE FROM `gibbonstaff` WHERE `gibbonstaff`.`gibbonPersonID` NOT IN (SELECT `gibbonPerson`.`gibbonPersonID` FROM `gibbonPerson`);
 
 SET FOREIGN_KEY_CHECKS = 1;

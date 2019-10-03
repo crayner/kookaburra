@@ -846,6 +846,7 @@ class SystemAdminController extends AbstractController
                                 case 'numeric':
                                 case 'url':
                                 case 'schoolyear':
+                                case 'country':
                                 case 'enum':
                                 case 'html':
                                     $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string) $value);

@@ -16,12 +16,13 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Staff
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StaffRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Staff", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonPersonID", columns={"gibbonPersonID"}), @ORM\UniqueConstraint(name="initials", columns={"initials"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="staff", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonPersonID", columns={"gibbonPersonID"}), @ORM\UniqueConstraint(name="initials", columns={"initials"})})
  */
 class Staff implements EntityInterface
 {
@@ -45,30 +46,41 @@ class Staff implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=20)
+     * @Assert\Choice(callback="getTypeList")
      */
     private $type;
 
     /**
+     * @var array
+     */
+    private static $typeList = [
+        'Teaching',
+        'Support',
+        'Other',
+    ];
+    /**
      * @var string|null
-     * @ORM\Column(length=4, nullable=true)
+     * @ORM\Column(length=4,nullable=true,unique=true)
      */
     private $initials;
 
     /**
      * @var string|null
-     * @ORM\Column(length=100, name="jobTitle")
+     * @ORM\Column(length=100,name="jobTitle")
      */
     private $jobTitle;
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="smartWorkflowHelp", options={"default": "Y"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $smartWorkflowHelp = 'Y';
 
     /**
      * @var string|null
-     * @ORM\Column(length=1, name="firstAidQualified")
+     * @ORM\Column(length=1, name="firstAidQualified", options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $firstAidQualified = 'N';
 
@@ -81,6 +93,7 @@ class Staff implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=80, name="countryOfOrigin")
+     * @Assert\Country()
      */
     private $countryOfOrigin;
 
@@ -215,7 +228,7 @@ class Staff implements EntityInterface
      */
     public function getSmartWorkflowHelp(): ?string
     {
-        return $this->smartWorkflowHelp = self::checkBoolean($this->smartWorkflowHelp);
+        return $this->smartWorkflowHelp = self::checkBoolean($this->smartWorkflowHelp, 'Y');
     }
 
     /**
@@ -233,7 +246,7 @@ class Staff implements EntityInterface
      */
     public function getFirstAidQualified(): ?string
     {
-        return $this->firstAidQualified;
+        return $this->firstAidQualified = self::checkBoolean($this->firstAidQualified, 'N');
     }
 
     /**
@@ -352,5 +365,22 @@ class Staff implements EntityInterface
     {
         $this->biographicalGroupingPriority = $biographicalGroupingPriority;
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypeList(): array
+    {
+        return self::$typeList;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getPerson()->formatName();
     }
 }

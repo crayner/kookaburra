@@ -1,75 +1,80 @@
 details:
-    type: staff
+    name: staff
     category: Staff Management
-    name: Staff
+    title: Staff
     table: Staff
     modes: { update: true, insert: true, export: true }
     alias: s
-access:
+security:
     module: Staff
     action: Manage Staff_confidential
-primaryKey:
-    id
 uniqueKeys:
-    - person
+    staff:
+        fields: [ person ]
+        label: Person
 join:
     Person:
         alias: p
         table: Staff
-table:
-    personD:
-        name: "Person"
+fields:
+    person:
+        label: "Person"
         desc: "Username"
-        args: { filter: nospaces, required: true }
-        relationship: { table: Person, key: id, field: username  }
+        args: { filter: string, required: true }
+        relationship: { table: Person, field: username  }
         select: p.username
     initials:
-        name: "Initials"
+        label: "Initials"
         desc: "Must be unique if set."
         args: {filter: string}
         select: s.initials
     type:
-        name: "Type"
+        label: "Type"
         desc: ""
-        args: {filter: string, required: true, custom: true}
+        args: {filter: enum, required: true, custom: true}
         select: s.type
     jobTitle:
-        name: "Job Title"
+        label: "Job Title"
         desc: ""
         args: {filter: string, custom: true}
         select: s.jobTitle
+    smartWorkflowHelp:
+        label: "Display smart work flow help?"
+        desc: ""
+        args: {filter: yesno, custom: true }
+        select: s.smartWorkflowHelp
     firstAidQualified:
-        name: "First Aid Qualified?"
+        label: "First Aid Qualified?"
         desc: ""
         args: {filter: yesno, custom: true }
         select: s.firstAidQualified
     firstAidExpiry:
-        name: "First Aid Expiry"
+        label: "First Aid Expiry"
         desc: ""
         args: {filter: date, custom: true }
         select: s.firstAidExpiry
     countryOfOrigin:
-        name: "Country Of Origin"
+        label: "Country Of Origin"
         desc: ""
         args: {filter: country, custom: true }
         select: s.countryOfOrigin
     qualifications:
-        name: "Qualifications"
+        label: "Qualifications"
         desc: ""
         args: {filter: string, custom: true }
         select: s.qualifications
     biographicalGrouping:
-        name: "Grouping"
+        label: "Grouping"
         desc: ""
         args: {filter: string, custom: true }
         select: s.biographicalGrouping
     biographicalGroupingPriority:
-        name: "Grouping Priority"
+        label: "Grouping Priority"
         desc: "Higher numbers move teachers up the order within their grouping."
         args: {filter: string, custom: true }
         select: s.biographicalGroupingPriority
     biography:
-        name: "Biography"
+        label: "Biography"
         desc: ""
         args: {filter: string}
         select: s.biography

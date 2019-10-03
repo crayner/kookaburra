@@ -865,3 +865,15 @@ Phone Number: Phone Number
 How many are there: How many are there
 "Room's internal phone number.": "Room's internal phone number."
 "Room's external phone number.": "Room's external phone number."
+Person: Person
+Initials: Initials
+Job Title: Job Title
+First Aid Qualified?: First Aid Qualified?
+First Aid Expiry: First Aid Expiry
+Country Of Origin: Country Of Origin
+Qualifications: Qualifications
+Grouping: Grouping
+Grouping Priority: Grouping Priority
+Biography: Biography
+Must be unique if set.: Must be unique if set.
+Higher numbers move teachers up the order within their grouping.: Higher numbers move teachers up the order within their grouping.
