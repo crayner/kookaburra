@@ -1,46 +1,48 @@
 details:
-    type: substituteUnavailable
+    name: substituteUnavailable
     category: Substitute
-    name: Substitute Unavailability
+    title: Substitute Unavailability
     table: StaffCoverageDate
     modes: { update: true, insert: true, export: true }
     alias: scd
-access:
+security:
     module: Staff
     action: Manage Substitutes
 primaryKey:
     id
 uniqueKeys:
-    - [ person, date ]
+    personDate:
+        fields: [ person, date ]
+        label: Person on Date
 join:
     PersonUnavailable:
         table: StaffCoverageDate
         alias: pu
         targetTable: Person
-table:
+fields:
     personUnavailable:
-        name: "Substitute User"
+        label: "Substitute User"
         desc: "Username"
-        args: { filter: nospaces, required: true }
-        relationship: { table: Person, key: id, field: username  }
+        args: { filter: string, required: true }
+        relationship: { table: Person, field: username  }
         select: pu.username
     date: 
-        name: "Date"
+        label: "Date"
         desc: "Must be unique. Format: YYYY-MM-DD"
         args: { filter: date, required: true }
         select: scd.date
     allDay:
-        name: "All Day"
+        label: "All Day"
         desc: ""
         args: { filter: yesno, custom: true }
         select: scd.allDay
     timeStart:
-        name: "Start Time"
+        label: "Start Time"
         desc: "Format: hh:mm (24hr)"
         args: { filter: time, required: true }
         select: scd.startTime
     timeEnd:
-        name: "End Time"
+        label: "End Time"
         desc: "Format: hh:mm (24hr)"
         args: { filter: time, required: true }
         select: scd.endTime

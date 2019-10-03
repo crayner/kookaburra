@@ -1,39 +1,39 @@
 details:
-    type: stringReplacements
-    name: String Replacement
+    name: stringReplacements
+    title: String Replacement
     table: StringReplacement
     modes: { update: true, insert: true, export: true }
     alias: sr
-access:
+security:
     module: System Admin
     action: String Replacement
-primaryKey:
-    id
 uniqueKeys:
-    - [ original, mode ]
-table:
+    originalMode:
+        fields: [ original, mode ]
+        label: Original - Mode
+fields:
     original: 
-        name: "Original String"
+        label: "Original String"
         desc: ""
         args: { filter: string, required: true }
         select: sr.original
     replacement: 
-        name: "Replacement String"
+        label: "Replacement String"
         desc: ""
         args: { filter: string, required: true }
         select: sr.replacement
     mode:
-        name: "Mode"
+        label: "Mode"
         desc: ""
         args: { filter: string, required: true, custom: true }
         select: sr.mode
     caseSensitive:
-        name: "Case Sensitive"
+        label: "Case Sensitive"
         desc: ""
         args: { filter: yesno, required: true, custom: true }
         select: sr.caseSensitive
     priority:
-        name: "Priority"
+        label: "Priority"
         desc: "Higher priorities are substituted first."
         args: { filter: numeric, required: true, custom: true }
         select: sr.priority

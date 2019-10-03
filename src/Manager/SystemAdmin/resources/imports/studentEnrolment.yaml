@@ -1,17 +1,19 @@
 details:
-    type: studentEnrolment
-    name: Student Enrolment
+    name: studentEnrolment
+    title: Student Enrolment
     table: StudentEnrolment
     modes: { update: true, insert: true, export: true }
     alias: se
-access:
+security:
     module: Students
     action: Student Enrolment
-primaryKey:
-    id
 uniqueKeys:
-    - [ schoolYear, yearGroup, person ]
-    - [ schoolYear, rollGroup, person ]
+    yearGroupPerson:
+        fields: [ schoolYear, yearGroup, person ]
+        label: Student in Year Group / School Year
+    rollGroupPerson:
+        label: Student in Roll Group / School Year
+        fields: [ schoolYear, rollGroup, person ]
 join:
     SchoolYear:
         table: StudentEnrolment
@@ -25,33 +27,33 @@ join:
     Person:
         table: StudentEnrolment
         alias: p
-table:
+fields:
     schoolYear:
-        name: "School Year"
+        label: "School Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, required: true, custom: true }
-        relationship: { table: SchoolYear, key: id, field: name }
+        relationship: { table: SchoolYear, field: name }
         select: sy.name
     yearGroup:
-        name: "Year Group"
+        label: "Year Group"
         desc: "Short Name"
         args: { filter: string, required: true }
-        relationship: { table: YearGroup, key: id, field: nameShort  }
+        relationship: { table: YearGroup, field: nameShort  }
         select: yg.nameShort
     rollGroup:
-        name: "Roll Group"
+        label: "Roll Group"
         desc: "Short Name"
         args: { filter: string, required: true }
-        relationship: { table: RollGroup, key: id, field: [ nameShort, schoolYear ] }
+        relationship: { table: RollGroup, field: [ nameShort, schoolYear ] }
         select: rg.nameShort
     person:
-        name: "Student"
+        label: "Student"
         desc: "Username"
-        args: { filter: nospaces, required: true }
-        relationship: { table: Person, key: id, field: username  }
+        args: { filter: string, required: true }
+        relationship: { table: Person, field: username  }
         select: p.username
     rollOrder:
-        name: "Roll Order"
+        label: "Roll Order"
         desc: ""
         args: { filter: numeric, custom: true }
         select: se.rollOrder

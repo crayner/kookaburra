@@ -1,57 +1,55 @@
 details:
-    type: studentNotes
+    name: studentNotes
     category: Students
-    name: Student Notes
+    title: Student Notes
     table: StudentNote
     modes: { update: false, insert: true }
     alias: sn
-access:
+security:
     module: Students
     action: Student Enrolment
-primaryKey:
-    id
 join:
     Person:
-        table: StudentEnrolment
+        table: StudentNote
         alias: p
     Creator:
-        table: StudentEnrolment
+        table: StudentNote
         alias: c
         targetTable: Person
     StudentNoteCategory:
-        table: StudentEnrolment
+        table: StudentNote
         alias: snc
-table:
+fields:
     person:
-        name: "Student"
+        label: "Student"
         desc: "Username"
-        args: { filter: nospaces, required: true }
-        relationship: { table: Person, key: id, field: username }
+        args: { filter: string, required: true }
+        relationship: { table: Person, field: username }
         select: p.username
     studentNoteCategory:
-        name: "Category"
+        label: "Category"
         desc: ""
         args: { filter: string, required: true, custom: true }
-        relationship: { table: StudentNoteCategory, key: id, field: name }
+        relationship: { table: StudentNoteCategory, field: name }
         select: snc.name
     title:
-        name: "Title"
+        label: "Title"
         desc: ""
         args: { filter: string, required: true }
         select: sn.title
     note:
-        name: "Note"
+        label: "Note"
         desc: ""
         args: { filter: html, required: true }
         select: sn.note
     creator:
-        name: "Created By"
+        label: "Created By"
         desc: "Username"
         args: { filter: string, custom: true }
-        relationship: { table: Person, key: id, field: username }
+        relationship: { table: Person, field: username }
         select: c.username
     timestamp:
-        name: "Timestamp"
+        label: "Timestamp"
         desc: ""
-        args: { filter: timestamp, hidden: true, function: timestamp }
+        args: { filter: datetime, hidden: true, function: timestamp }
         select: sn.timestamp

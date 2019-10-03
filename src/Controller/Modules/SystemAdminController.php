@@ -806,7 +806,7 @@ class SystemAdminController extends AbstractController
 
             try {
                 $result = $query->setParameters(array_merge(($data ?: []), $report->getFixedData()))->getQuery()->getResult();
-                 dd($query,$result, $query->getQuery()->getSql());
+                // dd($query,$result, $query->getQuery()->getSql());
             } catch (QueryException $e) {
                 throw $e;
             }
