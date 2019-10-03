@@ -13,13 +13,18 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use App\Validator as Check;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ScaleGrade
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ScaleGradeRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="ScaleGrade")
+ * @ORM\Table(options={"auto_increment": 1}, name="ScaleGrade", uniqueConstraints={@ORM\UniqueConstraint(name="scaleValue", columns={"gibbonScaleGradeID","value"}),@ORM\UniqueConstraint(name="scaleSequence", columns={"gibbonScaleGradeID","sequenceNumber"})})
+ * @UniqueEntity({"value","scale"})
+ * @UniqueEntity({"sequenceNumber","scale"})
  */
 class ScaleGrade
 {
@@ -43,6 +48,7 @@ class ScaleGrade
     /**
      * @var string|null
      * @ORM\Column(length=10)
+     * @Assert\NotBlank()
      */
     private $value;
 
@@ -55,12 +61,14 @@ class ScaleGrade
     /**
      * @var integer|null
      * @ORM\Column(type="integer", name="sequenceNumber", columnDefinition="INT(5)")
+     * @Assert\Range(min=0, max=99999)
      */
     private $sequenceNumber;
 
     /**
      * @var string|null
      * @ORM\Column(length=1, name="isDefault", options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $isDefault = 'N';
 
@@ -178,5 +186,14 @@ class ScaleGrade
     {
         $this->isDefault = self::checkBoolean($isDefault, 'N');
         return $this;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getScale()->__toString() . ': ' . $this->getValue();
     }
 }

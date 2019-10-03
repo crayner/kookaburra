@@ -13,14 +13,18 @@
 namespace App\Entity;
 
 use App\Manager\EntityInterface;
+use App\Validator as Check;
 use App\Manager\Traits\BooleanList;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Scale
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ScaleRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Scale")
+ * @Check\ScaleGrade()
  */
 class Scale implements EntityInterface
 {
@@ -37,6 +41,7 @@ class Scale implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=40)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -75,6 +80,14 @@ class Scale implements EntityInterface
      * @ORM\OneToMany(targetEntity="ScaleGrade", mappedBy="scale")
      */
     private $scaleGrades;
+
+    /**
+     * Scale constructor.
+     */
+    public function __construct()
+    {
+        $this->scaleGrades = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -220,5 +233,14 @@ class Scale implements EntityInterface
     {
         $this->scaleGrades = $scaleGrades;
         return $this;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName() . ' ('. $this->getNameShort() .')';
     }
 }

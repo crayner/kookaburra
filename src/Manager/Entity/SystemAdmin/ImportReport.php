@@ -92,6 +92,7 @@ class ImportReport
         $resolver->setDefaults(["join" => [], 'uniqueKeys' => [], 'primaryKey' => 'id', 'fixedData' => [], 'orderBy' => []]);
         $fileData = $resolver->resolve($fileData);
 
+        $this->setDetails($fileData['details']);
         foreach($fileData as $name=>$value)
         {
             $name = 'set' . ucfirst($name);
@@ -186,6 +187,10 @@ class ImportReport
                 $w = new ImportReportJoin($name, $details);
                 $this->addJoin($name, $w);
             }
+            if (count($join) === $this->getJoin()->count() && null !== $this->getDetails()) {
+                $master = new ImportReportJoin($this->getDetail('table'), ['table' => $this->getDetail('table'), 'alias' => $this->getDetail('alias'), 'primary' => true]);
+                $this->addJoin($this->getDetail('table'), $master);
+            }
         } else
             $this->join = $join;
 
@@ -232,7 +237,7 @@ class ImportReport
                 {
                     $table = $this->getTableFromSelect($field['select']);
                     $listName = 'get' . ucfirst(explode('.',$field['select'])[1]).'List';
-                    $table = '\App\Entity\\'.$table['tableName'];
+                    $table = '\App\Entity\\'.$table->getTargetTable();
                     $list = $table::$listName();
                     $field['descParams'] = ['{list}' => implode('","', $list)];
                 }
@@ -264,12 +269,12 @@ class ImportReport
     /**
      * getTableFromSelect
      * @param string $select
-     * @return array
+     * @return ImportReportJoin
      */
-    public function getTableFromSelect(string $select): array
+    public function getTableFromSelect(string $select): ImportReportJoin
     {
         $alias = explode('.',$select)[0];
-        return $this->getAliasList()->get($alias);
+        return $this->getJoin()->get($this->getJoinAlias($alias));
     }
 
     /**
@@ -348,6 +353,9 @@ class ImportReport
 
     /**
      * getJoinAlias
+     *
+     * Returns the alias if the tableName or reference is given
+     * Returns the target Table name if the alias is provided.
      * @param string $name
      * @return string
      * @throws \Exception
@@ -384,6 +392,7 @@ class ImportReport
             return $join->first()->getTargetTable();
 
         }
+
         dump($name, $this, $this->getJoin());
         throw new \Exception('That will never work.  No alias found for ' . $name);
     }
