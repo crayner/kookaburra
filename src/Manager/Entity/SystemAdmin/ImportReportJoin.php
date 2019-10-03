@@ -56,6 +56,11 @@ class ImportReportJoin
     private $with;
 
     /**
+     * @var bool
+     */
+    private $primary = false;
+
+    /**
      * ImportReportJoin constructor.
      * @param string $name
      * @param array $details
@@ -70,9 +75,11 @@ class ImportReportJoin
                 'targetTable' => $name,
                 'reference' => lcfirst($name),
                 'with' => false,
+                'primary' => false,
             ]
         );
         $resolver->setAllowedTypes('with', ['boolean','string']);
+        $resolver->setAllowedTypes('primary', ['boolean']);
         $resolver->setAllowedValues('joinType',  ['join', 'leftJoin']);
         $details = $resolver->resolve($details);
 
@@ -222,6 +229,26 @@ class ImportReportJoin
     public function setWith($with)
     {
         $this->with = $with;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrimary(): bool
+    {
+        return $this->primary;
+    }
+
+    /**
+     * Primary.
+     *
+     * @param bool $primary
+     * @return ImportReportJoin
+     */
+    public function setPrimary(bool $primary): ImportReportJoin
+    {
+        $this->primary = $primary;
         return $this;
     }
 }

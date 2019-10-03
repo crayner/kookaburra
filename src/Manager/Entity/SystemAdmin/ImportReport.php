@@ -50,11 +50,6 @@ class ImportReport
     private $fields;
 
     /**
-     * @var Collection
-     */
-    private $aliasList;
-
-    /**
      * @var array
      */
     private $tablesUsed;
@@ -103,6 +98,9 @@ class ImportReport
             $this->$name($value);
         }
 
+        $join = new ImportReportJoin($this->getDetail('table'), ['table' => $this->getDetail('table'), 'alias' => $this->getDetail('alias'), 'primary' => true]);
+        $this->addJoin($this->getDetail('table'), $join);
+
         $basename = str_replace('.'.$file->getExtension(), '', $file->getBasename());
         if ($basename !== $this->getDetails()->getName())
             throw new \Exception('The report name "'.$this->getDetails()->getName().'"" does not match the filename of the report.');
@@ -136,8 +134,6 @@ class ImportReport
         if (!$details instanceof ImportReportDetails)
             throw new MissingClassException(sprintf('Report details must be loaded into a %s', ImportReportDetails::class));
         $this->details = $details;
-
-        $this->addAlias($details->getAlias(), $details->getTable(), $details->getName());
 
         return $this;
     }
@@ -209,7 +205,6 @@ class ImportReport
             return $this;
         $this->join->set($name, $join);
 
-        $this->addAlias($join->getAlias(), $join->getTargetTable(), $join->getName());
         return $this;
     }
 
@@ -267,32 +262,10 @@ class ImportReport
     }
 
     /**
-     * @return Collection
+     * getTableFromSelect
+     * @param string $select
+     * @return array
      */
-    private function getAliasList(): Collection
-    {
-        return $this->aliasList = $this->aliasList ?: new ArrayCollection();
-    }
-
-    /**
-     * addAlias
-     * @param string $alias
-     * @return ImportReport
-     * @throws Exception
-     */
-    public function addAlias(string $alias, string $tableName, string $name): ImportReport
-    {
-        $alias = [
-            'alias' => $alias,
-            'tableName' => $tableName,
-            'reference' => $name
-        ];
-        if ($this->getAliasList()->containsKey($alias['alias']))
-            throw new Exception(sprintf('The alias %s is already in use in this Report', $alias));
-        $this->aliasList->set($alias['alias'], $alias);
-        return $this;
-    }
-
     public function getTableFromSelect(string $select): array
     {
         $alias = explode('.',$select)[0];
@@ -306,11 +279,6 @@ class ImportReport
      */
     public function getDetail(string $name)
     {
-        if ($name === 'type') {
-            dump(debug_backtrace(4));
-            dd($this);
-        }
-
         $name = 'get' . ucfirst($name);
         return $this->getDetails()->$name();
     }
@@ -386,27 +354,37 @@ class ImportReport
      */
     public function getJoinAlias(string $name): string
     {
-        $join = $this->getAliasList()->filter(function (array $details) use ($name) {
-            return $details['reference'] === $name;
+        if ($this->getJoin()->containsKey($name)) {
+            $join = $this->getJoin()->get($name)->getAlias();
+        }
+
+        $join = $this->getJoin()->filter(function (ImportReportJoin $details) use ($name) {
+            return $details->getReference() === $name;
         });
 
         if ($join->count() === 1)
-            return $join->first()['alias'];
+            return $join->first()->getAlias();
 
-        $join = $this->getAliasList()->filter(function (array $details) use ($name) {
-            return $details['tableName'] === $name;
+        $join = $this->getJoin()->filter(function (ImportReportJoin $details) use ($name) {
+            return $details->getTargetTable('tableName') === $name;
         });
 
         if ($join->count() === 1)
-            return $join->first()['alias'];
+            return $join->first()->getAlias();
 
-        $join = $this->getAliasList()->filter(function (array $details) use ($name) {
-            return $details['alias'] === $name;
+        if ($join->count() > 1) {
+            return $this->getJoinAlias(lcfirst($name));
+        }
+
+        $join = $this->getJoin()->filter(function (ImportReportJoin $details) use ($name) {
+            return $details->getAlias() === $name;
         });
 
-        if ($join->count() === 1)
-            return $join->first()['tableName'];
+        if ($join->count() === 1) {
+            return $join->first()->getTargetTable();
 
+        }
+        dump($name, $this, $this->getJoin());
         throw new \Exception('That will never work.  No alias found for ' . $name);
     }
 
@@ -418,9 +396,9 @@ class ImportReport
         if (null === $this->tablesUsed)
         {
             $this->tablesUsed = [];
-            foreach($this->getAliasList() as $item)
-                if (!in_array($item['tableName'], $this->tablesUsed))
-                    $this->tablesUsed[] = $item['tableName'];
+            foreach($this->getJoin() as $item)
+                if (!in_array($item->getTargetTable(), $this->tablesUsed))
+                    $this->tablesUsed[] = $item->getTargetTable();
         }
         return $this->tablesUsed;
     }

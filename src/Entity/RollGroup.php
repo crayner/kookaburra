@@ -21,12 +21,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class RollGroup
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\RollGroupRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="RollGroup")
+ * @ORM\Table(options={"auto_increment": 1}, name="RollGroup", uniqueConstraints={@ORM\UniqueConstraint(name="nameSchoolYear", columns={"name","gibbonSchoolYearID"}), @ORM\UniqueConstraint(name="nameShortSchoolYear", columns={"nameShort","gibbonSchoolYearID"})})
+ * @UniqueEntity({"name","schoolYear"})
+ * @UniqueEntity({"nameShort","schoolYear"})
  */
 class RollGroup implements EntityInterface
 {
@@ -52,80 +56,84 @@ class RollGroup implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=10)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=5, name="nameShort")
+     * @Assert\NotBlank()
      */
     private $nameShort;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDTutor",referencedColumnName="gibbonPersonID")
+     * @ORM\JoinColumn(name="gibbonPersonIDTutor",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $tutor;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDTutor2",referencedColumnName="gibbonPersonID")
+     * @ORM\JoinColumn(name="gibbonPersonIDTutor2",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $tutor2;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDTutor3",referencedColumnName="gibbonPersonID")
+     * @ORM\JoinColumn(name="gibbonPersonIDTutor3",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $tutor3;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDEA",referencedColumnName="gibbonPersonID")
+     * @ORM\JoinColumn(name="gibbonPersonIDEA",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $assistant;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDEA2",referencedColumnName="gibbonPersonID")
+     * @ORM\JoinColumn(name="gibbonPersonIDEA2",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $assistant2;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDEA3",referencedColumnName="gibbonPersonID")
+     * @ORM\JoinColumn(name="gibbonPersonIDEA3",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $assistant3;
 
     /**
      * @var Space|null
      * @ORM\ManyToOne(targetEntity="Space")
-     * @ORM\JoinColumn(name="gibbonSpaceID", referencedColumnName="gibbonSpaceID", nullable=true)
+     * @ORM\JoinColumn(name="gibbonSpaceID", referencedColumnName="gibbonSpaceID",nullable=true)
      */
     private $space;
 
     /**
      * @var RollGroup|null
      * @ORM\ManyToOne(targetEntity="RollGroup")
-     * @ORM\JoinColumn(name="gibbonRollGroupIDNext", referencedColumnName="gibbonRollGroupID", nullable=true)
+     * @ORM\JoinColumn(name="gibbonRollGroupIDNext", referencedColumnName="gibbonRollGroupID",nullable=true)
      */
     private $nextRollGroup;
 
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"default": "Y"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $attendance = 'Y';
 
     /**
      * @var string|null
      * @ORM\Column()
+     * @Assert\Url()
      */
     private $website;
 
@@ -134,6 +142,14 @@ class RollGroup implements EntityInterface
      * @ORM\OneToMany(targetEntity="App\Entity\StudentEnrolment", mappedBy="rollGroup")
      */
     private $studentEnrolments;
+
+    /**
+     * RollGroup constructor.
+     */
+    public function __construct()
+    {
+        $this->studentEnrolments = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -509,5 +525,14 @@ class RollGroup implements EntityInterface
             $tutors[] = $this->getAssistant3();
 
         return $tutors;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName() . ' (' . $this->getNameShort() . ')';
     }
 }

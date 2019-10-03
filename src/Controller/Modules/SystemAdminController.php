@@ -753,17 +753,19 @@ class SystemAdminController extends AbstractController
 
         if ($manager->isDataExport()) {
 
-            $data = [];;
+            $data = [];
             $tableName = ucfirst($report->getDetail('table'));
             $query = $this->getDoctrine()->getManager()->createQueryBuilder();
             $query->from('\App\Entity\\' . $tableName, $report->getJoinAlias($tableName));
 
             foreach ($report->getJoin() as $fieldName => $join) {
-                $type = $join->getJoinType();
-                if ($join->getWith() === false)
-                    $query->$type($report->getJoinAlias($join->getTable()) . '.' . $join->getReference(), $join->getAlias());
-                else
-                    $query->$type($report->getJoinAlias($join->getTable()) . '.' . $join->getReference(), $join->getAlias(), Join::WITH, $join->getWith());
+                if (!$join->isPrimary()) {
+                    $type = $join->getJoinType();
+                    if ($join->getWith() === false)
+                        $query->$type($report->getJoinAlias($join->getTable()) . '.' . $join->getReference(), $join->getAlias());
+                    else
+                        $query->$type($report->getJoinAlias($join->getTable()) . '.' . $join->getReference(), $join->getAlias(), Join::WITH, $join->getWith());
+                }
             }
 
             $select = [];
@@ -799,7 +801,8 @@ class SystemAdminController extends AbstractController
             }
 
             try {
-                $result = $query->setParameters(array_merge($data ?: [], $report->getFixedData()))->getQuery()->getResult();
+                $result = $query->setParameters(array_merge(($data ?: []), $report->getFixedData()))->getQuery()->getResult();
+                // dd($query,$result, $query->getQuery()->getSql());
             } catch (QueryException $e) {
                 throw $e;
             }
@@ -842,6 +845,7 @@ class SystemAdminController extends AbstractController
                                 case 'string':
                                 case 'numeric':
                                 case 'url':
+                                case 'schoolyear':
                                 case 'html':
                                     $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, (string) $value);
                                     break;
