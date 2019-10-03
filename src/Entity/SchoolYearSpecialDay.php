@@ -13,14 +13,17 @@
 namespace App\Entity;
 
 use App\Manager\EntityInterface;
+use App\Validator as Check;
 use App\Util\SchoolYearHelper;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class SchoolYearSpecialDay
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SchoolYearSpecialDayRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="SchoolYearSpecialDay", uniqueConstraints={@ORM\UniqueConstraint(name="date", columns={"date"})})
+ * @Check\SpecialDay()
  */
 class SchoolYearSpecialDay implements EntityInterface
 {
@@ -53,6 +56,7 @@ class SchoolYearSpecialDay implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=20)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -65,6 +69,7 @@ class SchoolYearSpecialDay implements EntityInterface
     /**
      * @var \DateTime|null
      * @ORM\Column(type="date", unique=true)
+     * @Assert\NotBlank()
      */
     private $date;
 
@@ -285,5 +290,23 @@ class SchoolYearSpecialDay implements EntityInterface
         $self->setDescription('Database Error: The date was not found in the term data.');
         $self->setSchoolYearTerm(SchoolYearHelper::findOneTermByDay($date));
         return $self;
+    }
+
+    /**
+     * getTypeList
+     * @return array
+     */
+    public static function getTypeList(): array
+    {
+        return self::$typeList;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getDate()->format('Y-m-d');
     }
 }

@@ -841,3 +841,13 @@ Last Day: Last Day
 'The school academic year should cover a whole year.': The school academic year should exactly cover a whole year.
 'The school academic year should not overlap another academic year.': The school academic year should not overlap another academic year.
 'The importer inserted a record "{id}" into the table "{table}"': 'The importer inserted a record "{id}" into the table "{table}"'
+'A timing change requires all times to be entered.': A timing change requires all times to be entered.
+'The time is not valid for this day.': The time is not valid for this day.
+'Time (HH:mm:ss)': 'Time (HH:mm:ss)'
+Term: Term
+School Opens: School Opens
+School Starts: School Starts
+School Ends: School Ends
+School Closes: School Closes
+'Use one of "{list}"': 'Use one of "{list}"'
+'The date must be in the specified term.': The date must be in the specified term.

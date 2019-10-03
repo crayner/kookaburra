@@ -1,16 +1,16 @@
 details:
-    type: schoolYearsSpecialDays
-    name: Special Days
+    name: schoolYearsSpecialDays
+    title: Special Days
     table: SchoolYearSpecialDay
     modes: { update: true, insert: true, export: true }
     alias: sysd
-access:
+security:
     module: School Admin
     action: Manage Special Days
-primaryKey:
-    id
 uniqueKeys:
-    - date
+    date:
+        fields: [ date ]
+        label: Date
 join:
     SchoolYearTerm:
         table: SchoolYearSpecialDay
@@ -18,56 +18,56 @@ join:
     SchoolYear:
         table: SchoolYearTerm
         alias: sy
-table:
+fields:
     schoolYear:
-        name: "School Year"
+        label: "School Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, required: true, readonly: true }
-        relationship: { table: SchoolYear, key: id, field: name }
+        relationship: { table: SchoolYear, field: name }
         select: sy.name
     schoolYearTerm:
-        name: "Term"
+        label: "Term"
         desc: "Short Name"
         args: { filter: string, required: true }
-        relationship: { table: SchoolYearTerm, key: id, field: [ nameShort, schoolYear ]  }
-        select: sysd.name
+        relationship: { table: SchoolYearTerm, field: [ nameShort, schoolYear ]  }
+        select: syt.nameShort
     date:
-        name: "Date"
+        label: "Date"
         desc: "Must be unique."
         args: { filter: date, required: true }
         select: sysd.date
     type:
-        name: "Type"
-        desc: ""
-        args: { filter: string, required: true }
+        label: "Type"
+        desc: 'Use one of "{list}"'
+        args: { filter: enum, required: true }
         select: sysd.type
     name:
-        name: "Name"
+        label: "Name"
         desc: ""
         args: { filter: string, required: true }
         select: sysd.name
     description:
-        name: "Description"
+        label: "Description"
         desc: ""
         args: { filter: string }
         select: sysd.description
     schoolOpen:
-        name: "School Opens"
+        label: "School Opens"
         desc: ""
         args: { filter: time }
         select: sysd.schoolOpen
     schoolStart:
-        name: "School Starts"
+        label: "School Starts"
         desc: ""
         args: { filter: time }
         select: sysd.schoolStart
     schoolEnd:
-        name: "School Ends"
+        label: "School Ends"
         desc: ""
         args: { filter: time }
         select: sysd.schoolEnd
     schoolClose:
-        name: "School Closes"
+        label: "School Closes"
         desc: ""
         args: { filter: time }
         select: sysd.schoolClose

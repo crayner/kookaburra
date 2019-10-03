@@ -223,7 +223,7 @@ class ImportReportField
                 'serialise' => false,
             ]
         );
-        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer','enum','url','array','year_group_list']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer','enum','url','array','year_group_list','time']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -375,6 +375,10 @@ class ImportReportField
             case 'date':
                 return [
                     'prompt' => 'Date (YYYY-MM-DD)',
+                ];
+            case 'time':
+                return [
+                    'prompt' => 'Time (HH:mm:ss)',
                 ];
             case 'language':
                 return [
@@ -544,6 +548,11 @@ class ImportReportField
                     return null;
                 $value = new \DateTime($value . ' 00:00:00');
                 break;
+            case 'time':
+                if ($this->getArg('nullable') && ('' === $value || null === $value))
+                    return null;
+                $value = new \DateTime('1970-01-01 '.$value);
+                break;
             case 'language':
                 if ($this->getArg('nullable') && ('' === $value || null === $value))
                     return null;
@@ -596,7 +605,7 @@ class ImportReportField
                 dd($this,$value);
                 break;
             default:
-                dd($this->getArg('filter'), $this);
+                dd($this->getArg('filter'), $value, $this);
         }
         return $value;
     }
