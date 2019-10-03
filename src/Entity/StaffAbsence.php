@@ -36,22 +36,22 @@ class StaffAbsence implements EntityInterface
 
     /**
      * @var StaffAbsenceType|null
-     * @ORM\OneToOne(targetEntity="StaffAbsenceType")
-     * @ORM\JoinColumn(name="gibbonStaffAbsenceTypeID", referencedColumnName="gibbonStaffAbsenceTypeID", nullable=false)
+     * @ORM\ManyToOne(targetEntity="StaffAbsenceType")
+     * @ORM\JoinColumn(name="gibbonStaffAbsenceTypeID", referencedColumnName="gibbonStaffAbsenceTypeID",nullable=false)
      */
     private $staffAbsenceType;
 
     /**
      * @var SchoolYear|null
-     * @ORM\OneToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID", nullable=false)
+     * @ORM\ManyToOne(targetEntity="SchoolYear")
+     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID",nullable=false)
      */
     private $schoolYear;
 
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Person")
-     * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID",nullable=false)
      */
     private $person;
 

@@ -56,6 +56,11 @@ class ImportReportDetails
     private $category;
 
     /**
+     * @var array
+     */
+    private $with = [];
+
+    /**
      * ImportReportDetails constructor.
      * @param array $details
      */
@@ -66,6 +71,7 @@ class ImportReportDetails
         $resolver->setDefaults([
             'grouping' => 'General',
             'category' => 'Kookaburra',
+            'with' => [],
         ]);
         $details = $resolver->resolve($details);
 
@@ -218,6 +224,26 @@ class ImportReportDetails
     public function setCategory(string $category): ImportReportDetails
     {
         $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWith(): array
+    {
+        return $this->with;
+    }
+
+    /**
+     * With.
+     *
+     * @param array $with
+     * @return ImportReportDetails
+     */
+    public function setWith(array $with): ImportReportDetails
+    {
+        $this->with = $with;
         return $this;
     }
 }

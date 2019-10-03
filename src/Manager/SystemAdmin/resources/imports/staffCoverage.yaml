@@ -1,11 +1,12 @@
 details:
-    type: staffCoverage
+    name: staffCoverage
     category: Substitute
-    name: Staff Coverage
+    title: Staff Coverage
     table: StaffCoverage
     modes: { update: true, insert: true, export: true }
     alias: sc
-access:
+    with: ['sc.status = :status', 'sc.requestType = :requestType']
+security:
     module: Staff
     action: Manage Staff Coverage
 join:
@@ -29,123 +30,93 @@ join:
         table: StaffCoverage
         alias: scb
         targetTable: Person
+fixedData:
+    'status': "Accepted"
+    'requestType': "Individual"
 fields:
     schoolYear:
-        name: "School Year"
+        label: "School Year"
         desc: "School year name, as set in School Admin. Must already exist."
         args: { filter: schoolyear, required: true, custom: true, readonly: [StaffAbsenceDate] }
-        relationship: { table: SchoolYear, key: id, field: name }
+        relationship: { table: SchoolYear, field: name }
         select: sy.name
     person:
-        name: "Teacher"
+        label: "Teacher"
         desc: "Username"
-        args: { filter: nospaces, required: true, readonly: true }
-        relationship: { table: Person, key: id, field: username }
+        args: { filter: string, required: true, readonly: true }
+        relationship: { table: Person, field: username }
         select: p.username
     date: 
-        name: "Date"
+        label: "Date"
         desc: "Must be unique. Format: YYYY-MM-DD"
         args: { filter: date, required: true, readonly: [StaffCoverage] }
         select: sad.date
     allDay:
-        name: "All Day"
+        label: "All Day"
         desc: ""
         args: { filter: yesno, custom: true, required: true, readonly: [StaffCoverage] }
         select: sad.allDay
     start:
-        name: "Start Time"
+        label: "Start Time"
         desc: "Format: hh:mm (24hr)"
         args: { filter: time, custom: true }
         select: sad.start
     end:
-        name: "End Time"
+        label: "End Time"
         desc: "Format: hh:mm (24hr)"
         args: { filter: time, custom: true }
         select: sad.end
     status:
-        name: "Status"
+        label: "Status"
         desc: ""
-        value: "Accepted"
         args: { filter: string, hidden: true }
         select: sc.status
     requestType:
-        name: "Request Type"
+        label: "Request Type"
         desc: ""
-        value: "Individual"
         args: { filter: string, hidden: true }
         select: sc.requestType
     coverageChangedBy:
-        name: "Substitute"
+        label: "Substitute"
         desc: "Username"
-        args: { filter: nospaces, required: true, readonly: [StaffAbsenceDate] }
-        relationship: { table: Person, key: id, field: username  }
+        args: { filter: string, required: true, readonly: [StaffAbsenceDate] }
+        relationship: { table: Person, field: username  }
         select: ccb.username
     statusChangedBy:
-        name: "Created By"
+        label: "Created By"
         desc: "Username"
-        args: { filter: nospaces, required: true, linked: id, readonly: [StaffAbsenceDate] }
-        relationship: { table: Person, key: id, field: username  }
+        args: { filter: string, required: true, linked: id, readonly: [StaffAbsenceDate] }
+        relationship: { table: Person, field: username  }
         select: scb.username
     statusNotes:
-        name: "Notes"
+        label: "Notes"
         desc: ""
         args: { filter: string, custom: true }
         select: sc.statusNotes
     statusChangedDate:
-        name: "Created On"
+        label: "Created On"
         desc: ""
-        args: { filter: timestamp, custom: true }
+        args: { filter: datetime, custom: true }
         select: sc.statusChangedDate
     coverageChangedDate:
-        name: "Substitute Timestamp"
+        label: "Substitute Timestamp"
         desc: ""
-        args: { filter: timestamp, linked: timestampStatus }
+        args: { filter: datetime, linked: timestampStatus }
         select: sc.coverageChangedDate
     staffAbsence:
-        name: "Absence ID"
+        label: "Absence ID"
         desc: ""
         args: { filter: string, linked: date }
-        relationship: { table: StaffAbsenceDate, key: id, join: StaffAbsence, on: [staffAbsence, id], field: [ date, allDay, person, schoolYear ] }
+        relationship: { table: StaffAbsenceDate, field: [ date, allDay, person, schoolYear ] }
         select: sa.id
     staffCoverage:
-        name: "Coverage ID"
+        label: "Coverage ID"
         desc: ""
         args: { filter: string, linked: notesCoverage, readonly: [StaffCoverage] }
-        relationship: { table: StaffCoverage, key: StaffCoverageID, field: [ notesCoverage, statusChangedBy, schoolYear ] }
+        relationship: { table: StaffCoverage, field: [ notesCoverage, statusChangedBy, schoolYear ] }
         select: sc.id
     coverageNotes:
-        name: "Coverage Notes"
+        label: "Coverage Notes"
         desc: ""
         args: { filter: string, custom: true, readonly: [StaffAbsenceDate] }
         select: sc.coverageNotes
-tables:
-    StaffCoverage: 
-        primaryKey:
-            id
-        uniqueKeys:
-            - [ person, staffAbsence ]
-        fields:
-            - schoolYear
-            - person
-            - date
-            - allDay
-            - staffAbsence
-            - status
-            - requestType
-            - statusChangedBy
-            - statusChangeDate
-            - statusNotes
-            - coverageChangedBy
-            - coverageChangedDate
-            - coverageNotes
-    StaffAbsenceDate: 
-        primaryKey:
-            id
-        uniqueKeys:
-            - [ staffAbsence, date ]
-        fields:
-            - staffAbsence
-            - date
-            - allDay
-            - start
-            - end

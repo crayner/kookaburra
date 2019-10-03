@@ -628,7 +628,6 @@ Track Attendance: Track Attendance
 Should this class allow attendance to be taken?: Should this class allow attendance to be taken?
 "Use one of 'Learning Area', 'Administration'": "Use one of 'Learning Area', 'Administration'"
 Subject Listing: Subject Listing
-string filter not defined.: string filter not defined.
 125x125px jpg/png/gif: 125x125px jpg/png/gif
 Department: Department
 "Use one of 'Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator' or 'Other'": "Use one of 'Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator' or 'Other'"
@@ -877,3 +876,12 @@ Grouping Priority: Grouping Priority
 Biography: Biography
 Must be unique if set.: Must be unique if set.
 Higher numbers move teachers up the order within their grouping.: Higher numbers move teachers up the order within their grouping.
+Staff Member: Staff Member
+Reason: Reason
+'Must be unique. Format: YYYY-MM-DD': 'Must be unique. Format: YYYY-MM-DD'
+All Day: All Day
+Start Time: Start Time
+'Format: hh:mm (24hr)': 'Format: hh:mm (24hr)'
+End Time: End Time
+Created On: Created On
+Date Time (YYYY-MM-DD HH:mm:ss): Date Time (YYYY-MM-DD HH:mm:ss)

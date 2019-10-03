@@ -221,9 +221,10 @@ class ImportReportField
                 'options' => [],
                 'readonly' => false,
                 'serialise' => false,
+                'id' => false,
             ]
         );
-        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer','enum','url','array','year_group_list','time']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer','enum','url','array','year_group_list','time','datetime']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -380,6 +381,10 @@ class ImportReportField
                 return [
                     'prompt' => 'Time (HH:mm:ss)',
                 ];
+            case 'datetime':
+                return [
+                    'prompt' => 'Date Time (YYYY-MM-DD HH:mm:ss)',
+                ];
             case 'language':
                 return [
                     'prompt' => 'Valid Unicode Language',
@@ -402,42 +407,8 @@ class ImportReportField
 
         if ($kind === '')
             dump($filter,$this);
-        switch ($kind) {
-            case 'char':
-                return [
-                    'prompt' => 'Text ({number} chars)',
-                    'promptParams' => ['{number}' => $length],
-                ];
-
-            case 'text':
-                return $filter != 'string' ? __('Text') . ' (' . $filter . ')' : __('Text');
-
-            case 'integer':
-                return __('Number ({number} digits)', ['number' => $length]);
-
-            case 'decimal':
-                $scale = $this->getArg('scale');
-                $format = str_repeat('0', $length) . "." . str_repeat('0', $scale);
-                return __('Decimal ({number} format)', ['number' => $format]);
-
-            case 'date':
-                return __('Date');
-
-            case 'boolean':
-                return __('True or False');
-
-            case 'enum':
-                $options = implode('<br/>', $this->getArg('elements'));
-                return '<attr data-title="' . $options . '" style="text-decoration: underline;">' . __('Options') . '</attr>';
-
-            default:
-                return [
-                    'prompt' => $filter . ' filter not defined.',
-                ];
-        }
-
         return [
-            'prompt' => 'Abandon Hope'
+            'prompt' => $filter . ' filter not defined.',
         ];
     }
 

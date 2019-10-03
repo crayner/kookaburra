@@ -768,6 +768,9 @@ class SystemAdminController extends AbstractController
                 }
             }
 
+            foreach($report->getDetail('with') as $item)
+                $query->andWhere($item);
+
             $select = [];
             $additional = [];
             foreach ($report->getFields() as $name=>$field) {
@@ -787,9 +790,10 @@ class SystemAdminController extends AbstractController
                 $field = $report->findFieldByArg('filter', 'schoolyear');
                 if ($field && in_array('SchoolYear', $report->getTablesUsed()) && !$field->isFieldReadOnly()) {
                     $data['schoolYear'] = $session->get('schoolYearCurrent')->getId();
-                    $query->where($report->getJoinAlias('SchoolYear') . '.id = :schoolYear');
+                    $query->andWhere($report->getJoinAlias('SchoolYear') . '.id = :schoolYear');
                 }
             }
+
             $i = 0;
             foreach($report->getOrderBy() as $name=>$direction)
             {
@@ -802,7 +806,7 @@ class SystemAdminController extends AbstractController
 
             try {
                 $result = $query->setParameters(array_merge(($data ?: []), $report->getFixedData()))->getQuery()->getResult();
-                // dd($query,$result, $query->getQuery()->getSql());
+                 dd($query,$result, $query->getQuery()->getSql());
             } catch (QueryException $e) {
                 throw $e;
             }
