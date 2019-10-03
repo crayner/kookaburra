@@ -12,7 +12,10 @@
  */
 namespace App\Entity;
 
+use App\Manager\Traits\BooleanList;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Space
@@ -22,6 +25,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Space
 {
+    use BooleanList;
+
     /**
      * @var integer|null
      * @ORM\Id
@@ -33,26 +38,30 @@ class Space
     /**
      * @var string|null
      * @ORM\Column(length=30, unique=true)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string|null
      * @ORM\Column(length=50)
+     * @Assert\Choice(callback="getTypeList")
      */
     private $type;
 
     /**
      * @var integer
      * @ORM\Column(type="integer", columnDefinition="INT(5)")
+     * @Assert\Range(min=0,max=99999)
      */
     private $capacity;
 
     /**
-     * @var boolean
-     * @ORM\Column(length=1)
+     * @var string
+     * @ORM\Column(length=1, options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
-    private $computer;
+    private $computer = 'N';
 
     /**
      * @var integer
@@ -61,40 +70,46 @@ class Space
     private $studentComputers;
 
     /**
-     * @var boolean
-     * @ORM\Column(length=1)
+     * @var string
+     * @ORM\Column(length=1, options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
-    private $projector;
+    private $projector = 'N';
+
+    /**
+     * @var string
+     * @ORM\Column(length=1, options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
+     */
+    private $tv = 'N';
 
     /**
      * @var boolean
-     * @ORM\Column(length=1)
+     * @ORM\Column(length=1, options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
-    private $tv;
+    private $dvd = 'N';
 
     /**
-     * @var boolean
-     * @ORM\Column(length=1)
+     * @var string
+     * @ORM\Column(length=1, options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
-    private $dvd;
+    private $hifi = 'N';
 
     /**
-     * @var boolean
-     * @ORM\Column(length=1)
+     * @var string
+     * @ORM\Column(length=1, options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
-    private $hifi;
+    private $speakers = "N'";
 
     /**
-     * @var boolean
-     * @ORM\Column(length=1)
+     * @var string
+     * @ORM\Column(length=1, options={"default": "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
-    private $speakers;
-
-    /**
-     * @var boolean
-     * @ORM\Column(length=1)
-     */
-    private $iwb;
+    private $iwb = 'N';
 
     /**
      * @var string|null
@@ -187,20 +202,22 @@ class Space
     }
 
     /**
-     * @return bool
+     * getComputer
+     * @return string
      */
-    public function isComputer(): bool
+    public function getComputer(): string
     {
-        return $this->computer;
+        return $this->computer = self::checkBoolean($this->computer, 'N');
     }
 
     /**
-     * @param bool $computer
+     * setComputer
+     * @param string|null $computer
      * @return Space
      */
-    public function setComputer(bool $computer): Space
+    public function setComputer(?string $computer): Space
     {
-        $this->computer = $computer;
+        $this->computer = self::checkBoolean($computer, 'N');
         return $this;
     }
 
@@ -223,110 +240,122 @@ class Space
     }
 
     /**
-     * @return bool
+     * getProjector
+     * @return string
      */
-    public function isProjector(): bool
+    public function getProjector(): string
     {
-        return $this->projector;
+        return $this->projector = self::checkBoolean($this->projector, 'N');
     }
 
     /**
-     * @param bool $projector
+     * setProjector
+     * @param string|null $projector
      * @return Space
      */
-    public function setProjector(bool $projector): Space
+    public function setProjector(?string $projector): Space
     {
-        $this->projector = $projector;
+        $this->projector = self::checkBoolean($projector, 'N');
         return $this;
     }
 
     /**
+     * getTv
      * @return bool
      */
-    public function isTv(): bool
+    public function getTv(): string
     {
-        return $this->tv;
+        return $this->tv = self::checkBoolean($this->tv, 'N');
     }
 
     /**
-     * @param bool $tv
+     * setTv
+     * @param string|null $tv
      * @return Space
      */
-    public function setTv(bool $tv): Space
+    public function setTv(?string $tv): Space
     {
-        $this->tv = $tv;
+        $this->tv = self::checkBoolean($tv, 'N');
         return $this;
     }
 
     /**
-     * @return bool
+     * getDvd
+     * @return string
      */
-    public function isDvd(): bool
+    public function getDvd(): string
     {
-        return $this->dvd;
+        return $this->dvd = self::checkBoolean($this->dvd, 'N');
     }
 
     /**
-     * @param bool $dvd
+     * setDvd
+     * @param string|null $dvd
      * @return Space
      */
-    public function setDvd(bool $dvd): Space
+    public function setDvd(?string $dvd): Space
     {
-        $this->dvd = $dvd;
+        $this->dvd = self::checkBoolean($dvd, 'N');
         return $this;
     }
 
     /**
-     * @return bool
+     * getHifi
+     * @return string
      */
-    public function isHifi(): bool
+    public function getHifi(): string
     {
-        return $this->hifi;
+        return $this->hifi = self::checkBoolean($this->hifi, 'N');
     }
 
     /**
-     * @param bool $hifi
+     * setHifi
+     * @param string|null $hifi
      * @return Space
      */
-    public function setHifi(bool $hifi): Space
+    public function setHifi(?string $hifi): Space
     {
-        $this->hifi = $hifi;
+        $this->hifi = self::checkBoolean($hifi, 'N');
         return $this;
     }
 
     /**
-     * @return bool
+     * getSpeakers
+     * @return string
      */
-    public function isSpeakers(): bool
+    public function getSpeakers(): string
     {
-        return $this->speakers;
+        return $this->speakers = self::checkBoolean($this->speakers, 'N');
     }
 
     /**
-     * @param bool $speakers
+     * setSpeakers
+     * @param string|null $speakers
      * @return Space
      */
-    public function setSpeakers(bool $speakers): Space
+    public function setSpeakers(?string $speakers): Space
     {
-        $this->speakers = $speakers;
+        $this->speakers = self::checkBoolean($speakers, 'N');
         return $this;
     }
 
     /**
-     * @return bool
+     * getIwb
+     * @return string
      */
-    public function isIwb(): bool
+    public function getIwb(): string
     {
-        return $this->iwb;
+        return $this->iwb = self::checkBoolean($this->iwb, 'N');
     }
 
     /**
-     * @param bool $iwb
+     * setIwb
+     * @param string|null $iwb
      * @return Space
      */
-    public function setIwb(bool $iwb): Space
+    public function setIwb(?string $iwb): Space
     {
-        $this->iwb = $iwb;
+        $this->iwb = self::checkBoolean($iwb, 'N');
         return $this;
     }
 
@@ -382,5 +411,23 @@ class Space
     {
         $this->comment = $comment;
         return $this;
+    }
+
+    /**
+     * getTypeList
+     * @return array
+     */
+    public static function getTypeList(): array
+    {
+        return ProviderFactory::create(Setting::class)->getSettingByScopeAsArray('School Admin', 'facilityTypes');
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName().' ('.$this->getCapacity().')';
     }
 }
