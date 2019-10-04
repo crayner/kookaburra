@@ -48,11 +48,11 @@ class YearGroupRepository extends ServiceEntityRepository
 
     /**
      * findByYearGroupIDList
-     * @param $list
-     * @param $key
+     * @param array $list
+     * @param string $key
      * @return array
      */
-    public function findByYearGroupIDList($list, $key): array
+    public function findByYearGroupIDList(array $list, string $key): array
     {
         return $this->createQueryBuilder('yg', 'yg.'.$key)
             ->where('yg.id in (:list)')

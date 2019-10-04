@@ -17,12 +17,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Class TTDay
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTDayRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TTDay", indexes={@ORM\Index(name="gibbonTTColumnID", columns={"gibbonTTColumnID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="TTDay", indexes={@ORM\Index(name="gibbonTTColumnID", columns={"gibbonTTColumnID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameTT",columns={"name","gibbonTTID"}),@ORM\UniqueConstraint(name="nameShortTT",columns={"nameShort","gibbonTTID"})})
+ * @UniqueEntity({"name","TT"})
+ * @UniqueEntity({"nameShort","TT"})
  */
 class TTDay implements EntityInterface
 {
@@ -83,6 +86,14 @@ class TTDay implements EntityInterface
      * @ORM\OneToMany(targetEntity="TTDayDate", mappedBy="TTDay")
      */
     private $timetableDayDates;
+
+    /**
+     * TTDay constructor.
+     */
+    public function __construct()
+    {
+        $this->setTimetableDayDates(new ArrayCollection());
+    }
 
     /**
      * @return int|null
@@ -258,5 +269,14 @@ class TTDay implements EntityInterface
     {
         $this->timetableDayDates = $timetableDayDates;
         return $this;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName() . ' ('.$this->getNameShort().') of '.$this->getTT()->__toString();
     }
 }

@@ -885,3 +885,8 @@ Start Time: Start Time
 End Time: End Time
 Created On: Created On
 Date Time (YYYY-MM-DD HH:mm:ss): Date Time (YYYY-MM-DD HH:mm:ss)
+Timetable Column: Timetable Column
+Must be unique for this school year.: Must be unique for this school year.
+Header Background Colour: Header Background Colour
+'RGB Hex value, without leading #.': 'RGB Hex value, without leading #.'
+Header Font Colour: Header Font Colour

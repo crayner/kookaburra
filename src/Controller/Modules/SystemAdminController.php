@@ -844,7 +844,7 @@ class SystemAdminController extends AbstractController
                                     $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, strtolower($value) === 'y' ? 'Yes' : 'No');
                                     break;
                                 case 'year_group_list':
-                                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, implode(',', $report->transFormYearGroups($name, $value)));
+                                    $excel->getActiveSheet()->setCellValue(GlobalHelper::num2alpha($i++) . $rowCount, implode(',', $report->getField($name)->transformYearGroups(explode(',', $value))));
                                     break;
                                 case 'string':
                                 case 'numeric':

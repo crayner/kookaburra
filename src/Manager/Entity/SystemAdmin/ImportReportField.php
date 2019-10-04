@@ -662,7 +662,7 @@ class ImportReportField
      * @param $value
      * @return array
      */
-    public function transformYearGroups($value): array
+    public function transformYearGroups(array $value): array
     {
         extract($this->getRelationship());
         $yearGroups = ProviderFactory::getRepository(YearGroup::class)->findByYearGroupIDList($value, $field);

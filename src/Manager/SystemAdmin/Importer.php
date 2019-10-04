@@ -972,8 +972,8 @@ class Importer
         if ($field instanceof ImportReportField)
             $field = $field->getName();
 
-        $control = $this->getImportControl()->getColumns()->filter(function($control) use ($field) {
-            return $control->getName() === $field;
+        $control = $this->getImportControl()->getColumns()->filter(function($column) use ($field) {
+            return $column->getName() === $field;
         })->first();
 
         $control = $this->getImportControl()->getColumns()->get($control->getOrder());

@@ -43,13 +43,13 @@ class TT implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30,unique=true)
      */
     private $name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=12, name="nameShort")
+     * @ORM\Column(length=12, name="nameShort",unique=true)
      */
     private $nameShort;
 
@@ -239,5 +239,14 @@ class TT implements EntityInterface
     {
         $this->tTDays = $tTDays;
         return $this;
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName() . ' ('.$this->getNameShort().')';
     }
 }
