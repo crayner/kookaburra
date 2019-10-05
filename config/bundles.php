@@ -16,5 +16,5 @@ return [
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Twig\CssInliner\Bundle\TwigCssInlinerBundle::class => ['all' => true],
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
-    Kookaburra\SystemAdminBundle\KookaburraSystemAdminBundle::class => ['all' => true],
+    Kookaburra\SystemAdmin\KookaburraSystemAdminBundle::class => ['all' => true],
 ];

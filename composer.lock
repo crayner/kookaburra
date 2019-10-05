@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e0e886db0b2b2c32107894c38efc1fa",
+    "content-hash": "82eaf968b95a8dc717a94163e73a10ef",
     "packages": [
         {
             "name": "aura/sqlquery",
@@ -1883,6 +1883,52 @@
                 "sql"
             ],
             "time": "2014-01-12T16:20:24+00:00"
+        },
+        {
+            "name": "kookaburra/system-admin",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crayner/kookaburra-system-admin.git",
+                "reference": "10c0db40d2525dfee4ccd0090a449265bd3a06ec"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/crayner/kookaburra-system-admin/zipball/10c0db40d2525dfee4ccd0090a449265bd3a06ec",
+                "reference": "10c0db40d2525dfee4ccd0090a449265bd3a06ec",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2",
+                "symfony/orm-pack": "^1.0"
+            },
+            "require-dev": {
+                "symfony/flex": "^1.2"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Kookaburra\\SystemAdmin\\": "/src/"
+                },
+                "exclude-from-classmap": [
+                    "/tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Rayner",
+                    "email": "craig@craigrayner.com"
+                }
+            ],
+            "description": "Kookaburra System Administration",
+            "keywords": [
+                "doctrine"
+            ],
+            "time": "2019-10-05T07:45:40+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -7378,7 +7424,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "aura/sqlquery": 20
+        "aura/sqlquery": 20,
+        "kookaburra/system-admin": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
