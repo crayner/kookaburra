@@ -1,3 +1,0 @@
-[submodule ".\\vendor\\kookaburra\\system-admin"]
-	path = .\\vendor\\kookaburra\\system-admin
-	url = https://github.com/crayner/kookaburra-system-admin.git

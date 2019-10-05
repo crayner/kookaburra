@@ -155,3 +155,6 @@ services:
     App\Logger\UserDetailProcessor:
         tags:
             - { name: monolog.processor }
+
+    App\Router\KookaburraLoader:
+        tags: [ routing.loader ]
