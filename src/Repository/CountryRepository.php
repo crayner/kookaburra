@@ -30,4 +30,16 @@ class CountryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Country::class);
     }
+
+    /**
+     * getCountyCodeList
+     */
+    public function getCountryCodeList(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.printable_name', 'ASC')
+            ->addOrderBy('c.iddCountryCode', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

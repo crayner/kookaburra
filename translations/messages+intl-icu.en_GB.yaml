@@ -618,7 +618,6 @@ School year name, as set in School Admin. Must already exist.: School year name,
 Course: Course
 Participant: Participant
 Role: Role
-"Use one of 'Student','Teacher','Assistant','Technician','Parent','Student - Left' or 'Teacher - Left'": "Use one of 'Student','Teacher','Assistant','Technician','Parent','Student - Left' or 'Teacher - Left'"
 Reportable: Reportable
 Should this class show in reports?: Should this class show in reports?
 Person in Course Class: Person in Course Class
@@ -626,11 +625,9 @@ Import: Import
 Must be unique for this course.: Must be unique for this course.
 Track Attendance: Track Attendance
 Should this class allow attendance to be taken?: Should this class allow attendance to be taken?
-"Use one of 'Learning Area', 'Administration'": "Use one of 'Learning Area', 'Administration'"
 Subject Listing: Subject Listing
 125x125px jpg/png/gif: 125x125px jpg/png/gif
 Department: Department
-"Use one of 'Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator' or 'Other'": "Use one of 'Coordinator','Assistant Coordinator','Teacher (Curriculum)','Teacher','Director','Manager','Administrator' or 'Other'"
 Assessment Date: Assessment Date
 Field Name Category: Field Name Category
 Result: Result
@@ -642,7 +639,6 @@ Date (YYYY-MM-DD): Date (YYYY-MM-DD)
      }"
 Family Name: Family Name
 Marital Status: Marital Status
-"Use one of 'Married','Separated','Divorced','De Facto' or 'Other'": "Use one of 'Married','Separated','Divorced','De Facto' or 'Other'"
 Home Language - Primary: Home Language - Primary
 Valid Unicode Language: Valid Unicode Language
 Home Language - Secondary: Home Language - Secondary
@@ -890,3 +886,83 @@ Must be unique for this school year.: Must be unique for this school year.
 Header Background Colour: Header Background Colour
 'RGB Hex value, without leading #.': 'RGB Hex value, without leading #.'
 Header Font Colour: Header Font Colour
+Title: Title
+e.g. Ms., Miss, Mr., Mrs., Dr.: e.g. Ms., Miss, Mr., Mrs., Dr.
+Given name: Given name
+Most common name, alias, nickname, handle, etc: Most common name, alias, nickname, handle, etc
+Official Name: Official Name
+Full name as shown in ID documents.: Full name as shown in ID documents.
+Name In Characters: Name In Characters
+Chinese or other character-based name.: Chinese or other character-based name.
+Primary Role: Primary Role
+All Roles: All Roles
+Role Names, Comma separated: Role Names, Comma separated
+Force Reset Password?: Force Reset Password?
+Can Login?: Can Login?
+Student ID: Student ID
+User Photo: User Photo
+path from /uploads/ to medium portrait image (240px by 320px): path from /uploads/ to medium portrait image (240px by 320px)
+Alternate Email: Alternate Email
+Day Type: Day Type
+Start Date: Start Date
+Users's first day at school.: Users's first day at school.
+End Date: End Date
+Class Of: Class Of
+When is the student expected to graduate?: When is the student expected to graduate?
+Last School: Last School
+Next School: Next School
+Departure Reason: Departure Reason
+Address 1: Address 1
+Address 1 District: Address 1 District
+Address 1 Country: Address 1 Country
+Address 2: Address 2
+Address 2 District: Address 2 District
+Address 2 Country: Address 2 Country
+Phone 1 (Type): Phone 1 (Type)
+Phone 1 (Country Code): Phone 1 (Country Code)
+Phone 1: Phone 1
+No spaces or punctuation, just numbers: No spaces or punctuation, just numbers
+Phone 2 (Type): Phone 2 (Type)
+Phone 2 (Country Code): Phone 2 (Country Code)
+Phone 2: Phone 2
+Phone 3 (Type): Phone 3 (Type)
+Phone 3 (Country Code): Phone 3 (Country Code)
+Phone 3: Phone 3
+Phone 4 (Type): Phone 4 (Type)
+Phone 4 (Country Code): Phone 4 (Country Code)
+Phone 4: Phone 4
+Must start with http:// or https://: Must start with http:// or https://
+First Language: First Language
+Second Language: Second Language
+Third Language: Third Language
+Country of Birth: Country of Birth
+Ethnicity: Ethnicity
+Religion: Religion
+Citizenship 1: Citizenship 1
+Citizenship 1 Passport: Citizenship 1 Passport
+Citizenship 1 Passport Scan: Citizenship 1 Passport Scan
+Less than 1440px by 900px: Less than 1440px by 900px
+Citizenship 2: Citizenship 2
+Citizenship 2 Passport: Citizenship 2 Passport
+National ID Card Number: National ID Card Number
+National ID Card Scan: National ID Card Scan
+Residency Status: Residency Status
+Visa Expiry Date: Visa Expiry Date
+Emergency 1 Name: Emergency 1 Name
+For students and staff only: 'For students and staff only. Use one of "{list}"'
+Emergency 1 Number 1: Emergency 1 Number 1
+Emergency 1 Number 2: Emergency 1 Number 2
+Emergency 1 Relationship: Emergency 1 Relationship
+Profession: Profession
+For parents only: For parents only
+Employer: Employer
+House: House
+Locker Number: Locker Number
+Transport: Transport
+Transport Notes: Transport Notes
+Vehicle Registration: Vehicle Registration
+IDD code, without 00 or +: IDD code, without 00 or +
+Emergency 2 Name: Emergency 2 Name
+Emergency 2Number 1: Emergency 2 Number 1
+Emergency 2 Number 2: Emergency 2 Number 2
+Emergency 2 Relationship: Emergency 2 Relationship

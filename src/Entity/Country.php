@@ -12,6 +12,7 @@
  */
 namespace App\Entity;
 
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,6 +35,11 @@ class Country
      * @ORM\Column(length=7, name="iddCountryCode")
      */
     private $iddCountryCode;
+    
+    /**
+     * @var array
+     */
+    private static $codeList;
 
     /**
      * @return string|null
@@ -74,4 +80,20 @@ class Country
         $this->iddCountryCode = $iddCountryCode;
         return $this;
     }
+
+    /**
+     * getCountryCodeList
+     * @return array
+     */
+    public static function getCountryCodeList(): array
+    {
+        if (null !== self::$codeList)
+            return self::$codeList;
+        self::$codeList = [];
+        foreach(ProviderFactory::getRepository(Country::class)->getCountryCodeList() as $code)
+            self::$codeList[$code->getPrintableName() . ' ('.$code->getIddCountryCode().')'] = $code->getIddCountryCode();
+
+        return self::$codeList;
+    }
+
 }

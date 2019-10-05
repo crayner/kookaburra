@@ -1,354 +1,356 @@
 details:
-    type: usersStaff
-    name: User - Data - Staff
+    name: usersStaff
+    title: User - Data - Staff
     category: User
     table: Person
     modes: { update: true, insert: true, export: false }
     alias: p
-access:
+security:
     module: User Admin
     action: Manage Users_edit
-primaryKey:
-    id
 uniqueKeys:
-    - username
+    username:
+        fields: [ username ]
+        label: Username
+fixedData:
+    staff: Staff
 join:
     PrimaryRole:
         table: Person
         alias: r
         targetTable: Role
-        type: leftJoin
+        with: r.category = :staff
     House:
         table: Person
         alias: h
-        type: leftJoin
-table:
+        joinType: leftJoin
+fields:
     title:
-        name: "Title"
+        label: "Title"
         desc: "e.g. Ms., Miss, Mr., Mrs., Dr."
-        args: {filter: string}
+        args: {filter: enum}
         select: p.title
     surname:
-        name: "Surname"
+        label: "Surname"
         desc: "Family Name"
         args: {filter: string, required: true}
         select: p.surname
     firstName:
-        name: "First Name"
+        label: "First Name"
         desc: "Given name"
         args: {filter: string, required: true}
         select: p.firstName
     preferredName:
-        name: "Preferred Name"
+        label: "Preferred Name"
         desc: "Most common name, alias, nickname, handle, etc"
         args: {filter: string, required: true}
         select: p.preferredName
     officialName:
-        name: "Official Name"
+        label: "Official Name"
         desc: "Full name as shown in ID documents."
         args: {filter: string, required: true}
         select: p.officialName
     nameInCharacters:
-        name: "Name In Characters"
+        label: "Name In Characters"
         desc: "Chinese or other character-based name."
         args: {filter: string}
         select: p.nameInCharacters
     gender:
-        name: "Gender"
+        label: "Gender"
         desc: ""
-        args: {filter: gender, required: true}
+        args: {filter: enum, required: true}
         select: p.gender
     dob:
-        name: "Date of Birth"
+        label: "Date of Birth"
         desc: ""
         args: {filter: date}
         select: p.dob
     primaryRole:
-        name: "Primary Role"
+        label: "Primary Role"
         desc: "Name"
         args: {filter: string, required: true, custom: true }
-        relationship: { table: Role, key: id, field: name  }
+        relationship: { table: Role, field: name  }
         select: r.name
     allRoles:
-        name: "All Roles"
+        label: "All Roles"
         desc: "Role Names, Comma separated"
-        args: {filter: csv, required: true, custom: true }
-        relationship: { table: Role, key: id, field: name }
+        args: {filter: role_list, required: true, custom: true }
+        relationship: { table: Role, field: name }
         select: p.allRoles
     username:
-        name: "Username"
+        label: "Username"
         desc: "Must be unique."
-        args: {filter: nospaces, required: true}
+        args: {filter: string, required: true}
         select: p.username
-    password:
-        name: "Password"
+    passwordStrong:
+        label: "Password"
         desc: ""
-        args: {filter: nospaces, required: true, custom: true, function: generatePassword}
+        args: {filter: string, required: true, custom: true, function: generatePassword}
         select: p.passwordStrong
     passwordForceReset:
-        name: "Force Reset Password?"
+        label: "Force Reset Password?"
         desc: ""
         args: {filter: yesno, custom: true}
         select: p.passwordForceReset
     status:
-        name: "Status"
+        label: "Status"
         desc: ""
-        args: {filter: status, custom: true}
+        args: {filter: enum, custom: true}
         select: p.status
     canLogin:
-        name: "Can Login?"
+        label: "Can Login?"
         desc: ""
         args: {filter: yesno, custom: true}
         select: p.canLogin
     email:
-        name: "Email"
+        label: "Email"
         desc: ""
-        args: {filter: email}
+        args: {filter: string}
         select: p.email
     emailAlternate:
-        name: "Alternate Email"
+        label: "Alternate Email"
         desc: ""
-        args: {filter: email}
+        args: {filter: string}
         select: p.emailAlternate
-    image_240:
-        name: "User Photo"
+    image240:
+        label: "User Photo"
         desc: "path from /uploads/ to medium portrait image (240px by 320px)"
         args: {filter: string}
         select: p.image_240
 
     address1:
-        name: "Address 1"
+        label: "Address 1"
         desc: "Unit, Building, Street"
         args: {filter: string}
         select: p.address1
     address1District:
-        name: "Address 1 District"
+        label: "Address 1 District"
         desc: "County, State, District"
         args: {filter: string}
         select: p.address1District
     address1Country:
-        name: "Address 1 Country"
+        label: "Address 1 Country"
         desc: ""
         args: {filter: country}
         select: p.address1Country
 
     address2:
-        name: "Address 2"
+        label: "Address 2"
         desc: "Unit, Building, Street"
         args: {filter: string}
         select: p.address2
     address2District:
-        name: "Address 2 District"
+        label: "Address 2 District"
         desc: "County, State, District"
         args: {filter: string}
         select: p.address2District
     address2Country:
-        name: "Address 2 Country"
+        label: "Address 2 Country"
         desc: ""
         args: {filter: country}
         select: p.address2Country
 
     phone1Type:
-        name: "Phone 1 (Type)"
-        desc: "Mobile, Home, Work, Fax, Pager, Other"
-        args: {filter: phonetype, custom: true}
+        label: "Phone 1 (Type)"
+        desc: 'Use one of "{list}"'
+        args: {filter: enum, enum: {class: \App\Entity\Person, method: getPhoneTypeList}, custom: true}
         select: p.phone1Type
     phone1CountryCode:
-        name: "Phone 1 (Country Code)"
+        label: "Phone 1 (Country Code)"
         desc: "IDD code, without 00 or +"
-        args: {filter: phonecode }
+        args: {filter: enum, enum: {class: \App\Entity\Country, method: getCountryCodeList} }
         select: p.phone1CountryCode
     phone1:
-        name: "Phone 1"
+        label: "Phone 1"
         desc: "No spaces or punctuation, just numbers"
-        args: {filter: phone}
+        args: {filter: string}
         select: p.phone1
 
     phone2Type:
-        name: "Phone 2 (Type)"
-        desc: "Mobile, Home, Work, Fax, Pager, Other"
-        args: {filter: phonetype, custom: true}
+        label: "Phone 2 (Type)"
+        desc: 'Use one of "{list}"'
+        args: {filter: enum, enum: {class: \App\Entity\Person, method: getPhoneTypeList}, custom: true}
         select: p.phone2Type
     phone2CountryCode:
-        name: "Phone 2 (Country Code)"
+        label: "Phone 2 (Country Code)"
         desc: "IDD code, without 00 or +"
-        args: {filter: phonecode }
+        args: {filter: enum, enum: {class: \App\Entity\Country, method: getCountryCodeList} }
         select: p.phone2CountryCode
     phone2:
-        name: "Phone 2"
+        label: "Phone 2"
         desc: "No spaces or punctuation, just numbers"
-        args: {filter: phone}
+        args: {filter: string}
         select: p.phone2
 
     phone3Type:
-        name: "Phone 3 (Type)"
-        desc: "Mobile, Home, Work, Fax, Pager, Other"
-        args: {filter: phonetype, custom: true}
+        label: "Phone 3 (Type)"
+        desc: 'Use one of "{list}"'
+        args: {filter: enum, enum: {class: \App\Entity\Person, method: getPhoneTypeList}, custom: true}
         select: p.phone3Type
     phone3CountryCode:
-        name: "Phone 3 (Country Code)"
+        label: "Phone 3 (Country Code)"
         desc: "IDD code, without 00 or +"
-        args: {filter: phonecode }
+        args: {filter: enum, enum: {class: \App\Entity\Country, method: getCountryCodeList} }
         select: p.phone3CountryCode
     phone3:
-        name: "Phone 3"
+        label: "Phone 3"
         desc: "No spaces or punctuation, just numbers"
-        args: {filter: phone}
+        args: {filter: string}
         select: p.phone3
 
     phone4Type:
-        name: "Phone 4 (Type)"
-        desc: "Mobile, Home, Work, Fax, Pager, Other"
-        args: {filter: phonetype, custom: true}
+        label: "Phone 4 (Type)"
+        desc: 'Use one of "{list}"'
+        args: {filter: enum, enum: {class: \App\Entity\Person, method: getPhoneTypeList}, custom: true}
         select: p.phone4Type
     phone4CountryCode:
-        name: "Phone 4 (Country Code)"
+        label: "Phone 4 (Country Code)"
         desc: "IDD code, without 00 or +"
-        args: {filter: phonecode }
+        args: {filter: enum, enum: {class: \App\Entity\Country, method: getCountryCodeList} }
         select: p.phone4CountryCode
     phone4:
-        name: "Phone 4"
+        label: "Phone 4"
         desc: "No spaces or punctuation, just numbers"
-        args: {filter: phone}
+        args: {filter: string}
         select: p.phone4
 
     website:
-        name: "Website"
+        label: "Website"
         desc: "Must start with http:// or https://"
         args: {filter: string}
         select: p.website
 
     languageFirst:
-        name: "First Language"
+        label: "First Language"
         desc: ""
-        args: {filter: language }
+        args: { filter: enum, enum: { class: \App\Entity\Person, method: getLanguageList } }
         select: p.languageFirst
     languageSecond:
-        name: "Second Language"
+        label: "Second Language"
         desc: ""
-        args: {filter: language }
+        args: {filter: enum, enum: { class: \App\Entity\Person, method: getLanguageList } }
         select: p.languageSecond
     languageThird:
-        name: "Third Language"
+        label: "Third Language"
         desc: ""
-        args: {filter: language }
+        args: {filter: enum, enum: { class: \App\Entity\Person, method: getLanguageList } }
         select: p.languageThird
     countryOfBirth:
-        name: "Country of Birth"
+        label: "Country of Birth"
         desc: ""
         args: {filter: country }
         select: p.countryOfBirth
     ethnicity:
-        name: "Ethnicity"
+        label: "Ethnicity"
         desc: ""
-        args: {filter: ethnicity}
+        args: {filter: string}
         select: p.ethnicity
     religion:
-        name: "Religion"
+        label: "Religion"
         desc: ""
         args: {filter: string}
         select: p.religion
     citizenship1:
-        name: "Citizenship 1"
+        label: "Citizenship 1"
         desc: ""
         args: {filter: country }
         select: p.citizenship1
     citizenship1Passport:
-        name: "Citizenship 1 Passport"
+        label: "Citizenship 1 Passport"
         desc: ""
         args: {filter: string}
         select: p.citizenship1Passport
     citizenship1PassportScan:
-        name: "Citizenship 1 Passport Scan"
+        label: "Citizenship 1 Passport Scan"
         desc: "Less than 1440px by 900px"
         args: {filter: string}
         select: p.citizenship1PassportScan
     citizenship2:
-        name: "Citizenship 2"
+        label: "Citizenship 2"
         desc: ""
         args: {filter: country }
         select: p.citizenship2
     citizenship2Passport:
-        name: "Citizenship 2 Passport"
+        label: "Citizenship 2 Passport"
         desc: ""
         args: {filter: string}
         select: p.citizenship2Passport
     nationalIDCardNumber:
-        name: "National ID Card Number"
+        label: "National ID Card Number"
         desc: ""
         args: {filter: string}
         select: p.nationalIDCardNumber
     nationalIDCardScan:
-        name: "National ID Card Scan"
+        label: "National ID Card Scan"
         desc: "Less than 1440px by 900px"
         args: {filter: string}
         select: p.nationalIDCardScan
     residencyStatus:
-        name: "Residency Status"
+        label: "Residency Status"
         desc: ""
         args: {filter: string}
         select: p.residencyStatus
     visaExpiryDate:
-        name: "Visa Expiry Date"
+        label: "Visa Expiry Date"
         desc: ""
         args: {filter: date}
         select: p.visaExpiryDate
 
     emergency1Name:
-        name: "Emergency 1 Name"
+        label: "Emergency 1 Name"
         desc: "For students and staff only"
         args: {filter: string}
         select: p.emergency1Name
     emergency1Number1:
-        name: "Emergency 1 Number 1"
+        label: "Emergency 1 Number 1"
         desc: "For students and staff only"
         args: {filter: string}
         select: p.emergency1Number1
     emergency1Number2:
-        name: "Emergency 1 Number 2"
+        label: "Emergency 1 Number 2"
         desc: "For students and staff only"
         args: {filter: string}
         select: p.emergency1Number2
     emergency1Relationship:
-        name: "Emergency 1 Relationship"
+        label: "Emergency 1 Relationship"
         desc: "For students and staff only"
-        args: {filter: relation}
+        args: {filter: enum, enum: {class: \App\Entity\Person, method: getEmergencyRelationshipList }}
         select: p.emergency1Relationship
 
     emergency2Name:
-        name: "Emergency 1 Name"
+        label: "Emergency 1 Name"
         desc: "For students and staff only"
         args: {filter: string}
         select: p.emergency2Name
     emergency2Number1:
-        name: "Emergency 1 Number 1"
+        label: "Emergency 1 Number 1"
         desc: "For students and staff only"
         args: {filter: string}
         select: p.emergency2Number1
     emergency2Number2:
-        name: "Emergency 1 Number 2"
+        label: "Emergency 1 Number 2"
         desc: "For students and staff only"
         args: {filter: string}
         select: p.emergency2Number2
     emergency2Relationship:
-        name: "Emergency 1 Relationship"
+        label: "Emergency 1 Relationship"
         desc: "For students and staff only"
-        args: {filter: relation}
+        args: {filter: enum, enum: {class: \App\Entity\Person, method: getEmergencyRelationshipList }}
         select: p.emergency2Relationship
 
     house:
-        name: "House"
+        label: "House"
         desc: "Name"
         args: {filter: string}
-        relationship: { table: House, key: id, field: name  }
+        relationship: { table: House, field: name  }
         select: h.name
     vehicleRegistration:
-        name: "Vehicle Registration"
+        label: "Vehicle Registration"
         desc: ""
         args: {filter: string}
         select: p.vehicleRegistration
     receiveNotificationEmails:
-        name: "Receive Email Notifications?"
+        label: "Receive Email Notifications?"
         desc: ""
         args: {filter: yesno, custom: true}
         select: p.receiveNotificationEmails

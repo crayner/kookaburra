@@ -7,8 +7,6 @@ details:
 security:
     module: School Admin
     action: Manage Houses
-primaryKey:
-    id
 uniqueKeys:
     name:
         label: Name

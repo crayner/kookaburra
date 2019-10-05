@@ -236,9 +236,18 @@ class ImportReport
                 if (isset($field['args']['filter']) && $field['args']['filter'] === 'enum')
                 {
                     $table = $this->getTableFromSelect($field['select']);
-                    $listName = 'get' . ucfirst(explode('.',$field['select'])[1]).'List';
-                    $table = '\App\Entity\\'.$table->getTargetTable();
-                    $list = $table::$listName();
+                    if (isset($field['args']['enum'])) {
+                        $resolver = new OptionsResolver();
+                        $resolver->setRequired(['class','method']);
+                        $enum = $resolver->resolve($field['args']['enum']);
+                        $class = $enum['class'];
+                        $method = $enum['method'];
+                        $list = $class::$method();
+                    } else {
+                        $class = '\App\Entity\\'.$table->getTargetTable();
+                        $method = 'get' . ucfirst(explode('.',$field['select'])[1]).'List';
+                        $list = $class::$method();
+                    }
                     $field['descParams'] = ['{list}' => implode('","', $list)];
                 }
                 $field = new ImportReportField($name, $field);
@@ -630,5 +639,15 @@ class ImportReport
     {
         $this->orderBy = $orderBy;
         return $this;
+    }
+
+    public function getFieldByLabel(string $label): ImportReportField
+    {
+        if ($this->getFields()->containsKey($label))
+            return $this->getFields()->get($label);
+
+        return $this->getFields()->filter(function (ImportReportField $field) use ($label) {
+            return $field->getLabel() === $label;
+        })->first();
     }
 }

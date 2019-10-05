@@ -8,8 +8,6 @@ details:
 security:
     module: Staff
     action: Manage Substitutes
-primaryKey:
-    id
 uniqueKeys:
     personDate:
         fields: [ person, date ]

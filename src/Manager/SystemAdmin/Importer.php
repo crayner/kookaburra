@@ -1117,7 +1117,8 @@ class Importer
                 $column->setFieldType($wasColumn->getFieldType());
                 $column->setLabel($label);
             } else {
-                $field = $this->getReport()->getFields()->get($label);
+                $field = $this->getReport()->getFieldByLabel($label);
+dump($field,$label,$this->getReport()->getFields());
                 $column->setName($field->getName());
                 $column->setOrder($count);
                 $column->setText($w->value);

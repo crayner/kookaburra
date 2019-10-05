@@ -12,9 +12,11 @@
 
 namespace App\Manager\Entity\SystemAdmin;
 
+use App\Entity\Role;
 use App\Entity\YearGroup;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationsHelper;
+use App\Validator\RoleList;
 use App\Validator\YearGroupList;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Intl\Countries;
@@ -222,9 +224,12 @@ class ImportReportField
                 'readonly' => false,
                 'serialise' => false,
                 'id' => false,
+                'enum' => [],
             ]
         );
-        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist','date', 'language','country','integer','enum','url','array','year_group_list','time','datetime']);
+        $resolver->setAllowedValues('filter', ['string','numeric','schoolyear','html','yesno','yearlist',
+            'date', 'language','country','integer','enum','url','array','year_group_list','time','datetime',
+            'role_list','boolean']);
 
         $this->args = $resolver->resolve($args);
         return $this;
@@ -291,7 +296,7 @@ class ImportReportField
             return true;
         }
 
-        return $this->getArgs()['hidden'];
+        return $this->getArg('hidden');
     }
 
     /**
@@ -302,7 +307,7 @@ class ImportReportField
      */
     public function isFieldLinked(): bool
     {
-        return $this->getArgs()['linked'];
+        return $this->getArg('linked');
     }
 
     /**
@@ -484,6 +489,13 @@ class ImportReportField
     {
         if ($this->getArg('filter') === 'year_group_list') {
             $w = $this->reverseTransformYearGroups($value);
+            $data->get($this->getLabel())->violations = $this->getViolations();
+            $this->setViolations(null);
+            return $w;
+        }
+
+        if ($this->getArg('filter') === 'role_list') {
+            $w = $this->reverseTransformRoles($value);
             $data->get($this->getLabel())->violations = $this->getViolations();
             $this->setViolations(null);
             return $w;
@@ -712,5 +724,42 @@ class ImportReportField
     {
         $this->violations = $violations;
         return $this;
+    }
+
+    /**
+     * transformYearGroups
+     * @param $name
+     * @param $value
+     * @return array
+     */
+    public function transformRoles(array $value): array
+    {
+        extract($this->getRelationship());
+        $yearGroups = ProviderFactory::getRepository(Role::class)->findByRoleIDList($value, $field);
+
+        return array_keys($yearGroups);
+    }
+
+    /**
+     * reverseTransformYearGroups
+     * @param $name
+     * @param $value
+     * @return array
+     */
+    public function reverseTransformRoles($value): array
+    {
+        extract($this->getRelationship());
+        $value = explode(',', $value);
+        $yearGroups = ProviderFactory::getRepository(Role::class)->findByRoleList($value, $field);
+
+        if (count($value) !== count($yearGroups))
+        {
+            // Validation Violation
+            $validator = Validation::createValidator();
+            $errors = $validator->validate($value, [new RoleList(['fieldName' => $field, 'message' => '{value} does not give a valid Role.', 'propertyPath' => $this->getName()])]);
+            if ($errors->count() > 0)
+                $this->getViolations()->addAll($errors);
+        }
+        return array_keys($yearGroups);
     }
 }

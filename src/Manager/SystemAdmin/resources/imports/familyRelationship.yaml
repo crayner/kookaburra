@@ -8,8 +8,6 @@ details:
 security:
     module: User Admin
     action: Manage Families
-primaryKey:
-    id
 uniqueKeys:
     familyAdultChild:
         fields: [ family, person1, person2 ]

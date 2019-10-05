@@ -1,112 +1,112 @@
 details:
-    type: usersBasic
-    name: User - Data - Basic
+    name: usersBasic
+    title: User - Data - Basic
     category: User
     table: Person
     modes: { update: true, insert: true, export: true }
     alias: p
-access:
+security:
     module: User Admin
     action: Manage Users_edit
-primaryKey:
-    id
 uniqueKeys:
-    - username
+    username:
+        fields: [ username ]
+        label: Username
 join:
     PrimaryRole:
         table: Person
         alias: r
         targetTable: Role
-table:
+fields:
     title:
-        name: "Title"
+        label: "Title"
         desc: "e.g. Ms., Miss, Mr., Mrs., Dr."
-        args: {filter: string}
+        args: {filter: enum}
         select: p.title
     surname:
-        name: "Surname"
+        label: "Surname"
         desc: "Family Name"
         args: {filter: string, required: true}
         select: p.surname
     firstName:
-        name: "First Name"
+        label: "First Name"
         desc: "Given name"
         args: {filter: string, required: true}
         select: p.firstName
     preferredName:
-        name: "Preferred Name"
+        label: "Preferred Name"
         desc: "Most common name, alias, nickname, handle, etc"
         args: {filter: string, required: true}
         select: p.preferredName
     officialName:
-        name: "Official Name"
+        label: "Official Name"
         desc: "Full name as shown in ID documents."
         args: {filter: string, required: true}
         select: p.officialName
     nameInCharacters:
-        name: "Name In Characters"
+        label: "Name In Characters"
         desc: "Chinese or other character-based name."
         args: {filter: string}
         select: p.nameInCharacters
     gender:
-        name: "Gender"
+        label: "Gender"
         desc: ""
-        args: {filter: gender, required: true}
+        args: {filter: enum, required: true}
         select: p.gender
     dob:
-        name: "Date of Birth"
+        label: "Date of Birth"
         desc: ""
         args: {filter: date}
         select: p.dob
     primaryRole:
-        name: "Primary Role"
+        label: "Primary Role"
         desc: "Name"
         args: {filter: string, required: true, custom: true }
         relationship: { table: Role, key: id, field: name  }
         select: r.name
     allRoles:
-        name: "All Roles"
+        label: "All Roles"
         desc: "Role Names, Comma separated"
-        args: {filter: csv, required: true, custom: true }
+        args: {filter: role_list, required: true, custom: true }
         relationship: { table: Role, key: id, field: name }
         select: p.allRoles
     username:
-        name: "Username"
+        label: "Username"
         desc: "Must be unique."
-        args: {filter: nospaces, required: true}
+        args: {filter: string, required: true}
         select: p.username
-    password:
-        name: "Password"
+    passwordStrong:
+        label: "Password"
         desc: ""
-        args: {filter: nospaces, required: true, custom: true, function: generatePassword}
+        args: {filter: string, required: true, custom: true, function: generatePassword}
         select: p.passwordStrong
     passwordForceReset:
-        name: "Force Reset Password?"
+        label: "Force Reset Password?"
         desc: ""
         args: {filter: yesno, custom: true}
         select: p.passwordForceReset
     status:
-        name: "Status"
+        label: "Status"
         desc: ""
-        args: {filter: status, custom: true}
+        args: {filter: enum, custom: true}
         select: p.status
     canLogin:
-        name: "Can Login?"
+        label: "Can Login?"
         desc: ""
         args: {filter: yesno, custom: true}
         select: p.canLogin
     email:
-        name: "Email"
+        label: "Email"
         desc: ""
-        args: {filter: email}
+        args: {filter: string}
         select: p.email
     studentID:
-        name: "Student ID"
+        label: "Student ID"
         desc: "Must be unique if set."
         args: {filter: string}
         select: p.studentID
-    image_240:
-        name: "User Photo"
+    image240:
+        label: "User Photo"
         desc: "path from /uploads/ to medium portrait image (240px by 320px)"
         args: {filter: string}
         select: p.image_240

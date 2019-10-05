@@ -7,8 +7,6 @@ details:
 security:
     module: Timetable Admin
     action: Course Enrolment by Class
-primaryKey:
-    id
 uniqueKeys:
     courseClassPerson:
         label: Person in Course Class

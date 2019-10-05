@@ -82,7 +82,7 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
      */
     public function getAllRolesAsArray(): array
     {
-        $roleIDs = $this->getAllRoles() ? explode(',', $this->getAllRoles()) : [];
+        $roleIDs = $this->getAllRoles() ?: [];
         $roles = [];
         foreach($roleIDs as $roleID)
             $roles[] = EntityHelper::getRepository(Role::class)->find($roleID);
@@ -358,23 +358,25 @@ class SecurityUser implements UserInterface, EncoderAwareInterface, EquatableInt
     }
 
     /**
-     * @var string|null
+     * @var array|null
      */
     private $allRoles;
 
     /**
-     * @return string|null
+     * getAllRoles
+     * @return array|null
      */
-    public function getAllRoles(): ?string
+    public function getAllRoles(): ?array
     {
         return $this->allRoles;
     }
 
     /**
-     * @param string|null $allRoles
+     * setAllRoles
+     * @param array|null $allRoles
      * @return SecurityUser
      */
-    public function setAllRoles(?string $allRoles): SecurityUser
+    public function setAllRoles(?array $allRoles): SecurityUser
     {
         $this->allRoles = $allRoles;
         return $this;

@@ -59,18 +59,7 @@ class FamilyRelationship
      * @var string|null
      * @ORM\Column(length=50)
      * @Assert\NotBlank()
-     * @Assert\Choice({"Mother",
-    "Father",
-    "Step-Mother",
-    "Step-Father",
-    "Adoptive Parent",
-    "Guardian",
-    "Grandmother",
-    "Grandfather",
-    "Aunt",
-    "Uncle",
-    "Nanny/Helper",
-    "Other"})
+     * @Assert\Choice(callback="getRelationshipList")
      */
     private $relationship;
 

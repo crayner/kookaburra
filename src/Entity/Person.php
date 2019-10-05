@@ -24,6 +24,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints as ASSERT;
 use Symfony\Component\Console\Helper\FormatterHelper;
+use Symfony\Component\Intl\Languages;
 
 /**
  * Class GibbonPerson
@@ -522,24 +523,24 @@ class Person implements EntityInterface
     }
 
     /**
-     * @var string|null
-     * @ORM\Column(name="gibbonRoleIDAll")
+     * @var array
+     * @ORM\Column(name="gibbonRoleIDAll", type="simple_array")
      */
     private $allRoles = '';
 
     /**
-     * @return null|string
+     * @return array
      */
-    public function getAllRoles(): ?string
+    public function getAllRoles(): array
     {
-        return $this->allRoles;
+        return $this->allRoles = $this->allRoles ?: [];
     }
 
     /**
-     * @param null|string $allRoles
+     * @param null|array $allRoles
      * @return Person
      */
-    public function setAllRoles(?string $allRoles): Person
+    public function setAllRoles(?array $allRoles): Person
     {
         $this->allRoles = $allRoles;
         return $this;
@@ -2893,5 +2894,41 @@ class Person implements EntityInterface
     {
         $this->children = $children;
         return $this;
+    }
+
+    /**
+     * getEmergencyRelationshipList
+     * @return array
+     */
+    public static function getEmergencyRelationshipList():array
+    {
+        return [
+            'Parent',
+            'Spouse',
+            'Offspring',
+            'Friend',
+            'Other Relation',
+            'Doctor',
+            'Other',
+        ];
+    }
+
+    /**
+     * __toString
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->formatName();
+    }
+
+    /**
+     * getLanguageList
+     * @return array|string[]
+     */
+    public static function getLanguageList()
+    {
+        $languages = Languages::getNames();
+        return array_flip($languages);
     }
 }
