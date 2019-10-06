@@ -70,7 +70,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
         $strings = $this->getStrings();
 
         if ((! empty($strings) || $strings->count() > 0) && $strings instanceof ArrayCollection) {
-            foreach ($strings->toArray() AS $replacement) {
+            foreach ($strings->toArray() as $replacement) {
                 if ($replacement->getMode() === "Partial") { //Partial match
                     if ($replacement->isCaseSensitive()) {
                         if (false !== strpos($trans, $replacement->getOriginal())) {
@@ -98,7 +98,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
             }
         }
 
-        return str_replace(array_keys($parameters), array_values($parameters), $trans);
+        return $trans;
     }
 
     /**
@@ -118,7 +118,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
         if (strpos($this->stack->getCurrentRequest()->get('_route'), 'install__') === 0)
             return new ArrayCollection();
         $provider = ProviderFactory::create(StringReplacement::class);
-        if (empty($this->strings) && ! $refresh)
+        if (null === $this->strings && ! $refresh)
             $this->strings = $this->stack->getCurrentRequest()->getSession()->get('stringReplacement', null);
         else
             return $this->strings;
@@ -133,10 +133,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
             return $this->strings = $this->strings instanceof ArrayCollection ? $this->strings : new ArrayCollection();
 
         $sr = new StringReplacement();
-        $sr->setOriginal('Gibbon')->setReplacement('Kookaburra')->setMode('Partial')->setCaseSensitive('Y');
-        $this->strings->add($sr);
-        $sr = new StringReplacement();
-        $sr->setOriginal('gibbon')->setReplacement('kookaburra')->setMode('Partial')->setCaseSensitive('Y');
+        $sr->setOriginal('Gibbon')->setReplacement('Kookaburra')->setMode('Partial')->setCaseSensitive('N');
         $this->strings->add($sr);
 
         $this->stack->getCurrentRequest()->getSession()->set('stringReplacement', $this->strings);
@@ -158,6 +155,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
 
         return $this;
     }
+
     /**
      * Translates the given choice message by choosing a translation according to a number.
      *

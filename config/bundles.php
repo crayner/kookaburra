@@ -19,4 +19,5 @@ return [
     Kookaburra\SystemAdmin\KookaburraSystemAdminBundle::class => ['all' => true],
     Kookaburra\UserAdmin\KookaburraUserAdminBundle::class => ['all' => true],
     Kookaburra\Department\KookaburraDepartmentBundle::class => ['all' => true],
+    Kookaburra\RollGroup\KookaburraRollGroupBundle::class => ['all' => true],
 ];

@@ -150,6 +150,9 @@
     "kookaburra/department": {
         "version": "dev-master"
     },
+    "kookaburra/roll-group": {
+        "version": "dev-master"
+    },
     "kookaburra/system-admin": {
         "version": "dev-master"
     },

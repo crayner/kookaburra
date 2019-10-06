@@ -73,7 +73,7 @@ class DetailStudentSortType extends AbstractType
                 ]
             )
         ;
-        $this->scriptManager->addPageScript('modules/roll_groups/scripts.html.twig');
+        $this->scriptManager->addPageScript('@KookaburraRollGroup/scripts.html.twig');
     }
 
     /**

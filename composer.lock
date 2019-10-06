@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c0f5e351d22a242145dea69bd8e7fdf",
+    "content-hash": "dbd0e676626f4547e5b3474af138180a",
     "packages": [
         {
             "name": "aura/sqlquery",
@@ -1925,6 +1925,48 @@
                 "doctrine"
             ],
             "time": "2019-10-06T03:09:41+00:00"
+        },
+        {
+            "name": "kookaburra/roll-group",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crayner/kookaburra-roll-group.git",
+                "reference": "8bad235c5f55ec0a50f492049ffe114efcc31a5f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/crayner/kookaburra-roll-group/zipball/8bad235c5f55ec0a50f492049ffe114efcc31a5f",
+                "reference": "8bad235c5f55ec0a50f492049ffe114efcc31a5f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Kookaburra\\RollGroup\\": "/src/"
+                },
+                "exclude-from-classmap": [
+                    "/tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Rayner",
+                    "email": "craig@craigrayner.com"
+                }
+            ],
+            "description": "Kookaburra Roll Group Bundle",
+            "keywords": [
+                "doctrine"
+            ],
+            "time": "2019-10-06T05:30:37+00:00"
         },
         {
             "name": "kookaburra/system-admin",
@@ -7509,6 +7551,7 @@
     "stability-flags": {
         "aura/sqlquery": 20,
         "kookaburra/department": 20,
+        "kookaburra/roll-group": 20,
         "kookaburra/system-admin": 20,
         "kookaburra/user-admin": 20
     },
