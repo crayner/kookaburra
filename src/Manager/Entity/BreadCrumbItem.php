@@ -53,6 +53,12 @@ class BreadCrumbItem
                 'uri_params' => [],
                 'trans_params' => [],
             ]);
+
+            if (isset($crumb['params'])) {
+                $crumb['uri_params'] = $crumb['params'];
+                unset($crumb['params']);
+                trigger_error('The params option has been replaced by the uri_params option.', E_USER_DEPRECATED);
+            }
             $crumb = $resolver->resolve($crumb);
             $this->setName($crumb['name'])->setUri($crumb['uri'])->setTransParams($crumb['trans_params'])->setUriParams($crumb['uri_params']);
         }

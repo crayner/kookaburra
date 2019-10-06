@@ -129,10 +129,6 @@ services:
     App\Translation\Translator:
         decorates: translator
 
-    App\Form\Modules\Departments\EditType:
-        arguments:
-            $targetDir: '%kernel.public_dir%/%upload_path%'
-
     App\Form\EventSubscriber\FileOrLinkURLSubscriber:
         arguments:
             $targetDir: '%kernel.public_dir%/%upload_path%'

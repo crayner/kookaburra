@@ -140,6 +140,7 @@ class BreadCrumbs
         $resolver->setDefaults([
             'trans_params' => [],
         ]);
+
         $module = $resolver->resolve($module);
 
 

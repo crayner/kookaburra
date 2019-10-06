@@ -18,4 +18,5 @@ return [
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
     Kookaburra\SystemAdmin\KookaburraSystemAdminBundle::class => ['all' => true],
     Kookaburra\UserAdmin\KookaburraUserAdminBundle::class => ['all' => true],
+    Kookaburra\Department\KookaburraDepartmentBundle::class => ['all' => true],
 ];

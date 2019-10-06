@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f160dfca738510f5b4ca27a1efd40503",
+    "content-hash": "1c0f5e351d22a242145dea69bd8e7fdf",
     "packages": [
         {
             "name": "aura/sqlquery",
@@ -1883,6 +1883,48 @@
                 "sql"
             ],
             "time": "2014-01-12T16:20:24+00:00"
+        },
+        {
+            "name": "kookaburra/department",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crayner/kookaburra-department.git",
+                "reference": "edbaf4472ce5dd15d2e66e85a3170be3f212f043"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/crayner/kookaburra-department/zipball/edbaf4472ce5dd15d2e66e85a3170be3f212f043",
+                "reference": "edbaf4472ce5dd15d2e66e85a3170be3f212f043",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Kookaburra\\Department\\": "/src/"
+                },
+                "exclude-from-classmap": [
+                    "/tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Rayner",
+                    "email": "craig@craigrayner.com"
+                }
+            ],
+            "description": "Kookaburra Department Bundle",
+            "keywords": [
+                "doctrine"
+            ],
+            "time": "2019-10-06T03:09:41+00:00"
         },
         {
             "name": "kookaburra/system-admin",
@@ -7466,6 +7508,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "aura/sqlquery": 20,
+        "kookaburra/department": 20,
         "kookaburra/system-admin": 20,
         "kookaburra/user-admin": 20
     },

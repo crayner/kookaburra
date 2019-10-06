@@ -147,6 +147,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "kookaburra/department": {
+        "version": "dev-master"
+    },
     "kookaburra/system-admin": {
         "version": "dev-master"
     },

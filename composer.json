@@ -15,6 +15,7 @@
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "friendsofsymfony/ckeditor-bundle": "^2.1",
         "google/apiclient": "^2.2",
+        "kookaburra/department": "dev-master",
         "kookaburra/system-admin": "dev-master",
         "kookaburra/user-admin": "dev-master",
         "matthewbdaly/sms-client": "^1.0",
