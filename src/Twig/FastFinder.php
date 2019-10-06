@@ -22,7 +22,7 @@ use App\Entity\StudentEnrolment;
 use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
 use App\Provider\RoleProvider;
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Util\CacheHelper;
 use App\Util\SecurityHelper;
 use Symfony\Component\Routing\RouterInterface;

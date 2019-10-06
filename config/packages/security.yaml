@@ -9,12 +9,12 @@ security:
         #            algorithm: bcrypt
         #            cost: 15
         sha256:
-            id: App\Security\SHA256PasswordEncoder
+            id: Kookaburra\UserAdmin\Manager\SHA256PasswordEncoder
         md5:
-            id: App\Security\MD5PasswordEncoder
+            id: Kookaburra\UserAdmin\Manager\MD5PasswordEncoder
     providers:
         security_user_provider:
-            id: App\Security\SecurityUserProvider
+            id: Kookaburra\UserAdmin\Manager\SecurityUserProvider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|home)|css|images|build|js)/
@@ -34,11 +34,11 @@ security:
                 failure_path_parameter: login
                 provider:               security_user_provider
             provider:                   security_user_provider
-            access_denied_handler:      App\Security\AccessDeniedHandler
+            access_denied_handler:      Kookaburra\UserAdmin\Manager\AccessDeniedHandler
             logout:
                 path:                   logout
                 target:                 home
-                success_handler:        App\Security\LogoutSuccessHandler
+                success_handler:        Kookaburra\UserAdmin\Manager\LogoutSuccessHandler
             remember_me:                false
 #                secret:               '%env(APP_SECRET)%'
 #                name:                 '%session_name%_remember_me'
@@ -49,8 +49,8 @@ security:
             switch_user:                true
             guard:
                 authenticators:
-                    - App\Security\LoginFormAuthenticator
-                    - App\Security\GoogleAuthenticator
-                entry_point: App\Security\LoginFormAuthenticator
+                    - Kookaburra\UserAdmin\Manager\LoginFormAuthenticator
+                    - Kookaburra\UserAdmin\Manager\GoogleAuthenticator
+                entry_point: Kookaburra\UserAdmin\Manager\LoginFormAuthenticator
             context: main
     role_hierarchy: '%security.hierarchy.roles%'

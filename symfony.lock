@@ -150,6 +150,9 @@
     "kookaburra/system-admin": {
         "version": "dev-master"
     },
+    "kookaburra/user-admin": {
+        "version": "dev-master"
+    },
     "markbaker/complex": {
         "version": "1.4.7"
     },

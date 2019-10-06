@@ -14,7 +14,7 @@ namespace App\Manager;
 
 use App\Entity\Notification;
 use App\Provider\ProviderFactory;
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

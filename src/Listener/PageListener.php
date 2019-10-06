@@ -14,7 +14,7 @@ namespace App\Listener;
 
 
 use App\Manager\ScriptManager;
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;

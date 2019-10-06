@@ -49,14 +49,13 @@ class KookaburraLoader extends Loader
         {
             $resource = realpath($bundle.'/src/Resources/config/routes.yaml');
 
-            if (false === $resource)
-                throw new \RuntimeException($bundle .'/src/Resources/config/routes.yaml must be a valid file.');
+            if (false !== $resource) {
+                $type = 'yaml';
 
-            $type = 'yaml';
+                $importedRoutes = $this->import($resource, $type);
 
-            $importedRoutes = $this->import($resource, $type);
-
-            $routes->addCollection($importedRoutes);
+                $routes->addCollection($importedRoutes);
+            }
         }
 
         $this->isLoaded = true;

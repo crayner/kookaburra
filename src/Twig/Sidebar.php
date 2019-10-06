@@ -11,7 +11,7 @@
  */
 namespace App\Twig;
 
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Util\UserHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 

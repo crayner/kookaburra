@@ -22,7 +22,7 @@ use App\Entity\Role;
 use App\Entity\Setting;
 use App\Entity\StudentEnrolment;
 use App\Manager\Traits\EntityTrait;
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Util\SchoolYearHelper;
 use App\Util\SecurityHelper;
 use App\Entity\NotificationEvent;

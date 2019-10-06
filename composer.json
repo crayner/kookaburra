@@ -16,6 +16,7 @@
         "friendsofsymfony/ckeditor-bundle": "^2.1",
         "google/apiclient": "^2.2",
         "kookaburra/system-admin": "dev-master",
+        "kookaburra/user-admin": "dev-master",
         "matthewbdaly/sms-client": "^1.0",
         "phpoffice/phpspreadsheet": "^1.8",
         "sensio/framework-extra-bundle": "^5.4",
@@ -42,6 +43,7 @@
     },
     "require-dev": {
         "symfony/debug-pack": "^1.0",
+        "symfony/flex": "^1.4",
         "symfony/maker-bundle": "^1.11"
     },
     "config": {

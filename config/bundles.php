@@ -17,4 +17,5 @@ return [
     Twig\CssInliner\Bundle\TwigCssInlinerBundle::class => ['all' => true],
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
     Kookaburra\SystemAdmin\KookaburraSystemAdminBundle::class => ['all' => true],
+    Kookaburra\UserAdmin\KookaburraUserAdminBundle::class => ['all' => true],
 ];

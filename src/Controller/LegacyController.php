@@ -7,7 +7,7 @@ use App\Entity\I18n;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
 use App\Provider\ProviderFactory;
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

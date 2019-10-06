@@ -16,7 +16,7 @@ use App\Entity\Department;
 use App\Entity\DepartmentStaff;
 use App\Entity\Person;
 use App\Manager\Traits\EntityTrait;
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 
 /**
  * Class DepartmentStaffProvider

@@ -415,7 +415,7 @@ function getSmartWorkflowHelp($connection2, $guid, $step = '')
  * @param $connection2
  * @param $passwordNew
  * @return bool
- * @deprecated Use App\Security\SecurityUser::doesPasswordMatchPolicy()
+ * @deprecated Use Kookaburra\UserAdmin\Manager\SecurityUser::doesPasswordMatchPolicy()
  */
 function doesPasswordMatchPolicy($connection2, $passwordNew)
 {
@@ -562,7 +562,7 @@ function getAlert($guid, $connection2, $gibbonAlertLevelID)
 /**
  * getSalt
  * @return string
- * @deprecated Use App\Security\SecurityUser::createSalt()
+ * @deprecated Use Kookaburra\UserAdmin\Manager\SecurityUser::createSalt()
  */
 function getSalt()
 {

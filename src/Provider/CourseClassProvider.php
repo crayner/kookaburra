@@ -15,7 +15,7 @@ namespace App\Provider;
 use App\Entity\CourseClass;
 use App\Entity\Person;
 use App\Manager\Traits\EntityTrait;
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Twig\Sidebar;
 
 /**

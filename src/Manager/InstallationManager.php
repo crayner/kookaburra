@@ -17,7 +17,7 @@ use App\Entity\Role;
 use App\Entity\Setting;
 use App\Entity\Staff;
 use App\Provider\ProviderFactory;
-use App\Security\SecurityUser;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Security\SHA256PasswordEncoder;
 use App\Util\GlobalHelper;
 use App\Util\SecurityHelper;
