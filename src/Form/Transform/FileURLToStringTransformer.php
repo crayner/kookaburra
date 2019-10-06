@@ -14,7 +14,7 @@ namespace App\Form\Transform;
 
 
 use App\Util\JsonFileUploadHelper;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\HttpFoundation\File\File;

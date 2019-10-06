@@ -18,7 +18,7 @@ use App\Entity\Person;
 use App\Entity\Setting;
 use App\Entity\StudentEnrolment;
 use App\Provider\ProviderFactory;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Gibbon\Domain\User\UserGateway;
 use Gibbon\UI\Components\Header;
 use Gibbon\UI\Components\Sidebar;

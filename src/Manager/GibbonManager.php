@@ -16,7 +16,7 @@ use App\Entity\Action;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
 use App\Session\GibbonSession;
-use App\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Gibbon\Core;
 use Gibbon\Database\Connection;
 use Gibbon\Database\MySqlConnector;

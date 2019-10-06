@@ -18,7 +18,7 @@ use App\Entity\PersonField;
 use App\Form\Registration\PublicType;
 use App\Mailer\NotificationMailer;
 use App\Provider\ProviderFactory;
-use App\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;

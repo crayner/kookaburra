@@ -26,7 +26,7 @@ use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
 use App\Twig\Sidebar;
 use App\Util\Format;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;

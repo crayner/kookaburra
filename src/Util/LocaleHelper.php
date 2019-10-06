@@ -18,6 +18,7 @@ use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Kookaburra\UserAdmin\Util\UserHelper;
 
 class LocaleHelper
 {

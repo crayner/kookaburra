@@ -13,7 +13,7 @@
 namespace App\Logger;
 
 use App\Entity\Person;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 
 /**
  * Class UErDetailProcessor

@@ -16,7 +16,7 @@ use App\Entity\FamilyAdult;
 use App\Entity\Person;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

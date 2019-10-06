@@ -17,8 +17,8 @@ use App\Entity\Action;
 use App\Entity\Module;
 use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
-use App\Util\SecurityHelper;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 
 class MainMenu implements ContentInterface
 {

@@ -12,7 +12,7 @@
 
 namespace App\Validator;
 
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

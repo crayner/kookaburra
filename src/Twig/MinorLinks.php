@@ -12,8 +12,8 @@
 
 namespace App\Twig;
 
-use App\Util\SecurityHelper;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 

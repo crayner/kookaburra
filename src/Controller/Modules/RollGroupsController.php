@@ -21,7 +21,7 @@ use App\Provider\ProviderFactory;
 use App\Twig\MinorLinks;
 use App\Twig\Sidebar;
 use App\Twig\TableViewManager;
-use App\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

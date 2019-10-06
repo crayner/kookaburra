@@ -13,7 +13,7 @@
 namespace App\Entity;
 
 use App\Manager\EntityInterface;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

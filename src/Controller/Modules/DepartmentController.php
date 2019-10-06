@@ -27,7 +27,7 @@ use App\Form\Modules\Departments\ResourceTypeManager;
 use App\Manager\ExcelManager;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar;
-use App\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Doctrine\DBAL\Driver\PDOException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

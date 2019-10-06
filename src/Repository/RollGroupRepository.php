@@ -15,7 +15,7 @@ namespace App\Repository;
 use App\Entity\Person;
 use App\Entity\RollGroup;
 use App\Entity\SchoolYear;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 

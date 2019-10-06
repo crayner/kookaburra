@@ -24,7 +24,7 @@ use App\Provider\ProviderFactory;
 use App\Provider\RoleProvider;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Util\CacheHelper;
-use App\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

@@ -12,7 +12,7 @@
 namespace App\Twig;
 
 use Kookaburra\UserAdmin\Manager\SecurityUser;
-use App\Util\UserHelper;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Sidebar implements ContentInterface

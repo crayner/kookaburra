@@ -16,7 +16,7 @@ use App\Entity\Action;
 use App\Entity\Module;
 use App\Provider\ProviderFactory;
 use App\Util\Format;
-use App\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;

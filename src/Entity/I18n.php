@@ -224,7 +224,12 @@ class I18n implements EntityInterface
      */
     public function getInstalled(): ?string
     {
-        return self::checkBoolean($this->installed, 'N');
+        $this->installed = self::checkBoolean($this->installed, 'N');
+        if ($this->installed === 'Y' && false === realpath(__DIR__ . '/../../translations/messages.'.$this->getCode().'.mo')) {
+            $this->installed = 'N';
+        }
+
+        return $this->installed;
     }
 
     /**
