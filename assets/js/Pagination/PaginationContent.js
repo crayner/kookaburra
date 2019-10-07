@@ -7,8 +7,6 @@ export default function PaginationContent(props) {
     const {
         row,
         content,
-        contentCount,
-        offset
     } = props
 
 
@@ -40,11 +38,15 @@ export default function PaginationContent(props) {
             return (<a href={rowContent.actions[actionKey]} className={action.aClass} key={actionKey} title={action.title}><span className={action.spanClass}></span></a> )
 
         })
-        columns.push(<td key={'actions'}>
-            <div className=" hidden group-hover:flex sm:flex absolute sm:static top-0 right-0 -mr-1 rounded shadow sm:shadow-none bg-white sm:bg-transparent px-1 -mt-3 sm:m-0 sm:p-0 z-10">
-                {actions}
-            </div>
-        </td>)
+
+        if (row.actions.length > 0) {
+            columns.push(<td key={'actions'}>
+                <div
+                    className=" hidden group-hover:flex sm:flex absolute sm:static top-0 right-0 -mr-1 rounded shadow sm:shadow-none bg-white sm:bg-transparent px-1 -mt-3 sm:m-0 sm:p-0 z-10">
+                    {actions}
+                </div>
+            </td>)
+        }
 
         return (<tr className={actions.columnClass} key={rowKey}>{columns}</tr>)
 
@@ -58,6 +60,4 @@ export default function PaginationContent(props) {
 PaginationContent.propTypes = {
     row: PropTypes.object.isRequired,
     content: PropTypes.array.isRequired,
-    contentCount: PropTypes.number.isRequired,
-    offset: PropTypes.number.isRequired,
 }

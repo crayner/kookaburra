@@ -183,7 +183,7 @@ export default class PaginationApp extends Component {
                 <div className={'text-xs text-gray-600 text-right'} style={{marginTop: '-12px'}}>{this.state.control}</div></div>
                 <table className={'w-full striped'}>
                     <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn} sortColumnDirection={this.state.sortDirection} />
-                    <PaginationContent row={this.row} content={this.state.results} contentCount={this.content.length} offset={this.state.offset}/>
+                    <PaginationContent row={this.row} content={this.state.results} />
                 </table>
             </div>
         )

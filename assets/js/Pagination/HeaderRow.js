@@ -21,8 +21,9 @@ export default function HeaderRow(props) {
         return (<th className={column.class} key={columnKey} onClick={() => sortColumn(column.contentKey)}>{sort}{column.label}{help}</th>)
     })
 
-    columns.push(<th className={'column width1'} key={'actions'}>{row.actionTitle}</th>)
-
+    if (row.actions.length > 0) {
+        columns.push(<th className={'column width1'} key={'actions'}>{row.actionTitle}</th>)
+    }
     return (<thead><tr className={'head text-xs'}>{columns}</tr></thead>)
 }
 
