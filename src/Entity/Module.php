@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
+use App\Util\TranslationsHelper;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -101,6 +102,11 @@ class Module implements EntityInterface
      * @ORM\OneToMany(targetEntity="Action", mappedBy="module")
      */
     private $actions;
+
+    /**
+     * @var null|string
+     */
+    private $status;
 
     /**
      * @return int|null
@@ -307,6 +313,7 @@ class Module implements EntityInterface
             'version' => $this->version,
             'author' => $this->author,
             'url' => $this->url,
+            'status' => $this->getStatus(),
         ];
     }
 
@@ -351,4 +358,31 @@ class Module implements EntityInterface
 
         return true;
     }
+
+    /**
+     * getModuleDir
+     * @return string
+     */
+    private function getModuleDir(): string
+    {
+        return realpath(__DIR__ . '/../../vendor/kookaburra') ?: '';
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getStatus(): string
+    {
+        if (null === $this->status) {
+            if (false === is_dir($this->getModuleDir() . '/' . str_replace(' ', '-', strtolower($this->getName()))))
+            {
+                $this->status = TranslationsHelper::translate('Not Installed');
+            } else {
+                $this->status = TranslationsHelper::translate('Installed');
+            }
+        }
+        return $this->status;
+    }
+
+
 }

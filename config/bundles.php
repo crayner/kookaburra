@@ -18,6 +18,6 @@ return [
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
     Kookaburra\SystemAdmin\KookaburraSystemAdminBundle::class => ['all' => true],
     Kookaburra\UserAdmin\KookaburraUserAdminBundle::class => ['all' => true],
-    Kookaburra\Department\KookaburraDepartmentBundle::class => ['all' => true],
-    Kookaburra\RollGroup\KookaburraRollGroupBundle::class => ['all' => true],
+    Kookaburra\Departments\KookaburraDepartmentsBundle::class => ['all' => true],
+    Kookaburra\RollGroups\KookaburraRollGroupsBundle::class => ['all' => true],
 ];
