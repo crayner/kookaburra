@@ -13,9 +13,11 @@ export default function FormApp(props) {
     } = props
 
     if (form.template === 'table') {
-        const rows = Object.keys(form.children).map(key => {
+        let rows = []
+        Object.keys(form.children).map(key => {
             const child = form.children[key]
-            return (<Row key={key} form={child} functions={functions} columns={form.columns}/>)
+            if (child.panel === false || child.panel === formName)
+                rows.push(<Row key={key} form={child} functions={functions} columns={form.columns}/>)
         })
 
         let columns = []

@@ -15,6 +15,7 @@ export default function PanelApp(props) {
         functions,
     } = props
 
+    console.log(forms)
     const tabIndex = panels[selectedPanel].index
 
     if (Object.keys(panels).length === 1) {

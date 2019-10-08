@@ -234,12 +234,13 @@ final class Version20000101000000 extends AbstractMigration
   `id` int(3) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `facility` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'The library name should be unqiue.',
-  `abbr` varchar(6) CHARACTER SET utf8 NOT NULL COMMENT 'The library Abbreviation should be unique.',
+  `abbr` varchar(6) CHARACTER SET utf8 NOT NULL,
+  `active` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `abbr` (`abbr`),
   KEY `facility` (`facility`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+) ENGINE=InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
         $this->addSql("CREATE TABLE `gibbonLibraryItem` (
     `gibbonLibraryItemID` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `id` varchar(191) COLLATE utf8_unicode_ci NOT NULL,

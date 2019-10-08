@@ -8027,8 +8027,8 @@ UNLOCK TABLES;
 LOCK TABLES `gibbonLibrary` WRITE;
 ALTER TABLE `gibbonLibrary` DISABLE KEYS;
 
-INSERT INTO `gibbonlibrary` (`id`, `facility`, `name`, `abbr`) VALUES
-(001, 0000000013, 'General Library', 'Gen');
+INSERT INTO `gibbonlibrary` (`id`, `facility`, `name`, `abbr`, `active`) VALUES
+(001, 0000000013, 'General Library', 'Gen', 1);
 
 ALTER TABLE `gibbonLibrary` ENABLE KEYS;
 UNLOCK TABLES;

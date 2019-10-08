@@ -180,6 +180,7 @@ export default class ContainerApp extends Component {
     }
 
     onElementChange(e, form) {
+        const submitOnChange = form.submit_on_change
         let parentForm = this.getParentForm(form)
         const parentName = this.getParentFormName(form)
         if (form.type === 'toggle') {
@@ -205,6 +206,8 @@ export default class ContainerApp extends Component {
         form.value = value
         const newValue = this.changeFormValue({...parentForm},form,value)
         this.setParentState(this.mergeParentForm(parentName, newValue))
+        if (submitOnChange)
+            this.submitForm({},form)
     }
 
     buildFormData(data, form) {

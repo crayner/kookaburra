@@ -60,6 +60,9 @@ function renderPanelContent(panel, props){
     }
 
     let form = props.forms[panel.name]
+    if (typeof form === 'undefined')
+        form = props.forms['single']
+    console.log(form)
     return <FormApp
         {...props}
         formName={panel.name}

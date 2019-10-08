@@ -168,6 +168,7 @@ class ReactFormType extends AbstractType
         $vars['required'] = isset($view->vars['required']) ? $view->vars['required'] : false;
         $vars['on_change'] = $view->vars['on_change'];
         $vars['on_click'] = $view->vars['on_click'];
+        $vars['submit_on_change'] = $view->vars['submit_on_change'];
         $vars['panel'] = $view->vars['panel'];
         $vars['row_style'] = $view->vars['row_style'];
         $vars['template'] = isset($view->vars['template']) ? $view->vars['template'] : null;
