@@ -983,3 +983,33 @@ IT Services: IT Services
 'No staff have been allocated this this department!': 'No staff have been allocated this this department!'
 Installation of modules is done using the composer package manager.: Installation of modules is done using the composer package manager.
 Author: Author
+Browse The Library: Browse The Library
+Lending & Activity Log: Lending & Activity Log
+Manage Catalog: Manage Catalog
+Reports: Reports
+Catalog Summary: Catalog Summary
+Student Borrowing Record: Student Borrowing Record
+View Overdue Items: View Overdue Items
+Available: Available
+Duplicate: Duplicate
+SchoolID: SchoolID
+Ownership: Ownership
+Are you sure you want to delete this record?: Are you sure you want to delete this record?
+This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!: This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!
+Manage Catalogue: Manage Catalogue
+Search & Filter: Search & Filter
+'Your request was completed successfully. # records were added.': "{count, plural,
+                                                                         =0 {Your request was completed successfully. No records were added.}
+                                                                         one {Your request was completed successfully. One record was added.}
+                                                                         other {Your request was completed successfully. # records were added.}
+                                                                     }"
+'Item Identifier': 'Item count Identifier'
+Quantity: Quantity
+The system will create unique identifiers for each new item.: The system will create unique identifiers for each new item.
+Item Type: Item Type
+Unique key for this item on the system.: Unique key for this item on the system.
+Number of Copies: Number of Copies
+How many copies do you want to make of this item?: How many copies do you want to make of this item?
+Duplicate Item: Duplicate Item
+Manual entry of item identifiers is required.: Manual entry of item identifiers is required.
+Item Identifiers: Item Identifiers

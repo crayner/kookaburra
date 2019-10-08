@@ -61,6 +61,5 @@ class MainMenu implements ContentInterface
             }
             $this->addAttribute('menuMainItems', $menuMainItems);
         }
-        dump($menuMainItems);
     }
 }

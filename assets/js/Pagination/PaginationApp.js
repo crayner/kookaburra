@@ -71,9 +71,8 @@ export default class PaginationApp extends Component {
         })
     }
 
-
-
     sortColumn(columnName){
+
         let column = {}
         Object.keys(this.row.columns).filter(columnKey=> {
             if(this.row.columns[columnKey].contentKey === columnName)
@@ -81,7 +80,13 @@ export default class PaginationApp extends Component {
         })
         if (column.sort !== true)
             return
+
+
         let direction = this.state.sortDirection
+
+        if (typeof columnName === 'object')
+            columnName = columnName[0]
+
         if (columnName === this.state.sortColumn)
         {
             direction = direction === 'down' ? 'up' : 'down'

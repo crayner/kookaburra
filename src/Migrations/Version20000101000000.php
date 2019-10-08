@@ -44,7 +44,7 @@ final class Version20000101000000 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE gibbonAction (gibbonActionID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(50) NOT NULL COMMENT \'The action name should be unqiue to the module that it is related to\', precedence INT(2), category VARCHAR(20) NOT NULL, description VARCHAR(255) NOT NULL, URLList LONGTEXT NOT NULL COMMENT \'Comma seperated list of all URLs that make up this action\', entryURL VARCHAR(255) NOT NULL, entrySidebar VARCHAR(1) DEFAULT \'Y\' NOT NULL, menuShow VARCHAR(1) DEFAULT \'Y\' NOT NULL, defaultPermissionAdmin VARCHAR(1) DEFAULT \'N\' NOT NULL, defaultPermissionTeacher VARCHAR(1) DEFAULT \'N\' NOT NULL, defaultPermissionStudent VARCHAR(1) DEFAULT \'N\' NOT NULL, defaultPermissionParent VARCHAR(1) DEFAULT \'N\' NOT NULL, defaultPermissionSupport VARCHAR(1) DEFAULT \'N\' NOT NULL, categoryPermissionStaff VARCHAR(1) DEFAULT \'Y\' NOT NULL, categoryPermissionStudent VARCHAR(1) DEFAULT \'Y\' NOT NULL, categoryPermissionParent VARCHAR(1) DEFAULT \'Y\' NOT NULL, categoryPermissionOther VARCHAR(1) DEFAULT \'Y\' NOT NULL, gibbonModuleID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX gibbonModuleID (gibbonModuleID), UNIQUE INDEX moduleActionName (name, gibbonModuleID), PRIMARY KEY(gibbonActionID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
+        $this->addSql("CREATE TABLE gibbonAction (gibbonActionID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(50) NOT NULL COMMENT 'The action name should be unqiue to the module that it is related to', precedence INT(2), category VARCHAR(20) NOT NULL, description VARCHAR(255) NOT NULL, URLList LONGTEXT NOT NULL COMMENT 'Comma seperated list of all URLs that make up this action', entryURL VARCHAR(255) NOT NULL, entrySidebar VARCHAR(1) DEFAULT 'Y' NOT NULL, menuShow VARCHAR(1) DEFAULT 'Y' NOT NULL, defaultPermissionAdmin VARCHAR(1) DEFAULT 'N' NOT NULL, defaultPermissionTeacher VARCHAR(1) DEFAULT 'N' NOT NULL, defaultPermissionStudent VARCHAR(1) DEFAULT 'N' NOT NULL, defaultPermissionParent VARCHAR(1) DEFAULT 'N' NOT NULL, defaultPermissionSupport VARCHAR(1) DEFAULT 'N' NOT NULL, categoryPermissionStaff VARCHAR(1) DEFAULT 'Y' NOT NULL, categoryPermissionStudent VARCHAR(1) DEFAULT 'Y' NOT NULL, categoryPermissionParent VARCHAR(1) DEFAULT 'Y' NOT NULL, categoryPermissionOther VARCHAR(1) DEFAULT 'Y' NOT NULL, gibbonModuleID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX gibbonModuleID (gibbonModuleID), UNIQUE INDEX moduleActionName (name, gibbonModuleID), PRIMARY KEY(gibbonActionID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1");
         $this->addSql('CREATE TABLE gibbonActivity (gibbonActivityID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, active VARCHAR(1) DEFAULT \'Y\' NOT NULL, registration VARCHAR(1) DEFAULT \'Y\' NOT NULL COMMENT \'Can a parent/student select this for registration?\', name VARCHAR(40) NOT NULL, provider VARCHAR(8) DEFAULT \'School\' NOT NULL, type VARCHAR(255) NOT NULL, gibbonSchoolYearTermIDList LONGTEXT NOT NULL, listingStart DATE DEFAULT NULL, listingEnd DATE DEFAULT NULL, programStart DATE DEFAULT NULL, programEnd DATE DEFAULT NULL, description LONGTEXT DEFAULT NULL, payment NUMERIC(8, 2) DEFAULT NULL, paymentFirmness VARCHAR(9) DEFAULT \'Finalised\', paymentType VARCHAR(24) DEFAULT \'Entire Programme\', gibbonYearGroupIDList VARCHAR(255) NOT NULL, maxParticipants INT(3), gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_F971E05871FA7520 (gibbonSchoolYearID), PRIMARY KEY(gibbonActivityID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonActivityAttendance (gibbonActivityAttendanceID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, attendance LONGTEXT NOT NULL, date DATE DEFAULT NULL, timestampTaken DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, gibbonActivityID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDTaker INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_2357A712C3BBAF6F (gibbonActivityID), INDEX IDX_2357A71211A14ED (gibbonPersonIDTaker), PRIMARY KEY(gibbonActivityAttendanceID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonActivitySlot (gibbonActivitySlotID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, locationExternal VARCHAR(50) NOT NULL, timeStart TIME NOT NULL, timeEnd TIME NOT NULL, gibbonActivityID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonSpaceID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonDaysOfWeekID INT(2) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_59227ABBC3BBAF6F (gibbonActivityID), INDEX IDX_59227ABBD8D64BA0 (gibbonSpaceID), INDEX IDX_59227ABB2817C0E1 (gibbonDaysOfWeekID), PRIMARY KEY(gibbonActivitySlotID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
@@ -137,7 +137,7 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('CREATE TABLE gibbonExternalAssessmentField (gibbonExternalAssessmentFieldID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, category VARCHAR(50) NOT NULL, `order` INT(4), gibbonYearGroupIDList VARCHAR(255) DEFAULT NULL, gibbonExternalAssessmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_A03EECA95F72BC3 (gibbonScaleID), INDEX gibbonExternalAssessmentID (gibbonExternalAssessmentID), PRIMARY KEY(gibbonExternalAssessmentFieldID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonExternalAssessmentStudent (gibbonExternalAssessmentStudentID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, date DATE NOT NULL, attachment VARCHAR(255) NOT NULL, gibbonExternalAssessmentID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX gibbonExternalAssessmentID (gibbonExternalAssessmentID), INDEX gibbonPersonID (gibbonPersonID), PRIMARY KEY(gibbonExternalAssessmentStudentID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonExternalAssessmentStudentEntry (gibbonExternalAssessmentStudentEntryID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonExternalAssessmentStudentID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonExternalAssessmentFieldID INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleGradeID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX gibbonExternalAssessmentStudentID (gibbonExternalAssessmentStudentID), INDEX gibbonExternalAssessmentFieldID (gibbonExternalAssessmentFieldID), INDEX gibbonScaleGradeID (gibbonScaleGradeID), PRIMARY KEY(gibbonExternalAssessmentStudentEntryID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE `gibbonFamily` (
+        $this->addSql("CREATE TABLE `gibbonFamily` (
   `gibbonFamilyID` int(7) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `nameAddress` varchar(100) COLLATE utf8_unicode_ci NOT NULL COMMENT \'The formal name to be used for addressing the family (e.g. Mr. & Mrs. Smith)\',
@@ -151,7 +151,7 @@ final class Version20000101000000 extends AbstractMigration
   PRIMARY KEY (`gibbonFamilyID`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `familySync` (`familySync`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1");
         $this->addSql('CREATE TABLE `gibbonFamilyAdult` (
   `gibbonFamilyAdultID` int(8) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `comment` longtext COLLATE utf8_unicode_ci NOT NULL,
@@ -228,8 +228,20 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('CREATE TABLE gibbonInternalAssessmentColumn (gibbonInternalAssessmentColumnID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, groupingID INT(8) UNSIGNED ZEROFILL, name VARCHAR(20) NOT NULL, description LONGTEXT NOT NULL, type VARCHAR(50) NOT NULL, attachment VARCHAR(255) NOT NULL, attainment VARCHAR(1) DEFAULT \'Y\' NOT NULL, effort VARCHAR(1) DEFAULT \'Y\' NOT NULL, comment VARCHAR(1) DEFAULT \'Y\' NOT NULL, uploadedResponse VARCHAR(1) DEFAULT \'N\' NOT NULL, complete VARCHAR(1) NOT NULL, completeDate DATE DEFAULT NULL, viewableStudents VARCHAR(1) NOT NULL, viewableParents VARCHAR(1) NOT NULL, gibbonCourseClassID INT(8) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleIDAttainment INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonScaleIDEffort INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDCreator INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDLastEdit INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_E0A1D88AB67991E (gibbonCourseClassID), INDEX IDX_E0A1D88A2C639785 (gibbonScaleIDAttainment), INDEX IDX_E0A1D88AD395ACF8 (gibbonScaleIDEffort), INDEX IDX_E0A1D88AFF59AAB0 (gibbonPersonIDCreator), INDEX IDX_E0A1D88A519966BA (gibbonPersonIDLastEdit), PRIMARY KEY(gibbonInternalAssessmentColumnID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonInternalAssessmentEntry (gibbonInternalAssessmentEntryID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, attainmentValue VARCHAR(10) DEFAULT NULL, attainmentDescriptor VARCHAR(100) DEFAULT NULL, effortValue VARCHAR(10) DEFAULT NULL, effortDescriptor VARCHAR(100) DEFAULT NULL, comment LONGTEXT DEFAULT NULL, response LONGTEXT DEFAULT NULL, gibbonInternalAssessmentColumnID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStudent INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDLastEdit INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_B09C6F558B7A9BC (gibbonInternalAssessmentColumnID), INDEX IDX_B09C6F5F47CEFE0 (gibbonPersonIDStudent), INDEX IDX_B09C6F5519966BA (gibbonPersonIDLastEdit), PRIMARY KEY(gibbonInternalAssessmentEntryID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonLanguage (gibbonLanguageID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, PRIMARY KEY(gibbonLanguageID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE `gibbonLibraryItem` (
-  `gibbonLibraryItemID` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+        
+        
+        $this->addSql("CREATE TABLE `gibbonLibrary` (
+  `id` int(3) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `facility` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'The library name should be unqiue.',
+  `abbr` varchar(6) CHARACTER SET utf8 NOT NULL COMMENT 'The library Abbreviation should be unique.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `abbr` (`abbr`),
+  KEY `facility` (`facility`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+        $this->addSql("CREATE TABLE `gibbonLibraryItem` (
+    `gibbonLibraryItemID` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `id` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT \'Name for book, model for computer, etc.\',
   `producer` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT \'Author for book, manufacturer for computer, etc\',
@@ -263,8 +275,9 @@ final class Version20000101000000 extends AbstractMigration
   `gibbonPersonIDReturnAction` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
   `gibbonPersonIDCreator` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
   `gibbonPersonIDUpdate` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `library` int(3) UNSIGNED ZEROFILL NOT NULL,
   PRIMARY KEY (`gibbonLibraryItemID`),
-  UNIQUE KEY `identifier` (`id`) USING BTREE,
+  UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `IDX_7D8DF16EE1BB9F5` (`gibbonLibraryTypeID`),
   KEY `IDX_7D8DF16ED8D64BA0` (`gibbonSpaceID`),
   KEY `IDX_7D8DF16EC4597887` (`gibbonPersonIDOwnership`),
@@ -274,10 +287,36 @@ final class Version20000101000000 extends AbstractMigration
   KEY `IDX_7D8DF16ECCCD7B64` (`gibbonPersonIDStatusRecorder`),
   KEY `IDX_7D8DF16EFA1AE1AB` (`gibbonPersonIDReturnAction`),
   KEY `IDX_7D8DF16EFF59AAB0` (`gibbonPersonIDCreator`),
-  KEY `IDX_7D8DF16EAE8C8C10` (`gibbonPersonIDUpdate`)
+  KEY `IDX_7D8DF16EAE8C8C10` (`gibbonPersonIDUpdate`),
+  KEY `IDX_7D8DF16EA18098BC` (`library`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1");
+        $this->addSql("CREATE TABLE `gibbonLibraryItemEvent` (
+    `gibbonLibraryItemEventID` int(14) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `type` varchar(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Other\' COMMENT \'This is maintained even after the item is returned, so we know what type of event it was.\',
+  `status` varchar(16) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Available\',
+  `timestampOut` datetime DEFAULT NULL COMMENT \'The time the event was recorded\',
+  `returnExpected` date DEFAULT NULL COMMENT \'The time when the event expires.\',
+  `returnAction` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT \'What to do when the item is returned?\',
+  `timestampReturn` datetime DEFAULT NULL,
+  `gibbonLibraryItemID` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDStatusResponsible` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDOut` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDReturnAction` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  `gibbonPersonIDIn` int(10) UNSIGNED ZEROFILL DEFAULT NULL,
+  PRIMARY KEY (`gibbonLibraryItemEventID`),
+  KEY `IDX_91CB122520179A14` (`gibbonLibraryItemID`),
+  KEY `IDX_91CB1225E0330702` (`gibbonPersonIDStatusResponsible`),
+  KEY `IDX_91CB1225D2C06C05` (`gibbonPersonIDOut`),
+  KEY `IDX_91CB1225FA1AE1AB` (`gibbonPersonIDReturnAction`),
+  KEY `IDX_91CB12251EBCE61E` (`gibbonPersonIDIn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1");
+        $this->addSql('CREATE TABLE `gibbonLibraryType` (
+    `gibbonLibraryTypeID` int(5) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `active` varchar(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT \'Y\',
+  `fields` longtext COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`gibbonLibraryTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonLibraryItemEvent (gibbonLibraryItemEventID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, type VARCHAR(12) DEFAULT \'Other\' NOT NULL COMMENT \'This is maintained even after the item is returned, so we know what type of event it was.\', status VARCHAR(16) DEFAULT \'Available\' NOT NULL, timestampOut DATETIME DEFAULT NULL COMMENT \'The time the event was recorded\', returnExpected DATE DEFAULT NULL COMMENT \'The time when the event expires.\', returnAction VARCHAR(16) DEFAULT NULL COMMENT \'What to do when the item is returned?\', timestampReturn DATETIME DEFAULT NULL, gibbonLibraryItemID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDStatusResponsible INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDOut INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDReturnAction INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDIn INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_91CB122520179A14 (gibbonLibraryItemID), INDEX IDX_91CB1225E0330702 (gibbonPersonIDStatusResponsible), INDEX IDX_91CB1225D2C06C05 (gibbonPersonIDOut), INDEX IDX_91CB1225FA1AE1AB (gibbonPersonIDReturnAction), INDEX IDX_91CB12251EBCE61E (gibbonPersonIDIn), PRIMARY KEY(gibbonLibraryItemEventID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonLibraryType (gibbonLibraryTypeID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, name VARCHAR(30) NOT NULL, active VARCHAR(1) DEFAULT \'Y\' NOT NULL, fields LONGTEXT NOT NULL, PRIMARY KEY(gibbonLibraryTypeID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonLog (gibbonLogID INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, title VARCHAR(50) NOT NULL, serialisedArray LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:simple_array)\', ip VARCHAR(15) DEFAULT NULL, gibbonModuleID INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_C0122755CB86AD4B (gibbonModuleID), INDEX IDX_C0122755CC6782D6 (gibbonPersonID), INDEX IDX_C012275571FA7520 (gibbonSchoolYearID), PRIMARY KEY(gibbonLogID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonMarkbookColumn` (
   `gibbonMarkbookColumnID` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
@@ -672,21 +711,24 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('ALTER TABLE gibbonInternalAssessmentEntry ADD CONSTRAINT FK_B09C6F558B7A9BC FOREIGN KEY (gibbonInternalAssessmentColumnID) REFERENCES gibbonInternalAssessmentColumn (gibbonInternalAssessmentColumnID)');
         $this->addSql('ALTER TABLE gibbonInternalAssessmentEntry ADD CONSTRAINT FK_B09C6F5F47CEFE0 FOREIGN KEY (gibbonPersonIDStudent) REFERENCES gibbonPerson (gibbonPersonID)');
         $this->addSql('ALTER TABLE gibbonInternalAssessmentEntry ADD CONSTRAINT FK_B09C6F5519966BA FOREIGN KEY (gibbonPersonIDLastEdit) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16EE1BB9F5 FOREIGN KEY (gibbonLibraryTypeID) REFERENCES gibbonLibraryType (gibbonLibraryTypeID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16ED8D64BA0 FOREIGN KEY (gibbonSpaceID) REFERENCES gibbonSpace (gibbonSpaceID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16EC4597887 FOREIGN KEY (gibbonPersonIDOwnership) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16E6DFE7E92 FOREIGN KEY (gibbonDepartmentID) REFERENCES gibbonDepartment (gibbonDepartmentID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16E2797629C FOREIGN KEY (gibbonSchoolYearIDReplacement) REFERENCES gibbonSchoolYear (gibbonSchoolYearID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16EE0330702 FOREIGN KEY (gibbonPersonIDStatusResponsible) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16ECCCD7B64 FOREIGN KEY (gibbonPersonIDStatusRecorder) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16EFA1AE1AB FOREIGN KEY (gibbonPersonIDReturnAction) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16EFF59AAB0 FOREIGN KEY (gibbonPersonIDCreator) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItem ADD CONSTRAINT FK_7D8DF16EAE8C8C10 FOREIGN KEY (gibbonPersonIDUpdate) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItemEvent ADD CONSTRAINT FK_91CB122520179A14 FOREIGN KEY (gibbonLibraryItemID) REFERENCES gibbonLibraryItem (gibbonLibraryItemID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItemEvent ADD CONSTRAINT FK_91CB1225E0330702 FOREIGN KEY (gibbonPersonIDStatusResponsible) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItemEvent ADD CONSTRAINT FK_91CB1225D2C06C05 FOREIGN KEY (gibbonPersonIDOut) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItemEvent ADD CONSTRAINT FK_91CB1225FA1AE1AB FOREIGN KEY (gibbonPersonIDReturnAction) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonLibraryItemEvent ADD CONSTRAINT FK_91CB12251EBCE61E FOREIGN KEY (gibbonPersonIDIn) REFERENCES gibbonPerson (gibbonPersonID)');
+        $this->addSql('ALTER TABLE `gibbonLibraryItem`
+  ADD CONSTRAINT `FK_7D8DF16E2797629C` FOREIGN KEY (`gibbonSchoolYearIDReplacement`) REFERENCES `gibbonschoolyear` (`gibbonSchoolYearID`),
+  ADD CONSTRAINT `FK_7D8DF16E6DFE7E92` FOREIGN KEY (`gibbonDepartmentID`) REFERENCES `gibbondepartment` (`gibbonDepartmentID`),
+  ADD CONSTRAINT `FK_7D8DF16EA18098BC` FOREIGN KEY (`library`) REFERENCES `gibbonlibrary` (`id`),
+  ADD CONSTRAINT `FK_7D8DF16EAE8C8C10` FOREIGN KEY (`gibbonPersonIDUpdate`) REFERENCES `gibbonperson` (`gibbonPersonID`),
+  ADD CONSTRAINT `FK_7D8DF16EC4597887` FOREIGN KEY (`gibbonPersonIDOwnership`) REFERENCES `gibbonperson` (`gibbonPersonID`),
+  ADD CONSTRAINT `FK_7D8DF16ECCCD7B64` FOREIGN KEY (`gibbonPersonIDStatusRecorder`) REFERENCES `gibbonperson` (`gibbonPersonID`),
+  ADD CONSTRAINT `FK_7D8DF16ED8D64BA0` FOREIGN KEY (`gibbonSpaceID`) REFERENCES `gibbonspace` (`gibbonSpaceID`),
+  ADD CONSTRAINT `FK_7D8DF16EE0330702` FOREIGN KEY (`gibbonPersonIDStatusResponsible`) REFERENCES `gibbonperson` (`gibbonPersonID`),
+  ADD CONSTRAINT `FK_7D8DF16EE1BB9F5` FOREIGN KEY (`gibbonLibraryTypeID`) REFERENCES `gibbonlibrarytype` (`gibbonLibraryTypeID`),
+  ADD CONSTRAINT `FK_7D8DF16EFA1AE1AB` FOREIGN KEY (`gibbonPersonIDReturnAction`) REFERENCES `gibbonperson` (`gibbonPersonID`),
+  ADD CONSTRAINT `FK_7D8DF16EFF59AAB0` FOREIGN KEY (`gibbonPersonIDCreator`) REFERENCES `gibbonperson` (`gibbonPersonID`)');
+        $this->addSql('ALTER TABLE `gibbonLibraryItemEvent`
+  ADD CONSTRAINT `FK_91CB12251EBCE61E` FOREIGN KEY (`gibbonPersonIDIn`) REFERENCES `gibbonperson` (`gibbonPersonID`),
+  ADD CONSTRAINT `FK_91CB122520179A14` FOREIGN KEY (`gibbonLibraryItemID`) REFERENCES `gibbonlibraryitem` (`gibbonLibraryItemID`),
+  ADD CONSTRAINT `FK_91CB1225D2C06C05` FOREIGN KEY (`gibbonPersonIDOut`) REFERENCES `gibbonperson` (`gibbonPersonID`),
+  ADD CONSTRAINT `FK_91CB1225E0330702` FOREIGN KEY (`gibbonPersonIDStatusResponsible`) REFERENCES `gibbonperson` (`gibbonPersonID`),
+  ADD CONSTRAINT `FK_91CB1225FA1AE1AB` FOREIGN KEY (`gibbonPersonIDReturnAction`) REFERENCES `gibbonperson` (`gibbonPersonID`)');
         $this->addSql('ALTER TABLE gibbonLog ADD CONSTRAINT FK_C0122755CB86AD4B FOREIGN KEY (gibbonModuleID) REFERENCES gibbonModule (gibbonModuleID)');
         $this->addSql('ALTER TABLE gibbonLog ADD CONSTRAINT FK_C0122755CC6782D6 FOREIGN KEY (gibbonPersonID) REFERENCES gibbonPerson (gibbonPersonID)');
         $this->addSql('ALTER TABLE gibbonLog ADD CONSTRAINT FK_C012275571FA7520 FOREIGN KEY (gibbonSchoolYearID) REFERENCES gibbonSchoolYear (gibbonSchoolYearID)');
@@ -1241,6 +1283,7 @@ final class Version20000101000000 extends AbstractMigration
         $this->addSql('DROP TABLE gibbonInternalAssessmentColumn');
         $this->addSql('DROP TABLE gibbonInternalAssessmentEntry');
         $this->addSql('DROP TABLE gibbonLanguage');
+        $this->addSql('DROP TABLE gibbonLibrary');
         $this->addSql('DROP TABLE gibbonLibraryItem');
         $this->addSql('DROP TABLE gibbonLibraryItemEvent');
         $this->addSql('DROP TABLE gibbonLibraryType');

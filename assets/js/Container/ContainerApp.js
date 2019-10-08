@@ -239,12 +239,17 @@ export default class ContainerApp extends Component {
             {method: parentForm.method, body: JSON.stringify(data)},
             false)
             .then(data => {
-                let errors = parentForm.errors
-                errors = errors.concat(data.errors)
-                let form = typeof this.functions.submitFormCallable === 'function' ? this.functions.submitFormCallable(data.form) : data.form
-                form.errors = errors
-                this.submit[parentName] = false
-                this.setParentState({...this.mergeParentForm(parentName, {...form})})
+                if (data.status === 'redirect')
+                {
+                    window.open(data.redirect,'_self');
+                } else {
+                    let errors = parentForm.errors
+                    errors = errors.concat(data.errors)
+                    let form = typeof this.functions.submitFormCallable === 'function' ? this.functions.submitFormCallable(data.form) : data.form
+                    form.errors = errors
+                    this.submit[parentName] = false
+                    this.setParentState({...this.mergeParentForm(parentName, {...form})})
+                }
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})
                 this.submit[parentName] = false
