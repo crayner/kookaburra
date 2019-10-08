@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import HeaderRow from "./HeaderRow"
 import firstBy from 'thenby'
 import PaginationContent from "./PaginationContent"
+import AreYouSureDialog from "../component/AreYouSureDialog"
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -12,13 +13,20 @@ export default class PaginationApp extends Component {
         this.pageMax = props.pageMax
         this.row = props.row
         this.content = props.content
+        this.messages = props.translations
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
         this.lastPage = this.lastPage.bind(this)
         this.prevPage = this.prevPage.bind(this)
         this.nextPage = this.nextPage.bind(this)
+        this.deleteItem = this.deleteItem.bind(this)
+        this.closeConfirm = this.closeConfirm.bind(this)
         this.adjustPageSize = this.adjustPageSize.bind(this)
+        this.functions = {
+            areYouSure: this.areYouSure.bind(this)
+        }
+        this.path = ''
 
         this.state = {
             sortColumn: '',
@@ -27,7 +35,8 @@ export default class PaginationApp extends Component {
             offset: 0,
             controls: [],
             pageMax: this.pageMax,
-            sizeButtons: []
+            sizeButtons: [],
+            confirm: false,
         }
     }
 
@@ -37,8 +46,32 @@ export default class PaginationApp extends Component {
             results: result,
             control: this.buildControl(this.state.offset, result),
             sizeButtons: this.buildPageSizeControls(this.state.pageMax),
+            confirm: false,
         })
     }
+
+    areYouSure(path) {
+        this.path = path
+        this.setState({
+            confirm: true
+        })
+    }
+
+    deleteItem(path) {
+        this.setState({
+            confirm: false
+        })
+        window.open(path,'_self')
+    }
+
+    closeConfirm(){
+        this.path = ''
+        this.setState({
+            confirm: false
+        })
+    }
+
+
 
     sortColumn(columnName){
         let column = {}
@@ -183,8 +216,9 @@ export default class PaginationApp extends Component {
                 <div className={'text-xs text-gray-600 text-right'} style={{marginTop: '-12px'}}>{this.state.control}</div></div>
                 <table className={'w-full striped'}>
                     <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn} sortColumnDirection={this.state.sortDirection} />
-                    <PaginationContent row={this.row} content={this.state.results} />
+                    <PaginationContent row={this.row} content={this.state.results} functions={this.functions} />
                 </table>
+                <AreYouSureDialog messages={this.messages} doit={() => this.deleteItem(this.path)} cancel={() => this.closeConfirm()} confirm={this.state.confirm} />
             </div>
         )
     }
@@ -194,4 +228,5 @@ PaginationApp.propTypes = {
     pageMax: PropTypes.number.isRequired,
     row: PropTypes.object.isRequired,
     content: PropTypes.array.isRequired,
+    translations: PropTypes.object.isRequired,
 }

@@ -20,4 +20,5 @@ return [
     Kookaburra\UserAdmin\KookaburraUserAdminBundle::class => ['all' => true],
     Kookaburra\Departments\KookaburraDepartmentsBundle::class => ['all' => true],
     Kookaburra\RollGroups\KookaburraRollGroupsBundle::class => ['all' => true],
+    Kookaburra\Library\KookaburraLibraryBundle::class => ['all' => true],
 ];

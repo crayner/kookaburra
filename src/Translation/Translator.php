@@ -68,6 +68,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
             return $trans;
 
         $strings = $this->getStrings();
+        $trans = str_replace(array_keys($parameters), array_values($parameters), $trans);
 
         if ((! empty($strings) || $strings->count() > 0) && $strings instanceof ArrayCollection) {
             foreach ($strings->toArray() as $replacement) {

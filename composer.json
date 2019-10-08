@@ -16,6 +16,7 @@
         "friendsofsymfony/ckeditor-bundle": "^2.1",
         "google/apiclient": "^2.2",
         "kookaburra/departments": "dev-master",
+        "kookaburra/library": "dev-master",
         "kookaburra/roll-groups": "dev-master",
         "kookaburra/system-admin": "dev-master",
         "kookaburra/user-admin": "dev-master",

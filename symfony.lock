@@ -153,6 +153,9 @@
     "kookaburra/departments": {
         "version": "dev-master"
     },
+    "kookaburra/library": {
+        "version": "dev-master"
+    },
     "kookaburra/roll-group": {
         "version": "dev-master"
     },

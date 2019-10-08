@@ -124,6 +124,29 @@ class ProviderFactory
             return self::$instances[$entityName];
         }
 
+        if (self::$stack->getParentRequest()) {
+            if (self::$stack->getParentRequest()->attributes->has('module') && false !== self::$stack->getParentRequest()->attributes->get('module')) {
+                $module = self::$stack->getParentRequest()->attributes->get('module');
+                $providerName = '\Kookaburra\\' . str_replace(' ', '', $module->getName()) . '\Provider\\' . $entityName . 'Provider';
+                if (class_exists($providerName)) {
+                    self::$instances[$entityName] = new $providerName(self::$factory);
+                    return self::$instances[$entityName];
+                }
+            }
+        }
+
+        if (self::$stack->getCurrentRequest()) {
+            if (self::$stack->getCurrentRequest()->attributes->has('module') && false !== self::$stack->getCurrentRequest()->attributes->get('module')) {
+                $module = self::$stack->getCurrentRequest()->attributes->get('module');
+                $providerName = '\Kookaburra\\' . str_replace(' ', '', $module->getName()) . '\Provider\\' . $entityName . 'Provider';
+                if (class_exists($providerName)) {
+                    self::$instances[$entityName] = new $providerName(self::$factory);
+                    return self::$instances[$entityName];
+                }
+            }
+        }
+
+        dump(self::$stack, self::$stack->getParentRequest());
         throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available.', $entityName));
     }
 

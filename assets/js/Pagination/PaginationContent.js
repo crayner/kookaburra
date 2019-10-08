@@ -7,6 +7,7 @@ export default function PaginationContent(props) {
     const {
         row,
         content,
+        functions,
     } = props
 
 
@@ -27,15 +28,31 @@ export default function PaginationContent(props) {
 
         let columns = Object.keys(row.columns).map(columnKey => {
             let columnDefinition = row.columns[columnKey]
+            let columnContent = []
 
-            return (<td key={columnKey} className={columnDefinition.class}>{rowContent[columnDefinition.contentKey]}</td> )
+            if (typeof columnDefinition.contentKey === 'object')
+            {
+                columnDefinition.contentKey.map((value,key) => {
+                    if (key > 0)
+                        columnContent.push(<span key={key} className={'small text-gray-600 italic'}><br/>{rowContent[value]}</span>)
+                    else
+                        columnContent.push(<span key={key}>{rowContent[value]}</span>)
+                })
+            } else {
+                columnContent = [rowContent[columnDefinition.contentKey]]
+            }
+
+            return (<td key={columnKey} className={columnDefinition.class}>{columnContent}</td> )
 
         })
 
         // add Actions column
         let actions = Object.keys(row.actions).map(actionKey => {
             let action = row.actions[actionKey]
-            return (<a href={rowContent.actions[actionKey]} className={action.aClass} key={actionKey} title={action.title}><span className={action.spanClass}></span></a> )
+            if (action.onClick === '')
+                return (<a href={rowContent.actions[actionKey]} className={action.aClass} key={actionKey} title={action.title}><span className={action.spanClass}></span></a> )
+
+            return (<a href='#' onClick={() => functions[action.onClick](rowContent.actions[actionKey])} className={action.aClass} key={actionKey} title={action.title}><span className={action.spanClass}></span></a> )
 
         })
 
@@ -60,4 +77,5 @@ export default function PaginationContent(props) {
 PaginationContent.propTypes = {
     row: PropTypes.object.isRequired,
     content: PropTypes.array.isRequired,
+    functions: PropTypes.object.isRequired,
 }

@@ -29,7 +29,7 @@ class PaginationColumn
     private $help;
 
     /**
-     * @var string|null
+     * @var string|array|null
      */
     private $contentKey;
 
@@ -84,9 +84,9 @@ class PaginationColumn
     }
 
     /**
-     * @return string|null
+     * @return string|array|null
      */
-    public function getContentKey(): ?string
+    public function getContentKey()
     {
         return $this->contentKey;
     }
@@ -94,12 +94,12 @@ class PaginationColumn
     /**
      * ContentKey.
      *
-     * @param string|null $contentKey
+     * @param string|array|null $contentKey
      * @return PaginationColumn
      */
-    public function setContentKey(?string $contentKey): PaginationColumn
+    public function setContentKey($contentKey): PaginationColumn
     {
-        $this->contentKey = $contentKey;
+        $this->contentKey = is_string($contentKey) ? [$contentKey] : $contentKey ;
         return $this;
     }
 

@@ -13,6 +13,8 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use App\Provider\ProviderFactory;
+use App\Util\TranslationsHelper;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -966,5 +968,25 @@ class LibraryItem
     public function __toString(): string
     {
         return $this->getIdentifier() . ': ' . $this->getName();
+    }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->getName(),
+            'id' => $this->getId(),
+            'identifier' => $this->getIdentifier(),
+            'producer' => $this->getProducer(),
+            'typeName' => $this->getLibraryType()->getName(),
+            'space' => $this->getSpace()->getName(),
+            'locationDetail' => $this->getLocationDetail(),
+            'owner' => $this->getOwnershipType() === 'Individual' ? $this->getOwnership()->formatName(false): ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationName'),
+            'status' => TranslationsHelper::translate($this->getStatus()),
+            'borrowable' => $this->getBorrowable() ? TranslationsHelper::translate('Yes') : TranslationsHelper::translate('No'),
+        ];
     }
 }

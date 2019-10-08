@@ -13,7 +13,7 @@ export default function HeaderRow(props) {
 
     let columns = Object.keys(row.columns).map(columnKey => {
         const column = row.columns[columnKey]
-        const help = column.help !== null ? (<span className={'small text-gray-600'}><br/>{content.help}</span>) : ''
+        const help = column.help !== null ? (<span className={'small text-gray-600 italic'}><br/>{column.help}</span>) : ''
         let sort = column.sort === true ? (<span className={'fas fa-sort fa-fw text-gray-600'} style={{float: 'right'}}></span>) : ''
         if (sortColumnName === column.contentKey) {
             sort = (<span className={'fas fa-sort-' + sortColumnDirection + ' fa-fw text-gray-800'} style={{float: 'right'}}></span>)

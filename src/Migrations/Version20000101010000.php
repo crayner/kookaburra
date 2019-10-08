@@ -24,6 +24,8 @@ final class Version20000101010000 extends SqlLoad implements ContainerAwareInter
     public function up(Schema $schema) : void
     {
         $this->getSql('gibbon_base.sql');
+        $this->getSql('action_base.sql');
+        $this->getSql('module_base.sql');
         parent::up($schema);
 
 //        $this->getSql('gibbon_demo.sql');

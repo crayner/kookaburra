@@ -161,6 +161,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),
             'content' => $this->getContent(),
+            'translations' => $this->getTranslations(),
         ];
     }
 
@@ -180,5 +181,18 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     {
         $this->getScriptManager()->addAppProp('pagination', $this->toArray());
         return $this;
+    }
+
+    /**
+     * getTranslations
+     * @return array
+     */
+    public function getTranslations(): array
+    {
+        TranslationsHelper::addTranslation('Are you sure you want to delete this record?');
+        TranslationsHelper::addTranslation('This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!');
+        TranslationsHelper::addTranslation('Close');
+        TranslationsHelper::addTranslation('Yes');
+        return TranslationsHelper::getTranslations();
     }
 }

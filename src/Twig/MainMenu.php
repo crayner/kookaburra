@@ -12,7 +12,6 @@
 
 namespace App\Twig;
 
-
 use App\Entity\Action;
 use App\Entity\Module;
 use App\Provider\ProviderFactory;
@@ -20,6 +19,10 @@ use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Kookaburra\UserAdmin\Util\UserHelper;
 
+/**
+ * Class MainMenu
+ * @package App\Twig
+ */
 class MainMenu implements ContentInterface
 {
     use ContentTrait;
@@ -58,5 +61,6 @@ class MainMenu implements ContentInterface
             }
             $this->addAttribute('menuMainItems', $menuMainItems);
         }
+        dump($menuMainItems);
     }
 }

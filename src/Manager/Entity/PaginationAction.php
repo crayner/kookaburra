@@ -49,6 +49,11 @@ class PaginationAction
     private $columnClass = '';
 
     /**
+     * @var string
+     */
+    private $onClick = '';
+
+    /**
      * @return string
      */
     public function getRoute(): string
@@ -154,6 +159,7 @@ class PaginationAction
            'aClass' => $this->getAClass(),
            'title' => $this->getTitle(),
            'columnClass' => $this->getColumnClass(),
+           'onClick' => $this->getOnClick(),
        ];
     }
 
@@ -174,6 +180,26 @@ class PaginationAction
     public function setColumnClass(string $columnClass): PaginationAction
     {
         $this->columnClass = $columnClass;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOnClick(): string
+    {
+        return $this->onClick;
+    }
+
+    /**
+     * OnClick.
+     *
+     * @param string $onClick
+     * @return PaginationAction
+     */
+    public function setOnClick(string $onClick): PaginationAction
+    {
+        $this->onClick = $onClick;
         return $this;
     }
 }

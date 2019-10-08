@@ -18,6 +18,7 @@ use App\Entity\Person;
 use App\Entity\Setting;
 use App\Entity\StudentEnrolment;
 use App\Provider\ProviderFactory;
+use App\Twig\MainMenu;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Gibbon\Domain\User\UserGateway;
 use Gibbon\UI\Components\Header;
@@ -64,16 +65,22 @@ class LegacyManager
     private $service;
 
     /**
+     * @var MainMenu
+     */
+    private $mainMenu;
+
+    /**
      * LegacyManager constructor.
      * @param RequestStack $stack
      */
-    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard, Header $header, Sidebar $sidebar, \Google_Service_Calendar $service)
+    public function __construct(ProviderFactory $providerFactory, StaffDashboard $staffDashboard, Header $header, Sidebar $sidebar, \Google_Service_Calendar $service, MainMenu $mainMenu)
     {
         $this->providerFactory = $providerFactory;
         $this->staffDashboard = $staffDashboard;
         $this->header = $header;
         $this->sidebar = $sidebar;
         $this->service = $service;
+        $this->mainMenu = $mainMenu;
     }
 
     /**
@@ -478,24 +485,7 @@ class LegacyManager
                 $session->set('fastFinder', $fastFinder);
             }
 
-            $moduleGateway = $this->providerFactory->getProvider(Module::class);
-
-            if ($cacheLoad || !$session->has('menuMainItems')) {
-                $menuMainItems = $moduleGateway->selectModulesByRole($session->get('gibbonRoleIDCurrent'));
-
-                foreach ($menuMainItems as $category => &$items) {
-                    foreach ($items as &$item) {
-                        $modulePath = '/modules/'.$item['name'];
-                        $entryURL = isActionAccessible($guid, $connection2, $modulePath.'/'.$item['entryURL'])
-                            ? $item['entryURL']
-                            : $item['alternateEntryURL'];
-
-                        $item['url'] = $session->get('absoluteURL').'/?q='.$modulePath.'/'.$entryURL;
-                    }
-                }
-
-                $session->set('menuMainItems', $menuMainItems);
-            }
+            $this->mainMenu->execute();
 
             if ($page->getModule()) {
                 $currentModule = $page->getModule()->getName();
