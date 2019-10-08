@@ -12,28 +12,53 @@ export default function Panels(props) {
         panels,
         selectedIndex,
         functions,
+        singleForm,
+        translations,
+        panelErrors
     } = props
 
+
+    console.log(props)
     const tabTags = Object.keys(panels).map(name => {
-        const tab = panels[name]
+        let tab = panels[name]
+        let showError = panelErrors[name] !== undefined ? 'text-red-400' : ''
+        let title = panelErrors[name] !== undefined ? translations['Errors on Tab'] : ''
         return (
             <Tab
                 key={tab.name}
                 disabled={tab.disabled}>
-                {tab.label}
+                <span className={showError} title={title}>{tab.label}</span>
             </Tab>
         )
     })
 
     const content = Object.keys(panels).map(name => {
         const panelContent = renderPanelContent(panels[name], props)
-
         return (
             <TabPanel key={name}>
                 {panelContent}
             </TabPanel>
         )
     })
+
+    if (singleForm) {
+        let form = props.forms[Object.keys(props.forms)[0]]
+        return (
+            <form
+                action={form.action}
+                id={form.id}
+                {...form.attr}
+                method={form.method !== undefined ? form.method : 'POST'}>
+                <div className={'info'}>{translations['All fields on all panels are saved together.']}</div>
+                <Tabs selectedIndex={selectedIndex} onSelect={tabIndex => functions.onSelectTab(tabIndex)}>
+                    <TabList>
+                        {tabTags}
+                    </TabList>
+                    {content}
+                </Tabs>
+            </form>
+        )
+    }
 
     return (
         <Tabs selectedIndex={selectedIndex} onSelect={tabIndex => functions.onSelectTab(tabIndex)}>
@@ -50,7 +75,10 @@ Panels.propTypes = {
     panels: PropTypes.object.isRequired,
     forms: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
+    translations: PropTypes.object.isRequired,
+    panelErrors: PropTypes.object.isRequired,
     selectedIndex: PropTypes.number.isRequired,
+    singleForm: PropTypes.bool.isRequired,
 }
 
 function renderPanelContent(panel, props){
@@ -61,8 +89,8 @@ function renderPanelContent(panel, props){
 
     let form = props.forms[panel.name]
     if (typeof form === 'undefined')
-        form = props.forms['single']
-    console.log(form)
+        form = props.forms[Object.keys(props.forms)[0]]
+
     return <FormApp
         {...props}
         formName={panel.name}

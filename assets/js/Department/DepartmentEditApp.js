@@ -18,18 +18,19 @@ export default class DepartmentEditApp extends Component {
 
         this.state = {
             forms: props.forms,
+            panelErrors: {},
         }
     }
 
     componentDidMount() {
-        this.manageURLTypes({...this.state.forms.single})
+        this.manageURLTypes({...this.state.forms.single}, {})
     }
 
-    setMyState(forms){
+    setMyState(forms, panelErrors){
         this.manageURLTypes({...forms.single})
     }
 
-    manageURLTypes(parentForm) {
+    manageURLTypes(parentForm, panelErrors) {
         parentForm.children.resources.children.map((child,key) => {
             if (child.children.type.value === 'File') {
                 parentForm.children.resources.children[key].children.url.type = 'file'
@@ -39,7 +40,8 @@ export default class DepartmentEditApp extends Component {
             }
         })
         this.setState({
-            forms: {single: parentForm}
+            forms: {single: parentForm},
+            panelErrors: panelErrors,
         })
     }
 

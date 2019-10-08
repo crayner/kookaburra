@@ -13,9 +13,10 @@ export default function PanelApp(props) {
         selectedPanel,
         actionRoute,
         functions,
+        singleForm
     } = props
 
-    console.log(forms)
+
     const tabIndex = panels[selectedPanel].index
 
     if (Object.keys(panels).length === 1) {
@@ -26,10 +27,10 @@ export default function PanelApp(props) {
                 Parser(panel.content)
             )
         }
-        return <FormApp {...props} form={forms[name]} functions={functions} formName={name} />
+        return <FormApp {...props} form={forms[name]} functions={functions} formName={name} singleForm={singleForm} />
     }
     return (
-        <Panels {...props} panels={panels} selectedIndex={tabIndex} functions={functions} />
+        <Panels {...props} panels={panels} selectedIndex={tabIndex} functions={functions} singleForm={singleForm} />
     )
 }
 
@@ -39,4 +40,5 @@ PanelApp.propTypes = {
     selectedPanel: PropTypes.string,
     actionRoute: PropTypes.string,
     functions: PropTypes.object.isRequired,
+    singleForm: PropTypes.bool.isRequired,
 }

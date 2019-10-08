@@ -42,9 +42,12 @@ export default class ContainerApp extends Component {
         this.state = {
             selectedPanel: props.selectedPanel,
             forms: {...props.forms},
+            panelErrors: {}
         }
         this.formNames = {}
         this.submit = {}
+        this.panelErrors = {}
+        this.singleForm = (Object.keys(props.forms).length === 1)
     }
 
     componentDidMount() {
@@ -53,14 +56,47 @@ export default class ContainerApp extends Component {
             this.formNames[form.name] = name
             this.submit[form.name] = false
         })
+        if (this.singleForm) {
+            this.setPanelErrors({})
+            this.setState({
+                panelErrors: this.panelErrors
+            })
+        }
+    }
+
+    setPanelErrors(form)
+    {
+        if (Object.keys(form).length === 0) {
+            form = this.state.forms[Object.keys(this.state.forms)[0]]
+            this.panelErrors = {}
+        }
+        if (typeof form.children === 'undefined')
+            return
+        Object.keys(form.children).map(key => {
+            const child = form.children[key]
+            this.setPanelErrors(child)
+            if (Object.keys(child.errors).length > 0 && child.panel !== false) {
+                if (typeof this.panelErrors[child.panel] === 'undefined')
+                    this.panelErrors[child.panel] = {}
+                this.panelErrors[child.panel].problem = true
+            }
+        })
     }
 
     setParentState(forms){
+        console.log(forms)
+        if (this.singleForm) {
+            this.panelErrors = {}
+            let form = forms[Object.keys(forms)[0]]
+            console.log(form)
+            this.setPanelErrors(form)
+        }
         if (typeof this.functions.setParentState === 'function') {
-            this.functions.setParentState(forms)
+            this.functions.setParentState(forms, this.panelErrors)
         } else {
             this.setState({
                 forms: forms,
+                panelErrors: this.panelErrors
             })
         }
     }
@@ -420,7 +456,7 @@ export default class ContainerApp extends Component {
         return (
             <section>
                 {this.isSubmit()  ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
-                <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} />
+                <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} />
             </section>
         )
     }

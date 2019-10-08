@@ -10,6 +10,7 @@ export default function FormApp(props) {
        functions,
        form,
        formName,
+        singleForm,
     } = props
 
     if (form.template === 'table') {
@@ -29,6 +30,18 @@ export default function FormApp(props) {
         let table_attr = {}
         table_attr.className = 'smallIntBorder fullWidth standardForm relative'
         if (form.row_class !== null) table_attr.className = form.row_class
+
+        if (singleForm) {
+            return (<div>
+                <Messages messages={form.errors} translate={functions.translate} />
+                <table {...table_attr}>
+                    <tbody>
+                    {dummyRow}
+                    {rows}
+                    </tbody>
+                </table>
+            </div>)
+        }
 
         return (<form
                     action={form.action}
@@ -53,4 +66,5 @@ FormApp.propTypes = {
     form: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
     formName: PropTypes.string.isRequired,
+    singleForm: PropTypes.bool.isRequired,
 }
