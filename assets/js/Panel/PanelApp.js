@@ -11,7 +11,6 @@ export default function PanelApp(props) {
         panels,
         forms,
         selectedPanel,
-        actionRoute,
         functions,
         singleForm
     } = props
@@ -38,7 +37,6 @@ PanelApp.propTypes = {
     panels: PropTypes.object.isRequired,
     forms: PropTypes.object.isRequired,
     selectedPanel: PropTypes.string,
-    actionRoute: PropTypes.string,
     functions: PropTypes.object.isRequired,
     singleForm: PropTypes.bool.isRequired,
 }

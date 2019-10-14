@@ -14,11 +14,9 @@ export default function Panels(props) {
         functions,
         singleForm,
         translations,
-        panelErrors
+        panelErrors,
     } = props
 
-
-    console.log(props)
     const tabTags = Object.keys(panels).map(name => {
         let tab = panels[name]
         let showError = panelErrors[name] !== undefined ? 'text-red-400' : ''

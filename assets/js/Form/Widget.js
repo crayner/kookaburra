@@ -122,6 +122,16 @@ export default function Widget(props) {
         )
     }
 
+    if (form.type === 'date') {
+        widget_attr.type = 'date'
+        return (
+            <div {...wrapper_attr}>
+                <input {...widget_attr} defaultValue={form.value} />
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
     if (form.type === 'text') {
         widget_attr.type = 'text'
         return (
