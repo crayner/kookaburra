@@ -1013,3 +1013,7 @@ How many copies do you want to make of this item?: How many copies do you want t
 Duplicate Item: Duplicate Item
 Manual entry of item identifiers is required.: Manual entry of item identifiers is required.
 Item Identifiers: Item Identifiers
+'All fields on all panels are saved together.': 'All fields on all panels are saved together.'
+Errors on Tab: Errors on Tab
+'Please enter an ISBN13 or ISBN10 value before trying to get data from Google Books.': Please enter an ISBN13 or ISBN10 value before trying to get data from Google Books.
+'The specified record cannot be found.': The specified record cannot be found.

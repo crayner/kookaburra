@@ -41,7 +41,7 @@ trait BooleanList
      * @param string|null $default
      * @return string|null
      */
-    private static function checkBoolean(string $value, ?string $default = 'Y')
+    private static function checkBoolean(?string $value, ?string $default = 'Y')
     {
         return in_array($value, self::getBooleanList()) ? $value : $default;
     }

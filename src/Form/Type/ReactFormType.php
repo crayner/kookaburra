@@ -272,6 +272,8 @@ class ReactFormType extends AbstractType
     private function renderFormType(array $prefixes) {
         if (in_array('header', $prefixes))
             return 'header';
+        if (in_array('date', $prefixes))
+            return 'date';
         if (in_array('toggle', $prefixes))
             return 'toggle';
         if (in_array('paragraph', $prefixes))
@@ -308,7 +310,7 @@ class ReactFormType extends AbstractType
             return 'integer';
         if (in_array('repeated', $prefixes))
             return 'transparent';
-//dump($prefixes);
+//        dump($prefixes);
         return 'unknown';
     }
 

@@ -53,6 +53,9 @@ class ContainerManager
         $this->scriptManager = $scriptManager;
         $this->translator = $translator;
         $this->stack = $stack;
+
+        TranslationsHelper::addTranslation('Errors on Tab', [], 'messages');
+        TranslationsHelper::addTranslation('All fields on all panels are saved together.', [], 'messages');
     }
 
     /**

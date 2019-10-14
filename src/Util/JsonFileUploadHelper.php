@@ -12,6 +12,7 @@
 
 namespace App\Util;
 
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**

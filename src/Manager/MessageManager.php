@@ -1,8 +1,9 @@
 <?php
 namespace App\Manager;
 
-use App\Manager\Objects\Message;
+use App\Manager\Entity\Message;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class MessageManager
 {
@@ -141,15 +142,16 @@ class MessageManager
 	}
 
     /**
-     * @param \Twig_Environment|null $twig
+     * renderView
+     * @param Environment|null $twig
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function renderView(\Twig_Environment $twig = null)
+    public function renderView(Environment $twig = null)
 	{
-		if (! $twig instanceof \Twig_Environment)
+		if (! $twig instanceof Environment)
 			throw new \LogicException('You can not use the "render" method if the Templating Component or the Twig Bundle are not available. Try running "composer require symfony/twig-bundle".');
 
 		return $twig->render('Default/messages.html.twig', ['messages' => $this]);

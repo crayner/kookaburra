@@ -44,7 +44,18 @@ export default function Widget(props) {
         return (
             <div {...wrapper_attr}>
                 <span className={'emphasis small'}>* {form.help}</span>
-                <button {...widget_attr} >{form.label}</button>
+                <button {...widget_attr}>{form.label}</button>
+            </div>
+        )
+    }
+
+    if (form.type === 'button') {
+        widget_attr.type = 'button'
+        widget_attr.style = {float: 'right'}
+        widget_attr.className = 'btn-gibbon'
+        return (
+            <div {...wrapper_attr}>
+                <button {...widget_attr}>{form.label}</button>
             </div>
         )
     }

@@ -37,18 +37,21 @@ export default class ContainerApp extends Component {
             this.panels.default['disabled'] = true
             this.panels.default['content'] = this.content
         }
-        this.functions.translate = this.translate.bind(this)
-        this.functions.openUrl = openUrl.bind(this)
-        this.functions.downloadFile = downloadFile.bind(this)
-        this.functions.onSelectTab = this.onSelectTab.bind(this)
-        this.functions.deleteFile = this.deleteFile.bind(this)
-        this.functions.submitForm = this.submitForm.bind(this)
-        this.functions.onElementChange = this.onElementChange.bind(this)
-        this.functions.deleteElement = this.deleteElement.bind(this)
-        this.functions.addElement = this.addElement.bind(this)
-        this.functions.onCKEditorChange = this.onCKEditorChange.bind(this)
-        this.functions.generateNewPassword = this.generateNewPassword.bind(this)
-        this.functions.deleteFile = this.deleteFile.bind(this)
+
+        this.functions = {
+            translate: this.translate.bind(this),
+            openUrl: openUrl.bind(this),
+            downloadFile: downloadFile.bind(this),
+            onSelectTab: this.onSelectTab.bind(this),
+            deleteFile: this.deleteFile.bind(this),
+            submitForm: this.submitForm.bind(this),
+            onElementChange: this.onElementChange.bind(this),
+            deleteElement: this.deleteElement.bind(this),
+            addElement: this.addElement.bind(this),
+            onCKEditorChange: this.onCKEditorChange.bind(this),
+            generateNewPassword: this.generateNewPassword.bind(this),
+        }
+
         this.state = {
             selectedPanel: props.selectedPanel,
             forms: {...props.forms},
@@ -57,7 +60,6 @@ export default class ContainerApp extends Component {
         this.formNames = {}
         this.submit = {}
         this.singleForm = (Object.keys(props.forms).length === 1)
-        console.log(this.state)
     }
 
     componentDidMount() {
@@ -204,12 +206,12 @@ export default class ContainerApp extends Component {
                     let form = {...data.form}
                     form.errors = errors
                     this.submit[parentName] = false
-                    this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...form})}, this.singleForm))
+                    this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...form})}, this.singleForm), setPanelErrors({...form}, {}))
                 }
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})
                 this.submit[parentName] = false
-                this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...parentForm})}, this.singleForm))
+                this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...parentForm})}, this.singleForm), setPanelErrors({...form}, {}))
         })
     }
 

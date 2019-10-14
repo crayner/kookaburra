@@ -23,7 +23,7 @@ import {
     isSubmit
 } from "../Container/ContainerFunctions"
 
-export default class ContainerApp extends Component {
+export default class DepartmentEditApp extends Component {
     constructor (props) {
         super(props)
         this.panels = props.panels ? props.panels : {}
@@ -38,6 +38,7 @@ export default class ContainerApp extends Component {
             this.panels.default['disabled'] = true
             this.panels.default['content'] = this.content
         }
+
         this.functions = {
             translate: this.translate.bind(this),
             openUrl: openUrl.bind(this),
@@ -340,7 +341,7 @@ export default class ContainerApp extends Component {
     }
 }
 
-ContainerApp.propTypes = {
+DepartmentEditApp.propTypes = {
     panels: PropTypes.object,
     forms: PropTypes.object,
     functions: PropTypes.object,
@@ -350,7 +351,7 @@ ContainerApp.propTypes = {
     selectedPanel: PropTypes.string,
 }
 
-ContainerApp.defaultProps = {
+DepartmentEditApp.defaultProps = {
     functions: {},
     translations: {},
     forms: {},

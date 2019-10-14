@@ -14,8 +14,9 @@ export function fetchJson(url, options, locale) {
 
     if (locale === false || url === '')
         locale = ''
-
-    const host = window.location.protocol + '//' + window.location.hostname + '/'
+    let host = window.location.protocol + '//' + window.location.hostname + '/'
+    if (url.substring(0,4) === 'http')
+        host = ''
 
     if (url[0] === '/') {
         url = url.substring(1);

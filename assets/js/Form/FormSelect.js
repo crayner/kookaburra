@@ -34,7 +34,7 @@ export default function FormSelect(props) {
 
     return (
         <div {...wrapper_attr}>
-            <select multiple={form.multiple} {...widget_attr} defaultValue={form.value}>
+            <select multiple={form.multiple} {...widget_attr} value={form.value}>
                 {options}
             </select>
             {errors}
