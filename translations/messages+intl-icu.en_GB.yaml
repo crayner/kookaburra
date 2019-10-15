@@ -1017,3 +1017,80 @@ Item Identifiers: Item Identifiers
 Errors on Tab: Errors on Tab
 'Please enter an ISBN13 or ISBN10 value before trying to get data from Google Books.': Please enter an ISBN13 or ISBN10 value before trying to get data from Google Books.
 'The specified record cannot be found.': The specified record cannot be found.
+'Item Identifier {identifier}': 'Item Identifier: {identifier}'
+Library Item Type: Library Item Type
+General Details: General Details
+Volume or Product name: Volume or Product name
+Image Type: Image Type
+Location Details: Location Details
+School: School
+Individual: Individual
+Which department is responsible for the item?: Which department is responsible for the item?
+Bookable As Facility?: Bookable As Facility?
+Can item be booked via Facility Booking in Timetable? Useful for laptop carts, etc.: Can item be booked via Facility Booking in Timetable? Useful for laptop carts, etc.
+Availability: Availability
+In Use: In Use
+Decommissioned: Decommissioned
+Lost: Lost
+On Loan: On Loan
+Repair: Repair
+Reserved: Reserved
+Plan Replacement?: Plan Replacement?
+Physical Condition: Physical Condition
+As New: As New
+Lightly Worn: Lightly Worn
+Moderately Worn: Moderately Worn
+Damaged: Damaged
+Unusable: Unusable
+Submit All: Submit All
+Specific Details: Specific Details
+Get Book Data From Google: Get Book Data From Google
+Art - Original: Art - Original
+Art - Reproduction: Art - Reproduction
+Book: Book
+Braille: Braille
+Cartographic material: Cartographic material
+Chart: Chart
+Diorama: Diorama
+Electronic Resource: Electronic Resource
+Filmstrip: Filmstrip
+Flash Card: Flash Card
+Game: Game
+Globe: Globe
+Journal: Journal
+Kit: Kit
+Large print: Large print
+Magazine: Magazine
+Manuscript: Manuscript
+Microform: Microform
+Microscope slide: Microscope slide
+Model: Model
+Motion Picture: Motion Picture
+Music: Music
+Picture: Picture
+Realia: Realia
+Resource: Resource
+Serial: Serial
+Slide: Slide
+Sound Recording: Sound Recording
+Technical Drawing: Technical Drawing
+Toy: Toy
+Transparency: Transparency
+Videorecording: Videorecording
+'Format: dd/mm/yyyy, mm/yyyy or yyyy.': 'Format: dd/mm/yyyy, mm/yyyy or yyyy.'
+Fiction: Fiction
+Fiction - Best Sellers:  Fiction - Best Sellers
+Fiction - Classics:  Fiction - Classics
+Fiction - Mystery:  Fiction - Mystery
+Fiction - Series:  Fiction - Series
+Fiction - Young Adult:  Fiction - Young Adult
+Nonfiction:  Nonfiction
+Nonfiction - College Prep:  Nonfiction - College Prep
+Nonfiction - Graphic Novels:  Nonfiction - Graphic Novels
+Nonfiction - Life Skills:  Nonfiction - Life Skills
+Nonfiction - Reference:  Nonfiction - Reference
+Catalogue: Catalogue
+General: General
+Specific: Specific
+Edit Item: Edit Item
+Add Item: Add Item

@@ -116,6 +116,8 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
      */
     public function getStrings($refresh = false): ?Collection
     {
+        if (null === $this->stack->getCurrentRequest())
+            return new ArrayCollection();
         if (strpos($this->stack->getCurrentRequest()->get('_route'), 'install__') === 0)
             return new ArrayCollection();
         $provider = ProviderFactory::create(StringReplacement::class);
