@@ -54,6 +54,7 @@
                                         </div>
                                     {% endfor %}
                                 {% endfor %}
+                                {% include 'components/messages.html.twig' %}
                             {% endblock soft_error %}
 
                             {% if content() and not app.request.attributes.has('sidebar') %}

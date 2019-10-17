@@ -25,7 +25,6 @@ use Symfony\Component\Finder\Finder;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Gábor Egyed <gabor.egyed@gmail.com>
  * @author Craig Rayner <craig@craigrayner.com>
- *
  */
 class ApplicationInstallCommand extends Command
 {

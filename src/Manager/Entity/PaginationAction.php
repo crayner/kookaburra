@@ -54,6 +54,11 @@ class PaginationAction
     private $onClick = '';
 
     /**
+     * @var null|string
+     */
+    private $displayWhen;
+
+    /**
      * @return string
      */
     public function getRoute(): string
@@ -160,6 +165,7 @@ class PaginationAction
            'title' => $this->getTitle(),
            'columnClass' => $this->getColumnClass(),
            'onClick' => $this->getOnClick(),
+           'displayWhen' => $this->getDisplayWhen(),
        ];
     }
 
@@ -200,6 +206,26 @@ class PaginationAction
     public function setOnClick(string $onClick): PaginationAction
     {
         $this->onClick = $onClick;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getDisplayWhen(): string
+    {
+        return $this->displayWhen ?: '';
+    }
+
+    /**
+     * DisplayWhen.
+     *
+     * @param bool $displayWhen
+     * @return PaginationAction
+     */
+    public function setDisplayWhen(?string $displayWhen): PaginationAction
+    {
+        $this->displayWhen = $displayWhen;
         return $this;
     }
 }

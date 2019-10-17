@@ -49,11 +49,15 @@ export default function PaginationContent(props) {
         // add Actions column
         let actions = Object.keys(row.actions).map(actionKey => {
             let action = row.actions[actionKey]
-            if (action.onClick === '')
-                return (<a href={rowContent.actions[actionKey]} className={action.aClass} key={actionKey} title={action.title}><span className={action.spanClass}></span></a> )
+            if (action.displayWhen === '' || rowContent[action.displayWhen]) {
+                if (action.onClick === '')
+                    return (<a href={rowContent.actions[actionKey]} className={action.aClass} key={actionKey}
+                               title={action.title}><span className={action.spanClass}></span></a>)
 
-            return (<a href='#' onClick={() => functions[action.onClick](rowContent.actions[actionKey])} className={action.aClass} key={actionKey} title={action.title}><span className={action.spanClass}></span></a> )
-
+                return (<a href='#' onClick={() => functions[action.onClick](rowContent.actions[actionKey])}
+                           className={action.aClass} key={actionKey} title={action.title}><span
+                    className={action.spanClass}></span></a>)
+            }
         })
 
         if (row.actions.length > 0) {

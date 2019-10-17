@@ -1932,12 +1932,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-library.git",
-                "reference": "dc5f6ddfada479dd4b871d8d0d7e615e30978e5f"
+                "reference": "c04a9600985a04c5fffb153900625ff6d1848d6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-library/zipball/dc5f6ddfada479dd4b871d8d0d7e615e30978e5f",
-                "reference": "dc5f6ddfada479dd4b871d8d0d7e615e30978e5f",
+                "url": "https://api.github.com/repos/crayner/kookaburra-library/zipball/c04a9600985a04c5fffb153900625ff6d1848d6b",
+                "reference": "c04a9600985a04c5fffb153900625ff6d1848d6b",
                 "shasum": ""
             },
             "require": {
@@ -1966,7 +1966,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2019-10-07T22:48:16+00:00"
+            "time": "2019-10-17T06:39:14+00:00"
         },
         {
             "name": "kookaburra/roll-groups",
@@ -6791,6 +6791,7 @@
                 "inlining",
                 "twig"
             ],
+            "abandoned": "cssinliner-extra",
             "time": "2019-02-24T09:17:43+00:00"
         },
         {

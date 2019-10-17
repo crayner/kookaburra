@@ -108,6 +108,10 @@
     </script>
 {%- endblock toggle_widget %}
 
+{% block submit_widget %}
+    <button {{ block('attributes') }} name="{{ full_name }}" id="{{ id }}" type="submit">{{ label|raw }}</button>
+{% endblock submit_widget %}
+
 {% block toggle_row -%}
     {%- set widget_attr = {} -%}
     {%- if help is not empty -%}

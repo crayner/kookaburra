@@ -149,7 +149,7 @@ class Action implements EntityInterface
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Permission", mappedBy="action")
+     * @ORM\OneToMany(targetEntity="Permission", mappedBy="action", orphanRemoval=true)
      */
     private $permissions;
 

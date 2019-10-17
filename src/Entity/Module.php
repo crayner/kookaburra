@@ -15,10 +15,9 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Util\TranslationsHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\EquatableInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class Module
@@ -99,7 +98,7 @@ class Module implements EntityInterface
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Action", mappedBy="module")
+     * @ORM\OneToMany(targetEntity="Action", mappedBy="module", orphanRemoval=true)
      */
     private $actions;
 
@@ -107,6 +106,26 @@ class Module implements EntityInterface
      * @var null|string
      */
     private $status;
+
+    /**
+     * @var bool
+     */
+    private $updateRequired = false;
+
+    /**
+     * @var Collection
+     * @ORM\OneToMany(targetEntity="Kookaburra\SystemAdmin\Entity\ModuleUpgrade",mappedBy="module")
+     * @ORM\OrderBy({"version" = "DESC"})
+     */
+    private $upgradeLogs;
+
+    /**
+     * Module constructor.
+     */
+    public function __construct()
+    {
+        $this->upgradeLog = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -185,7 +204,7 @@ class Module implements EntityInterface
      */
     public function getType(): ?string
     {
-        return $this->type;
+        return $this->type = in_array($this->type, self::getTypeList()) ? $this->type : 'Core';
     }
 
     /**
@@ -307,13 +326,15 @@ class Module implements EntityInterface
             'name' => $this->name,
             'description' => $this->description,
             'entryURL' => $this->entryURL,
-            'type' => $this->type,
+            'type' => $this->getType(),
             'active' => $this->active,
             'category' => $this->category,
             'version' => $this->version,
             'author' => $this->author,
             'url' => $this->url,
             'status' => $this->getStatus(),
+            'updateRequired' => $this->isUpdateRequired(),
+            'isNotCore' => $this->getType() !== 'Core',
         ];
     }
 
@@ -384,5 +405,44 @@ class Module implements EntityInterface
         return $this->status;
     }
 
+    /**
+     * @return bool
+     */
+    public function isUpdateRequired(): bool
+    {
+        return $this->updateRequired ? true : false;
+    }
 
+    /**
+     * UpdateRequired.
+     *
+     * @param bool $updateRequired
+     * @return Module
+     */
+    public function setUpdateRequired(bool $updateRequired): Module
+    {
+        $this->updateRequired = $updateRequired;
+        return $this;
+    }
+
+    /**
+     * getUpgradeLogs
+     * @return Collection
+     */
+    public function getUpgradeLogs(): Collection
+    {
+        return $this->upgradeLogs = $this->upgradeLogs ?: new ArrayCollection();
+    }
+
+    /**
+     * UpgradeLogs.
+     *
+     * @param Collection $upgradeLog
+     * @return Module
+     */
+    public function setUpgradeLogs(Collection $upgradeLogs): Module
+    {
+        $this->upgradeLogs = $upgradeLogs;
+        return $this;
+    }
 }

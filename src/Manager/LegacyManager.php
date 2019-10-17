@@ -471,6 +471,9 @@ class LegacyManager
             }
         }
 
+
+        $moduleGateway = ProviderFactory::create(Module::class);
+
         /**
          * MENU ITEMS & FAST FINDER
          *
