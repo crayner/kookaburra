@@ -50,7 +50,7 @@ class NotificationEvent implements EntityInterface
 
     /**
      * @var Module|null
-     * @ORM\ManyToOne(targetEntity="Module")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SystemAdmin\Entity\Module")
      * @ORM\JoinColumn(name="moduleID", referencedColumnName="gibbonModuleID", nullable=true)
      */
     private $module;
@@ -63,7 +63,7 @@ class NotificationEvent implements EntityInterface
 
     /**
      * @var Action|null
-     * @ORM\ManyToOne(targetEntity="Action")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SystemAdmin\Entity\Action")
      * @ORM\JoinColumn(name="actionID", referencedColumnName="gibbonActionID", nullable=true)
      */
     private $action;

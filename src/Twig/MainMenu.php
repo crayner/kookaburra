@@ -12,8 +12,8 @@
 
 namespace App\Twig;
 
-use App\Entity\Action;
-use App\Entity\Module;
+use Kookaburra\SystemAdmin\Entity\Action;
+use Kookaburra\SystemAdmin\Entity\Module;
 use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Kookaburra\UserAdmin\Util\SecurityHelper;

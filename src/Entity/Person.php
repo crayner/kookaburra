@@ -22,8 +22,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Kookaburra\SystemAdmin\Entity\Role;
 use Symfony\Bridge\Doctrine\Validator\Constraints as ASSERT;
-use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Intl\Languages;
 
 /**
@@ -499,7 +499,7 @@ class Person implements EntityInterface
 
     /**
      * @var Role|null
-     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SystemAdmin\Entity\Role")
      * @ORM\JoinColumn(name="gibbonRoleIDPrimary", referencedColumnName="gibbonRoleID", nullable=false)
      */
     private $primaryRole;

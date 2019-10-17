@@ -12,7 +12,7 @@
 
 namespace App\Validator;
 
-use App\Entity\Role;
+use Kookaburra\SystemAdmin\Entity\Role;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

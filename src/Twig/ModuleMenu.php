@@ -12,7 +12,7 @@
 
 namespace App\Twig;
 
-use App\Entity\Module;
+use Kookaburra\SystemAdmin\Entity\Module;
 use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
 use App\Util\UrlGeneratorHelper;

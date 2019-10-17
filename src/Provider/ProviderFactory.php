@@ -111,14 +111,15 @@ class ProviderFactory
     public static function create(string $entityName): EntityProviderInterface
     {
         //The $entityName could be the plain name or the namespace name of the entity.
-        // App\Entity\Module or Module
+        // Kookaburra\SystemAdmin\Entity\Module or Module
+        $namespace = dirname($entityName);
         $entityName = basename($entityName);
 
         if (isset(self::$instances[$entityName])) {
             return self::$instances[$entityName];
         }
 
-        $providerName = 'App\Provider\\' . $entityName . 'Provider';
+        $providerName = str_replace('Entity', 'Provider', $namespace) . '\\' . $entityName . 'Provider';
         if (class_exists($providerName)) {
             self::$instances[$entityName] = new $providerName(self::$factory);
             return self::$instances[$entityName];

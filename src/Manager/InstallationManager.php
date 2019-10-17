@@ -13,7 +13,7 @@
 namespace App\Manager;
 
 use App\Entity\Person;
-use App\Entity\Role;
+use Kookaburra\SystemAdmin\Entity\Role;
 use App\Entity\Setting;
 use App\Entity\Staff;
 use App\Provider\ProviderFactory;

@@ -13,7 +13,7 @@
 namespace App\Manager;
 
 use App\Entity\Hook;
-use App\Entity\Module;
+use Kookaburra\SystemAdmin\Entity\Module;
 use App\Entity\Person;
 use App\Entity\Setting;
 use App\Entity\StudentEnrolment;

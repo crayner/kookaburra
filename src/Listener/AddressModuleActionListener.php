@@ -12,8 +12,8 @@
 
 namespace App\Listener;
 
-use App\Entity\Action;
-use App\Entity\Module;
+use Kookaburra\SystemAdmin\Entity\Action;
+use Kookaburra\SystemAdmin\Entity\Module;
 use App\Provider\ProviderFactory;
 use App\Util\Format;
 use Kookaburra\UserAdmin\Util\SecurityHelper;

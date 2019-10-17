@@ -12,7 +12,7 @@
 
 namespace App\Manager;
 
-use App\Entity\Action;
+use Kookaburra\SystemAdmin\Entity\Action;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
 use App\Session\GibbonSession;
@@ -396,7 +396,7 @@ class GibbonManager implements ContainerAwareInterface
      */
     private function prepareModule(): self
     {
-        $repository = $this->providerFactory::getRepository(\App\Entity\Module::class);
+        $repository = $this->providerFactory::getRepository(\Kookaburra\SystemAdmin\Entity\Module::class);
         $session = $this->request->getSession();
 
         if (null !== $moduleData = $repository->findOneBy(['name' => $session->get('module')]))

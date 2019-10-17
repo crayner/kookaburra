@@ -18,7 +18,7 @@ use App\Entity\INPersonDescriptor;
 use App\Entity\MarkbookEntry;
 use App\Entity\Person;
 use App\Entity\PersonMedical;
-use App\Entity\Role;
+use Kookaburra\SystemAdmin\Entity\Role;
 use App\Entity\Setting;
 use App\Entity\StudentEnrolment;
 use App\Manager\Traits\EntityTrait;

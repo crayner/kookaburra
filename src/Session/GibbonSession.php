@@ -12,8 +12,8 @@
 namespace App\Session;
 
 use App\Entity\I18n;
-use App\Entity\Module;
-use App\Entity\Role;
+use Kookaburra\SystemAdmin\Entity\Module;
+use Kookaburra\SystemAdmin\Entity\Role;
 use App\Entity\SchoolYear;
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;

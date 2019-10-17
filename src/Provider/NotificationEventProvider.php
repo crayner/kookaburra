@@ -13,7 +13,7 @@
 namespace App\Provider;
 
 
-use App\Entity\Module;
+use Kookaburra\SystemAdmin\Entity\Module;
 use App\Entity\Notification;
 use App\Entity\NotificationEvent;
 use App\Entity\NotificationListener;

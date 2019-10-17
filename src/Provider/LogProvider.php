@@ -13,7 +13,7 @@
 namespace App\Provider;
 
 use App\Entity\Log;
-use App\Entity\Module;
+use Kookaburra\SystemAdmin\Entity\Module;
 use App\Entity\Person;
 use App\Entity\SchoolYear;
 use App\Manager\Traits\EntityTrait;

@@ -35,7 +35,7 @@ class Log implements EntityInterface
 
     /**
      * @var Module|null
-     * @ORM\ManyToOne(targetEntity="Module")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SystemAdmin\Entity\Module")
      * @ORM\JoinColumn(name="gibbonModuleID",referencedColumnName="gibbonModuleID")
      */
     private $module;

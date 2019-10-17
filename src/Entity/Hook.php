@@ -55,7 +55,7 @@ class Hook
 
     /**
      * @var Module|null
-     * @ORM\ManyToOne(targetEntity="Module")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SystemAdmin\Entity\Module")
      * @ORM\JoinColumn(name="gibbonModuleID", referencedColumnName="gibbonModuleID", nullable=false)
      */
     private $module;
