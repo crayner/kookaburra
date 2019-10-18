@@ -76,6 +76,8 @@ class TranslationsHelper
      */
     public static function translate(string $id, array $params = [], ?string $domain = 'messages'): string
     {
+        if (null === self::$translator)
+            return $id;
         return self::$translator->trans($id, $params, $domain);
     }
 }

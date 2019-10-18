@@ -12,11 +12,14 @@
 
 namespace App\Util;
 
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class GlobalHelper
+ * @package App\Util
+ */
 class GlobalHelper
 {
     /**

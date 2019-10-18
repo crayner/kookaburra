@@ -18,7 +18,6 @@ use App\Entity\Setting;
 use App\Entity\Staff;
 use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
-use App\Security\SHA256PasswordEncoder;
 use App\Util\GlobalHelper;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -30,6 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Intl\Currencies;
+use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
 
@@ -287,11 +287,10 @@ class InstallationManager
         $person->setPreferredName($form->get('firstName')->getData());
         $person->setOfficialName($form->get('firstName')->getData().' '.$form->get('surname')->getData());
         $person->setusername($form->get('username')->getData());
-        $encoder = new SHA256PasswordEncoder();
-        $salt = SecurityUser::createSalt();
+        $encoder = new NativePasswordEncoder();
 
-        $password = $encoder->encodePassword($form->get('password')->getData(), $salt);
-        $person->setPasswordStrongSalt($salt);
+        $password = $encoder->encodePassword($form->get('password')->getData(), null);
+        $person->setPasswordStrongSalt(null);
         $person->setPasswordStrong($password);
         $person->setStatus('Full');
         $person->setCanLogin('Y');

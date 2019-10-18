@@ -524,7 +524,7 @@ class Person implements EntityInterface
 
     /**
      * @var array
-     * @ORM\Column(name="gibbonRoleIDAll", type="simple_array")
+     * @ORM\Column(name="gibbonRoleIDAll", type="simple_array", nullable=true)
      */
     private $allRoles = '';
 

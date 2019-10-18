@@ -1016,13 +1016,6 @@ INSERT INTO `gibbonpermission` (`permissionID`, `gibbonRoleID`, `gibbonActionID`
 (0000053992, 001, 0000927),
 (0000053993, 001, 0000928);
 
-INSERT INTO `gibbonRole` (`gibbonRoleID`, `category`, `name`, `nameShort`, `description`, `type`, `canLoginRole`, `futureYearsLogin`, `pastYearsLogin`, `restriction`) VALUES
-(001, 'Staff', 'Administrator', 'Adm', 'Controls all aspects of the system', 'Core', 'Y', 'Y', 'Y', 'Admin Only'),
-(002, 'Staff', 'Teacher', 'Tcr', 'Regular, classroom teacher', 'Core', 'Y', 'Y', 'Y', 'None'),
-(003, 'Student', 'Student', 'Std', 'Person studying in the school', 'Core', 'Y', 'Y', 'Y', 'None'),
-(004, 'Parent', 'Parent', 'Prt', 'Parent or guardian of person studying in', 'Core', 'Y', 'Y', 'Y', 'None'),
-(006, 'Staff', 'Support Staff', 'SSt', 'Staff who support teaching and learning', 'Core', 'Y', 'Y', 'Y', 'None');
-
 INSERT INTO `gibbonScale` (`gibbonScaleID`, `name`, `nameShort`, `usage`, `lowestAcceptable`, `active`, `numeric`) VALUES
 (00001, 'International Baccalaureate', 'IB', '7 (highest) to 1 (lowest)', '', 'N', 'Y'),
 (00002, 'International Baccalaureate EE', 'IBEE', 'A (highest) to E (lowest)', '', 'N', 'N'),
@@ -1290,13 +1283,13 @@ INSERT INTO `gibbonScaleGrade` (`gibbonScaleGradeID`, `gibbonScaleID`, `value`, 
 (0000249, 00011, '6A', '6A', 7, 'N'),
 (0000250, 00011, '6B', '6B', 8, 'N'),
 (0000251, 00011, '6C', '6C', 9, 'N'),
-(0000252, 00011, '5A', '5A', 9, 'N'),
-(0000253, 00011, '5B', '5B', 10, 'N'),
-(0000254, 00011, '5C', '5C', 11, 'N'),
-(0000255, 00011, '4A', '4A', 12, 'N'),
-(0000256, 00011, '4B', '4B', 13, 'N'),
-(0000257, 00011, '4C', '4C', 14, 'N'),
-(0000258, 00011, 'B3', 'B3', 15, 'N'),
+(0000252, 00011, '5A', '5A', 10, 'N'),
+(0000253, 00011, '5B', '5B', 11, 'N'),
+(0000254, 00011, '5C', '5C', 12, 'N'),
+(0000255, 00011, '4A', '4A', 13, 'N'),
+(0000256, 00011, '4B', '4B', 14, 'N'),
+(0000257, 00011, '4C', '4C', 15, 'N'),
+(0000258, 00011, 'B3', 'B3', 16, 'N'),
 (0000259, 00012, 'A', 'A', 1, 'N'),
 (0000260, 00012, 'A/B', 'A/B', 2, 'N'),
 (0000261, 00012, 'B', 'B', 3, 'N'),

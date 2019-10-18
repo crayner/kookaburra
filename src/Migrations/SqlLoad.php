@@ -19,7 +19,7 @@ use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Class SqlLoad
- * @package DoctrineMigrations
+ * @package App\Migrations
  */
 class SqlLoad extends AbstractMigration
 {
@@ -40,16 +40,6 @@ class SqlLoad extends AbstractMigration
      */
     public function up(Schema $schema) : void
     {
-        while(($line = $this->getSqlLine()) !== false)
-        {
-            if (strpos($line, 'CREATE TABLE') !== false)
-            {
-                $engine = strpos($line, 'ENGINE=');
-                $line = substr($line, 0, $engine) . ' ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;';
-                $line = str_replace('CHARACTER SET utf8', 'COLLATE utf8_unicode_ci', $line);
-            }
-            $this->addSql($line);
-        }
     }
 
     public function down(Schema $schema) : void
@@ -58,12 +48,24 @@ class SqlLoad extends AbstractMigration
     /**
      * getSql
      * @param string $source
+     * @throws \Exception
      */
     public function getSql(string $source): void
     {
         if (file_exists(__DIR__. '/'. $source))
             $this->handle = fopen(__DIR__. '/'. $source, "r");
+        elseif (file_exists($source))
+            $this->handle = fopen($source, "r");
+        if(null === $this->handle)
+            throw new \Exception('File ' .$source . 'not found.');
+
         $this->count = 0;
+
+        while(($line = $this->getSqlLine()) !== false)
+        {
+            $this->addSql($line);
+        }
+
     }
 
     /**

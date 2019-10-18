@@ -148,11 +148,8 @@ class HelperListener implements EventSubscriberInterface
         $installationProcess = $this->container->hasParameter('installation') ? $this->container->getParameter('installation') : [];
 
         if (!isset($installationProcess['status']) || $installationProcess['status'] === 'check') {
-            $config = GlobalHelper::readKookaburraYaml();
-            $config['parameters']['installation']['status'] = 'check';
-            $config['parameters']['installed'] = false;
-            GlobalHelper::writeKookaburraYaml($config);
-            $event->setResponse(new RedirectResponse($this->router->generate('install__installation_check')));
+            $request = $this->container->get('request_stack')->getCurrentRequest();
+            $event->setResponse(new RedirectResponse($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/check/'));
             return ;
         }
         if ($installationProcess['status'] === 'mysql') {

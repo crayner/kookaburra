@@ -14,13 +14,13 @@ namespace App\Controller;
 
 use App\Entity\I18n;
 use App\Form\Entity\MySQLSettings;
-use App\Form\Entity\SystemSettings;
 use App\Form\Installation\LanguageType;
 use App\Form\Installation\MySQLType;
 use App\Form\Installation\SystemType;
 use App\Manager\InstallationManager;
 use App\Provider\ProviderFactory;
 use App\Util\LocaleHelper;
+use Kookaburra\SystemAdmin\Form\Entity\SystemSettings;
 use Kookaburra\SystemAdmin\Manager\LanguageManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -14,14 +14,13 @@ namespace App\Form\Installation;
 
 use App\Entity\Person;
 use App\Entity\Setting;
-use App\Form\Entity\SystemSettings;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Provider\ProviderFactory;
 use App\Validator\Directory;
 use App\Validator\Enum;
 use App\Validator\Password;
-use App\Validator\UsernameEmail;
+use Kookaburra\SystemAdmin\Form\Entity\SystemSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
