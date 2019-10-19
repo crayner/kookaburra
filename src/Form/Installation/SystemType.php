@@ -71,7 +71,7 @@ class SystemType extends AbstractType
                    ],
                    'placeholder' => '',
                    'required' => false,
-                   'choice_translation_domain' => 'kookaburra',
+                   'choice_translation_domain' => 'messages',
                    'choices' => Person::getTitleList(true),
                    'constraints' => [
                        new Enum(['strict' => false, 'validList' => Person::getTitleList()]),
@@ -206,7 +206,7 @@ class SystemType extends AbstractType
                         'class' => 'w-full',
                         'maxLength' => 50,
                     ],
-                    'translation_domain' => 'kookaburra',
+                    'translation_domain' => 'messages',
                     'constraints' => [
                         new NotBlank(),
                     ],

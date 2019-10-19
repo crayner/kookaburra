@@ -64,7 +64,7 @@ class MinorLinks implements ContentInterface
                 $links[] = [
                     'url' => $this->getSession()->get('webLink', 'http://www.craigrayner.com'),
                     'text' => ['organisation_website', ['%name%' => $this->getSession()->get('organisationNameShort')]],
-                    'translation_domain' => 'kookaburra',
+                    'translation_domain' => 'messages',
                     'target' => '_blank',
                     'class' => 'link_white',
                 ];
@@ -120,7 +120,7 @@ class MinorLinks implements ContentInterface
                 $links[] = [
                     'url' => $this->getSession()->get('webLink', ''),
                     'text' => ['organisation_website', ['%name%' => $this->getSession()->get('organisationNameShort')]],
-                    'translation_domain' => 'kookaburra',
+                    'translation_domain' => 'messages',
                     'target' => '_blank',
                     'class' => 'link-white',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],

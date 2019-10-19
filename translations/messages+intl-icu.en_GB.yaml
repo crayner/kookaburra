@@ -1094,3 +1094,14 @@ General: General
 Specific: Specific
 Edit Item: Edit Item
 Add Item: Add Item
+Google Developers Developer Key: Google Project Developer Key
+SMTP Username: SMTP Username
+Username to use for SMTP authentication. Leave blank for no authentication.: Username to use for SMTP authentication. Leave blank for no authentication.
+SMTP Password: SMTP Password
+SMTP Host: SMTP Host
+Set the hostname of the mail server.: Set the hostname of the mail server.
+SMTP Port: SMTP Port
+Set the SMTP port number - likely to be 25, 465 or 587.: Set the SMTP port number - likely to be 25, 465 or 587.
+SMTP Encryption: SMTP Encryption
+Automatically sets the encryption based on the port, otherwise select one manually.: Automatically sets the encryption based on the port, otherwise select one manually.
+Password to use for SMTP authentication. Leave blank for no authentication.: Password to use for SMTP authentication. Leave blank for no authentication.

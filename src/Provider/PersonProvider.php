@@ -158,7 +158,7 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
                         'title'           => 'behaviour_alert_level', // 'Student has a %name% alert for academic concern over the past 60 days.',
                         'title_params'    => array_merge(['name' => $alert->getName(), 'highest_level' => $alert->getName()],  $alertThresholdParams),
                         'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId().'&subpage=Behaviour',
-                        'translation_domain' => 'kookaburra',
+                        'translation_domain' => 'messages',
                     ]);
                 }
             }
@@ -173,7 +173,7 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
                     'tag'             => 'M',
                     'title'           => 'medical_alert_level',
                     'title_params'    => ['name' => $alert->getName()],
-                    'translation_domain' => 'kookaburra',
+                    'translation_domain' => 'messages',
                     'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId().'&subpage=Medical',
                 ]);
             }
@@ -189,7 +189,7 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
                         'tag'             => 'P',
                         'title'           => 'privacy_alert_level', // sprintf(__('Privacy is required: {oneString}'), $privacy),
                         'title_params'    => ['message' => $privacy],
-                        'translation_domain' => 'kookaburra',
+                        'translation_domain' => 'messages',
                         'link'            => './?q=/modules/Students/student_view_details.php&gibbonPersonID='.$person->getId(),
                     ]);
                 }
