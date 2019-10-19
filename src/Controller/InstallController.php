@@ -46,14 +46,14 @@ class InstallController extends AbstractController
     {
         $i18n = new I18n();
         $i18n->setCode(LocaleHelper::getDefaultLocale('en_GB'));
-        $form = $this->createForm(LanguageType::class, $i18n);
+        $form = $this->createForm(LanguageType::class, $i18n, ['action' => $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/check/']);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $errors = $validator->validate($form->get('code')->getData(), new \App\Validator\I18n());
             if (0 === count($errors)) {
                 $manager->setLocale($form->get('code')->getData());
                 $manager->setInstallationStatus('mysql');
-                return $this->redirectToRoute('install__installation_mysql');
+                return $this->redirect($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/mysql/');
             }
         }
 
@@ -75,7 +75,7 @@ class InstallController extends AbstractController
         $mysql = new MySQLSettings();
         $message = null;
 
-        $form = $this->createForm(MySQLType::class, $mysql);
+        $form = $this->createForm(MySQLType::class, $mysql, ['action' => $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/mysql/']);
 
         $form->handleRequest($request);
 
@@ -105,12 +105,14 @@ class InstallController extends AbstractController
      * installationBuild
      * @param InstallationManager $manager
      * @param KernelInterface $kernel
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      * @Route("/installation/build/", name="installation_build")
      */
-    public function installationBuild(InstallationManager $manager, KernelInterface $kernel)
+    public function installationBuild(InstallationManager $manager, KernelInterface $kernel, Request $request)
     {
-        return $manager->buildDatabase($kernel);
+        return $manager->buildDatabase($kernel, $request);
     }
 
     /**
@@ -125,7 +127,7 @@ class InstallController extends AbstractController
         $settings->injectRequest($request);
         $message = null;
 
-        $form = $this->createForm(SystemType::class, $settings, ['timezone' => $this->getParameter('timezone')]);
+        $form = $this->createForm(SystemType::class, $settings, ['timezone' => $this->getParameter('timezone'), 'action' => $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/system/']);
 
         $form->handleRequest($request);
         if ($form->isSubmitted())
@@ -135,7 +137,7 @@ class InstallController extends AbstractController
                 $manager->setAdministrator($form);
                 $manager->setSystemSettings($form);
             }
-            return $this->redirectToRoute('install__installation_complete');
+            return $this->redirect($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/complete/');
         }
 
         return $this->render('installation/system_settings.html.twig',
@@ -153,10 +155,11 @@ class InstallController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/installation/complete/", name="installation_complete")
      */
-    public function installationComplete(InstallationManager $manager, LanguageManager $languageManager)
+    public function installationComplete(InstallationManager $manager, LanguageManager $languageManager, KernelInterface $kernel)
     {
         $i18n = ProviderFactory::getRepository(I18n::class)->findOneByCode($manager->getLocale());
         $languageManager->i18nFileInstall($i18n);
+        $manager->moduleInstall($kernel);
         $manager->setInstallationStatus('complete');
         return $this->render('installation/complete.html.twig');
     }

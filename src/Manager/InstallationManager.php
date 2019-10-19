@@ -23,8 +23,11 @@ use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -237,32 +240,41 @@ class InstallationManager
      * @return Response
      * @throws \Exception
      */
-    public function buildDatabase(KernelInterface $kernel): Response
+    public function buildDatabase(KernelInterface $kernel, Request $request): Response
     {
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        $input = new ArrayInput([
-            'command' => 'doctrine:migrations:migrate',
-            // (optional) define the value of command arguments
-            // 'fooArgument' => 'barValue',
-            // (optional) pass options to the command
-            '--quiet' => '--quiet',
-            '--no-interaction' => '--no-interaction',
-        ]);
+        $finder = new Finder();
+        $migrations = $finder->files()->in(__DIR__ . '/../Migrations')->depth('== 0')->name(['Version*.php'])->sort(function ($a, $b) { return strcmp($a->getRealpath(), $b->getRealpath()); });
 
-        // You can use NullOutput() if you don't need the output
-        $output = new BufferedOutput();
-        $application->run($input, $output);
+        if ($finder->hasResults()) {
+            foreach ($migrations as $migration) {
+                $name = str_replace(['Version', '.php'], '', $migration->getBasename());
+                $input = new ArrayInput([
+                    'command' => 'doctrine:migrations:migrate',
+                    $name,
+                    // (optional) define the value of command arguments
+                    // 'fooArgument' => 'barValue',
+                    // (optional) pass options to the command
+                    '--quiet' => '--quiet',
+                    '--no-interaction' => '--no-interaction',
+                ]);
 
-        // return the output, don't use if you used NullOutput()
-        $content = $output->fetch();
+                // You can use NullOutput() if you don't need the output
+                $output = new NullOutput();
+                $application->run($input, $output);
 
-        if ('' !== $content)
-            return new Response($content);// if you used NullOutput()
+                // return the output, don't use if you used NullOutput()
+                //$content = $output->fetch();
 
+                //if ('' !== $content)
+                    //return new Response($content);// if you used NullOutput()
+                sleep(2);
+            }
+        }
         $this->setInstallationStatus('system');
-        return new RedirectResponse('/install/installation/system/');
+        return new RedirectResponse($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/system/');
     }
 
     /**
@@ -351,6 +363,36 @@ class InstallationManager
             unset($config['parameters']['installation']);
         }
         $this->writeKookaburraYaml($config);
+    }
+
+
+    /**
+     * buildDatabase
+     * @param KernelInterface $kernel
+     * @throws \Exception
+     */
+    public function moduleInstall(KernelInterface $kernel)
+    {
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'module:install',
+            // (optional) define the value of command arguments
+            // 'fooArgument' => 'barValue',
+            // (optional) pass options to the command
+            '--quiet' => '--quiet',
+            '--no-interaction' => '--no-interaction',
+        ]);
+
+        // You can use NullOutput() if you don't need the output
+        $output = new NullOutput();
+        $application->run($input, $output);
+
+        // return the output, don't use if you used NullOutput()
+       // $content = $output->fetch();
+
 
     }
+
 }

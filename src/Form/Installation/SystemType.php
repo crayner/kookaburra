@@ -159,8 +159,8 @@ class SystemType extends AbstractType
             )
             ->add('baseUrl', UrlType::class,
                 [
-                    'label' => $baseUrl->getNameDisplay(),
-                    'help' => $baseUrl->getDescription(),
+                    'label' => $baseUrl ? $baseUrl->getNameDisplay() : 'Base URL',
+                    'help' =>  $baseUrl ? $baseUrl->getDescription() : 'The address at which the whole system resides.',
                     'attr' => [
                         'class' => 'w-full',
                         'maxLength' => 100,
@@ -173,8 +173,8 @@ class SystemType extends AbstractType
             )
             ->add('basePath', TextType::class,
                 [
-                    'label' => $basePath->getNameDisplay(),
-                    'help' => $basePath->getDescription(),
+                    'label' => $basePath ? $basePath->getNameDisplay() : 'Base Path',
+                    'help' => $basePath ? $basePath->getDescription() : 'The local FS path to the system',
                     'attr' => [
                         'class' => 'w-full',
                         'maxLength' => 100,
@@ -187,8 +187,8 @@ class SystemType extends AbstractType
             )
             ->add('systemName', TextType::class,
                 [
-                    'label' => $systemName->getNameDisplay(),
-                    'help' => $systemName->getDescription(),
+                    'label' => $systemName ? $systemName->getNameDisplay() : 'System Name',
+                    'help' => $systemName ? $systemName->getDescription() : '',
                     'attr' => [
                         'class' => 'w-full',
                         'maxLength' => 50,
@@ -200,8 +200,8 @@ class SystemType extends AbstractType
             )
             ->add('installType', EnumType::class,
                 [
-                    'label' => $installType->getNameDisplay(),
-                    'help' => $installType->getDescription(),
+                    'label' => $installType ? $installType->getNameDisplay() : 'Install Type',
+                    'help' => $installType ? $installType->getDescription() : 'The purpose of this installation of Kookaburra',
                     'attr' => [
                         'class' => 'w-full',
                         'maxLength' => 50,
@@ -225,8 +225,8 @@ class SystemType extends AbstractType
             )
             ->add('organisationName', TextType::class,
                 [
-                    'label' => $orgName->getNameDisplay(),
-                    'help' => $orgName->getDescription(),
+                    'label' => $orgName ? $orgName->getNameDisplay() : 'Organisation Name',
+                    'help' => $orgName ? $orgName->getDescription() : '',
                     'attr' => [
                         'class' => 'w-full',
                         'maxLength' => 50,
@@ -238,8 +238,8 @@ class SystemType extends AbstractType
             )
             ->add('organisationNameShort', TextType::class,
                 [
-                    'label' => $orgNameShort->getNameDisplay(),
-                    'help' => $orgNameShort->getDescription(),
+                    'label' => $orgNameShort ? $orgNameShort->getNameDisplay() : 'Organisation Initials',
+                    'help' => $orgNameShort ? $orgNameShort->getDescription() : '',
                     'attr' => [
                         'class' => 'w-full',
                         'maxLength' => 10,
@@ -256,8 +256,8 @@ class SystemType extends AbstractType
             )
             ->add('country', ChoiceType::class,
                 [
-                    'label' => $country->getNameDisplay(),
-                    'help' => $country->getDescription(),
+                    'label' => $country ? $country->getNameDisplay() : 'Country',
+                    'help' => $country ? $country->getDescription() : 'The country the school is located in',
                     'placeholder' => '',
                     'choices' => $countries,
                     'attr' => [
@@ -270,8 +270,8 @@ class SystemType extends AbstractType
             )
             ->add('currency', CurrencyType::class,
                 [
-                    'label' => $currency->getNameDisplay(),
-                    'help' => $currency->getDescription(),
+                    'label' => $currency ? $currency->getNameDisplay() : 'Currency',
+                    'help' => $currency ? $currency->getDescription() : 'System-wde currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.',
                     'placeholder' => '',
                     'attr' => [
                         'class' => 'w-full',
@@ -283,8 +283,8 @@ class SystemType extends AbstractType
             )
             ->add('timezone', TimezoneType::class,
                 [
-                    'label' => $timezone->getNameDisplay(),
-                    'help' => $timezone->getDescription(),
+                    'label' => $timezone ? $timezone->getNameDisplay() : 'Timezone',
+                    'help' => $timezone ? $timezone->getDescription() : 'The timezone where the school is located',
                     'placeholder' => '',
                     'attr' => [
                         'class' => 'w-full',
@@ -297,6 +297,7 @@ class SystemType extends AbstractType
         ;
 
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
