@@ -60,6 +60,8 @@ export default class ContainerApp extends Component {
         this.formNames = {}
         this.submit = {}
         this.singleForm = (Object.keys(props.forms).length === 1)
+
+        console.log(this.state.forms)
     }
 
     componentDidMount() {
@@ -76,6 +78,11 @@ export default class ContainerApp extends Component {
     }
     
     setMyState(forms, panelErrors){
+        if (typeof forms.panelErrors !== 'undefined') {
+            panelErrors = forms.panelErrors
+            forms = {...forms.forms}
+        }
+
         if (typeof panelErrors === 'undefined')
             panelErrors = this.state.panelErrors
 
@@ -190,6 +197,7 @@ export default class ContainerApp extends Component {
         const parentName = getParentFormName(this.formNames,form)
         if (this.submit[parentName]) return
         this.submit[parentName] = true
+
         this.setMyState(buildState({...this.state.forms}, this.singleForm))
         let parentForm = {...getParentForm(this.state.forms,form)}
         let data = buildFormData({}, parentForm)
