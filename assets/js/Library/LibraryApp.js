@@ -51,13 +51,15 @@ export default class LibraryApp extends Component {
             onCKEditorChange: this.onCKEditorChange.bind(this),
             generateNewPassword: this.generateNewPassword.bind(this),
             selectLibraryAndType: this.selectLibraryAndType.bind(this),
-            loadGoogleBookData: this.loadGoogleBookData.bind(this)
+            loadGoogleBookData: this.loadGoogleBookData.bind(this),
+            renderImageLocation: this.renderImageLocation.bind(this)
         }
 
         this.state = {
             forms: {...props.forms},
             panelErrors: {},
             selectedPanel: props.selectedPanel,
+            submit: false,
         }
         this.formNames = {}
         this.submit = {}
@@ -78,6 +80,7 @@ export default class LibraryApp extends Component {
     }
 
     loadGoogleBookData(){
+        
         const isbn = this.state.forms.single.children.field6.value !== '' ? this.state.forms.single.children.field6.value : this.state.forms.single.children.field5.value
         if (isbn === '')
         {
@@ -166,17 +169,23 @@ export default class LibraryApp extends Component {
         if (id === 'edit_library') {
             form.children.library.value = value
         }
-        if (id === 'edit_libraryType') {
-            form.children.libraryType.value = value
+        if (id === 'edit_itemType') {
+            form.children.itemType.value = value
         }
         this.setMyState(
             {'single': form},
         )
 
-        if (form.children.library.value > 0 && form.children.libraryType.value > 0) {
+        let choice = Object.keys(form.children.itemType.choices).filter(key => {
+            let choice = form.children.itemType.choices[key]
+            if (choice.value === form.children.itemType.value)
+                return choice
+        })
+
+        if (form.children.library.value > 0 && choice !== []) {
             let data = {
                 library: form.children.library.value,
-                libraryType: form.children.libraryType.value,
+                itemType: form.children.itemType.value,
                 _token: form.children._token.value,
             }
             fetchJson(
@@ -213,7 +222,8 @@ export default class LibraryApp extends Component {
         this.setState({
             forms: forms,
             panelErrors: panelErrors,
-            selectedPanel: selectedPanel
+            selectedPanel: selectedPanel,
+            submit: isSubmit(this.submit),
         })
     }
 
@@ -321,6 +331,9 @@ export default class LibraryApp extends Component {
         const parentName = getParentFormName(this.formNames,form)
         if (this.submit[parentName]) return
         this.submit[parentName] = true
+        this.setState({
+            submit: true,
+        })
         let forms = {...this.state.forms}
         let parentForm = {...getParentForm(forms,form)}
         let data = buildFormData({}, parentForm)
@@ -420,10 +433,28 @@ export default class LibraryApp extends Component {
         this.setMyState(buildState({...mergeParentForm(this.state.forms,parentFormName,parentForm)}, this.singleForm))
     }
 
+    renderImageLocation(e) {
+        let form = {...this.state.forms.single}
+        form.children.imageType.value = e.target.value
+        if (e.target.value === 'Link') {
+            form.children.imageLocation.type = 'url'
+            form.children.imageLocation.label = this.translate('Image Link')
+        } else {
+            form.children.imageLocation.type = 'file'
+            form.children.imageLocation.label = this.translate('Image File')
+        }
+        let parentForm = {...getParentForm(this.state.forms,form)}
+        let parentFormName = getParentFormName(this.formNames,form)
+
+        console.log(form)
+        console.log(e.target.value)
+        this.setMyState(buildState({...mergeParentForm(this.state.forms,parentFormName,parentForm)}, this.singleForm))
+    }
+
     render() {
         return (
             <section>
-                {isSubmit(this.submit)  ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
+                {this.state.submit ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
                 <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} />
             </section>
         )

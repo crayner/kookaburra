@@ -201,7 +201,7 @@ class FastFinder implements ContentInterface
                     $classes = ProviderFactory::getRepository(CourseClassPerson::class)->findAccessibleClasses($this->getSession()->get('schoolYear'), $this->getToken()->getToken()->getUser()->getPerson(), '');
                 }
             }
-            CacheHelper::setCacheValue('fastFinderClasses', $classes) ?: [];
+            CacheHelper::setCacheValue('fastFinderClasses', $classes ?: []);
         } else {
             $classes = CacheHelper::getCacheValue('fastFinderClasses');
         }

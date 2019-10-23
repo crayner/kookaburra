@@ -14,9 +14,10 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
-use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gibbon\Tables\Action;
+use Kookaburra\SystemAdmin\Entity\Module;
 
 /**
  * Class NotificationEvent

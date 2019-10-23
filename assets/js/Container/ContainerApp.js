@@ -55,13 +55,12 @@ export default class ContainerApp extends Component {
         this.state = {
             selectedPanel: props.selectedPanel,
             forms: {...props.forms},
-            panelErrors: {}
+            panelErrors: {},
+            submit: false,
         }
         this.formNames = {}
         this.submit = {}
         this.singleForm = (Object.keys(props.forms).length === 1)
-
-        console.log(this.state.forms)
     }
 
     componentDidMount() {
@@ -89,6 +88,7 @@ export default class ContainerApp extends Component {
         this.setState({
             forms: forms,
             panelErrors: panelErrors,
+            submit: isSubmit(this.submit),
         })
     }
 
@@ -197,8 +197,9 @@ export default class ContainerApp extends Component {
         const parentName = getParentFormName(this.formNames,form)
         if (this.submit[parentName]) return
         this.submit[parentName] = true
-
-        this.setMyState(buildState({...this.state.forms}, this.singleForm))
+        this.setState({
+            submit: true,
+        })
         let parentForm = {...getParentForm(this.state.forms,form)}
         let data = buildFormData({}, parentForm)
         fetchJson(
@@ -210,6 +211,7 @@ export default class ContainerApp extends Component {
                     window.open(data.redirect,'_self');
                 } else {
                     let errors = parentForm.errors
+                    console.log([data,errors])
                     errors = errors.concat(data.errors)
                     let form = {...data.form}
                     form.errors = errors
@@ -300,7 +302,7 @@ export default class ContainerApp extends Component {
     render() {
         return (
             <section>
-                {isSubmit(this.submit)  ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
+                {this.state.submit ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
                 <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} />
             </section>
         )

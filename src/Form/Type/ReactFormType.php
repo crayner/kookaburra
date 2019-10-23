@@ -294,6 +294,8 @@ class ReactFormType extends AbstractType
             return 'email';
         if (in_array('text', $prefixes))
             return 'text';
+        if (in_array('auto_suggest', $prefixes))
+            return 'auto_suggest';
         if (in_array('choice', $prefixes))
             return 'choice';
         if (in_array('display', $prefixes))

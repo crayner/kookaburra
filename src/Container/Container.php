@@ -175,6 +175,7 @@ class Container
             [
                 'disabled' => false,
                 'content' => null,
+                'translationDomain' => 'messages',
             ]
         );
 

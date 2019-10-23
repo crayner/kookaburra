@@ -210,4 +210,41 @@ class PersonRepository extends ServiceEntityRepository
             ->getResult();
         ;
     }
+
+    /**
+     * findAllFullList
+     * @return array
+     */
+    public function findAllFullList(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select(['p.id', "CONCAT(p.surname, ': ', p.preferredName) AS fullName"])
+            ->where('p.status = :full')
+            ->setParameter('full', 'Full')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findAllStudentsByRollGroup
+     * @return mixed
+     */
+    public function findAllStudentsByRollGroup()
+    {
+        return $this->createQueryBuilder('p')
+            ->select(['p.id', 'p.studentID', "CONCAT(p.surname, ', ', p.preferredName) AS fullName", 'rg.name AS rollGroup'])
+            ->where('p.status = :full')
+            ->setParameter('full', 'Full')
+            ->join('p.studentEnrolments', 'se')
+            ->andWhere('se.schoolYear = :currentYear')
+            ->setParameter('currentYear', SchoolYearHelper::getCurrentSchoolYear())
+            ->join('se.rollGroup', 'rg')
+            ->orderBy('rg.name', 'ASC')
+            ->addOrderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

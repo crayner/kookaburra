@@ -323,4 +323,20 @@ class PersonProvider implements EntityProviderInterface, UserLoaderInterface
         $result = $this->getRepository(StudentEnrolment::class)->findOneBy(['person' => $person, 'schoolYear' => SchoolYearHelper::getCurrentSchoolYear()]);
         return $result instanceof StudentEnrolment;
     }
+
+    /**
+     * findAllFullList
+     * @throws \Exception
+     */
+    public function findAllFullList()
+    {
+        $result = $this->getRepository()->findAllFullList();
+        $w = [];
+        foreach($result as $x) {
+            while (isset($w[$x['fullName']]))
+                $x['fullName'] .= '.';
+            $w[$x['fullName']] = $x['id'];
+        }
+        return $w;
+    }
 }

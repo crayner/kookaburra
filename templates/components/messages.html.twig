@@ -1,5 +1,4 @@
 {% for message in getMessages() %}
-    {% dump(message) %}
     <div class="{{ message.level }}">
         {{ message.message|trans(message.options,message.domain) }}
     </div>

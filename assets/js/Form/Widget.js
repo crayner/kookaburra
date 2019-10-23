@@ -134,10 +134,11 @@ export default function Widget(props) {
     }
 
     if (form.type === 'date') {
+        let value = form.value.year + '-' + form.value.month + '-' + form.value.day
         widget_attr.type = 'date'
         return (
             <div {...wrapper_attr}>
-                <input {...widget_attr} defaultValue={form.value} />
+                <input {...widget_attr} defaultValue={value} />
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
         )

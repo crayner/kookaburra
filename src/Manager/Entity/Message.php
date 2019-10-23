@@ -37,6 +37,11 @@ class Message
     private $options = [];
 
     /**
+     * @var null|string
+     */
+    private $translatedMessage;
+
+    /**
      * @return string
      */
     public function getMessage(): string
@@ -127,6 +132,26 @@ class Message
     {
         $this->getOptions();
         $this->options[$name] = $value;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTranslatedMessage(): ?string
+    {
+        return $this->translatedMessage;
+    }
+
+    /**
+     * TranslatedMessage.
+     *
+     * @param string|null $translatedMessage
+     * @return Message
+     */
+    public function setTranslatedMessage(?string $translatedMessage): Message
+    {
+        $this->translatedMessage = $translatedMessage;
         return $this;
     }
 }

@@ -2,6 +2,7 @@
 namespace App\Manager;
 
 use App\Manager\Entity\Message;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -261,11 +262,22 @@ class MessageManager
         {
             $w = [];
             $w['level'] = $message->getLevel();
+            $w['class'] = $message->getLevel();
             $w['message'] = $message->getTranslatedMessage();
             $w['id'] = uniqid();
-            $w['code'] = $message->getCode();
             $mes[$x++] = $w;
         }
         return $mes;
+    }
+
+    /**
+     * pushToFlash
+     * @param FlashBagInterface $flashBag
+     * @param TranslatorInterface $translator
+     */
+    public function pushToFlash(FlashBagInterface $flashBag, TranslatorInterface $translator)
+    {
+        foreach($this->getTranslatedMessages($translator) as $message)
+            $flashBag->add($message->getLevel(), $message->getTranslatedMessage());
     }
 }

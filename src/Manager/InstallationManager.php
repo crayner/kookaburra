@@ -22,7 +22,6 @@ use App\Util\GlobalHelper;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormInterface;
@@ -310,7 +309,6 @@ class InstallationManager
         $person->setEmail($form->get('email')->getData());
         $person->setViewCalendarSchool('Y');
         $person->setViewCalendarSpaceBooking('Y');
-
         $em = ProviderFactory::getEntityManager();
         $em->persist($person);
         $em->flush();
@@ -322,7 +320,13 @@ class InstallationManager
             $statement->execute();
             $person = ProviderFactory::getRepository(Person::class)->find(1);
         }
-        $person->setStaff(ProviderFactory::getRepository(Staff::class)->find(1));
+
+        $staff = new Staff();
+        $staff->setType('Support')
+            ->setJobTitle('System Administrator')
+            ->setPerson($person);
+        $em->persist($staff);
+        $em->flush();
         $securityUser = new SecurityUser($person);
     }
 

@@ -89,7 +89,7 @@ class GlobalHelper
      * getRequest
      * @return Request|null
      */
-    private static function getRequest(bool $master = false): ?Request
+    public static function getRequest(bool $master = false): ?Request
     {
         if (!$master && (null === self::$request || self::$request !== self::$stack->getCurrentRequest()))
             self::$request = self::$stack->getCurrentRequest();
@@ -133,5 +133,25 @@ class GlobalHelper
             $r = chr($n%26 + 0x41) . $r;
         }
         return $r;
+    }
+
+    /**
+     * localAssetorURL
+     * @param string $name
+     */
+    public static function localAssetorURL(string $name)
+    {
+        if (stripos($name, 'http') === 0)
+            return $name;
+
+        //  Local Asset
+        $path = realpath(__DIR__ . '/../../public');
+        $asset = realpath($name);
+        if (strpos($asset, $path) === 0)
+        {
+            return self::getRequest()->getUriForPath(str_replace($path, '', $asset));
+        }
+        // No Idea, so programmer to fix.
+        return $name;
     }
 }

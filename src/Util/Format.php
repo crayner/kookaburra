@@ -16,8 +16,17 @@ use DateTime;
 use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class Format
+ * @package App\Util
+ */
 class Format
 {
+    /**
+     * @var bool
+     */
+    private static $setup = false;
+
     /**
      * @var array
      */
@@ -32,7 +41,7 @@ class Format
      * @param string $name
      * @return mixed
      */
-    public static function getSetting(string $name)
+    public static function getSetting(string $name): ?string
     {
         return static::$settings[$name];
     }
@@ -42,8 +51,13 @@ class Format
      *
      * @param Session $session
      */
-    public static function setupFromSession(SessionInterface $session)
+    public static function setupFromSession(?SessionInterface $session = null)
     {
+        if (self::$setup)
+            return ;
+
+        $session = $session ?: GlobalHelper::getRequest()->getSession();
+
         $settings = $session->get('i18n');
 
         $settings['absolutePath'] = $session->get('absolutePath');
@@ -57,6 +71,8 @@ class Format
         $settings['nameFormatStaffFormal'] = $session->get('nameFormatStaffFormal');
         $settings['nameFormatStaffFormalReversed'] = $session->get('nameFormatStaffFormalReversed');
 
+
+        self::$setup = true;
         static::setup($settings);
     }
 
@@ -103,23 +119,16 @@ class Format
      */
     public static function name($title, $preferredName, $surname, $roleCategory = 'Staff', $reverse = false, $informal = false)
     {
+        self::setupFromSession();
         $output = '';
 
         if (empty($preferredName) && empty($surname)) return '';
 
         if ($roleCategory == 'Staff' or $roleCategory == 'Other') {
-            $setting = 'nameFormatStaff' . ($informal ? 'Informal' : 'Formal') . ($reverse? 'Reversed' : '');
-            $format = isset(static::$settings[$setting])? static::$settings[$setting] : '[title] [preferredName]. [surname]';
-
-            $output = preg_replace_callback('/\[+([^\]]*)\]+/u',
-                function ($matches) use ($title, $preferredName, $surname) {
-                    list($token, $length) = array_pad(explode(':', $matches[1], 2), 2, false);
-                    return isset($$token)
-                        ? (!empty($length)? mb_substr($$token, 0, intval($length)) : $$token)
-                        : '';
-                },
-                $format);
-
+            $setting = 'nameFormatStaff' . ($informal ? 'Informal' : 'Formal') . ($reverse ? 'Reversed' : '');
+            $format = static::getSetting($setting) ? static::getSetting($setting) : '[title] [preferredName] [surname]';
+            $output = str_replace(['[preferredName:1]', '[preferredName]'], $preferredName, $format);
+            $output = trim(str_replace(['[title]', '[surname]'], [$title, $surname], $output));
         } elseif ($roleCategory == 'Parent') {
             $format = (!$informal? '{oneString} ' : '') . ($reverse? '{threeString}, {twoString}' : '{twoString} {threeString}');
             $output = str_replace(['{threeString}','{twoString}','{oneString}'], [$surname, $preferredName, $title], $format);
@@ -140,6 +149,7 @@ class Format
      */
     public static function date($dateString, $format = false)
     {
+        self::setupFromSession();
         if (empty($dateString)) return '';
         $date = static::createDateTime($dateString);
         return $date ? $date->format($format ? $format : static::$settings['dateFormatPHP']) : $dateString;
@@ -156,6 +166,7 @@ class Format
     private static function createDateTime($dateOriginal, $expectedFormat = null, $timezone = null): DateTime
     {
         if ($dateOriginal instanceof DateTime || $dateOriginal instanceof DateTimeImmutable) return $dateOriginal;
+        self::setupFromSession();
 
         return !empty($expectedFormat)
             ? DateTime::createFromFormat($expectedFormat, $dateOriginal, $timezone)
@@ -165,8 +176,9 @@ class Format
     /**
      * Converts a date in the language-specific format to YYYY-MM-DD.
      *
-     * @param DateTime|string $dateString
+     * @param $dateString
      * @return string
+     * @throws \Exception
      */
     public static function dateConvert($dateString)
     {
@@ -178,9 +190,10 @@ class Format
     /**
      * Converts a YYYY-MM-DD date to a Unix timestamp.
      *
-     * @param DateTime|string $dateString
-     * @param string $timezone
+     * @param $dateString
+     * @param null $timezone
      * @return int
+     * @throws \Exception
      */
     public static function timestamp($dateString, $timezone = null)
     {

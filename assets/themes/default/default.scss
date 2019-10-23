@@ -1452,3 +1452,11 @@ input[value="1"] + .slider:before {
 [data-title] {
     position: relative;
 }
+.max240 {
+    max-height: 240px;
+    max-width: 240px;
+}
+.max200 {
+    max-height: 200px;
+    max-width: 200px;
+}

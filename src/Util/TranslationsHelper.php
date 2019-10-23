@@ -31,6 +31,11 @@ class TranslationsHelper
     private static $translations;
 
     /**
+     * @var string
+     */
+    private static $domain = 'messages';
+
+    /**
      * TranslationsHelper constructor.
      * @param TranslatorInterface $translator
      */
@@ -61,10 +66,10 @@ class TranslationsHelper
      * addTranslation
      * @return ReactFormType
      */
-    public static function addTranslation(string $id, array $options = [], ?string $domain = 'messages')
+    public static function addTranslation(string $id, array $options = [], ?string $domain = null)
     {
         self::getTranslations();
-        self::$translations[$id] = self::translate($id, $options, $domain);
+        self::$translations[$id] = self::translate($id, $options, $domain ?: self::getDomain());
     }
 
     /**
@@ -74,10 +79,26 @@ class TranslationsHelper
      * @param string|null $domain  Override the default messages.
      * @return string
      */
-    public static function translate(string $id, array $params = [], ?string $domain = 'messages'): string
+    public static function translate(string $id, array $params = [], ?string $domain = null): string
     {
         if (null === self::$translator)
             return $id;
-        return self::$translator->trans($id, $params, $domain);
+        return self::$translator->trans($id, $params, $domain ?: self::getDomain());
+    }
+
+    /**
+     * @return string
+     */
+    public static function getDomain(): string
+    {
+        return self::$domain ?: 'messages';
+    }
+
+    /**
+     * @param string $domain
+     */
+    public static function setDomain(string $domain): void
+    {
+        self::$domain = $domain;
     }
 }

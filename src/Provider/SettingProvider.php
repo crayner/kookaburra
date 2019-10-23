@@ -397,4 +397,35 @@ class SettingProvider implements EntityProviderInterface
             $this->getSession()->set($setting->getName(), $setting->getValue());
 
     }
+
+    /**
+     * getSettingByName
+     * @param string $name
+     * @return Setting|null
+     * @throws \Exception
+     */
+    public function getSettingByName(string $name): ?Setting
+    {
+        $result = $this->getRepository()->findBy(['name' => $name]);
+        dd($result);
+        if (count($result) === 1)
+        {
+            $this->addSetting($result[0]);
+
+            return $result[0];
+        }
+        return null;
+    }
+
+    /**
+     * getSettingByNameAsString
+     * @param string $name
+     * @return string|null
+     * @throws \Exception
+     */
+    public function getSettingByNameAsString(string $name): ?string
+    {
+        $result = $this->getSettingByName($name);
+        return $result !== null ? $result->getValue() : null;
+    }
 }

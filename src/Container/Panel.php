@@ -56,9 +56,10 @@ class Panel
      * Panel constructor.
      * @param null|string $name
      */
-    public function __construct(?string $name = null)
+    public function __construct(?string $name = null, ?string $translationDomain = null)
     {
         $this->setName($name);
+        $this->setTranslationDomain($translationDomain);
     }
 
     /**
@@ -132,12 +133,13 @@ class Panel
      */
     public function toArray(bool $refresh = false): array
     {
-        $result =  $this->toArrayResult = $this->toArrayResult ?: [
+        $result =  $this->toArrayResult = $this->toArrayResult && !$refresh ? $this->toArrayResult : [
             'name' => $this->getName(),
             'label' => $this->getLabel(),
             'disabled' => $this->isDisabled(),
             'content' => $this->getContent(),
             'index' => $this->getIndex(),
+            'translationDomain' => $this->getTranslationDomain(),
         ];
 
         return $result;

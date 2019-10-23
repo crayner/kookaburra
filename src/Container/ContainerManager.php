@@ -98,7 +98,7 @@ class ContainerManager
 
         $container = $this->resolveContainer($container);
 
-        $this->getContainers()->set($container->getTarget(), $container->toArray($this->translator));
+        $this->getContainers()->set($container->getTarget(), $container->toArray());
 
         return $this;
     }
@@ -225,5 +225,5 @@ class ContainerManager
     {
         $container = $this->getContainers()->get($containerName);
         return $container['forms']->get($panelName);
-;    }
+    }
 }

@@ -39,6 +39,11 @@ class ModuleMenu implements ContentInterface
     private $translator;
 
     /**
+     * @var string
+     */
+    private $domain;
+
+    /**
      * execute
      */
     public function execute(): void
@@ -48,6 +53,8 @@ class ModuleMenu implements ContentInterface
         if ($request->attributes->has('module') && false !== $request->attributes->get('module'))
         {
             $currentModule = $request->attributes->get('module');
+            if ($currentModule->getType() !== 'Core')
+                $this->setDomain($currentModule->getName());
             $lastModule = $request->getSession()->get('menuModuleName', null);
 
             if (! $request->getSession()->has('menuModuleItems') || $currentModule->getName() !== $lastModule)
@@ -128,9 +135,9 @@ class ModuleMenu implements ContentInterface
      * @param string|null $domain
      * @return string
      */
-    private function translate(string $key, ?array $params = [], ?string $domain = 'messages'): string
+    private function translate(string $key, ?array $params = [], ?string $domain = null): string
     {
-        return $this->getTranslator()->trans($key, $params, $domain);
+        return $this->getTranslator()->trans($key, $params, $domain ?: $this->getDomain());
     }
 
     /**
@@ -162,6 +169,26 @@ class ModuleMenu implements ContentInterface
 
         if (!isset($link['url'])) dd($link);
         return $link['url'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain(): string
+    {
+        return $this->domain ?: 'messages' ;
+    }
+
+    /**
+     * Domain.
+     *
+     * @param string $domain
+     * @return ModuleMenu
+     */
+    public function setDomain(string $domain): ModuleMenu
+    {
+        $this->domain = $domain;
+        return $this;
     }
 
 }

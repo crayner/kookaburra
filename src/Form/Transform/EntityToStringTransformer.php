@@ -1,6 +1,8 @@
 <?php
 namespace App\Form\Transform;
 
+use App\Manager\EntityInterface;
+use App\Provider\ProviderFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -8,6 +10,8 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EntityToStringTransformer implements DataTransformerInterface
 {
@@ -36,12 +40,24 @@ class EntityToStringTransformer implements DataTransformerInterface
 	 */
 	private $multiple;
 
-	/**
-	 * @param ObjectManager $om
-	 */
+    /**
+     * EntityToStringTransformer constructor.
+     * @param EntityManagerInterface|null $om
+     * @param array $options
+     */
 	public function __construct(EntityManagerInterface $om, array $options)
 	{
 		$this->om = $om;
+
+		$resolver = new OptionsResolver();
+		$resolver->setDefault('multiple', false);
+		$resolver->setRequired('class');
+		$resolver->setAllowedTypes('multiple', ['boolean']);
+		$options = $resolver->resolve($options);
+
+		if (!in_array(EntityInterface::class, class_implements($options['class'])))
+		    throw new OptionDefinitionException(sprintf('The class "%s" must implement "%"', $options['class'], EntityInterface::class));
+
 		$this->setEntityClass($options['class']);
 		$this->setMultiple($options['multiple']);
 	}

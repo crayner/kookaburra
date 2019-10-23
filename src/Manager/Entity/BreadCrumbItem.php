@@ -38,6 +38,11 @@ class BreadCrumbItem
     private $trans_params = [];
 
     /**
+     * @var string
+     */
+    private $domain;
+
+    /**
      * BreadCrumbItem constructor.
      * @param array $crumb
      */
@@ -52,6 +57,7 @@ class BreadCrumbItem
             $resolver->setDefaults([
                 'uri_params' => [],
                 'trans_params' => [],
+                'domain' => 'messages',
             ]);
 
             if (isset($crumb['params'])) {
@@ -60,7 +66,8 @@ class BreadCrumbItem
                 trigger_error('The params option has been replaced by the uri_params option.', E_USER_DEPRECATED);
             }
             $crumb = $resolver->resolve($crumb);
-            $this->setName($crumb['name'])->setUri($crumb['uri'])->setTransParams($crumb['trans_params'])->setUriParams($crumb['uri_params']);
+
+            $this->setDomain($crumb['domain'])->setName($crumb['name'])->setUri($crumb['uri'])->setTransParams($crumb['trans_params'])->setUriParams($crumb['uri_params']);
         }
     }
 
@@ -141,6 +148,26 @@ class BreadCrumbItem
     public function setTransParams(array $trans_params): BreadCrumbItem
     {
         $this->trans_params = $trans_params;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain(): string
+    {
+        return $this->domain ?: 'messages';
+    }
+
+    /**
+     * Domain.
+     *
+     * @param string $domain
+     * @return BreadCrumbItem
+     */
+    public function setDomain(string $domain): BreadCrumbItem
+    {
+        $this->domain = $domain;
         return $this;
     }
 }

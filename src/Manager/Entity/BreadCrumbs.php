@@ -45,6 +45,11 @@ class BreadCrumbs
     private $legacy = false;
 
     /**
+     * @var string
+     */
+    private $domain;
+
+    /**
      * @return BreadCrumbItem[]|ArrayCollection
      */
     public function getItems(): ArrayCollection
@@ -139,6 +144,7 @@ class BreadCrumbs
         ]);
         $resolver->setDefaults([
             'trans_params' => [],
+            'domain' => 'messages',
         ]);
 
         $module = $resolver->resolve($module);
@@ -151,16 +157,18 @@ class BreadCrumbs
         $this->setTitle($module['title']);
         $this->setTransParams($module['trans_params']);
         $this->setBaseURL($module['baseURL']);
+        $this->setDomain($module['domain']);
 
         foreach($module['crumbs'] as $crumb) {
             if (false === strpos($crumb['uri'], '__'))
                 $crumb['uri'] =  $this->getModule() . '__' . $crumb['uri'];
+            $crumb['domain'] = $this->getDomain();
             $item = new BreadCrumbItem($crumb);
             $this->addItem($item);
         }
 
         $item = new BreadCrumbItem();
-        $item->setName($module['title'])->setUri(null)->setTransParams($module['trans_params']);
+        $item->setName($module['title'])->setUri(null)->setTransParams($module['trans_params'])->setDomain($this->getDomain());
         $this->addItem($item);
 
         return $this->getItems();
@@ -213,6 +221,7 @@ class BreadCrumbs
 
         $this->crumbs['title'] = $title;
         $this->crumbs['trans_params'] = $transParams;
+        $this->crumbs['domain'] = $this->getDomain();
 
         return $this;
     }
@@ -298,6 +307,26 @@ class BreadCrumbs
     public function setTransParams(array $trans_params): BreadCrumbs
     {
         $this->trans_params = $trans_params;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomain(): string
+    {
+        return $this->domain ?: 'messages';
+    }
+
+    /**
+     * Domain.
+     *
+     * @param string $domain
+     * @return BreadCrumbs
+     */
+    public function setDomain(string $domain): BreadCrumbs
+    {
+        $this->domain = $domain;
         return $this;
     }
 }

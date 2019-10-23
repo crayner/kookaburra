@@ -150,6 +150,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getBackgroundImage', [$this, 'getBackgroundImage']),
             new TwigFunction('version_compare', [$this, 'version_compare']),
             new TwigFunction('asset_exists', [$this, 'asset_exists']),
+            new TwigFunction('getYesNo', [$this, 'getYesNo']),
         ];
     }
 
@@ -387,5 +388,15 @@ class PageExtension extends AbstractExtension
     public function asset_exists(string $asset): bool
     {
         return realpath(__DIR__ . '/../../../public/' . ltrim($asset, '/')) ? true : false;
+    }
+
+    /**
+     * getYesNo
+     * @param string $yes
+     * @return string
+     */
+    public function getYesNo(string $yes): string
+    {
+        return $yes === 'Y' ? 'Yes' : 'No';
     }
 }

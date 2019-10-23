@@ -38,9 +38,11 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
      * @param string $domain
      * @param null $locale
      * @return string
+     * @throws \Exception
      */
     public function trans($id, array $parameters = [], $domain = 'messages', $locale = null)
     {
+        $id = trim($id);
         if (null === $id || '' === $id)
             return '';
 
