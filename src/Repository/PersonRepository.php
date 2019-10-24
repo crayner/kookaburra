@@ -197,6 +197,7 @@ class PersonRepository extends ServiceEntityRepository
     {
         $today = new \DateTime(date('Y-m-d'));
         return $this->createQueryBuilder('p')
+            ->select(['p','s'])
             ->join('p.staff','s')
             ->where('s.id IS NOT NULL')
             ->andWhere('p.status = :full')
