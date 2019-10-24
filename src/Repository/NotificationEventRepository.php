@@ -15,6 +15,7 @@ namespace App\Repository;
 
 use App\Entity\NotificationEvent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Kookaburra\SystemAdmin\Entity\Module;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -48,5 +49,20 @@ class NotificationEventRepository extends ServiceEntityRepository
             ->addOrderBy('ne.event')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * deleteModuleRecords
+     * @param Module $module
+     * @return mixed
+     */
+    public function deleteModuleRecords(Module $module)
+    {
+        return $this->createQueryBuilder('ne')
+            ->delete()
+            ->where('ne.module = :module')
+            ->setParameter('module', $module)
+            ->getQuery()
+            ->execute();
     }
 }

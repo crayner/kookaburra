@@ -604,7 +604,6 @@ INSERT INTO `gibbonnotificationevent` (`gibbonNotificationEventID`, `event`, `mo
 (000016, 'Updated Privacy Settings', 'Students', 'View Student Profile_full', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0005, 0000024),
 (000017, 'Daily Attendance Summary', 'Attendance', 'Roll Groups Not Registered', 'CLI', 'All', 'Y', 0006, 0000030),
 (000018, 'User Status Check and Fix', 'User Admin', 'Manage Users', 'CLI', 'All', 'Y', 0002, NULL),
-(000019, 'Overdue Loan Items', 'Library', 'Lending & Activity Log', 'CLI', 'All', 'Y', 0130, 0000711),
 (000020, 'Behaviour Letters', 'Behaviour', 'View Behaviour Records_all', 'CLI', 'All', 'Y', 0119, 0000608),
 (000021, 'Parent Weekly Email Summary', 'Planner', 'Parent Weekly Email Summary', 'CLI', 'All', 'Y', 0009, 0000810),
 (000022, 'Application Form Accepted', 'Students', 'View Student Profile_full', 'Core', 'All,gibbonYearGroupID', 'Y', 0005, 0000024),
