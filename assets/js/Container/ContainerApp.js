@@ -211,7 +211,6 @@ export default class ContainerApp extends Component {
                     window.open(data.redirect,'_self');
                 } else {
                     let errors = parentForm.errors
-                    console.log([data,errors])
                     errors = errors.concat(data.errors)
                     let form = {...data.form}
                     form.errors = errors

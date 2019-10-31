@@ -12,7 +12,7 @@
 
 namespace App\Manager;
 
-use App\Entity\Notification;
+use Kookaburra\SystemAdmin\Entity\Notification;
 use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Symfony\Component\Routing\RouterInterface;

@@ -52,7 +52,7 @@
                         {{ note.timestamp|date(formatSetting('dateFormatPHP')) }}
                     </td>
                     <td>
-                        {{ note.text }}
+                        {{ note.text|raw }}
                     </td>
                     <td class="content-centre">
                         {{ note.count }}
@@ -110,7 +110,7 @@
                         {{ note.timestamp|date(formatSetting('dateFormatPHP')) }}
                     </td>
                     <td>
-                        {{ note.text }}
+                        {{ note.text|raw }}
                     </td>
                     <td class="content-centre">
                         {{ note.count }}

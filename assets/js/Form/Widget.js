@@ -8,6 +8,7 @@ import DocumentEditor from '@ckeditor/ckeditor5-build-classic';
 import CollectionApp from "./CollectionApp"
 import {isEmpty} from "../component/isEmpty"
 import FormSelect from "./FormSelect"
+import Row from "./Template/Table/Row"
 
 export default function Widget(props) {
     const {
@@ -134,7 +135,7 @@ export default function Widget(props) {
     }
 
     if (form.type === 'date') {
-        let value = form.value.year + '-' + form.value.month + '-' + form.value.day
+        let value = ('0000' + form.value.year).slice(-4) + '-' + ('00' + form.value.month).slice(-2) + '-' + ('00' + form.value.day).slice(-2)
         widget_attr.type = 'date'
         return (
             <div {...wrapper_attr}>

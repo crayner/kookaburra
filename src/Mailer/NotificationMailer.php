@@ -12,7 +12,7 @@
 
 namespace App\Mailer;
 
-use App\Entity\Notification;
+use Kookaburra\SystemAdmin\Entity\Notification;
 use App\Entity\Person;
 use App\Util\MailerHelper;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -21,7 +21,6 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Mime\NamedAddress;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
 
 /**
  * Class NotificationMailer
@@ -88,7 +87,7 @@ class NotificationMailer extends Mailer
      * @param string $domain
      * @return string
      */
-    public function translate(string $message, array $options = [], string $domain = 'gibbon'): string
+    public function translate(string $message, array $options = [], string $domain = 'messages'): string
     {
         return $this->trans->trans($message, $options, $domain);
     }

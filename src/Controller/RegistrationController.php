@@ -12,7 +12,7 @@
 
 namespace App\Controller;
 
-use App\Entity\NotificationEvent;
+use Kookaburra\SystemAdmin\Entity\NotificationEvent;
 use App\Entity\Person;
 use App\Entity\PersonField;
 use App\Form\Registration\PublicType;

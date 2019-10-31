@@ -20,7 +20,7 @@ For info about editing, see: https://twig.symfony.com/doc/2.x/
 {% endblock %}
 
 {% block footer %}
-    {{ 'If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:'|trans({'%1$s': systemName, '%2$sc': '<a href="' ~ absoluteURL ~ '/preferences/" style="' ~ linkStyle ~ '">', '%3$s': '</a>'})|raw }}
+    {{ 'If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:'|trans({'%1$s': systemName, '%2$s': '<a href="' ~ url('preferences') ~ '" style="' ~ linkStyle ~ '">', '%3$s': '</a>'})|raw }}
 
     <br/><br/>
 

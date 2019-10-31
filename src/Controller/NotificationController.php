@@ -12,7 +12,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Notification;
+use Kookaburra\SystemAdmin\Entity\Notification;
 use App\Manager\NotificationTrayManager;
 use App\Provider\ProviderFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -118,9 +118,11 @@ class NotificationController extends AbstractController
             $em->flush();
 
             $url = $notification->getActionLink();
-            return new RedirectResponse($url);
+            if ($url !== null)
+                return new RedirectResponse($url);
         }
-        $this->addFlash('error', 'return.error2');
+        if ($url !== null)
+            $this->addFlash('error', 'return.error2');
 
         return $this->forward(NotificationController::class.'::manage');
     }

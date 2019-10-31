@@ -26,6 +26,13 @@ export default function Row(props) {
         return (<ParagraphRow form={form} functions={functions} columns={columns}/>)
     }
 
+    if (form.type === 'transparent') {
+        return Object.keys(form.children).map(name => {
+            let child = form.children[name]
+            return (<Row form={child} key={child.name} functions={functions} columns={columns}/>)
+        })
+    }
+
     if (form.row_style === 'single' || form.type === 'submit') {
         return (<SingleRow form={form} functions={functions} columns={columns}/>)
     }

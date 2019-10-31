@@ -28,7 +28,7 @@ class ImportHistory implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", columnDefinition="AUTO_INCREMENT")
+     * @ORM\Column(type="integer", columnDefinition="INT(10) AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
