@@ -289,6 +289,12 @@
     "symfony/dotenv": {
         "version": "v4.3.1"
     },
+    "symfony/error-handler": {
+        "version": "4.4.x-dev"
+    },
+    "symfony/error-renderer": {
+        "version": "4.4.x-dev"
+    },
     "symfony/event-dispatcher": {
         "version": "v4.3.1"
     },
@@ -437,12 +443,6 @@
         "version": "v1.11.0"
     },
     "symfony/polyfill-mbstring": {
-        "version": "v1.11.0"
-    },
-    "symfony/polyfill-php72": {
-        "version": "v1.11.0"
-    },
-    "symfony/polyfill-php73": {
         "version": "v1.11.0"
     },
     "symfony/profiler-pack": {

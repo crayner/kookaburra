@@ -16,17 +16,15 @@ use Kookaburra\SystemAdmin\Entity\Notification;
 use App\Entity\Person;
 use App\Util\MailerHelper;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mailer\Transport\TransportInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Mime\NamedAddress;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class NotificationMailer
  * @package App\Mailer
  */
-class NotificationMailer extends Mailer
+class NotificationMailer
 {
     /**
      * @var TranslatorInterface
@@ -34,15 +32,19 @@ class NotificationMailer extends Mailer
     private $trans;
 
     /**
-     * NotificationMailer constructor.
-     * @param TranslatorInterface $trans
-     * @param TransportInterface $transport
-     * @param MessageBusInterface|null $bus
+     * @var MailerInterface
      */
-    public function __construct(TranslatorInterface $trans, TransportInterface $transport, MessageBusInterface $bus = null)
+    private $mailer;
+
+    /**
+     * NotificationMailer constructor.
+     * @param MailerInterface $mailer
+     * @param TranslatorInterface $trans
+     */
+    public function __construct(MailerInterface $mailer, TranslatorInterface $trans)
     {
         $this->trans = $trans;
-        parent::__construct($transport, $bus);
+        $this->mailer = $mailer;
     }
 
     /**
@@ -57,7 +59,7 @@ class NotificationMailer extends Mailer
     public function newRegistration(Person $person, string $message, array $messageOptions, string $moduleName, string $actionLink, Notification $notification)
     {
         $email = (new TemplatedEmail())
-            ->to(new NamedAddress($person->getEmail(), $person->formatName()))
+            ->to(new Address($person->getEmail(), $person->formatName()))
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
@@ -77,7 +79,7 @@ class NotificationMailer extends Mailer
                 'notification' => $notification,
             ]));
 
-        $this->send($email);
+        $this->getMailer()->send($email);
     }
 
     /**
@@ -90,5 +92,13 @@ class NotificationMailer extends Mailer
     public function translate(string $message, array $options = [], string $domain = 'messages'): string
     {
         return $this->trans->trans($message, $options, $domain);
+    }
+
+    /**
+     * @return MailerInterface
+     */
+    public function getMailer(): MailerInterface
+    {
+        return $this->mailer;
     }
 }

@@ -16,8 +16,8 @@ use App\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mailer\Event\MessageEvent;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Mime\NamedAddress;
 
 /**
  * Class MailerFromAddress
@@ -41,7 +41,7 @@ class MailerFromAddress implements EventSubscriberInterface
         if (count($message->getFrom()) === 0) {
             $name = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationName');
             $email = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationEmail');
-            $address = new NamedAddress($email, $name);
+            $address = new Address($email, $name);
 
             // always set the from address if no from address is set.
             $message->from($address);
