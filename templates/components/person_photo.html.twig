@@ -1,4 +1,6 @@
 {%  trans_default_domain 'messages' %}
 
-{% set photo = person.photo(size, class|default('')) %}
-<img src="{{ asset(photo.asset|replace({'{theme}': getThemeName()})) }}" class="{{ photo.class }}" />
+{% if person is not same as(null) %}
+    {% set photo = person.photo(size, class|default('')) %}
+    <img src="{{ asset(photo.asset|replace({'{theme}': getThemeName()})) }}" class="{{ photo.class }}" />
+{% endif %}

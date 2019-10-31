@@ -147,3 +147,4 @@ services:
 
     App\Router\KookaburraLoader:
         tags: [ routing.loader ]
+

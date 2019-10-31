@@ -6,5 +6,7 @@ twig:
         absoluteURL: '%absoluteURL%'
         version: '%version%'
         logPath: '%kernel.cache_dir%/logs'
+        systemName: '%system_name%'
+        organisationName: '%organisation_name%'
     paths:
         '%kernel.project_dir%/public': images

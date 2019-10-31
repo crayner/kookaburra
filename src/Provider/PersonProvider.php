@@ -25,7 +25,7 @@ use App\Manager\Traits\EntityTrait;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Util\SchoolYearHelper;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
-use App\Entity\NotificationEvent;
+use Kookaburra\SystemAdmin\Entity\NotificationEvent;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;

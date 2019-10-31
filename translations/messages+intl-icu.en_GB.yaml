@@ -137,9 +137,13 @@ Student: Student
 My Website: My Website
 Close: Close
 return:
+    error:
+        1: Your request failed because your inputs were invalid.
     error1: 'Your request failed because your inputs were invalid.'
     error2: 'Your request failed due to a database error.'
     success0: 'Your request was completed successfully.'
+    success:
+        0: 'Your request was completed successfully.'
 Delete All Notifications: Delete All Notifications
 New Notifications: New Notifications
 Source: Source
@@ -956,3 +960,7 @@ Item Identifiers: Item Identifiers
 Errors on Tab: Errors on Tab
 The physical width of the volume, in cm.: The physical width of the volume, in cm.
 Thickness: Thickness
+'Login to %1$s and use the notification icon to check your new notification, or %2$sclick here%3$s.': 'Login to %1$s and use the notification icon to check your new notification, or %2$sclick here%3$s.'
+'If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:': 'If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:'
+'Email sent via %1$s at %2$s.': 'Email sent via %1$s at %2$s.'
+'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.': 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'

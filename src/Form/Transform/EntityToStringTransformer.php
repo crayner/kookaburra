@@ -52,6 +52,7 @@ class EntityToStringTransformer implements DataTransformerInterface
 		$resolver = new OptionsResolver();
 		$resolver->setDefault('multiple', false);
 		$resolver->setRequired('class');
+        $resolver->setDefined(array_keys($options));
 		$resolver->setAllowedTypes('multiple', ['boolean']);
 		$options = $resolver->resolve($options);
 

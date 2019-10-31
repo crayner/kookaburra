@@ -428,4 +428,23 @@ class SettingProvider implements EntityProviderInterface
         $result = $this->getSettingByName($name);
         return $result !== null ? $result->getValue() : null;
     }
+
+    /**
+     * getSettingByScopeAsObject
+     *
+     * Assumes that the Setting value is the identifier of the class provided.
+     * @param string $scope
+     * @param string $name
+     * @param string $class
+     * @param int|null $default
+     * @return EntityInterface|null
+     * @throws \Exception
+     */
+    public function getSettingByScopeAsObject(string $scope, string $name, string $class): ?EntityInterface
+    {
+        $result = $this->getSettingByScopeAsInteger($scope, $name);
+        if ($result === null)
+            return null;
+        return ProviderFactory::getRepository($class)->find($result);
+    }
 }

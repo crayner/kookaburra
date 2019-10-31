@@ -5,6 +5,7 @@ monolog:
         - 'setting'
         - 'mailer'
         - 'importer'
+        - 'notifications'
     handlers:
         security:
             # log all messages (since debug is the lowest level)
@@ -56,3 +57,9 @@ monolog:
             channels: [importer]
             max_files: 1
             formatter: monolog.formatter.importer
+        notification:
+            level:    debug
+            type:     rotating_file
+            path:     '%kernel.logs_dir%/notification.%kernel.environment%.log'
+            channels: [notification]
+            max_files: 14

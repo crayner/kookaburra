@@ -40,3 +40,5 @@ parameters:
     google_api_key: ~
     google_client_id: ~
     google_client_secret: ~
+    system_name: Kookaburra
+    organisation_name: Organisation Name

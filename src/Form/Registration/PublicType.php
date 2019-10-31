@@ -38,6 +38,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class PublicType extends AbstractType
 {
+    /**
+     * buildForm
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

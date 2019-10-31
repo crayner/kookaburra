@@ -312,6 +312,9 @@ class ReactFormType extends AbstractType
             return 'integer';
         if (in_array('repeated', $prefixes))
             return 'transparent';
+        if (in_array('react_sub_form', $prefixes))
+            return 'transparent';
+
 //        dump($prefixes);
         return 'unknown';
     }

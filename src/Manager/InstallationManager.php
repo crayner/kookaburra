@@ -350,6 +350,8 @@ class InstallationManager
         $config = $this->readKookaburraYaml();
         $config['parameters']['absoluteURL'] = $form->get('baseUrl')->getData();
         $config['parameters']['timezone'] = $form->get('timezone')->getData();
+        $config['parameters']['system_name'] = $form->get('systemName')->getData();
+        $config['parameters']['organisation_name'] = $form->get('organisationName')->getData();
         unset( $config['parameters']['installation']);
         $this->writeKookaburraYaml($config);
     }
