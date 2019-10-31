@@ -14,7 +14,6 @@ return [
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
-    Twig\CssInliner\Bundle\TwigCssInlinerBundle::class => ['all' => true],
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
     Kookaburra\SystemAdmin\KookaburraSystemAdminBundle::class => ['all' => true],
     Kookaburra\UserAdmin\KookaburraUserAdminBundle::class => ['all' => true],
