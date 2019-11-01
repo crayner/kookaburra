@@ -289,12 +289,6 @@
     "symfony/dotenv": {
         "version": "v4.3.1"
     },
-    "symfony/error-handler": {
-        "version": "4.4.x-dev"
-    },
-    "symfony/error-renderer": {
-        "version": "4.4.x-dev"
-    },
     "symfony/event-dispatcher": {
         "version": "v4.3.1"
     },
@@ -364,15 +358,6 @@
     },
     "symfony/intl": {
         "version": "v4.3.2"
-    },
-    "symfony/mailchimp-mailer": {
-        "version": "4.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.3",
-            "ref": "552791a6bc7306198f4c647102a2b4f50d431fb8"
-        }
     },
     "symfony/mailer": {
         "version": "4.3",
@@ -538,6 +523,9 @@
             "./templates/base.html.twig"
         ]
     },
+    "symfony/twig-pack": {
+        "version": "dev-master"
+    },
     "symfony/validator": {
         "version": "4.3",
         "recipe": {
@@ -596,6 +584,9 @@
         "version": "2.2.x-dev"
     },
     "twig/cssinliner-extra": {
+        "version": "3.x-dev"
+    },
+    "twig/extra-bundle": {
         "version": "3.x-dev"
     },
     "twig/twig": {

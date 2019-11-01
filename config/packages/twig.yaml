@@ -10,4 +10,3 @@ twig:
         organisationName: '%organisation_name%'
     paths:
         '%kernel.project_dir%/public': images
-    exception_controller: null

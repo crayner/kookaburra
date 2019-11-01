@@ -5,7 +5,7 @@ monolog:
         - 'setting'
         - 'mailer'
         - 'importer'
-        - 'notifications'
+        - 'notification'
     handlers:
         security:
             # log all messages (since debug is the lowest level)

@@ -23,25 +23,26 @@
         "matthewbdaly/sms-client": "^1.0",
         "phpoffice/phpspreadsheet": "^1.8",
         "sensio/framework-extra-bundle": "^5.4",
-        "symfony/asset": "4.4.*",
-        "symfony/console": "4.4.*",
-        "symfony/dotenv": "4.4.*",
-        "symfony/expression-language": "4.4.*",
+        "symfony/asset": "4.3.*",
+        "symfony/console": "4.3.*",
+        "symfony/dotenv": "4.3.*",
+        "symfony/expression-language": "4.3.*",
         "symfony/flex": "^1.1",
-        "symfony/form": "4.4.*",
-        "symfony/framework-bundle": "4.4.*",
-        "symfony/google-mailer": "4.4.*",
-        "symfony/mailchimp-mailer": "4.4.*",
-        "symfony/messenger": "4.4.*",
+        "symfony/form": "4.3.*",
+        "symfony/framework-bundle": "4.3.*",
+        "symfony/google-mailer": "4.3.*",
+        "symfony/mailer": "4.3.*",
+        "symfony/messenger": "4.3.*",
         "symfony/orm-pack": "^1.0",
-        "symfony/property-info": "4.4.*",
-        "symfony/security-bundle": "4.4.*",
+        "symfony/property-info": "4.3.*",
+        "symfony/security-bundle": "4.3.*",
         "symfony/serializer-pack": "^1.0",
-        "symfony/translation": "4.4.*",
-        "symfony/twig-bundle": "4.4.*",
-        "symfony/validator": "4.4.*",
+        "symfony/translation": "4.3.*",
+        "symfony/twig-bundle": "4.3.*",
+        "symfony/twig-pack": "dev-master",
+        "symfony/validator": "4.3.*",
         "symfony/webpack-encore-bundle": "^1.6",
-        "symfony/yaml": "4.4.*",
+        "symfony/yaml": "4.3.*",
         "twig/cssinliner-extra": "3.x-dev"
     },
     "require-dev": {
@@ -66,7 +67,7 @@
             "App\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "replace": {
         "paragonie/random_compat": "2.*",
         "symfony/polyfill-ctype": "*",
@@ -98,7 +99,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "4.4.*"
+            "require": "4.3.*"
         }
     }
 }
