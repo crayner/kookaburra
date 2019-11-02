@@ -49,7 +49,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Data Updater/data_personal
             $self = false;
             if ($highestAction == 'Update Personal Data_any') {
                 $URLSuccess = $_SESSION[$guid]['absoluteURL'].'/index.php?q=/modules/Data Updater/data_personal.php&gibbonPersonID='.$gibbonPersonID;
-                
+
                 try {
                     $dataSelect = array('gibbonPersonID' => $gibbonPersonID);
                     $sqlSelect = "SELECT surname, preferredName, gibbonPerson.gibbonPersonID, gibbonRoleIDAll FROM gibbonPerson WHERE status='Full' AND gibbonPersonID=:gibbonPersonID ORDER BY surname, preferredName";
@@ -302,7 +302,6 @@ if (isActionAccessible($guid, $connection2, '/modules/Data Updater/data_personal
                         $event->setActionLink('/index.php?q=/modules/Data Updater/data_personal_manage.php');
 
                         $event->sendNotifications($pdo, $gibbon->session);
-
 
                         if ($partialFail == true) {
                             $URL .= '&return=warning1';

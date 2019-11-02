@@ -12,6 +12,7 @@
 
 namespace App\Manager;
 
+use Gibbon\Contracts\Comms\Mailer;
 use Kookaburra\SystemAdmin\Entity\Action;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
@@ -22,7 +23,6 @@ use Gibbon\Database\Connection;
 use Gibbon\Database\MySqlConnector;
 use Gibbon\Domain\System\Module;
 use Gibbon\Domain\System\Theme;
-use Gibbon\Locale;
 use Gibbon\Services\ErrorHandler;
 use Gibbon\Services\Format;
 use Gibbon\sqlConnection;

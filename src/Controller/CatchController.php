@@ -16,7 +16,6 @@ use App\Container\Container;
 use App\Container\ContainerManager;
 use App\Container\Panel;
 use App\Manager\GibbonManager;
-use App\Manager\ScriptManager;
 use Gibbon\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -66,6 +65,7 @@ class CatchController extends AbstractController
         {
             throw new Exception(sprintf('The file %s does not exist in the %s directory!', $pathInfo, realpath(__DIR__ . '/../../Gibbon')));
         }
+
         $manager->execute();
 
         $guid = $manager->getGuid();
@@ -87,6 +87,51 @@ class CatchController extends AbstractController
 
         ob_start();
         include (__DIR__ . '/../../Gibbon/' . urldecode($request->getPathInfo()));
+        $content = ob_get_clean();
+        return new Response($content);
+    }
+
+    /**
+     * moduleManager
+     * @param string $moduleName
+     * @param string $script
+     * @param Request $request
+     * @param GibbonManager $gibbonManager
+     * @return Response|null
+     * @throws Exception
+     * @Route("/modules/{moduleName}/{script}", name="legacy_module_call")
+     */
+    public function moduleManager(string $moduleName, string $script, Request $request, GibbonManager $manager)
+    {
+        $cwd = getcwd();
+
+        if (realpath(__DIR__ . '/../../Gibbon/modules/' . $moduleName . '/' . $script) === false)
+        {
+            throw new Exception(sprintf('The file %s does not exist in the %s directory!', $script, realpath(__DIR__ . '/../../Gibbon/modules/' . $moduleName)));
+        }
+        $manager->execute();
+
+        $guid = $manager->getGuid();
+
+        // To many fingers and no consistency in Gibbon connection naming of sql connection classes.
+
+        $connection2 = $manager::getPDO();
+        $connection = $manager::getConnection2();
+        $pdo = $manager::getConnection();
+        $gibbon = $manager::getGibbon();
+        $container = $manager::getContainer();
+
+        $modulePath = realpath( __DIR__.'/../../Gibbon/modules/' . $moduleName);
+
+        chdir($modulePath);
+        if ($request->getMethod() === 'POST')
+        {
+            include realpath($modulePath . '/' . $script);
+            die();
+        }
+
+        ob_start();
+        include realpath($modulePath . '/' . $script);
         $content = ob_get_clean();
         return new Response($content);
     }

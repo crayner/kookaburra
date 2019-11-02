@@ -65,13 +65,4 @@ class LegacyController extends AbstractController
         ProviderFactory::create(I18n::class)->setLanguageSession($request->getSession(), ['code' => $i18n]);
         return $this->forward(LegacyController::class.'::index');
     }
-
-    /**
-     * @Route("/test")
-     */
-    public function test(MailerInterface $mailer)
-    {
-
-        dd($mailer);
-    }
 }
