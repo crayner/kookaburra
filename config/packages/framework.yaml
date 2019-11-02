@@ -34,7 +34,7 @@ framework:
         #app: cache.adapter.apcu
     assets:
         base_urls:
-            - 'https://bilby.craigrayner.com/'
+            - '%absoluteURL%/'
 
     validation:
         email_validation_mode: html5
@@ -45,3 +45,10 @@ framework:
         # For instance, basic validation constraints will be inferred from Doctrine's metadata.
         auto_mapping:
             App\Entity\: []
+
+    messenger:
+        transports:
+            async: "%messenger_transport_dsn%"
+
+        routing:
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage':  async

@@ -42,3 +42,4 @@ parameters:
     google_client_secret: ~
     system_name: Kookaburra
     organisation_name: Organisation Name
+    messenger_transport_dsn: 'doctrine://default'

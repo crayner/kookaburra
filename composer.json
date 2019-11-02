@@ -21,6 +21,7 @@
         "kookaburra/system-admin": "dev-master",
         "kookaburra/user-admin": "dev-master",
         "matthewbdaly/sms-client": "^1.0",
+        "phpmailer/phpmailer": "^6.1",
         "phpoffice/phpspreadsheet": "^1.8",
         "sensio/framework-extra-bundle": "^5.4",
         "symfony/asset": "4.3.*",

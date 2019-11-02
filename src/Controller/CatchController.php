@@ -122,7 +122,6 @@ class CatchController extends AbstractController
         $container = $manager::getContainer();
 
         $modulePath = realpath( __DIR__.'/../../Gibbon/modules/' . $moduleName);
-
         chdir($modulePath);
         if ($request->getMethod() === 'POST')
         {
