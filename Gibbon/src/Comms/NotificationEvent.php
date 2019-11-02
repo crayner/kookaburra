@@ -143,6 +143,7 @@ class NotificationEvent
         $sender = new NotificationSender($gateway, $session);
 
         $this->pushNotifications($gateway, $sender);
+        $sender->sendNotifications($bccMode);
 
         return $sender->sendNotifications($bccMode);
     }

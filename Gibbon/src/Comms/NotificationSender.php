@@ -20,9 +20,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon\Comms;
 
 use App\Manager\GibbonManager;
-use Gibbon\Contracts\Comms\Mailer;
-use Gibbon\Contracts\Services\GibbonSession;
+use App\Session\GibbonSession;
 use Gibbon\Domain\System\NotificationGateway;
+use Gibbon\View\View;
 
 /**
  * Notification Sender
@@ -130,7 +130,7 @@ class NotificationSender
             if (!empty($emailPreference) && $emailPreference['receiveNotificationEmails'] == 'Y') {
                 // Format the email content
                 $mail->renderBody('mail/notification.twig.html', [
-                    'title'  => __('Notification').' - '.$notification['moduleName'],
+                    'title'  => __('Notification') . ': ' . $notification['moduleName'] . ' - ' . $notification[''],
                     'body'   => $notification['text'],
                     'button' => [
                         'url'  => 'notificationsActionProcess.php?gibbonNotificationID='.$gibbonNotificationID,
@@ -182,11 +182,12 @@ class NotificationSender
     /**
      * Create a mailer and setup the email subject and sender.
      *
-     * @return GibbonMailer
+     * @return Mailer
      */
     protected function setupEmail()
     {
-        $mail = GibbonManager::getService(Mailer::class);
+        $mail = new Mailer($this->session);
+        $mail->setView(GibbonManager::getService('view'));
 
         // Format the sender
         $organisationName = $this->session->get('organisationName');

@@ -19,9 +19,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\Comms;
 
-use Gibbon\Contracts\Services\GibbonSession;
+use App\Session\GibbonSession;
 use Gibbon\Contracts\Comms\Mailer as MailerInterface;
 use Gibbon\View\View;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Mailer class
@@ -29,7 +30,7 @@ use Gibbon\View\View;
  * @version v14
  * @since   v14
  */
-class Mailer extends \PHPMailer implements MailerInterface
+class Mailer extends PHPMailer implements MailerInterface
 {
     protected $session;
     protected $view;
@@ -57,6 +58,7 @@ class Mailer extends \PHPMailer implements MailerInterface
             'organisationNameShort' => $this->session->get('organisationNameShort'),
             'organisationEmail'     => $this->session->get('organisationEmail'),
             'organisationLogo'      => $this->session->get('organisationLogo'),
+            'preview'               => '',
         ]);
         
         return $this;
