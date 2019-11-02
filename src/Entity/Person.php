@@ -1422,7 +1422,8 @@ class Person implements EntityInterface
     private $citizenship1Passport = '';
 
     /**
-     * @return null|string
+     * getCitizenship1Passport
+     * @return string|null
      */
     public function getCitizenship1Passport(): ?string
     {
@@ -1430,7 +1431,8 @@ class Person implements EntityInterface
     }
 
     /**
-     * @param null|string $citizenship1Passport
+     * setCitizenship1Passport
+     * @param string|null $citizenship1Passport
      * @return Person
      */
     public function setCitizenship1Passport(?string $citizenship1Passport): Person

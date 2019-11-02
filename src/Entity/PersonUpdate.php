@@ -148,7 +148,7 @@ class PersonUpdate
 
     /**
      * @var string|null
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, name="phone1Type")
      */
     private $phone1Type = '';
 
@@ -166,7 +166,7 @@ class PersonUpdate
 
     /**
      * @var string|null
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, name="phone2Type")
      */
     private $phone2Type = '';
 
@@ -184,7 +184,7 @@ class PersonUpdate
 
     /**
      * @var string|null
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, name="phone3Type")
      */
     private $phone3Type = '';
 
@@ -202,7 +202,7 @@ class PersonUpdate
 
     /**
      * @var string|null
-     * @ORM\Column(length=6)
+     * @ORM\Column(length=6, name="phone4Type")
      */
     private $phone4Type = '';
     /**
@@ -255,7 +255,7 @@ class PersonUpdate
 
     /**
      * @var string|null
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30, name="citizenship1Passport")
      */
     private $citizenship1Passport;
 
@@ -267,7 +267,7 @@ class PersonUpdate
 
     /**
      * @var string|null
-     * @ORM\Column(length=30)
+     * @ORM\Column(length=30, name="citizenship2Passport")
      */
     private $citizenship2Passport;
 
@@ -321,49 +321,49 @@ class PersonUpdate
 
     /**
      * @var string|null
-     * @ORM\Column(length=90, nullable=true)
+     * @ORM\Column(length=90, nullable=true, name="emergency1Name")
      */
     private $emergency1Name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, nullable=true)
+     * @ORM\Column(length=30, nullable=true, name="emergency1Number1")
      */
     private $emergency1Number1;
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, nullable=true)
+     * @ORM\Column(length=30, nullable=true, name="emergency1Number2")
      */
     private $emergency1Number2;
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, nullable=true)
+     * @ORM\Column(length=30, nullable=true, name="emergency1Relationship")
      */
     private $emergency1Relationship;
 
     /**
      * @var string|null
-     * @ORM\Column(length=90, nullable=true)
+     * @ORM\Column(length=90, nullable=true, name="emergency2Name")
      */
     private $emergency2Name;
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, nullable=true)
+     * @ORM\Column(length=30, nullable=true, name="emergency2Number1")
      */
     private $emergency2Number1;
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, nullable=true)
+     * @ORM\Column(length=30, nullable=true, name="emergency2Number2")
      */
     private $emergency2Number2;
 
     /**
      * @var string|null
-     * @ORM\Column(length=30, nullable=true)
+     * @ORM\Column(length=30, nullable=true, name="emergency2Relationship")
      */
     private $emergency2Relationship;
 
