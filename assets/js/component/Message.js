@@ -22,6 +22,19 @@ export default function Message(props) {
         )
     }
 
+    if (typeof message.message === 'object') {
+        return (
+            <div className={message.class}>
+                {message.message.message}<br/><span className={'small'}>{message.message.stack}</span>
+                <button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
+                        title={translate('Close Message')} type='button'>
+                    <span className={'fas fa-times-circle fa-fw ' + message.class}></span>
+                </button>
+            </div>
+        )
+    }
+
+    console.log('message.message is a ' + typeof message.message)
     console.log(message)
     return null
 }
