@@ -20,8 +20,6 @@ export function fetchJson(url, options, locale) {
         url = url.substring(1);
     }
 
-
-    console.log(url)
     if (url.substring(0,4) === 'http')
         host = ''
 

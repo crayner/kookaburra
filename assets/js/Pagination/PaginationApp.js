@@ -54,21 +54,22 @@ export default class PaginationApp extends Component {
         })
     }
 
-    areYouSure(path) {
+    areYouSure(path, content) {
         this.path = path
         this.setState({
-            confirm: true
+            confirm: true,
         })
     }
 
-    displayInformation(path) {
+    displayInformation(path, content) {
+        this.path = path
         fetchJson(
             path,
             {},
             false
         ).then(data => {
             this.setState({
-                information: data
+                information: data,
             })
         })
     }
@@ -89,7 +90,6 @@ export default class PaginationApp extends Component {
     }
 
     sortColumn(columnName){
-
         let column = {}
         Object.keys(this.row.columns).filter(columnKey=> {
             if(this.row.columns[columnKey].contentKey === columnName)
@@ -97,7 +97,6 @@ export default class PaginationApp extends Component {
         })
         if (column.sort !== true)
             return
-
 
         let direction = this.state.sortDirection
 

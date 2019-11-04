@@ -17,7 +17,7 @@ export default function InformationDetail(props) {
     return (
         <div id="informationDisplay" className={'overlay target'}>
             <div className="popup">
-                <a className="close" onClick={() => cancel()} title={messages['Close']} href="#"><span className="far fa-times-circle fa-fw"></span></a>
+                <a className="close" onClick={() => cancel()} title={messages['Close']}><span className="far fa-times-circle fa-fw"></span></a>
                 <h3>{information.header}</h3>
                 <div className="content">
                     {Parser(information.content)}

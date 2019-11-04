@@ -9,6 +9,7 @@ export default function PaginationContent(props) {
         row,
         content,
         functions,
+        scrollToElement,
     } = props
 
     if (content.length === 0)
@@ -62,20 +63,21 @@ export default function PaginationContent(props) {
                     return (<a href={rowContent.actions[actionKey]} className={action.aClass} key={actionKey}
                                title={action.title}><span className={action.spanClass}></span></a>)
 
-                return (<a href='#' onClick={() => functions[action.onClick](rowContent.actions[actionKey])}
+                return (<a onClick={() => functions[action.onClick](rowContent.actions[actionKey],rowContent)}
                            className={action.aClass} key={actionKey} title={action.title}><span
                     className={action.spanClass}></span></a>)
             }
         })
         if (row.actions.length > 0) {
-            columns.push(<td key={'actions'} className={row.actions[0].columnClass}>
-                <div>
+            columns.push(<td key={'actions'}>
+                <div
+                    className="hidden group-hover:flex sm:flex absolute sm:static top-0 right-0 -mr-1 rounded shadow sm:shadow-none bg-white sm:bg-transparent px-1 -mt-3 sm:m-0 sm:p-0 z-10">
                     {actions}
                 </div>
             </td>)
         }
 
-        return (<tr className={actions.columnClass} key={rowKey}>{columns}</tr>)
+        return (<tr className={actions.columnClass} key={rowKey} id={'pagination' + rowContent.id}>{columns}</tr>)
 
     })
 
