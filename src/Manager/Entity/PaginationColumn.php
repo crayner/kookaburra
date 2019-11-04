@@ -44,6 +44,16 @@ class PaginationColumn
     private $class = '';
 
     /**
+     * @var string
+     */
+    private $contentType = 'standard';
+
+    /**
+     * @var array
+     */
+    private $options = [];
+
+    /**
      * @return string|null
      */
     public function getLabel(): ?string
@@ -140,6 +150,46 @@ class PaginationColumn
     public function setClass(string $class): PaginationColumn
     {
         $this->class = $class;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentType(): string
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * ContentType.
+     *
+     * @param string $contentType
+     * @return PaginationColumn
+     */
+    public function setContentType(string $contentType): PaginationColumn
+    {
+        $this->contentType = in_array($contentType, ['image','standard']) ? $contentType : 'standard';
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /**
+     * Options.
+     *
+     * @param array $options
+     * @return PaginationColumn
+     */
+    public function setOptions(array $options): PaginationColumn
+    {
+        $this->options = $options;
         return $this;
     }
 

@@ -280,6 +280,8 @@ class ReactFormType extends AbstractType
             return 'paragraph';
         if (in_array('ckeditor', $prefixes))
             return 'ckeditor';
+        if (in_array('image_display', $prefixes))
+            return 'image_display';
         if (in_array('textarea', $prefixes))
             return 'textarea';
         if (in_array('url', $prefixes))

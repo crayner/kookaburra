@@ -337,7 +337,7 @@ input.button, a.button, button.button {
 }
 .popup .close {
     position: absolute;
-    top: 20px;
+    top: 35px;
     right: 30px;
     transition: all 200ms;
     font-size: 30px;
@@ -349,6 +349,6 @@ input.button, a.button, button.button {
     color: #48bb78;
 }
 .popup .content {
-    max-height: 30%;
+    max-height: 80%;
     overflow: auto;
 }

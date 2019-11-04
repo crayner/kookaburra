@@ -6,5 +6,6 @@ Applications['DepartmentEdit'] = require('../Department/DepartmentEditApp').defa
 Applications['ThirdParty'] = require('../SystemAdmin/ThirdPartyApp').default;
 Applications['NotificationEvent'] = require('../SystemAdmin/NotificationEventApp').default;
 Applications['LibraryApp'] = require('../Library/LibraryApp').default;
+Applications['BrowseApp'] = require('../Library/BrowseApp').default;
 
 export default Applications

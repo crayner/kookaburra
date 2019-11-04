@@ -31,6 +31,7 @@ use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Intl\Languages;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
@@ -151,6 +152,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('version_compare', [$this, 'version_compare']),
             new TwigFunction('asset_exists', [$this, 'asset_exists']),
             new TwigFunction('getYesNo', [$this, 'getYesNo']),
+            new TwigFunction('getLanguageName', [$this, 'getLanguageName']),
         ];
     }
 
@@ -398,5 +400,17 @@ class PageExtension extends AbstractExtension
     public function getYesNo(string $yes): string
     {
         return $yes === 'Y' ? 'Yes' : 'No';
+    }
+
+    /**
+     * getLanguageName
+     * @param string $code
+     * @return string
+     */
+    public function getLanguageName(string $code): string
+    {
+        if (Languages::exists($code))
+            return Languages::getName($code);
+        return $code;
     }
 }

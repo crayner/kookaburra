@@ -6,6 +6,8 @@ import HeaderRow from "./HeaderRow"
 import firstBy from 'thenby'
 import PaginationContent from "./PaginationContent"
 import AreYouSureDialog from "../component/AreYouSureDialog"
+import InformationDetail from "../component/InformationDetail"
+import {fetchJson} from "../component/fetchJson"
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -24,7 +26,8 @@ export default class PaginationApp extends Component {
         this.closeConfirm = this.closeConfirm.bind(this)
         this.adjustPageSize = this.adjustPageSize.bind(this)
         this.functions = {
-            areYouSure: this.areYouSure.bind(this)
+            areYouSure: this.areYouSure.bind(this),
+            displayInformation: this.displayInformation.bind(this)
         }
         this.path = ''
 
@@ -37,6 +40,7 @@ export default class PaginationApp extends Component {
             pageMax: this.pageMax,
             sizeButtons: [],
             confirm: false,
+            information: false,
         }
     }
 
@@ -57,6 +61,18 @@ export default class PaginationApp extends Component {
         })
     }
 
+    displayInformation(path) {
+        fetchJson(
+            path,
+            {},
+            false
+        ).then(data => {
+            this.setState({
+                information: data
+            })
+        })
+    }
+
     deleteItem(path) {
         this.setState({
             confirm: false
@@ -67,7 +83,8 @@ export default class PaginationApp extends Component {
     closeConfirm(){
         this.path = ''
         this.setState({
-            confirm: false
+            confirm: false,
+            information: false
         })
     }
 
@@ -224,6 +241,7 @@ export default class PaginationApp extends Component {
                     <PaginationContent row={this.row} content={this.state.results} functions={this.functions} />
                 </table>
                 <AreYouSureDialog messages={this.messages} doit={() => this.deleteItem(this.path)} cancel={() => this.closeConfirm()} confirm={this.state.confirm} />
+                <InformationDetail messages={this.messages} cancel={() => this.closeConfirm()} information={this.state.information} />
             </div>
         )
     }

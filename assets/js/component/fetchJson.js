@@ -15,12 +15,15 @@ export function fetchJson(url, options, locale) {
     if (locale === false || url === '')
         locale = ''
     let host = window.location.protocol + '//' + window.location.hostname + '/'
-    if (url.substring(0,4) === 'http')
-        host = ''
 
     if (url[0] === '/') {
         url = url.substring(1);
     }
+
+
+    console.log(url)
+    if (url.substring(0,4) === 'http')
+        host = ''
 
     return fetch(host + locale + url, ({
         ...options,
