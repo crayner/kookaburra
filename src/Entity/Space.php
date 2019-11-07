@@ -12,6 +12,7 @@
  */
 namespace App\Entity;
 
+use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use App\Provider\ProviderFactory;
 use Doctrine\ORM\Mapping as ORM;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\SpaceRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Space", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  */
-class Space
+class Space implements EntityInterface
 {
     use BooleanList;
 

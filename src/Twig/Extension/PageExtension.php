@@ -26,6 +26,7 @@ use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
 use App\Twig\Sidebar;
 use App\Util\Format;
+use App\Util\ImageHelper;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
@@ -105,6 +106,7 @@ class PageExtension extends AbstractExtension
         ScriptManager $scriptManager,
         ProviderFactory $providerFactory,
         Format $format,
+        ImageHelper $imageHelper,
         MinorLinks $minorLinks
     )  {
         $this->i18nProvider = $providerFactory::create(I18n::class);
@@ -153,6 +155,8 @@ class PageExtension extends AbstractExtension
             new TwigFunction('asset_exists', [$this, 'asset_exists']),
             new TwigFunction('getYesNo', [$this, 'getYesNo']),
             new TwigFunction('getLanguageName', [$this, 'getLanguageName']),
+            new TwigFunction('getAbsoluteImageURL', [$this, 'getAbsoluteImageURL']),
+            new TwigFunction('getRelativeImageURL', [$this, 'getRelativeImageURL']),
         ];
     }
 
@@ -412,5 +416,26 @@ class PageExtension extends AbstractExtension
         if (Languages::exists($code))
             return Languages::getName($code);
         return $code;
+    }
+
+    /**
+     * getAbsoluteImageURL
+     * @param string|null $filename
+     * @param string $type
+     * @return string|null
+     */
+    public function getAbsoluteImageURL(?string $filename, string $type = 'File')
+    {
+        return ImageHelper::getAbsoluteImageURL($type, $filename);
+    }
+
+    /**
+     * getRelativeImageURL
+     * @param string|null $filename
+     * @return string|null
+     */
+    public function getRelativeImageURL(?string $filename)
+    {
+        return ImageHelper::getRelativeImageURL($filename);
     }
 }

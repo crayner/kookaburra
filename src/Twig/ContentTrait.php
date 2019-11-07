@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
- * Trait ContentTrait
+ * Traits ContentTrait
  * @package App\Twig
  */
 trait ContentTrait

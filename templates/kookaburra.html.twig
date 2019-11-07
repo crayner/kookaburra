@@ -30,17 +30,19 @@
 
                 <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
 
-                    {% if getSidebar().isValid() or not is_granted('IS_AUTHENTICATED_FULLY') or sideBarOn is defined %}
-                        <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
-                            {% block sidebar %}
+                    {% if (getSidebar().isValid() and getModuleMenu().isShowSidebar()) or not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% block sidebar %}
+                            <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
                                 {% include 'default/sidebar/sidebar.html.twig' %}
-                            {% endblock sidebar %}
-                        </div>
-                        <br style="clear: both">
+                            </div>
+                            <br style="clear: both">
+                        {% endblock sidebar %}
                     {% endif %}
 
                     <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
-
+                        {% if (getSidebar().isValid() and not getModuleMenu().isShowSidebar()) or not is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div id="sidebarNavigation"></div>
+                        {% endif %}
                         {% block page %}
 
                             {% block soft_error %}
@@ -62,7 +64,7 @@
                             {% endif %}
 
                             {% if breadcrumbs is defined %}
-                                <div class="sm:pt-10 lg:pt-0">
+                                <div class="">
                                     <div class="absolute lg:static top-0 my-6 text-xs text-blue-700">
                                         {% if breadcrumbs is same as('new') %}
                                             {% for crumb in createBreadCrumbs(module) %}

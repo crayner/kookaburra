@@ -184,11 +184,16 @@ export function findElementById(form, id, element) {
 }
 
 export function buildFormData(data, form) {
+    if (form.type === 'date') {
+        if (typeof form.value.date !== 'undefined')
+            return form.value.date.toString().slice(0,10)
+        return form.value
+    }
     if (typeof form.children === 'object' && Object.keys(form.children).length > 0) {
         Object.keys(form.children).map(key => {
             let child = form.children[key]
-            data[child.name] = buildFormData({}, child)
-            //this.setMessageByElementErrors(child)
+                data[child.name] = buildFormData({}, child)
+                //this.setMessageByElementErrors(child)
         })
         return data
     } else if (typeof form.children === 'array' && form.children.length > 0) {
@@ -199,6 +204,8 @@ export function buildFormData(data, form) {
             return data
     } else {
         //this.setMessageByElementErrors(form)
+        if (form.type === 'date')
+            console.log(form)
         return form.value
     }
 }

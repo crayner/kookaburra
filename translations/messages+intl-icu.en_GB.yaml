@@ -966,3 +966,7 @@ Thickness: Thickness
 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.': 'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.'
 Search for: Search for
 Searches all available fields to find a match.: Searches all available fields to find a match.
+colour:
+    validation:
+        error: 'The format of "{colour}" is not valid for the selected style "{format}". Colours are defined at - <a href="https://www.w3schools.com/cssref/css_colors_legal.asp" target="_blank"> W3Schools - CSS Legal Colour Values</a>'
+        enforce_type: "The colour format type '{format}' must be one of ['{formats}']."

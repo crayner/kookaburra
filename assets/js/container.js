@@ -23,6 +23,7 @@ if (window.CONTAINER_PROPS !== 'undefined') {
                 actionRoute={container.actionRoute}
                 forms={container.forms}
                 extras={container.extras}
+                showSubmitButton={container.showSubmitButton}
             />, target)
         } else if (target !== null) {
             render(
@@ -33,6 +34,7 @@ if (window.CONTAINER_PROPS !== 'undefined') {
                     actionRoute={container.actionRoute}
                     translations={container.translations}
                     forms={container.forms}
+                    showSubmitButton={container.showSubmitButton}
                 />,
                 target
             )

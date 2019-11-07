@@ -30,6 +30,7 @@ export default class ContainerApp extends Component {
         this.content = props.content ? props.content : null
         this.translations = props.translations
         this.actionRoute = props.actionRoute
+        this.showSubmitButton = props.showSubmitButton ? props.showSubmitButton : false
 
         if (Object.keys(this.panels).length === 0 && this.content !== null) {
             this.panels['default'] = {}
@@ -194,6 +195,7 @@ export default class ContainerApp extends Component {
     }
 
     submitForm(e,form) {
+        const pressed = form.name
         const parentName = getParentFormName(this.formNames,form)
         if (this.submit[parentName]) return
         this.submit[parentName] = true
@@ -202,6 +204,8 @@ export default class ContainerApp extends Component {
         })
         let parentForm = {...getParentForm(this.state.forms,form)}
         let data = buildFormData({}, parentForm)
+        if (this.showSubmitButton)
+            data['submit_clicked'] = pressed
         fetchJson(
             parentForm.action,
             {method: parentForm.method, body: JSON.stringify(data)},

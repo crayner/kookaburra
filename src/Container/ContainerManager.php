@@ -45,6 +45,11 @@ class ContainerManager
     private $stack;
 
     /**
+     * @var bool
+     */
+    private $showSubmitButton = false;
+
+    /**
      * ContainerManager constructor.
      * @param ScriptManager $scriptManager
      */
@@ -157,6 +162,7 @@ class ContainerManager
             $container['panels'] = $container['panels']->toArray();
             $container['forms'] = $container['forms']->toArray();
             $container['translations'] = TranslationsHelper::getTranslations();
+            $container['showSubmitButton'] = $this->isShowSubmitButton();
             $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
             $container['extras'] = ReactFormHelper::getExtras();
             $containers[$target] = $container;
@@ -225,5 +231,25 @@ class ContainerManager
     {
         $container = $this->getContainers()->get($containerName);
         return $container['forms']->get($panelName);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowSubmitButton(): bool
+    {
+        return $this->showSubmitButton;
+    }
+
+    /**
+     * ShowSubmitButton.
+     *
+     * @param bool $showSubmitButton
+     * @return ContainerManager
+     */
+    public function setShowSubmitButton(bool $showSubmitButton): ContainerManager
+    {
+        $this->showSubmitButton = $showSubmitButton;
+        return $this;
     }
 }

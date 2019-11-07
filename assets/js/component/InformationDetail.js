@@ -14,11 +14,17 @@ export default function InformationDetail(props) {
     if (information === false)
         return (<div id="informationDisplay" className={'overlay'}><div className="popup"></div></div>)
 
+    let header = information.header
+
+    while (header.length > 62)
+        header = header.slice(1)
+
+
     return (
         <div id="informationDisplay" className={'overlay target'}>
             <div className="popup">
                 <a className="close" onClick={() => cancel()} title={messages['Close']}><span className="far fa-times-circle fa-fw"></span></a>
-                <h3>{information.header}</h3>
+                <h3>{header}</h3>
                 <div className="content">
                     {Parser(information.content)}
                 </div>

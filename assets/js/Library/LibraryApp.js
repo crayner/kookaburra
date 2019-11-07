@@ -186,6 +186,7 @@ export default class LibraryApp extends Component {
             let data = {
                 library: form.children.library.value,
                 itemType: form.children.itemType.value,
+                submit_clicked: 'library_type_select',
                 _token: form.children._token.value,
             }
             fetchJson(
@@ -328,15 +329,17 @@ export default class LibraryApp extends Component {
     }
 
     submitForm(e,form) {
+        const pressed = form.name
         const parentName = getParentFormName(this.formNames,form)
         if (this.submit[parentName]) return
         this.submit[parentName] = true
         this.setState({
             submit: true,
         })
-        let forms = {...this.state.forms}
-        let parentForm = {...getParentForm(forms,form)}
+        let parentForm = {...getParentForm(this.state.forms,form)}
         let data = buildFormData({}, parentForm)
+        data['submit_clicked'] = pressed
+
         fetchJson(
             parentForm.action,
             {method: parentForm.method, body: JSON.stringify(data)},
@@ -350,12 +353,12 @@ export default class LibraryApp extends Component {
                     let form = {...data.form}
                     form.errors = errors
                     this.submit[parentName] = false
-                    this.setMyState(buildState({...mergeParentForm(forms, parentName,{...form})}, this.singleForm), setPanelErrors({...form}, {}))
+                    this.setMyState(buildState({...mergeParentForm(this.state.forms, parentName,{...form})}, this.singleForm), setPanelErrors({...form}, {}))
                 }
                 }).catch(error => {
                     parentForm.errors.push({'class': 'error', 'message': error})
                     this.submit[parentName] = false
-                    this.setMyState(buildState({...mergeParentForm(forms,parentName,{...parentForm})}, this.singleForm), setPanelErrors({...form}, {}))
+                    this.setMyState(buildState({...mergeParentForm(this.state.forms, parentName,{...parentForm})}, this.singleForm), setPanelErrors({...form}, {}))
             })
     }
 

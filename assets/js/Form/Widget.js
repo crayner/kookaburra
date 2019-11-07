@@ -8,7 +8,7 @@ import DocumentEditor from '@ckeditor/ckeditor5-build-classic';
 import CollectionApp from "./CollectionApp"
 import {isEmpty} from "../component/isEmpty"
 import FormSelect from "./FormSelect"
-import Row from "./Template/Table/Row"
+import Parser from "react-html-parser"
 
 export default function Widget(props) {
     const {
@@ -42,10 +42,11 @@ export default function Widget(props) {
         widget_attr.style = {float: 'right'}
         widget_attr.className = 'btn-gibbon'
         widget_attr.onClick = (e) => functions.submitForm(e,form)
+        widget_attr.onClick = (e) => functions.submitForm(e,form)
         return (
             <div {...wrapper_attr}>
                 <span className={'emphasis small'}>* {form.help}</span>
-                <button {...widget_attr}>{form.label}</button>
+                <button {...widget_attr}>{Parser(form.label)}</button>
             </div>
         )
     }
@@ -56,7 +57,7 @@ export default function Widget(props) {
         widget_attr.className = 'btn-gibbon'
         return (
             <div {...wrapper_attr}>
-                <button {...widget_attr}>{form.label}</button>
+                <button {...widget_attr}>{Parser(form.label)}</button>
             </div>
         )
     }
@@ -135,7 +136,13 @@ export default function Widget(props) {
     }
 
     if (form.type === 'date') {
-        let value = ('0000' + form.value.year).slice(-4) + '-' + ('00' + form.value.month).slice(-2) + '-' + ('00' + form.value.day).slice(-2)
+        let value = form.value
+        if (form.value !== null && typeof form.value === 'object') {
+            if (typeof form.value.year !== "undefined")
+                value = ('0000' + form.value.year).slice(-4) + '-' + ('00' + form.value.month).slice(-2) + '-' + ('00' + form.value.day).slice(-2)
+            else if (typeof form.value.date !== "undefined")
+                value = form.value.date.toString().slice(0,10)
+        }
         widget_attr.type = 'date'
         return (
             <div {...wrapper_attr}>
@@ -150,6 +157,17 @@ export default function Widget(props) {
         return (
             <div {...wrapper_attr}>
                 <input {...widget_attr} defaultValue={form.value} />
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
+    if (form.type === 'color') {
+        widget_attr.type = 'text'
+
+        return (
+            <div {...wrapper_attr} style={{backgroundColor: form.value, padding: '0 0 0 50px'}}>
+               <input {...widget_attr} value={form.value} />
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
         )

@@ -106,6 +106,7 @@ class ReactFormType extends AbstractType
          $this->addTranslation('Delete');
          $this->addTranslation('Close Message');
          $this->addTranslation('There are no records to display.');
+
          $view->vars['toArray'] = $vars;
      }
 
@@ -161,6 +162,8 @@ class ReactFormType extends AbstractType
         }
 
         $vars['value'] = $view->vars['value'];
+        if (isset($view->vars['data']) && $view->vars['data'] !== $vars['value'])
+            $vars['value'] = $view->vars['data'];
         $vars['id'] = $view->vars['id'];
         $vars['name'] = $view->vars['name'];
         $vars['full_name'] = $view->vars['full_name'];
@@ -270,6 +273,7 @@ class ReactFormType extends AbstractType
      * @return string
      */
     private function renderFormType(array $prefixes) {
+    //    dump($prefixes);
         if (in_array('header', $prefixes))
             return 'header';
         if (in_array('date', $prefixes))
@@ -294,6 +298,8 @@ class ReactFormType extends AbstractType
             return 'file';
         if (in_array('email', $prefixes))
             return 'email';
+        if (in_array('color', $prefixes))
+            return 'color';
         if (in_array('text', $prefixes))
             return 'text';
         if (in_array('auto_suggest', $prefixes))

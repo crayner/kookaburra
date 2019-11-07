@@ -31,7 +31,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Trait EntityTrait
+ * Traits EntityTrait
  * @package App\Manager
  */
 trait EntityTrait

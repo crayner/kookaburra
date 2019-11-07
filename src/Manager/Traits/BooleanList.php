@@ -13,7 +13,7 @@
 namespace App\Manager\Traits;
 
 /**
- * Trait BooleanList
+ * Traits BooleanList
  * @package App\Manager\Traits
  */
 trait BooleanList

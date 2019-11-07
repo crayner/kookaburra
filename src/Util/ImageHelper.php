@@ -55,14 +55,62 @@ class ImageHelper
     /**
      * getAbsoluteImageURL
      * @param string $type
-     * @param string $link
+     * @param string|null $link
+     * @return string|null
      */
-    public static function getAbsoluteImageURL(string $type, string $link)
+    public static function getAbsoluteImageURL(string $type, ?string $link): ?string
     {
-        if ($type === 'Link')
+        if ($type === 'Link' || null === $link)
             return $link;
 
+
         $link = ltrim(str_replace(self::getAbsolutePath(), '', $link), '/\\');
-        return self::getAbsoluteURL() . '/' . $link;
+        return self::getAbsoluteURL() . '/' . str_replace('\\', '/', $link);
+    }
+
+    /**
+     * getRelativeImageURL
+     * @param string|null $link
+     * @return string|null
+     */
+    public static function getRelativeImageURL(?string $link): ?string
+    {
+        if (null === $link)
+            return $link;
+
+
+        $link = ltrim(str_replace(self::getAbsolutePath(), '', $link), '/\\');
+        return  str_replace('\\', '/', $link);
+    }
+
+    /**
+     * convertJsonToImage
+     * @param string $content
+     * @param string $prefix
+     * @param string|null $subDirectory
+     * @return string|null
+     */
+    public static function convertJsonToImage(string $content, string $prefix = '', ?string $subDirectory = null): ?string
+    {
+        $image = explode(',', $content);
+        $fileContent = base64_decode($image[1]);
+        $fileName = uniqid($prefix, true);
+        $type = explode(';', $image[0]);
+        $type = str_replace('data:image/', '', $type[0]);
+        $path = realpath(__DIR__ . '/../../public/uploads/');
+        $subDirectory = $subDirectory ?: date('Y/m') ;
+        if (!is_dir($path . '/' . $subDirectory))
+            mkdir($path . '/' . $subDirectory, '0755', true);
+        $path = realpath($path . '/' . $subDirectory);
+        switch($type) {
+            case 'jpeg':
+                $filePath = $path . '/' . $fileName . '.jpeg';
+                file_put_contents($filePath, $fileContent);
+                break;
+            default:
+                dump($type . ' is not handled.');
+                $filePath = null;
+        }
+        return $filePath;
     }
 }

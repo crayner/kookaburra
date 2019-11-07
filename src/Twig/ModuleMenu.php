@@ -17,7 +17,6 @@ use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -42,6 +41,11 @@ class ModuleMenu implements ContentInterface
      * @var string
      */
     private $domain;
+
+    /**
+     * @var boolean
+     */
+    private $showSidebar = true;
 
     /**
      * execute
@@ -82,6 +86,7 @@ class ModuleMenu implements ContentInterface
             $data = ['data' => $menuModuleItems];
             $data['trans_module_menu'] = $this->translate('Module Menu');
             $data['sidebar'] = $this->isValid();
+            $data['showSidebar'] = $this->isShowSidebar();
             $this->getScriptManager()->addAppProp('menuModule', $data);
         } else {
             $request->getSession()->forget(['menuModuleItems', 'menuModuleName']);
@@ -191,4 +196,24 @@ class ModuleMenu implements ContentInterface
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isShowSidebar(): bool
+    {
+        return $this->showSidebar;
+    }
+
+    /**
+     * ShowSidebar.
+     *
+     * @param bool $showSidebar
+     * @return ModuleMenu
+     */
+    public function setShowSidebar(bool $showSidebar): ModuleMenu
+    {
+        $this->showSidebar = $showSidebar;
+        $this->execute();
+        return $this;
+    }
 }
