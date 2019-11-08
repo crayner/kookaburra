@@ -75,8 +75,13 @@ class Kernel extends BaseKernel
      */
     private function temporaryParameters(ContainerBuilder $container)
     {
+        $url = 'https://server_name';
+        $url = str_replace('server_name', $_SERVER['SERVER_NAME'],  $url);
+        if ($_SERVER['SERVER_PORT'] !== '443')
+            $url .= ':'. $_SERVER['SERVER_PORT'];
+
         $container->setParameter('timezone', 'UTC');
-        $container->setParameter('absoluteURL', null);
+        $container->setParameter('absoluteURL', $url);
         $container->setParameter('databaseServer', null);
         $container->setParameter('databaseUsername', null);
         $container->setParameter('databasePassword', null);
@@ -85,5 +90,13 @@ class Kernel extends BaseKernel
         $container->setParameter('security.hierarchy.roles', null);
         $container->setParameter('installed', false);
         $container->setParameter('installation', []);
+        $container->setParameter('messenger_transport_dsn', '');
+        $container->setParameter('mailer_dns', 'smtp://null');
+        $container->setParameter('locale', 'en');
+        $container->setParameter('system_name', 'Kookaburra');
+        $container->setParameter('organisation_name', 'Kookaburra');
+        $container->setParameter('google_api_key', '');
+        $container->setParameter('google_client_id', '');
+        $container->setParameter('google_client_secret', '');
     }
 }

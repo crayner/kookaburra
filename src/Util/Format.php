@@ -56,7 +56,7 @@ class Format
         if (self::$setup)
             return ;
 
-        $session = $session ?: GlobalHelper::getRequest()->getSession();
+        $session = $session ?: GlobalHelper::getSession();
 
         $settings = $session->get('i18n');
 

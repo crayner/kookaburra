@@ -7,7 +7,7 @@ parameters:
     databaseName: ~
     databasePort: ~
     caching: 1
-    absoluteURL: ~
+    absoluteURL: ''
     security.hierarchy.roles:
         ROLE_USER: null
         ROLE_ALLOWED_TO_SWITCH: null
@@ -36,7 +36,7 @@ parameters:
             - ROLE_PARENT
     timezone: ~
     locale: en_GB
-    mailer_dns: ~
+    mailer_dns: 'smtp://null'
     google_api_key: ~
     google_client_id: ~
     google_client_secret: ~

@@ -12,6 +12,7 @@
 
 namespace App\Listener;
 
+use App\Util\GlobalHelper;
 use Kookaburra\SystemAdmin\Entity\Action;
 use Kookaburra\SystemAdmin\Entity\Module;
 use App\Provider\ProviderFactory;
@@ -37,7 +38,7 @@ class AddressModuleActionListener implements EventSubscriberInterface
      * AddressModuleActionListener constructor.
      * @param Format $format
      */
-    public function __construct(Format $format)
+    public function __construct(Format $format, GlobalHelper $helper)
     {
         $this->format = $format;
     }

@@ -12,8 +12,10 @@
 
 namespace App\Util;
 
+use App\Session\GibbonSession;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -139,7 +141,7 @@ class GlobalHelper
      * localAssetorURL
      * @param string $name
      */
-    public static function localAssetorURL(string $name)
+    public static function localAssetURL(string $name)
     {
         if (stripos($name, 'http') === 0)
             return $name;
@@ -153,5 +155,30 @@ class GlobalHelper
         }
         // No Idea, so programmer to fix.
         return $name;
+    }
+
+    /**
+     * @var SessionInterface
+     */
+    private static $session;
+
+    /**
+     * getSession
+     * @return SessionInterface|null
+     */
+    public static function getSession(): ?SessionInterface
+    {
+        if (null === self::$session) {
+            if (null === self::getRequest())
+                return null;
+            if (null === self::getRequest()->getSession()) {
+                self::$session = new GibbonSession();
+                if (!self::$session->isStarted())
+                    self::$session->start();
+                self::getRequest()->setSession(self::$session);
+            }
+        }
+
+        return self::$session;
     }
 }
