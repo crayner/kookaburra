@@ -3,20 +3,19 @@ Kookaburra School Software, Flexible & Open School System
 Copyright (C) 2019, Craig Rayner
 #}
 
+    <head>
+        {% block meta %}
+            <title>{% block title %}Kookaburra{{ moduleName|default('') is not same as('') ? ' - ' ~ moduleName|trans }}{% endblock %}</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+            <meta http-equiv="content-language" content="{{ locale|default('en_GB') }}"/>
+            <meta name="author" content="Craig Rayner, Hill Range Services"/>
+            <meta name="robots" content="none"/>
+            <meta name="Referrer‐Policy" value="no‐referrer | same‐origin"/>
+            <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+        {% endblock meta %}
 
-
-{% block meta %}
-    <title>{% block title %}Kookaburra{{ moduleName|default('') is not same as('') ? ' - ' ~ moduleName|trans }}{% endblock %}</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <meta http-equiv="content-language" content="{{ locale|default('en_GB') }}"/>
-    <meta name="author" content="Craig Rayner, Hill Range Services"/>
-    <meta name="robots" content="none"/>
-    <meta name="Referrer‐Policy" value="no‐referrer | same‐origin"/>
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
-{% endblock meta %}
-
-{% block styles %}
-    {% include 'default/core_stylesheets.html.twig' %}
-{% endblock styles %}
+        {% block styles %}
+            {% include 'default/core_stylesheets.html.twig' %}
+        {% endblock styles %}
+    </head>

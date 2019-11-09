@@ -20,7 +20,7 @@ use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
-use App\Twig\Sidebar;
+use App\Twig\SidebarContent;
 use App\Util\CacheHelper;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -34,7 +34,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class PageListener implements EventSubscriberInterface
 {
     /**
-     * @var Sidebar
+     * @var SidebarContent
      */
     private $sideBar;
 
@@ -65,7 +65,7 @@ class PageListener implements EventSubscriberInterface
 
     /**
      * PageListener constructor.
-     * @param Sidebar $sideBar
+     * @param SidebarContent $sideBar
      * @param MainMenu $mainMenu
      * @param ModuleMenu $moduleMenu
      * @param MinorLinks $minorLinks
@@ -73,7 +73,7 @@ class PageListener implements EventSubscriberInterface
      * @param RouterInterface $router
      */
     public function __construct(
-        Sidebar $sideBar,
+        SidebarContent $sideBar,
         MainMenu $mainMenu,
         ModuleMenu $moduleMenu,
         MinorLinks $minorLinks,
@@ -116,12 +116,10 @@ class PageListener implements EventSubscriberInterface
     public function buildPageContent(ControllerEvent $event)
     {
         $this->sideBar->execute();
-        if ($event->getRequest()->attributes->get('_route') !== 'legacy') {
+        if (! in_array($event->getRequest()->attributes->get('_route'),['legacy'])) {
             $this->cacheHelper::setSession($event->getRequest()->getSession());
             $this->mainMenu->execute();
             $this->minorLinks->execute();
-            $this->moduleMenu->execute();
-            $this->sideBar->setModuleMenu($this->moduleMenu);
             $this->fastFinder->setToken($this->token)->execute();
             if ($this->token->getToken() && $this->token->getToken()->getUser() instanceof SecurityUser) {
                 $this->fastFinder->getScriptManager()->addEncoreEntryScriptTag('notificationTray');

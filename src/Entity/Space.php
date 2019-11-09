@@ -52,7 +52,7 @@ class Space implements EntityInterface
 
     /**
      * @var integer
-     * @ORM\Column(type="integer", columnDefinition="INT(5)")
+     * @ORM\Column(type="integer",columnDefinition="INT(5)",nullable=true)
      * @Assert\Range(min=0,max=99999)
      */
     private $capacity;
@@ -68,7 +68,7 @@ class Space implements EntityInterface
      * @var integer
      * @ORM\Column(type="integer", columnDefinition="INT(3)", name="computerStudent", options={"default": "0"})
      */
-    private $studentComputers;
+    private $studentComputers = 0;
 
     /**
      * @var string
@@ -116,19 +116,19 @@ class Space implements EntityInterface
      * @var string|null
      * @ORM\Column(length=5, name="phoneInternal")
      */
-    private $phoneInt;
+    private $phoneInt = '';
 
     /**
      * @var string|null
      * @ORM\Column(length=20, name="phoneExternal")
      */
-    private $phoneExt;
+    private $phoneExt = '';
 
     /**
      * @var string|null
      * @ORM\Column(type="text")
      */
-    private $comment;
+    private $comment = '';
 
     /**
      * @return int|null

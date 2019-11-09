@@ -16,7 +16,7 @@ use App\Entity\CourseClass;
 use App\Entity\Person;
 use App\Manager\Traits\EntityTrait;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
-use App\Twig\Sidebar;
+use App\Twig\SidebarContent;
 
 /**
  * Class CourseClassProvider
@@ -31,11 +31,11 @@ class CourseClassProvider implements EntityProviderInterface
     /**
      * getMyClasses
      * @param Person|SecurityUser|string|null $person
-     * @param Sidebar|null $sidebar
+     * @param SidebarContent|null $sidebar
      * @return array
      * @throws \Exception
      */
-    public function getMyClasses($person, ?Sidebar $sidebar = null)
+    public function getMyClasses($person, ?SidebarContent $sidebar = null)
     {
         $result = [];
         if ($person instanceof SecurityUser)

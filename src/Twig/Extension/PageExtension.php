@@ -24,7 +24,7 @@ use App\Provider\ProviderFactory;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
-use App\Twig\Sidebar;
+use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\ImageHelper;
 use Kookaburra\UserAdmin\Util\UserHelper;
@@ -56,7 +56,7 @@ class PageExtension extends AbstractExtension
     private $stack;
 
     /**
-     * @var Sidebar
+     * @var SidebarContent
      */
     private $sidebar;
 
@@ -88,7 +88,7 @@ class PageExtension extends AbstractExtension
     /**
      * PageExtension constructor.
      *
-     * @param Sidebar $sidebar
+     * @param SidebarContent $sidebar
      * @param SessionInterface $session
      * @param RequestStack $stack
      * @param RouterInterface $router
@@ -97,7 +97,7 @@ class PageExtension extends AbstractExtension
      * @param ProviderFactory $providerFactory
      */
     public function __construct(
-        Sidebar $sidebar,
+        SidebarContent $sidebar,
         SessionInterface $session,
         RequestStack $stack,
         RouterInterface $router,
@@ -281,9 +281,9 @@ class PageExtension extends AbstractExtension
 
     /**
      * getSidebar
-     * @return Sidebar
+     * @return SidebarContent
      */
-    public function getSidebar(): Sidebar
+    public function getSidebar(): SidebarContent
     {
         return $this->sidebar;
     }
@@ -437,5 +437,15 @@ class PageExtension extends AbstractExtension
     public function getRelativeImageURL(?string $filename)
     {
         return ImageHelper::getRelativeImageURL($filename);
+    }
+
+    /**
+     * fileExists
+     * @param string|null $filename
+     * @return bool
+     */
+    public function fileExists(?string $filename): bool
+    {
+        return file_exists($filename);
     }
 }

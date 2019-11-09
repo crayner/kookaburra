@@ -55,8 +55,8 @@ class PasswordValidator extends ConstraintValidator
                 ->addViolation();
 
         if ($minLength > 0 && mb_strlen($value) < $minLength)
-            $this->context->buildViolation('The password must be a minimum of %{minLength} characters long.')
-                ->setParameter('%{minLength}', $minLength)
+            $this->context->buildViolation('The password must be a minimum of {minLength} characters long.')
+                ->setParameter('{minLength}', $minLength)
                 ->setTranslationDomain('kookaburra')
                 ->addViolation();
 

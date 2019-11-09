@@ -1,13 +1,14 @@
-{% if getSidebar().isValid() %}
-    {% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'top'} %}
-    {% include 'default/sidebar/role_switcher.html.twig' %}
-    {% include 'default/sidebar/login.html.twig' %}
-    {% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'bottom'} %}
-    {% include 'default/sidebar/module_menu.html.twig' %}
-{% endif %}
-
-{% if not is_granted('IS_AUTHENTICATED_FULLY') and not getSidebar().isValid() %}
-        {% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'top'} %}
-        {% include 'default/sidebar/login.html.twig' %}
-        {% include 'default/sidebar/sidebar_extra.html.twig' with {position: 'bottom'} %}
+{% if getSidebar().valid %}
+    <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l{{ getSidebar().hidden ? ' hidden' : '' }}">
+        {% for position in getSidebar().positionList %}
+            {% if getSidebar().hasSectionContent(position) %}
+                <section>
+                    {% for section in getSidebar().getSectionContent(position) %}
+                        {{ section.render(sidebarOptions|default({}))|raw }}
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <br style="clear: both">
 {% endif %}

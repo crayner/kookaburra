@@ -4,7 +4,7 @@
     'form/kookaburra_form.html.twig'
 %}
 
-{% block page %}
+{% block content %}
     <h2>{{ 'Installation - Step {step}'|trans({'{step}': '1'}) }}</h2>
     <div class="{{ message.class }}">{{ message.text|trans({}, 'kookaburra') }}</div>
     {{ form_start(form) }}
@@ -18,7 +18,7 @@
         {% for name,details in systemDisplay['System Requirements'] %}
            <tr>
                 <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
-                    <label for="phpVersionLabel" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'%{name}': name}, 'kookaburra') }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans(details.comment_params|default({})) }}</span></label>
+                    <label for="phpVersionLabel" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'{name}': name}, 'kookaburra') }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans(details.comment_params|default({})) }}</span></label>
                     {% endif %}
                 </td>
                 <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
@@ -50,10 +50,5 @@
         </tbody>
     </table>
     {{ form_end(form) }}
-{% endblock page %}
-
-{% block sidebar %}
-    {% include 'installation/sidebar.html.twig' %}
-{% endblock sidebar %}
-
+{% endblock content %}
 

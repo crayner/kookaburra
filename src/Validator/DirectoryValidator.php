@@ -24,8 +24,8 @@ class DirectoryValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if (!is_dir($value))
-            $this->context->buildViolation('The directory "%{directory}" does not exist.')
-                ->setParameter('%{directory}', $value)
+            $this->context->buildViolation('The directory "{directory}" does not exist.')
+                ->setParameter('{directory}', $value)
                 ->setTranslationDomain('kookaburra')
                 ->addViolation();
     }

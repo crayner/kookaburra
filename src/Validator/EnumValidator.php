@@ -31,9 +31,9 @@ class EnumValidator extends ConstraintValidator
             $validList[] = null;
         }
         if (! in_array($value, $validList))
-            $this->context->buildViolation('The value "%{value}" is not valid. Valid results are "[%{valid}]"')
+            $this->context->buildViolation('The value "{value}" is not valid. Valid results are "[{valid}]"')
                 ->setParameter('%(value}', $value)
-                ->setParameter('%{valid}', implode('","', $constraint->validList))
+                ->setParameter('{valid}', implode('","', $constraint->validList))
                 ->setTranslationDomain('kookaburra')
                 ->addViolation();
     }

@@ -1,15 +1,20 @@
 {% block full_document %}
-    <!DOCTYPE html>
-    <html {{ rightToLeft() ? 'dir="rtl"' : '' }}>
-    <head>
-        {% block head %}
-            {{ include('default/head.html.twig') }}
-        {% endblock head %}
-    </head>
+<!DOCTYPE html>
+<html {{ rightToLeft() ? 'dir="rtl"' : '' }}>
+    {% block head %}
+        {{ include('default/head.html.twig') }}
+    {% endblock head %}
 
+
+    {% block body %}
     <body style="background: url('{{ asset(getBackgroundImage()) }}') repeat fixed center top olivedrab!important;">
+
+        {% block wrap %}
+
         <div id="wrapOuter" class="sm:px-6">
-            {% include 'default/minor_links.html.twig' %}
+            {% block minor_links %}
+                {% include 'default/minor_links.html.twig' %}
+            {% endblock minor_links %}
 
             <div id="wrap" class="mx-auto max-w-6xl m-2 shadow-container rounded">
                 {% block header %}
@@ -30,14 +35,9 @@
 
                 <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
 
-                    {% if (getSidebar().isValid() and getModuleMenu().isShowSidebar()) or not is_granted('IS_AUTHENTICATED_FULLY') %}
                         {% block sidebar %}
-                            <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l">
                                 {% include 'default/sidebar/sidebar.html.twig' %}
-                            </div>
-                            <br style="clear: both">
                         {% endblock sidebar %}
-                    {% endif %}
 
                     <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
                         {% if (getSidebar().isValid() and not getModuleMenu().isShowSidebar()) or not is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -124,7 +124,7 @@
                 {% endblock %}
             </div>
         </div>
-
+        {% endblock wrap %}
         {% block popUpContent %}
             <div id="popupExample" class="overlay">
                 <div class="popup">
@@ -144,5 +144,6 @@
             {% include 'default/scripts.html.twig' %}
         {% endblock foot %}
     </body>
+    {% endblock body %}
     </html>
 {% endblock full_document %}

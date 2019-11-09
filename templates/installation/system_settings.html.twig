@@ -1,18 +1,16 @@
-
-
 {% extends 'kookaburra.html.twig' %}
 
 {% form_theme form
     'form/kookaburra_form.html.twig'
 %}
 
-{% block page %}
+{% block content %}
     <h2>{{ 'Installation - Step {step}'|trans({'{step}': '3'}) }}</h2>
     {% if message is defined and message is iterable %}
         <div class="{{ message.class }}">{{ message.text|trans({}, 'kookaburra') }}</div>
     {% endif %}
     {{ form_start(form) }}
-    <table class="smallIntBorder fullWidth standardForm relative" cellspacing="0">
+    <table class="smallIntBorder fullWidth standardForm relative">
         <tbody>
             {{ form_row(form.userAccountHeader) }}
             {{ form_row(form.title) }}
@@ -44,10 +42,6 @@
         </tbody>
     </table>
     {{ form_end(form) }}
-{% endblock page %}
-
-{% block sidebar %}
-    {% include 'installation/sidebar.html.twig' %}
-{% endblock sidebar %}
+{% endblock content %}
 
 

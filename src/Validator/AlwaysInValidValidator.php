@@ -32,7 +32,7 @@ class AlwaysInValidValidator extends ConstraintValidator
         } else
             $name = strval($object);
         $this->context->buildViolation($constraint->message)
-            ->setParameter('%{name}', $name)
+            ->setParameter('{name}', $name)
             ->addViolation();
     }
 }

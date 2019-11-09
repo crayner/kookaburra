@@ -26,9 +26,9 @@ class I18nValidator extends ConstraintValidator
         $valid = \App\Entity\I18n::getLanguages();
 
         if (!isset($valid[$value]))
-            $this->context->buildViolation('The language %{code} selected is not a valid language choice for Kookaburra. Valid choices are %{codes}')
-                ->setParameter('%{code}', $value)
-                ->setParameter('%{codes}', implode(', ', $valid))
+            $this->context->buildViolation('The language {code} selected is not a valid language choice for Kookaburra. Valid choices are {codes}')
+                ->setParameter('{code}', $value)
+                ->setParameter('{codes}', implode(', ', $valid))
                 ->setTranslationDomain('kookaburra')
                 ->addViolation();
     }

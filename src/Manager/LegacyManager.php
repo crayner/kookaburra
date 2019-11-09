@@ -635,7 +635,7 @@ class LegacyManager
         /**
          * GET SIDEBAR CONTENT
          *
-         * TODO: rewrite the Sidebar class as a template file.
+         * TODO: rewrite the SidebarContent class as a template file.
          */
         if ($showSidebar) {
             $page->addSidebarExtra($session->get('sidebarExtra'));

@@ -92,26 +92,26 @@ class Staff implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=80, name="countryOfOrigin")
+     * @ORM\Column(length=80, name="countryOfOrigin",nullable=true)
      * @Assert\Country()
      */
     private $countryOfOrigin;
 
     /**
      * @var string|null
-     * @ORM\Column(name="qualifications")
+     * @ORM\Column(name="qualifications",nullable=true)
      */
     private $qualifications;
 
     /**
      * @var string|null
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text",nullable=true)
      */
     private $biography;
 
     /**
      * @var string|null
-     * @ORM\Column(length=100, name="biographicalGrouping", options={"comment": "Used for group staff when creating a staff directory."})
+     * @ORM\Column(length=100,name="biographicalGrouping",options={"comment": "Used for group staff when creating a staff directory."},nullable=true)
      */
     private $biographicalGrouping;
 

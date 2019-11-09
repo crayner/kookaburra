@@ -12,20 +12,24 @@
 
 namespace App\Twig;
 
+use App\Util\GlobalHelper;
+use Doctrine\Common\Collections\ArrayCollection;
 use Kookaburra\SystemAdmin\Entity\Module;
 use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
 use App\Util\UrlGeneratorHelper;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Class ModuleMenu
  * @package App\Twig
  */
-class ModuleMenu implements ContentInterface
+class ModuleMenu implements SidebarContentInterface
 {
-    use ContentTrait;
+    use SidebarContentTrait;
 
     /**
      * @var ScriptManager
@@ -48,9 +52,29 @@ class ModuleMenu implements ContentInterface
     private $showSidebar = true;
 
     /**
+     * @var ArrayCollection
+     */
+    private $attributes;
+
+    /**
+     * @var bool
+     */
+    private $showSideBar = true;
+
+    /**
+     * @var string
+     */
+    private $name = 'Module Menu';
+
+    /**
+     * @var string
+     */
+    private $position = 'middle';
+
+    /**
      * execute
      */
-    public function execute(): void
+    public function execute(): ModuleMenu
     {
         $request = $this->getRequest();
 
@@ -84,13 +108,14 @@ class ModuleMenu implements ContentInterface
             $this->addAttribute('ModuleMenu', true);
             $request->getSession()->set('menuModuleName', $currentModule->getName());
             $data = ['data' => $menuModuleItems];
-            $data['trans_module_menu'] = $this->translate('Module Menu');
-            $data['sidebar'] = $this->isValid();
             $data['showSidebar'] = $this->isShowSidebar();
+            $data['trans_module_menu'] = $this->translate('Module Menu');
             $this->getScriptManager()->addAppProp('menuModule', $data);
         } else {
             $request->getSession()->forget(['menuModuleItems', 'menuModuleName']);
         }
+
+        return $this;
     }
 
     /**
@@ -214,6 +239,132 @@ class ModuleMenu implements ContentInterface
     {
         $this->showSidebar = $showSidebar;
         $this->execute();
+        return $this;
+    }
+
+    /**
+     * render
+     * @return string
+     */
+    public function render(array $options): string
+    {
+        return $this->getTwig()->render('default/sidebar/module_menu.html.twig');
+    }
+
+    /**
+     * getRequest
+     * @return Request
+     */
+    private function getRequest(): Request
+    {
+        return GlobalHelper::getRequest();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAttributes(): ArrayCollection
+    {
+        if (null === $this->attributes)
+            $this->attributes = new ArrayCollection();
+        return $this->attributes;
+    }
+
+    /**
+     * setAttributes
+     * @param ArrayCollection $attributes
+     * @return ModuleMenu
+     */
+    public function setAttributes(ArrayCollection $attributes): ModuleMenu
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * addAttribute
+     * @param string $name
+     * @param $content
+     * @return $this
+     */
+    public function addAttribute(string $name, $content): ModuleMenu
+    {
+        $this->getAttributes()->set($name, $content);
+
+        return $this;
+    }
+
+    /**
+     * hasAttribute
+     * @param string $name
+     * @return bool
+     */
+    public function hasAttribute(string $name): bool
+    {
+        return $this->getAttributes()->containsKey($name);
+    }
+
+    /**
+     * getAttribute
+     * @param string $name
+     * @return mixed|null
+     */
+    public function getAttribute(string $name)
+    {
+        return $this->hasAttribute($name) ? $this->attributes->get($name) : null;
+    }
+
+    /**
+     * @var bool
+     */
+    private $valid = true;
+
+    /**
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        return $this->valid && $this->getAttributes()->count() > 0;
+    }
+
+    /**
+     * getValid
+     * @return bool
+     */
+    public function getValid(): bool
+    {
+        return $this->valid;
+    }
+
+    /**
+     * Valid.
+     *
+     * @param bool $valid
+     * @return ContentTrait
+     */
+    public function setValid(bool $valid): ContentTrait
+    {
+        $this->valid = $valid;
+        return $this;
+    }
+
+    /**
+     * @return Environment
+     */
+    public function getTwig(): Environment
+    {
+        return $this->twig;
+    }
+
+    /**
+     * Twig.
+     *
+     * @param Environment $twig
+     * @return ModuleMenu
+     */
+    public function setTwig(Environment $twig): ModuleMenu
+    {
+        $this->twig = $twig;
         return $this;
     }
 }

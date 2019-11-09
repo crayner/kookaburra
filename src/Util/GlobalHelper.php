@@ -177,6 +177,8 @@ class GlobalHelper
                     self::$session->start();
                 self::getRequest()->setSession(self::$session);
             }
+            if (null === self::$session)
+                self::$session = self::getRequest()->getSession();
         }
 
         return self::$session;

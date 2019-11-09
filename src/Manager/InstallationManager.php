@@ -99,8 +99,8 @@ class InstallationManager
         $systemDisplay['System Requirements'] = [];
         $systemDisplay['System Requirements']['PHP Version'] = [];
         $systemDisplay['System Requirements']['PHP Version']['name'] = 'PHP Version';
-        $systemDisplay['System Requirements']['PHP Version']['comment'] = 'Kookaburra %{version} requires PHP Version %{php_version} or higher';
-        $systemDisplay['System Requirements']['PHP Version']['comment_params'] = ['%{version}' => $version['version'], '%{php_version}' => $systemRequirements['php']];
+        $systemDisplay['System Requirements']['PHP Version']['comment'] = 'Kookaburra {version} requires PHP Version {php_version} or higher';
+        $systemDisplay['System Requirements']['PHP Version']['comment_params'] = ['{version}' => $version['version'], '{php_version}' => $systemRequirements['php']];
         $systemDisplay['System Requirements']['PHP Version']['detail'] = PHP_VERSION;
         $systemDisplay['System Requirements']['PHP Version']['result'] = version_compare(PHP_VERSION, $systemRequirements['php'], '>=');
         $ready &= $systemDisplay['System Requirements']['PHP Version']['result'];
@@ -114,7 +114,7 @@ class InstallationManager
 
         $apacheModules = apache_get_modules();
         $systemDisplay['System Requirements']['mod_rewrite'] = [];
-        $systemDisplay['System Requirements']['mod_rewrite']['name'] = 'Apache Module %{name}';
+        $systemDisplay['System Requirements']['mod_rewrite']['name'] = 'Apache Module {name}';
         $systemDisplay['System Requirements']['mod_rewrite']['comment'] = '';
         $systemDisplay['System Requirements']['mod_rewrite']['detail'] = in_array('mod_rewrite', $apacheModules) ? 'Enabled' : 'N/A';
         $systemDisplay['System Requirements']['mod_rewrite']['result'] = in_array('mod_rewrite', $apacheModules);
@@ -123,7 +123,7 @@ class InstallationManager
         foreach($systemRequirements['extensions'] as $extension){
             $installed = extension_loaded($extension);
             $systemDisplay['System Requirements'][$extension] = [];
-            $systemDisplay['System Requirements'][$extension]['name'] = 'PHP Extension %{name}';
+            $systemDisplay['System Requirements'][$extension]['name'] = 'PHP Extension {name}';
             $systemDisplay['System Requirements'][$extension]['comment'] = '';
             $systemDisplay['System Requirements'][$extension]['detail'] = $installed ? 'Installed' : 'Not Installed';
             $systemDisplay['System Requirements'][$extension]['result'] = $installed;
@@ -228,7 +228,9 @@ class InstallationManager
             [
                 'form' => $form->createView(),
                 'message' => $message,
-                'proceed' => true,
+                'sidebarOptions' => [
+                    'proceed' => true,
+                ],
             ]
         ));
     }

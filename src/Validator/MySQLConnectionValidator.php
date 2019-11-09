@@ -35,8 +35,8 @@ class MySQLConnectionValidator extends ConstraintValidator
             $driver = new Driver();
             $conn = $driver->connect($value->getParams(false), $value->getUser(), $value->getPassword(), []);
         } catch(DriverException $e) {
-            $this->context->buildViolation('The MySQL Connection Settings did not connect. [%{message}]')
-                ->setParameter('%{message}',$e->getMessage())
+            $this->context->buildViolation('The MySQL Connection Settings did not connect. [{message}]')
+                ->setParameter('{message}',$e->getMessage())
                 ->setTranslationDomain('kookaburra')
                 ->addViolation();
             return ;
@@ -47,8 +47,8 @@ class MySQLConnectionValidator extends ConstraintValidator
         try {
             $conn->exec($sql);
         } catch (PDOException $e) {
-            $this->context->buildViolation('The database does not exist and cannot be created. [%{message}]')
-                ->setParameter('%{message}', $e->getMessage())
+            $this->context->buildViolation('The database does not exist and cannot be created. [{message}]')
+                ->setParameter('{message}', $e->getMessage())
                 ->setTranslationDomain('kookaburra')
                 ->addViolation();
             return ;
@@ -58,8 +58,8 @@ class MySQLConnectionValidator extends ConstraintValidator
             $driver = new Driver();
             $conn = $driver->connect($value->getParams(), $value->getUser(), $value->getPassword(), []);
         } catch(DriverException $e) {
-            $this->context->buildViolation('The MySQL Connection Settings did not connect. [%{message}]')
-                ->setParameter('%{message}',$e->getMessage())
+            $this->context->buildViolation('The MySQL Connection Settings did not connect. [{message}]')
+                ->setParameter('{message}',$e->getMessage())
                 ->setTranslationDomain('kookaburra')
                 ->addViolation();
             return ;

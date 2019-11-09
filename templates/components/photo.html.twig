@@ -1,0 +1,7 @@
+{% trans_default_domain trans_domain|default('messages') %}
+
+{% if photo.fileExists %}
+    <div class="text-center">
+        <img src="{{ asset(photo.fileName) }}" title="{{ photo.title }}" class="{{ photo.class }}" width="{{ photo.width }}" style="max-width: {{ photo.size }}px; max-height: {{ photo.size }}px;" />
+    </div>
+{% endif %}

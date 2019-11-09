@@ -19,6 +19,8 @@ use App\Form\Installation\MySQLType;
 use App\Form\Installation\SystemType;
 use App\Manager\InstallationManager;
 use App\Provider\ProviderFactory;
+use App\Twig\Sidebar\MySQLSettingWarning;
+use App\Twig\SidebarContent;
 use App\Util\LocaleHelper;
 use Kookaburra\SystemAdmin\Form\Entity\SystemSettings;
 use Kookaburra\SystemAdmin\Manager\LanguageManager;
@@ -70,10 +72,12 @@ class InstallController extends AbstractController
      * @throws \Twig\Error\SyntaxError
      * @Route("/installation/mysql/", name="installation_mysql")
      */
-    public function installationMySQLSettings(Request $request, InstallationManager $manager)
+    public function installationMySQLSettings(Request $request, InstallationManager $manager, SidebarContent $sidebar)
     {
         $mysql = new MySQLSettings();
         $message = null;
+        $sidebar->addContent($x = new MySQLSettingWarning());
+        $x->setPriority(51)->setPosition('top');
 
         $form = $this->createForm(MySQLType::class, $mysql, ['action' => $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/mysql/']);
 
@@ -96,7 +100,9 @@ class InstallController extends AbstractController
             [
                 'form' => $form->createView(),
                 'message' => $message,
-                'proceed' => false,
+                'sidebarOptions' => [
+                    'proceed' => false,
+                ]
             ]
         );
     }

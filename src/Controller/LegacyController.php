@@ -7,30 +7,25 @@ use App\Entity\I18n;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
 use App\Provider\ProviderFactory;
-use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class LegacyController
+ * @package App\Controller
+ */
 class LegacyController extends AbstractController
 {
     /**
      * @Route("/", name="legacy")
-     * @Route("/", name="home")
      */
     public function index(Request $request, LegacyManager $manager, GibbonManager $gibbonManager)
     {
-        if (! $this->getUser() instanceof SecurityUser) {
-            return $this->render('default/welcome.html.twig',
-                [
-                    'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
-                ]
-            );
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('home');
         }
 
         $error = $gibbonManager->execute();
@@ -64,5 +59,20 @@ class LegacyController extends AbstractController
     {
         ProviderFactory::create(I18n::class)->setLanguageSession($request->getSession(), ['code' => $i18n]);
         return $this->forward(LegacyController::class.'::index');
+    }
+
+    /**
+     * @Route("/home/", name="home")
+     */
+    public function home()
+    {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
+            return $this->redirectToRoute('legacy');
+
+        return $this->render('default/welcome.html.twig',
+            [
+                'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
+            ]
+        );
     }
 }

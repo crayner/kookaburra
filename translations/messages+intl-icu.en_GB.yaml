@@ -970,3 +970,75 @@ colour:
     validation:
         error: 'The format of "{colour}" is not valid for the selected style "{format}". Colours are defined at - <a href="https://www.w3schools.com/cssref/css_colors_legal.asp" target="_blank"> W3Schools - CSS Legal Colour Values</a>'
         enforce_type: "The colour format type '{format}' must be one of ['{formats}']."
+'For support, please visit {oneString}craigrayner.com{twoString}.': 'For support, please visit {oneString}craigrayner.com{twoString}.'
+'Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.': 'Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.'
+'Kookaburra Software is a fork of Gibbon.': 'Kookaburra Software is a fork of Gibbon.'
+'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.': 'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.'
+Building the Database: Building the Database
+Once the correct settings for your database are verified, the system will immediately build the database. This is a process that can take minutes to complete.  You patience is appreciated.: Once the correct settings for your database are verified, the system will immediately build the database. This is a process that can take minutes to complete.  You patience is appreciated.
+The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.: The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.
+Proceed: Proceed
+'Now that your system is installed, please check the {link}Full System Requirements{close} to ensure correct operation of your site.':
+    'Now that your system is installed, please check the {link}Full System Requirements{close} to ensure correct operation of your site.'
+'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.': 'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.'
+birthday_icon: "{count, plural,
+        =0   {{name}'s birthday today!}
+        one   {One day until {name}'s birthday!}
+        other   {# days until {name}'s birthday!}
+    }"
+concerns_alert_level: "{highest_level, select,
+        High    {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are more than {low} events recorded for a student.'}
+        Medium   {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+        Low   {'Student has a {name} alert for academic concern over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+    }"
+behaviour_alert_level: "{highest_level, select,
+        High    {'Student has a {name} alert for behaviour over the past 60 days. This alert level occurs when there are more than {low} events recorded for a student.'}
+        Medium   {'Student has a {name} alert for behaviour over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+        Low   {'Student has a {name} alert for behaviour over the past 60 days. This alert level occurs when there are between {low} and {high} events recorded for a student.'}
+    }"
+medical_alert_level: 'Medical alerts are set, up to a maximum of {name}'
+privacy_alert_level: 'Privacy is required: {message}'
+Are you sure you want to delete these records.: Are you sure you want to delete these records.
+'from a fork of ': 'from a fork of '
+'The page at address %address% was not found.': 'The page at address, %address%, was not found.'
+'The directory containing the configuration files is writable, so the installation may proceed.': 'The directory containing the configuration files is writable, so the installation may proceed.'
+'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.': 'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.'
+'One or more of the system requirements listed above is not configured correctly.': 'One or more of the system requirements listed below is not configured correctly! Please ensure that all system requirements are met before proceeding to installation of Kookaburra.'
+'The language {code} selected is not a valid language choice for Kookaburra. Valid choices are {codes}': 'The language "{code}" selected is not a valid language choice for Kookaburra. Valid choices are "{codes}".'
+'Welcome To Kookaburra': 'Welcome To Kookaburra'
+'The MySQL Connection Settings did not connect. [{message}]': 'The MySQL Connection Settings did not connect. [{message}]'
+'The database does not exist and cannot be created. [{message}]': 'The database does not exist and cannot be created. [{message}]'
+Ms: Ms
+Miss: Miss
+Mr: Mr
+Mrs: Mrs
+Dr: Dr
+'Yes/No': 'Yes/No'
+'The value "{value}" is not valid. Valid results are "[{valid}]"': 'The value "{value}" is not valid. Valid results are "[{valid}]"'
+The password must contain both lower and uppercase characters.: The password must contain both lower and uppercase characters.
+The password must contain as least one number.: The password must contain as least one number.
+Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).: Contain at least one non-alphanumeric character (e.g. a punctuation mark or space).
+'Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.': 'Join our mailing list and receive a welcome email from the team. @todo This is not yet implemented.'
+Unknown: Unknown
+organisation_website: '%name% Website'
+'The file "{path}" does not exist in the "{dir}" directory!': 'The file "{path}" does not exist in the "{dir}" directory!'
+Current: Current
+'The password must be a minimum of {minLength} characters long.': 'The password must be a minimum of {minLength} characters long.'
+Open Link: Open Link
+File Download: File Download
+You must submit the form to save this empty value.: You must submit the form to save this empty value.
+File Delete: File Delete
+"If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, {oneString}click here{twoString}.": "If your school uses Google Apps, you can enable single sign on and calendar integration with Kookaburra. This process makes use of Google's APIs, and allows a user to access Kookaburra without a username and password, provided that their listed email address is a Google account to which they have access. For configuration instructions, {oneString}click here{twoString}."
+'Provide a copy of the .json file downloaded from the {anchor}Google Development Console.{anchorClose}': 'Provide a copy of the .json file downloaded from the {anchor}Google Development Console.{anchorClose}'
+Let me ponder your request: Let me ponder your request
+Google OAuth Download File: Google OAuth Download File
+Google API Key: Google API Key
+'Provide a copy of the API Key from the {anchor}Google Development Console.{anchorClose}': 'Provide a copy of the API Key from the {anchor}Google Development Console.{anchorClose}'
+'When using GMail with two factor authentication, you will need to create an application password on your GMail account. See {anchor}Google Account Security: App Passwords{closeAnchor}': 'When using GMail with two factor authentication, you will need to create an application password on your GMail account. See {anchor}Google Account Security: App Passwords{closeAnchor}'
+'Your requested included a valid Google Secret File.  The information was successfully stored.': 'Your requested included a valid Google Secret File.  The information was successfully stored.'
+'Your requested did not included a valid Google Secret File. All other Google changes where saved.': 'Your requested did not included a valid Google Secret File. All other Google changes where saved.'
+'Your request failed due to a file transfer issue.': Your request failed due to a file transfer issue.
+Changing the default language will give strange translation results until the cache is fully rebuilt.: Changing the default language will give strange translation results until the cache is fully rebuilt.
+system_admin:
+    importer:
+        log_details: 'Full details of all errors and warnings are logged to the importer log at "{path}".'

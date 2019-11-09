@@ -1,19 +1,15 @@
-{% trans_default_domain "kookaburra" %}
+{% trans_default_domain "messages" %}
 
 {% extends 'kookaburra.html.twig' %}
 
-{% block page %}
+{% block content %}
     <h2>{{ 'Installation - Step {step}'|trans({'{step}': '4'}) }}</h2>
     <div class="success">
-        {{ 'Congratulations, your installation is complete. Feel free to %{link}go to your Kookaburra home page%{close} and login with the username and password you created.'|trans({'%{link}': '<a href="' ~ path('home') ~ '">', '%{close}': '</a>'})|raw }}
+        {{ 'Congratulations, your installation is complete. Feel free to {link}go to your Kookaburra home page{close} and login with the username and password you created.'|trans({'{link}': '<a href="' ~ path('home') ~ '">', '{close}': '</a>'})|raw }}
     </div>
     <div class="info">
-        {{ 'Now that your system is installed, please check the %{link}Full System Requirements%{close} to ensure correct operation of your site.'|trans({'%{link}': '<a href="' ~ path('system_admin__check') ~ '">', '%{close}': '</a>'})|raw }}
+        {{ 'Now that your system is installed, please check the {link}Full System Requirements{close} to ensure correct operation of your site.'|trans({'{link}': '<a href="' ~ path('system_admin__check') ~ '">', '{close}': '</a>'})|raw }}
     </div>
-{% endblock page %}
-
-{% block sidebar %}
-    {% include 'installation/sidebar.html.twig' %}
-{% endblock sidebar %}
+{% endblock content %}
 
 
