@@ -5,16 +5,14 @@ import { render } from 'react-dom'
 import FastFinderApp from "./fastFinder/FastFinderApp";
 import '../css/fastFinder/fastFinder.css'
 
-window.onload = function () {
-    const fastFinderWrapper = document.getElementById('fastFinderWrapper')
+const fastFinderWrapper = document.getElementById('fastFinderWrapper')
 
-    if (fastFinderWrapper === null)
-        render(<div>&nbsp;</div>, document.getElementById('dumpStuff'))
-    else
-        render(
-            <FastFinderApp
-                {...window.FASTFINDER_PROPS}
-            />,
-            fastFinderWrapper
-        )
-};
+if (fastFinderWrapper === null)
+    render(<div>&nbsp;</div>, document.getElementById('dumpStuff'))
+else
+    render(
+        <FastFinderApp
+            {...window.FASTFINDER_PROPS}
+        />,
+        fastFinderWrapper
+    )
