@@ -47,6 +47,11 @@ class SidebarContent
     private $twig;
 
     /**
+     * @var bool
+     */
+    private $minimised = false;
+
+    /**
      * @var array
      */
     private static $positionList = [
@@ -133,6 +138,26 @@ class SidebarContent
     }
 
     /**
+     * hasContentMember
+     * @param string $name
+     * @return bool
+     */
+    public function hasContentMember(string $name): bool
+    {
+        return $this->getContent()->containsKey($name);
+    }
+
+    /**
+     * getContentMember
+     * @param string $name
+     * @return SidebarContentInterface|null
+     */
+    public function getContentMember(string $name): ?SidebarContentInterface
+    {
+        return $this->getContent()->get($name);
+    }
+
+    /**
      * hasSectionContent
      * @param string $name
      * @return bool
@@ -179,8 +204,8 @@ class SidebarContent
     public function setNoSidebar(bool $noSidebar): SidebarContent
     {
         $this->noSidebar = $noSidebar;
-        if ($this->hasSectionContent('Module Menu')) {
-            $this->getSectionContent('Module Menu')->setShowSidebar(!$noSidebar);
+        if ($this->hasContentMember('Module Menu')) {
+            $this->getContentMember('Module Menu')->setShowSidebar(!$noSidebar);
         }
         return $this;
     }
@@ -229,5 +254,28 @@ class SidebarContent
     public function getTwig(): Environment
     {
         return $this->twig;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMinimised(): bool
+    {
+        return $this->minimised;
+    }
+
+    /**
+     * Minimised.
+     *
+     * @param bool $minimised
+     * @return SidebarContent
+     */
+    public function setMinimised(bool $minimised): SidebarContent
+    {
+        if ($this->hasContentMember('Module Menu')) {
+            $this->getContentMember('Module Menu')->setShowSidebar(!$minimised);
+        }
+        $this->minimised = $minimised;
+        return $this;
     }
 }

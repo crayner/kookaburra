@@ -57,11 +57,6 @@ class ModuleMenu implements SidebarContentInterface
     private $attributes;
 
     /**
-     * @var bool
-     */
-    private $showSideBar = true;
-
-    /**
      * @var string
      */
     private $name = 'Module Menu';
