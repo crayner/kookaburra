@@ -1,3 +1,5 @@
+{% trans_default_domain 'messages' %}
+
 {% block full_document %}
 <!DOCTYPE html>
 <html {{ rightToLeft() ? 'dir="rtl"' : '' }}>
@@ -19,28 +21,25 @@
             <div id="wrap" class="mx-auto max-w-6xl m-2 shadow-container rounded">
                 {% block header %}
                     <div id="header" class="relative bg-white flex justify-between items-center rounded-t h-24 sm:h-32">
-
                         <a id="header-logo" class="block max-w-xs sm:max-w-full leading-none" href="{{ absoluteURL }}">
                             <img class="block max-w-full" alt="{{ app.request.session.get('organisationName') }}" src="{{ asset(organisationLogo|default("/themes/Default/img/logo.png"), null, true) }}" width="400"/>
                         </a>
-
                         <div id="fastFinderWrapper" class="flex-grow flex justify-end"></div>
                     </div>
 
                     <nav id="header-menu" class="w-full bg-gray-200 justify-between">
                         {% include 'default/menu.html.twig'  %}
                     </nav>
-
                 {% endblock header %}
 
                 <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
 
-                        {% block sidebar %}
-                                {% include 'default/sidebar/sidebar.html.twig' %}
-                        {% endblock sidebar %}
+                    {% block sidebar %}
+                        {% include 'default/sidebar/sidebar.html.twig' %}
+                    {% endblock sidebar %}
 
                     <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
-                        {% if (getSidebar().isValid() and not getModuleMenu().isShowSidebar()) or not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% if (not getSidebar().isValid() and getSidebar().isMinimised()) %}
                             <div id="sidebarNavigation"></div>
                         {% endif %}
                         {% block page %}
@@ -114,12 +113,11 @@
                         <br/>
                         <span class="text-xs">
                             {{ 'Created under the'|trans }} <a class="link-white" target='_blank' href='https://opensource.org/licenses/MIT'>MIT</a> {{ 'licence' }},
-                            {{ 'from a fork of '|trans({},'kookaburra') }} <a class="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon v18.0.00</a>
+                            {{ 'from a fork of'|trans }} <a class="link-white" target='_blank' href='https://gibbonedu.org'>Gibbon v18.0.00</a>
                             <br/>
-                            {{ footerThemeAuthor|default('') }}<br/>
+                            {{ footerThemeAuthor|default('') }}<br />
                         </span>
-
-                        <img class="absolute right-0 top-0 -mt-2 sm:mr-0 md:mr-12 opacity-75 hidden sm:block" alt="Logo Small" src="{{ absoluteURL }}/themes/{{ gibbonThemeName|default("Default") }}/img/logoFooter.png"/>
+                        <img class="absolute right-0 top-0 -mt-2 sm:mr-0 md:mr-12 opacity-75 hidden sm:block" alt="Logo Small" src="{{ absoluteURL }}/themes/{{ gibbonThemeName|default("Default") }}/img/logoFooter.png" />
                     </div>
                 {% endblock %}
             </div>

@@ -15,6 +15,7 @@ namespace App\Provider;
 use App\Entity\CourseClass;
 use App\Entity\Person;
 use App\Manager\Traits\EntityTrait;
+use Kookaburra\Departments\Twig\MyClasses;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Twig\SidebarContent;
 
@@ -43,8 +44,10 @@ class CourseClassProvider implements EntityProviderInterface
         elseif ($person instanceof Person)
             $result = $this->getRepository()->findByPersonSchoolYear($this->getSession()->get('schoolYear'), $person);
 
-        if (count($result) > 0 && null !== $sidebar)
-            $sidebar->addExtra('myClasses', $result);
+        if (count($result) > 0 && null !== $sidebar) {
+            $myClasses = new MyClasses();
+            $sidebar->addContent($myClasses->setClasses($result));
+        }
 
         return $result ?: [];
     }

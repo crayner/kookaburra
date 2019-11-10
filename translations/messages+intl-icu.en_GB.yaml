@@ -999,7 +999,7 @@ behaviour_alert_level: "{highest_level, select,
 medical_alert_level: 'Medical alerts are set, up to a maximum of {name}'
 privacy_alert_level: 'Privacy is required: {message}'
 Are you sure you want to delete these records.: Are you sure you want to delete these records.
-'from a fork of ': 'from a fork of '
+'from a fork of': 'from a fork of'
 'The page at address %address% was not found.': 'The page at address, %address%, was not found.'
 'The directory containing the configuration files is writable, so the installation may proceed.': 'The directory containing the configuration files is writable, so the installation may proceed.'
 'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.': 'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.'
