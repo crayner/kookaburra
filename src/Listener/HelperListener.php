@@ -45,12 +45,10 @@ use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\UrlHelper;
-use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
@@ -102,14 +100,15 @@ class HelperListener implements EventSubscriberInterface
         ContainerInterface $container,
         LoggerInterface $logger,
         UrlGeneratorHelper $urlGeneratorHelper,
-        GibbonManager $gibbonManager
+        GibbonManager $gibbonManager,
+        ParameterBagInterface $params
     ) {
         if ($container->hasParameter('installed') && $container->getParameter('installed')) {
             $eh = new EntityHelper(new ProviderFactory($entityManager, $messageManager, $authorizationChecker, $router, $stack));
             $lcf = new LegacyConnectionFactory();
             $gibbonManager->setContainer($container);
             $eh = new ErrorHelper($twig);
-            $gh = new GlobalHelper($stack);
+            $gh = new GlobalHelper($stack, $params);
             $sh = new SecurityHelper($logger, $authorizationChecker);
             $uh = new UserHelper($tokenStorage);
             new TranslationsHelper($translator);

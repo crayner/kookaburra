@@ -13,6 +13,7 @@
 namespace App\Util;
 
 use App\Session\GibbonSession;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -30,12 +31,18 @@ class GlobalHelper
     private static $stack;
 
     /**
+     * @var ParameterBagInterface
+     */
+    private static $params;
+
+    /**
      * GlobalHelper constructor.
      * @param RequestStack $stack
      */
-    public function __construct(RequestStack $stack)
+    public function __construct(RequestStack $stack, ParameterBagInterface $params)
     {
         self::$stack = $stack;
+        self::$params =  $params;
     }
 
     private static $page;
@@ -182,5 +189,25 @@ class GlobalHelper
         }
 
         return self::$session;
+    }
+
+    /**
+     * hasParam
+     * @param string $name
+     * @return bool
+     */
+    public static function hasParam(string $name): bool
+    {
+        return self::$params->has($name);
+    }
+
+    /**
+     * getParam
+     * @param string $name
+     * @return mixed|null
+     */
+    public static function getParam(string $name)
+    {
+        return self::$params->has($name) ? self::$params->get($name) : null;
     }
 }

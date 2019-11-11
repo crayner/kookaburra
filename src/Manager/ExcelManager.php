@@ -58,9 +58,12 @@ class ExcelManager extends Spreadsheet
      *
      * @version	27th May 2016
      * @since	8th April 2016
-     * @return	string	Export to Browser.
+     * @param array $result
+     * @param string $excel_file_name
+     * @param bool $headerRow
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    function exportWithArray($result, $excel_file_name)
+    function exportWithArray(array $result, string $excel_file_name, bool $headerRow = false)
     {
         $this->defineWorkSheet($excel_file_name);
         $this->getProperties()->setTitle($this->translate("Kookaburra Query Dump"));
@@ -74,6 +77,16 @@ class ExcelManager extends Spreadsheet
             $rNum++;
             if ($rNum === 1)
             {
+                if ($headerRow) {
+                    $cNum = 0;
+                    foreach($row as $name)
+                    {
+                        $cNum++ ;
+                        $this->getActiveSheet()->setCellValueByColumnAndRow($cNum, $rNum, $name);
+                    }
+                    $this->getActiveSheet()->getStyle('1:1')->getFont()->setBold(true);
+                    continue;
+                }
                 // Row 1 is the headers.
                 $cNum = 0;
                 foreach($row as $name=>$value)
