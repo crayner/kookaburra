@@ -1383,7 +1383,7 @@ table.smallIntBorder td.noPadding {
     transition: .4s;
 }
 
-input[value="1"] + .slider {
+input[value="1"] + .slider, input[value="Y"] + .slider {
     background-color: #444444;
 }
 
@@ -1391,7 +1391,7 @@ input:focus + .slider {
     box-shadow: 0 0 1px #444444;
 }
 
-input[value="1"] + .slider:before {
+input[value="1"] + .slider:before, input[value="Y"] + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
