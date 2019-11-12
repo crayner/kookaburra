@@ -1,0 +1,50 @@
+<?php
+/**
+ * Created by PhpStorm.
+ *
+ * kookaburra
+ * (c) 2019 Craig Rayner <craig@craigrayner.com>
+ *
+ * User: craig
+ * Date: 13/11/2019
+ * Time: 06:18
+ */
+
+namespace App\Twig\Sidebar;
+
+use App\Twig\SidebarContentInterface;
+use App\Twig\SidebarContentTrait;
+
+/**
+ * Class Flash
+ * @package App\Twig\Sidebar
+ */
+class Flash implements SidebarContentInterface
+{
+    use SidebarContentTrait;
+
+    /**
+     * @var string
+     */
+    private $name = 'Flash';
+
+    /**
+     * @var string
+     */
+    private $position = 'top';
+
+    /**
+     * @var int
+     */
+    private $priority = 1;
+
+    /**
+     * render
+     * @param array $options
+     * @return string
+     */
+    public function render(array $options): string
+    {
+        return $this->getTwig()->render('components/sidebar/flashes.html.twig');
+    }
+}

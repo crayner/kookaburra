@@ -1,0 +1,8 @@
+{% trans_default_domain 'messages' %}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="{{ label }}">
+            {{ message|trans }}
+        </div>
+    {% endfor %}
+{% endfor %}

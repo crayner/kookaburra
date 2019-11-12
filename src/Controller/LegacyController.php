@@ -7,6 +7,8 @@ use App\Entity\I18n;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
 use App\Provider\ProviderFactory;
+use App\Twig\Sidebar\Flash;
+use App\Twig\SidebarContent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,11 +66,15 @@ class LegacyController extends AbstractController
     /**
      * @Route("/home/", name="home")
      */
-    public function home()
+    public function home(Request $request, SidebarContent $sidebar)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
             return $this->redirectToRoute('legacy');
 
+        if ($request->query->get('timeout') === 'true')
+            $this->addFlash('warning', 'Your session expired, so you were automatically logged out of the system.');
+
+        $sidebar->addContent(new Flash());
         return $this->render('default/welcome.html.twig',
             [
                 'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),

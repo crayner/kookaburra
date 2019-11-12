@@ -1,5 +1,3 @@
-{% dump(sidebar is not defined or not sidebar ? ' lg:hidden' : '') %}
-
 <div>
     {% if menuModule is defined and menuModule|length > 0 %}
     <button data-toggle="#navigation" class="w-full flex justify-center items-center sm:w-48 bg-white border border-grey-600 border-solid p-2 mt-16 sm:mt-4 sm:absolute sm:top-0 sm:right-0 sm:mr-6 z-40{{ sidebar is not defined or not sidebar ? ' lg:hidden' : '' }}">
