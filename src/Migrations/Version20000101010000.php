@@ -338,7 +338,6 @@ final class Version20000101010000 extends AbstractMigration
   KEY `IDX_30734075FF59AAB0` (`gibbonPersonIDCreator`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonPayment (gibbonPaymentID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, foreignTable VARCHAR(50) NOT NULL, foreignTableID INT(14) UNSIGNED ZEROFILL, type VARCHAR(16) DEFAULT \'Online\' NOT NULL, status VARCHAR(8) DEFAULT \'Complete\' NOT NULL COMMENT \'Complete means paid in one go, partial is part of a set of payments, and final is last in a set of payments.\', amount NUMERIC(13, 2) NOT NULL, gateway VARCHAR(6) DEFAULT NULL, onlineTransactionStatus VARCHAR(12) DEFAULT NULL, paymentToken VARCHAR(50) DEFAULT NULL, paymentPayerID VARCHAR(50) DEFAULT NULL, paymentTransactionID VARCHAR(50) DEFAULT NULL, paymentReceiptID VARCHAR(50) DEFAULT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_6DE7A9BACC6782D6 (gibbonPersonID), PRIMARY KEY(gibbonPaymentID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonPermission (permissionID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonRoleID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonActionID INT(7) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX gibbonRoleID (gibbonRoleID), INDEX gibbonActionID (gibbonActionID), PRIMARY KEY(permissionID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE IF NOT EXISTS `gibbonperson` (
   `gibbonPersonID` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `title` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
@@ -761,8 +760,6 @@ final class Version20000101010000 extends AbstractMigration
         $this->addSql('ALTER TABLE gibbonOutcome ADD CONSTRAINT FK_307340756DFE7E92 FOREIGN KEY (gibbonDepartmentID) REFERENCES gibbonDepartment (gibbonDepartmentID)');
         $this->addSql('ALTER TABLE gibbonOutcome ADD CONSTRAINT FK_30734075FF59AAB0 FOREIGN KEY (gibbonPersonIDCreator) REFERENCES gibbonPerson (gibbonPersonID)');
         $this->addSql('ALTER TABLE gibbonPayment ADD CONSTRAINT FK_6DE7A9BACC6782D6 FOREIGN KEY (gibbonPersonID) REFERENCES gibbonPerson (gibbonPersonID)');
-        $this->addSql('ALTER TABLE gibbonPermission ADD CONSTRAINT FK_BA9FFF14C816A40 FOREIGN KEY (gibbonRoleID) REFERENCES gibbonRole (gibbonRoleID)');
-        $this->addSql('ALTER TABLE gibbonPermission ADD CONSTRAINT FK_BA9FFF1E3AFEA67 FOREIGN KEY (gibbonActionID) REFERENCES gibbonAction (gibbonActionID)');
         $this->addSql('ALTER TABLE gibbonPerson ADD CONSTRAINT FK_FBF1667668D8F4F8 FOREIGN KEY (gibbonRoleIDPrimary) REFERENCES gibbonRole (gibbonRoleID)');
         $this->addSql('ALTER TABLE gibbonPerson ADD CONSTRAINT FK_FBF166768AF65507 FOREIGN KEY (gibbonHouseID) REFERENCES gibbonHouse (gibbonHouseID)');
         $this->addSql('ALTER TABLE gibbonPerson ADD CONSTRAINT FK_FBF166768AB34571 FOREIGN KEY (gibbonSchoolYearIDClassOf) REFERENCES gibbonSchoolYear (gibbonSchoolYearID)');

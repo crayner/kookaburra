@@ -97,11 +97,11 @@ class ReactFormType extends AbstractType
              $vars['method'] = $options['method'];
          }
          $this->addTranslation('Actions');
-         $this->addTranslation('File Download', [], 'kookaburra');
-         $this->addTranslation('Open Link', [], 'kookaburra');
-         $this->addTranslation('Yes/No', [], 'kookaburra');
-         $this->addTranslation('File Delete', [], 'kookaburra');
-         $this->addTranslation('Let me ponder your request', [], 'kookaburra');
+         $this->addTranslation('File Download', [], 'messages');
+         $this->addTranslation('Open Link', [], 'messages');
+         $this->addTranslation('Yes/No', [], 'messages');
+         $this->addTranslation('File Delete', [], 'messages');
+         $this->addTranslation('Let me ponder your request', [], 'messages');
          $this->addTranslation('Add');
          $this->addTranslation('Delete');
          $this->addTranslation('Close Message');

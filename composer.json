@@ -87,7 +87,6 @@
             "cache:clear": "symfony-cmd"
         },
         "post-install-cmd": [
-            "php -r \"copy('config/packages/kookaburra.yaml.dist', 'config/packages/kookaburra.yaml');\"",
             "@auto-scripts"
         ],
         "post-update-cmd": [

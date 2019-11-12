@@ -1042,3 +1042,16 @@ Changing the default language will give strange translation results until the ca
 system_admin:
     importer:
         log_details: 'Full details of all errors and warnings are logged to the importer log at "{path}".'
+'Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}': 'Provide a copy of the .json file downloaded from the %{anchor}Google Development Console.%{anchorClose}'
+Google Developers Developer Key: Google Developers Developer Key
+'Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}': 'Provide a copy of the API Key from the %{anchor}Google Development Console.%{anchorClose}'
+SMTP Username: SMTP Username
+Username to use for SMTP authentication. Leave blank for no authentication.: Username to use for SMTP authentication. Leave blank for no authentication.
+SMTP Password: SMTP Password
+SMTP Host: SMTP Host
+Set the hostname of the mail server.: Set the hostname of the mail server.
+SMTP Port: SMTP Port
+Set the SMTP port number - likely to be 25, 465 or 587.: Set the SMTP port number - likely to be 25, 465 or 587.
+SMTP Encryption: SMTP Encryption
+Automatically sets the encryption based on the port, otherwise select one manually.: Automatically sets the encryption based on the port, otherwise select one manually.
+Password to use for SMTP authentication. Leave blank for no authentication.: Password to use for SMTP authentication. Leave blank for no authentication.

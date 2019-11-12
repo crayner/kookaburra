@@ -66,7 +66,7 @@ class MinorLinks implements ContentInterface
                     'text' => ['organisation_website', ['%name%' => $this->getSession()->get('organisationNameShort')]],
                     'translation_domain' => 'messages',
                     'target' => '_blank',
-                    'class' => 'link_white',
+                    'class' => 'link-white',
                 ];
 
             }

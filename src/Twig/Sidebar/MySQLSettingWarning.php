@@ -29,6 +29,16 @@ class MySQLSettingWarning implements SidebarContentInterface
     private $name = 'MySQL Setting Warning';
 
     /**
+     * @var int
+     */
+    private $priority = 51;
+
+    /**
+     * @var string
+     */
+    private $position = 'top';
+
+    /**
      * render
      * @param array $options
      * @return string

@@ -17,6 +17,9 @@ class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
+        if(!defined('STDIN'))  define('STDIN',  fopen('php://stdin',  'rb'));
+        if(!defined('STDOUT')) define('STDOUT', fopen('php://stdout', 'wb'));
+        if(!defined('STDERR')) define('STDERR', fopen('php://stderr', 'wb'));
         $contents = require $this->getProjectDir().'/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {

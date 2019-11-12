@@ -77,7 +77,6 @@ class InstallController extends AbstractController
         $mysql = new MySQLSettings();
         $message = null;
         $sidebar->addContent($x = new MySQLSettingWarning());
-        $x->setPriority(51)->setPosition('top');
 
         $form = $this->createForm(MySQLType::class, $mysql, ['action' => $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/mysql/']);
 
