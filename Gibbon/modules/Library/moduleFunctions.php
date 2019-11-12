@@ -23,7 +23,8 @@ function getBorrowingRecord($guid, $connection2, $gibbonPersonID)
 
     try {
         $data = array('gibbonPersonID' => $gibbonPersonID);
-        $sql = 'SELECT gibbonLibraryItem.*, gibbonLibraryType.fields AS typeFields, timestampOut FROM gibbonLibraryItem JOIN gibbonLibraryType ON (gibbonLibraryItem.gibbonLibraryTypeID=gibbonLibraryType.gibbonLibraryTypeID) JOIN gibbonLibraryItemEvent ON (gibbonLibraryItemEvent.gibbonLibraryItemID=gibbonLibraryItem.gibbonLibraryItemID) WHERE gibbonLibraryItemEvent.gibbonPersonIDStatusResponsible=:gibbonPersonID ORDER BY timestampOut DESC';
+        $sql = 'SELECT gibbonLibraryItem.*, gibbonLibraryType.fields AS typeFields, timestampOut FROM gibbonLibraryItem 
+    JOIN gibbonLibraryType ON (gibbonLibraryItem.gibbonLibraryTypeID=gibbonLibraryType.gibbonLibraryTypeID) JOIN gibbonLibraryItemEvent ON (gibbonLibraryItemEvent.gibbonLibraryItemID=gibbonLibraryItem.gibbonLibraryItemID) WHERE gibbonLibraryItemEvent.gibbonPersonIDStatusResponsible=:gibbonPersonID ORDER BY timestampOut DESC';
         $result = $connection2->prepare($sql);
         $result->execute($data);
     } catch (PDOException $e) {

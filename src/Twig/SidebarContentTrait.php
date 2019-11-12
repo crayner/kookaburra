@@ -114,15 +114,4 @@ trait SidebarContentTrait
     {
         return $this->name;
     }
-    
-    /**
-     * setName
-     * @param string $name
-     * @return SidebarContentInterface
-     */
-    public function setName(string $name): SidebarContentInterface
-    {
-        $this->name = $name;
-        return $this;
-    }
 }

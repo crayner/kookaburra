@@ -18,12 +18,14 @@ use App\Entity\Person;
 use App\Entity\SchoolYear;
 use App\Entity\Setting;
 use App\Exception\MissingClassException;
+use App\Manager\EntityInterface;
 use App\Manager\ScriptManager;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\ModuleMenu;
+use App\Twig\Sidebar\Photo;
 use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\ImageHelper;
@@ -157,6 +159,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getLanguageName', [$this, 'getLanguageName']),
             new TwigFunction('getAbsoluteImageURL', [$this, 'getAbsoluteImageURL']),
             new TwigFunction('getRelativeImageURL', [$this, 'getRelativeImageURL']),
+            new TwigFunction('displayImage', [$this, 'displayImage']),
         ];
     }
 
@@ -447,5 +450,18 @@ class PageExtension extends AbstractExtension
     public function fileExists(?string $filename): bool
     {
         return file_exists($filename);
+    }
+
+    /**
+     * displayImage
+     * @param EntityInterface $entity
+     * @param string $method
+     * @param string $size
+     * @param string $class
+     * @return Photo
+     */
+    public function displayImage(EntityInterface $entity, string $method, string $size = '75', string $class = ''): Photo
+    {
+        return ImageHelper::displayImage($entity, $method, $size, $class);
     }
 }

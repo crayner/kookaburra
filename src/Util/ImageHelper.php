@@ -12,10 +12,16 @@
 
 namespace App\Util;
 
-
 use App\Entity\Setting;
+use App\Manager\EntityInterface;
 use App\Provider\ProviderFactory;
+use App\Twig\Sidebar\Photo;
+use Kookaburra\SystemAdmin\Manager\StringReplacementPagination;
 
+/**
+ * Class ImageHelper
+ * @package App\Util
+ */
 class ImageHelper
 {
     /**
@@ -112,5 +118,18 @@ class ImageHelper
                 $filePath = null;
         }
         return $filePath;
+    }
+
+    /**
+     * displayImage
+     * @param $entity
+     * @param string $method
+     * @param string $size
+     * @param string $class
+     * @return Photo
+     */
+    public static function displayImage($entity, string $method, string $size = '75', string $class =''): Photo
+    {
+        return new Photo($entity, $method, $size, $class);
     }
 }
