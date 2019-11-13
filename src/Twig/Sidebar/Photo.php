@@ -176,21 +176,28 @@ class Photo implements SidebarContentInterface
     private $fileName;
 
     /**
+     * @var bool|null
+     */
+    private $fileExists;
+
+    /**
      * fileExists
      * @return bool
      */
     public function fileExists(): bool
     {
-        $method = $this->getMethod();
-        $fileName = ImageHelper::getRelativeImageURL($this->getEntity()->$method());
-        if (null === $fileName || '' === $fileName)
-            return false;
-        if (false !== file_get_contents($fileName))
-        {
-            $this->fileName = $fileName;
-            return true;
+        if (is_null($this->fileExists)) {
+            $method = $this->getMethod();
+            $fileName = ImageHelper::getRelativeImageURL($this->getEntity()->$method());
+            if (null === $fileName || '' === $fileName)
+                return $this->fileExists = false;
+            if (false !== file_get_contents($fileName)) {
+                $this->fileName = $fileName;
+                return $this->fileExists = true;
+            }
+            return $this->fileExists = false;
         }
-        return false;
+        return $this->fileExists ? true : false;
     }
 
     /**
@@ -198,18 +205,30 @@ class Photo implements SidebarContentInterface
      */
     public function getFileName(): ?string
     {
-        if (null === $this->fileName)
+        if (null === $this->fileName && null === $this->fileExists)
             $this->fileExists();
         return $this->fileName;
     }
 
+    /**
+     * @var int|null
+     */
+    private $width;
+
+    /**
+     * getWidth
+     * @return int
+     */
     public function getWidth(): int
     {
-        if (!$this->fileExists())
-            return 0;
-        $info = getimagesize($this->getFileName());
-        $x = $info[0] > $info[1] ? $info[0] : $info[1];
-        $x = floatval(intval($this->getSize())/$x);
-        return intval($x * $info[0]);
+        if (is_null($this->width)) {
+            if (!$this->fileExists())
+                return $this->width = 0;
+            $info = getimagesize($this->getFileName());
+            $x = $info[0] > $info[1] ? $info[0] : $info[1];
+            $x = floatval(intval($this->getSize()) / $x);
+            return $this->width = intval($x * $info[0]);
+        }
+        return $this->width;
     }
 }

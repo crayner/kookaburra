@@ -2,6 +2,7 @@
 
 {% if photo.fileExists %}
     <div class="text-center">
-        <img src="{{ asset(photo.fileName) }}" title="{{ photo.title }}" class="{{ photo.class }}" width="{{ photo.width }}" style="max-width: {{ photo.size }}px; max-height: {{ photo.size }}px;" />
+        <img title="{{ photo.title }}" class="{{ photo.class }}" src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="{{ asset(photo.fileName) }}" />
     </div>
+    {{ addPageScript('components/photo_loader.html.twig', []) }}
 {% endif %}
