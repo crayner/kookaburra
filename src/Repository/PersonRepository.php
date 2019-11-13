@@ -53,6 +53,9 @@ class PersonRepository extends ServiceEntityRepository
     public function loadUserByUsernameOrEmail($username)
     {
         return $this->createQueryBuilder('p')
+            ->select(['p','s','r'])
+            ->leftJoin('p.staff', 's')
+            ->leftJoin('p.primaryRole', 'r')
             ->where('p.email = :email OR p.username = :username')
             ->setParameter('email', $username)
             ->setParameter('username', $username)

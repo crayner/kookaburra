@@ -347,7 +347,7 @@ class InstallationManager
         $settingProvider->setSettingByScope('System', 'organisationName', $form->get('organisationName')->getData());
         $settingProvider->setSettingByScope('System', 'organisationNameShort', $form->get('organisationNameShort')->getData());
         $settingProvider->setSettingByScope('System', 'country', $form->get('country')->getData());
-        $settingProvider->setSettingByScope('System', 'currency', $form->get('currency')->getData().' '.Currencies::getSymbol($form->get('currency')->getData()));
+        $settingProvider->setSettingByScope('System', 'currency', $form->get('currency')->getData());
         $settingProvider->setSettingByScope('System', 'timezone', $form->get('timezone')->getData());
         $config = $this->readKookaburraYaml();
         $config['parameters']['absoluteURL'] = $form->get('baseUrl')->getData();

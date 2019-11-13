@@ -68,6 +68,23 @@ class SettingProvider implements EntityProviderInterface
         return $setting->getValue();
     }
 
+
+    /**
+     * getSettingsByScope
+     * @param string $scope
+     * @return SettingProvider
+     * @throws \Exception
+     */
+    public function getSettingsByScope(string $scope): SettingProvider
+    {
+        $settings = $this->getRepository()->findByScope($scope);
+
+        foreach($settings as $setting)
+            $this->addSetting($setting);
+
+        return $this;
+    }
+
     /**
      * getSystemSettings
      * @throws \Exception

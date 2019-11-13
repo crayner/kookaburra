@@ -303,7 +303,7 @@ Sunday: Sunday
 Timezone: Timezone
 The timezone where the school is located: The timezone where the school is located
 Currency: Currency
-'System-wde currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.': 'System-wde currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.'
+'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.': 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.'
 Link To Email: Link To Email
 The link that points to the school/'s email system: The link that points to the school/'s email system
 Link To Web: Link To Web

@@ -85,7 +85,7 @@ class SettingsType extends AbstractType
         $resolver->setAllowedTypes('entry_options', 'array');
         $resolver->setAllowedTypes('setting', Setting::class);
 
-        $setting['setting'] = ProviderFactory::getRepository(Setting::class)->findOneBy(['scope' => $setting['scope'], 'name' => $setting['name']]);
+        $setting['setting'] = ProviderFactory::create(Setting::class)->getSettingByScope($setting['scope'], $setting['name'], true);
         return $resolver->resolve($setting);
     }
 

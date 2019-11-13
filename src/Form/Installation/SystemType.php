@@ -23,6 +23,7 @@ use App\Validator\Password;
 use Kookaburra\SystemAdmin\Form\Entity\SystemSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -50,10 +51,7 @@ class SystemType extends AbstractType
         $orgName = $provider->getSettingByScope('System', 'organisationName', true);
         $orgNameShort = $provider->getSettingByScope('System', 'organisationNameShort', true);
         $country = $provider->getSettingByScope('System', 'country', true);
-        $countries = [];
-        foreach (Countries::getNames()as $name) {
-           $countries[$name] = $name;
-        }
+
         $currency = $provider->getSettingByScope('System', 'currency', true);
         $timezone = $provider->getSettingByScope('System', 'timezone', true) ?: $options['timezone'];
 
@@ -254,12 +252,11 @@ class SystemType extends AbstractType
                     'label' => 'Miscellaneous',
                 ]
             )
-            ->add('country', ChoiceType::class,
+            ->add('country', CountryType::class,
                 [
                     'label' => $country ? $country->getNameDisplay() : 'Country',
                     'help' => $country ? $country->getDescription() : 'The country the school is located in',
                     'placeholder' => '',
-                    'choices' => $countries,
                     'attr' => [
                         'class' => 'w-full',
                     ],
@@ -271,7 +268,7 @@ class SystemType extends AbstractType
             ->add('currency', CurrencyType::class,
                 [
                     'label' => $currency ? $currency->getNameDisplay() : 'Currency',
-                    'help' => $currency ? $currency->getDescription() : 'System-wde currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.',
+                    'help' => $currency ? $currency->getDescription() : 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.',
                     'placeholder' => '',
                     'attr' => [
                         'class' => 'w-full',
