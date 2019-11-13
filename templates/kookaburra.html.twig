@@ -48,13 +48,7 @@
                                 {% if softError is defined and softError|length > 0 %}
                                     <div class="error">{{ softError|trans(softErrorParams|default({})) }}</div>
                                 {% endif %}
-                                {% for label, messages in app.flashes %}
-                                    {% for message in messages %}
-                                        <div class="{{ label }}">
-                                            {{ message|trans }}
-                                        </div>
-                                    {% endfor %}
-                                {% endfor %}
+                                {% include 'components/sidebar/flashes.html.twig' %}
                                 {% include 'components/messages.html.twig' %}
                             {% endblock soft_error %}
 
