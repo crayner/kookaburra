@@ -1,12 +1,19 @@
 {% trans_default_domain 'messages' %}
 {% for label, messages in app.flashes %}
     {% for message in messages %}
-        <div class="{{ label }}">
+        <div class="{{ label }}" id="message{{ label ~ loop.index0 }}">
             {% if message is iterable %}
                 {{ message[0]|trans(message[1]|default({}), message[2]|default('messages')) }}
             {% else %}
                 {{ message|trans }}
             {% endif %}
+            <button class="button close success" title="Close Message" type="button" onclick="closeMessage('message{{ label ~ loop.index0 }}')"><span class="fas fa-times-circle fa-fw success"></span></button>
         </div>
+        <script>
+            function closeMessage(id){
+                var element = document.getElementById(id)
+                element.classList.toggle("hidden");
+            }
+        </script>
     {% endfor %}
 {% endfor %}
