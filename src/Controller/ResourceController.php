@@ -38,6 +38,7 @@ class ResourceController extends AbstractController
             $this->denyAccessUnlessGranted($route);
         else
             $this->denyAccessUnlessGranted('ROLE_ROUTE', [$route]);
+
         $file = base64_decode($file);
 
         $public = realpath(__DIR__ . '/../../public');

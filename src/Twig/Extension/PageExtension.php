@@ -185,7 +185,7 @@ class PageExtension extends AbstractExtension
      */
     public function houseIDLogo(): ?string
     {
-        return $this->session->has('gibbonHouseIDLogo') ? $this->session->get('gibbonHouseIDLogo') : null;
+        return $this->session->has('gibbonHouseIDLogo') ? $this->session->get('gibbonHouseIDLogo') : '';
     }
 
     /**
