@@ -283,10 +283,10 @@ table tr:last-child td:last-child {
 }
 
 /* ALT TABLE STYLES */
-table.noIntBorder {
+table.noIntBorder, div.noIntBorder {
     background-color: #edf7ff;
 }
-table.noIntBorder td {
+table.noIntBorder td, div.noIntBorder div {
     border: none !important ;
     padding: 5px !important ;
     background-color: #edf7ff;
@@ -306,7 +306,7 @@ div.smallIntBorder {
     border-bottom: 1px solid #ccc;
 }
 
-table.smallIntBorder td {
+table.smallIntBorder td, div.smallIntBorder div {
     border-left: none !important ;
     padding: 5px !important ;
 }
@@ -1466,4 +1466,13 @@ input[value="1"] + .slider:before, input[value="Y"] + .slider:before {
 }
 .text-centre {
     text-align: center!important;
+}
+.text-justify {
+    text-align: justify;
+}
+.space15 {
+    line-height: 1.15rem;
+}
+.no-border {
+    border: none;
 }

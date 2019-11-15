@@ -156,7 +156,7 @@ export default function Widget(props) {
         widget_attr.type = 'text'
         return (
             <div {...wrapper_attr}>
-                <input {...widget_attr} defaultValue={form.value} />
+                <input {...widget_attr} value={form.value} />
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
         )
@@ -164,7 +164,6 @@ export default function Widget(props) {
 
     if (form.type === 'color') {
         widget_attr.type = 'text'
-
         return (
             <div {...wrapper_attr} style={{backgroundColor: form.value, padding: '0 0 0 50px'}}>
                <input {...widget_attr} value={form.value} />

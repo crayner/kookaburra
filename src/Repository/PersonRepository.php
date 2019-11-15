@@ -251,4 +251,21 @@ class PersonRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * findOneUsingQuickSearch
+     * @param string $search
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findOneUsingQuickSearch(string $search)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->where('p.id = :searchInt')->setParameter('searchInt', intval($search));
+        if ($search !== '')
+            $query->orWhere('p.studentID = :search')->setParameter('search', $search);
+        return $query->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

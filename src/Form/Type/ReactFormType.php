@@ -171,6 +171,8 @@ class ReactFormType extends AbstractType
         $vars['required'] = isset($view->vars['required']) ? $view->vars['required'] : false;
         $vars['on_change'] = $view->vars['on_change'];
         $vars['on_click'] = $view->vars['on_click'];
+        $vars['on_blur'] = $view->vars['on_blur'];
+        $vars['on_key_press'] = $view->vars['on_key_press'];
         $vars['submit_on_change'] = $view->vars['submit_on_change'];
         $vars['panel'] = $view->vars['panel'];
         $vars['row_style'] = $view->vars['row_style'];
@@ -201,7 +203,8 @@ class ReactFormType extends AbstractType
             $vars['generateButton'] = $view->vars['generateButton'];
         }
         if (in_array($vars['type'], ['collection'])) {
-            $vars['prototype'] = $this->buildTemplateView($view->vars['prototype']);
+            if (isset($view->vars['prototype']))
+                $vars['prototype'] = $this->buildTemplateView($view->vars['prototype']);
             $vars['collection_key'] = uniqid('collection', true);
             $vars['header_row'] = $view->vars['header_row'];
             $vars['allow_delete'] = $view->vars['allow_delete'];

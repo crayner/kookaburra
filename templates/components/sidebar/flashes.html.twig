@@ -7,7 +7,11 @@
             {% else %}
                 {{ message|trans }}
             {% endif %}
-            <button class="button close success" title="Close Message" type="button" onclick="closeMessage('message{{ label ~ loop.index0 }}')"><span class="fas fa-times-circle fa-fw success"></span></button>
+            {% if close_message is not defined or close_message %}
+                <button class="button close {{ label }}" title="Close Message" type="button" onclick="closeMessage('message{{ label ~ loop.index0 }}')">
+                    <span class="fas fa-times-circle fa-fw {{ label }}"></span>
+                </button>
+            {% endif %}
         </div>
         <script>
             function closeMessage(id){

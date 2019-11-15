@@ -1,0 +1,8 @@
+{% trans_default_domain 'messages' %}
+<div class="{{ message.class }}">
+    {% if message.message is iterable %}
+        {{ message.message[0]|trans(message.message[1]|default({}), message.message[2]|default('messages')) }}
+    {% else %}
+        {{ message.message|trans }}
+    {% endif %}
+</div>

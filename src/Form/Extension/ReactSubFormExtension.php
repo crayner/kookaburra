@@ -47,6 +47,8 @@ class ReactSubFormExtension extends AbstractTypeExtension
             [
                 'on_change'     => false,
                 'on_click'      => false,
+                'on_blur'       => false,
+                'on_key_press'  => false,
                 'panel'         => false,
                 'row_style'     => 'standard',
                 'column_attr'   => false,
@@ -57,6 +59,8 @@ class ReactSubFormExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('panel', ['boolean', 'string']);
         $resolver->setAllowedTypes('on_click', ['boolean','string']);
         $resolver->setAllowedTypes('on_change', ['boolean','string']);
+        $resolver->setAllowedTypes('on_blur', ['boolean','string']);
+        $resolver->setAllowedTypes('on_key_press', ['boolean','string']);
         $resolver->setAllowedTypes('column_attr', ['boolean','array']);
         $resolver->setAllowedTypes('submit_on_change', ['boolean']);
 
@@ -73,6 +77,8 @@ class ReactSubFormExtension extends AbstractTypeExtension
     {
         $view->vars['on_change'] = $options['on_change'];
         $view->vars['on_click'] = $options['on_click'];
+        $view->vars['on_blur'] = $options['on_blur'];
+        $view->vars['on_key_press'] = $options['on_key_press'];
         $view->vars['panel'] = $options['panel'];
         $view->vars['row_style'] = $options['row_style'];
         $view->vars['column_attr'] = $options['column_attr'];

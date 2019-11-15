@@ -12,12 +12,16 @@ export default function CollectionApp(props) {
 
     let columnCount = 0
     let prototype = {...form.prototype}
-    Object.keys(prototype.children).map(key => {
-        const child = prototype.children[key]
-        if (child.type !== 'hidden') {
-            columnCount++
-        }
-    })
+    if (Object.keys(prototype).length === 0) {
+        columnCount = Object.keys(form.children).length
+    } else {
+        Object.keys(prototype.children).map(key => {
+            const child = prototype.children[key]
+            if (child.type !== 'hidden') {
+                columnCount++
+            }
+        })
+    }
     columnCount++
 
     return (<CollectionRows form={form} functions={functions} columnCount={columnCount} key={form.collection_key} />)

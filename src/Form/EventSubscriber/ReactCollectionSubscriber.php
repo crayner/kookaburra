@@ -55,9 +55,11 @@ class ReactCollectionSubscriber implements EventSubscriberInterface
     public function preSetData(PreSetDataEvent $event)
     {
         $prototype = $event->getForm()->getConfig()->getAttribute('prototype');
-        $prototype->add($this->options['element_id_name'], HiddenType::class, [
-            'row_style' => 'hidden',
-        ]);
+        if (null !== $prototype) {
+            $prototype->add($this->options['element_id_name'], HiddenType::class, [
+                'row_style' => 'hidden',
+            ]);
+        }
         foreach($event->getForm()->all() as $child)
         {
             $child->add($this->options['element_id_name'], HiddenType::class, [

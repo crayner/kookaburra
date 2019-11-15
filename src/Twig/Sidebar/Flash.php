@@ -39,12 +39,39 @@ class Flash implements SidebarContentInterface
     private $priority = 1;
 
     /**
+     * @var bool
+     */
+    private $closeMessage = false;
+
+    /**
      * render
      * @param array $options
      * @return string
      */
     public function render(array $options): string
     {
-        return $this->getTwig()->render('components/sidebar/flashes.html.twig');
+        return $this->getTwig()->render('components/sidebar/flashes.html.twig', [
+            'close_message' => $this->isCloseMessage(),
+        ]);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCloseMessage(): bool
+    {
+        return $this->closeMessage;
+    }
+
+    /**
+     * CloseMessage.
+     *
+     * @param bool $closeMessage
+     * @return Flash
+     */
+    public function setCloseMessage(bool $closeMessage): Flash
+    {
+        $this->closeMessage = $closeMessage;
+        return $this;
     }
 }

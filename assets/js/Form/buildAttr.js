@@ -33,6 +33,18 @@ export function widgetAttr(form, defaultClass, functions) {
         delete widget_attr.class
     }
 
+    if (typeof form.on_blur !== 'undefined') {
+        if (typeof functions[form.on_blur] === 'function') {
+            widget_attr.onBlur = (e) => functions[form.on_blur](e,form)
+        }
+    }
+
+    if (typeof form.on_key_press !== 'undefined') {
+        if (typeof functions[form.on_key_press] === 'function') {
+            widget_attr.onKeyPress = (e) => functions[form.on_key_press](e,form)
+        }
+    }
+
     if (typeof widget_attr.className === 'undefined') widget_attr.className = defaultClass
 
     widget_attr.id = form.id
