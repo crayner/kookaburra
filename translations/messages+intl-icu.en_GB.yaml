@@ -64,7 +64,7 @@ Home: Home
 'Role Switcher': 'Role Switcher'
 'You have multiple roles within the system. Use the list below to switch role:': 'You have multiple roles within the system. Use the list below to switch role:'
 Active: Active
-'denotes a required field': 'denotes a required field'
+'* denotes a required field': '* denotes a required field'
 'Installation - Step {step}': 'Installation - Step {step}'
 'System Requirements': 'System Requirements'
 'Language Settings': 'Language Settings'

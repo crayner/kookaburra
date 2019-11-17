@@ -18,12 +18,11 @@ namespace App\Repository;
 use App\Entity\Person;
 use App\Entity\RollGroup;
 use App\Entity\SchoolYear;
-use App\Provider\ProviderFactory;
 use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -255,17 +254,21 @@ class PersonRepository extends ServiceEntityRepository
     /**
      * findOneUsingQuickSearch
      * @param string $search
-     * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Person|null
      */
-    public function findOneUsingQuickSearch(string $search)
+    public function findOneUsingQuickSearch(string $search): ?Person
     {
         $query = $this->createQueryBuilder('p')
             ->where('p.id = :searchInt')->setParameter('searchInt', intval($search));
         if ($search !== '')
-            $query->orWhere('p.studentID = :search')->setParameter('search', $search);
-        return $query->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
+            $query->orWhere('p.studentID = :search')->orWhere('p.username = :search')->setParameter('search', $search);
+
+        try {
+            return $query
+                ->getQuery()
+                ->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 }
