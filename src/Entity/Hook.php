@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gibbon\Domain\System\Module;
 
 /**
  * Class Hook

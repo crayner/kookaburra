@@ -79,11 +79,6 @@ class TTSpaceBooking  implements EntityInterface
     private $space;
 
     /**
-     * @var LibraryItem|null
-     */
-    private $libraryItem;
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -236,24 +231,6 @@ class TTSpaceBooking  implements EntityInterface
     }
 
     /**
-     * @return LibraryItem|null
-     */
-    public function getLibraryItem(): ?LibraryItem
-    {
-        return $this->libraryItem;
-    }
-
-    /**
-     * @param LibraryItem|null $libraryItem
-     * @return TTSpaceBooking
-     */
-    public function setLibraryItem(?LibraryItem $libraryItem): TTSpaceBooking
-    {
-        $this->libraryItem = $libraryItem;
-        return $this;
-    }
-
-    /**
      * getName
      * @return string|null
      */
@@ -261,8 +238,6 @@ class TTSpaceBooking  implements EntityInterface
     {
         if ($this->getForeignKey() === 'gibbonSpaceID' && $this->getSpace() instanceof Space)
             return $this->getSpace()->getName();
-        if ($this->getLibraryItem() instanceof LibraryItem)
-            return $this->getLibraryItem()->getName();
         return null;
 
     }

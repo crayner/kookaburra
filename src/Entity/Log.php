@@ -15,6 +15,7 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Gibbon\Domain\System\Module;
 
 /**
  * Class Log
