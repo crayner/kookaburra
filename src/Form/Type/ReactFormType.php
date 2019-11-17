@@ -261,10 +261,12 @@ class ReactFormType extends AbstractType
 
         if (in_array('submit', $view->vars['block_prefixes']))
         {
-            $vars['help'] = $this->translate('denotes a required field', [], $this->getTranslationDomain($view->vars['translation_domain']));
+            if (isset($view->vars['attr']['help']))
+                $vars['help'] = $this->translate($view->vars['attr']['help'], [], $this->getTranslationDomain($view->vars['translation_domain']));
+            else
+                $vars['help'] = $this->translate('* denotes a required field', [], 'messages');
             $vars['attr']['class'] = '';
             $vars['label'] = $this->translate(isset($view->vars['label']) ? $view->vars['label'] : 'Submit', [], $this->getTranslationDomain($view->vars['translation_domain']));
-
         }
 
         return $vars;
