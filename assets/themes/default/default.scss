@@ -77,10 +77,16 @@ a img {
 }
 
 /* TYPOGRAPHY */
-p {
+p, dl {
     margin: 0px 0px 15px 0px;
     text-align: justify;
     font-size: 13px;
+}
+dt {
+    font-weight: bold;
+}
+dd {
+    text-indent: 1.5rem;
 }
 ul,
 ol {
@@ -192,7 +198,7 @@ img.logo {
 }
 
 /* TABLES */
-table {
+table, div.table {
     color: #666;
     font-size: 12px;
     text-shadow: none;
@@ -204,34 +210,32 @@ table {
     border-radius: 3px;
     border-spacing: 0px;
 }
-table th {
+table th, div.table .th {
     padding: 1rem 0.75rem;
     border-bottom: 1px solid #ccc;
     background-color: #ebebeb;
     text-align: left;
     width: auto;
 }
-table .heading td:not(:first-child) {
+table .heading td:not(:first-child), div.table .heading .td:not(:first-child) {
     border-left: 0px;
 }
-
 .striped tbody tr:nth-of-type(even) {
     background-color: #e0e0e0;
 }
 .striped tbody tr:hover {
     background-color: #d0d0d0;
 }
-
-table tr {
+table tr, div.table div.tr {
     text-align: center;
 }
 
-table td:first-child {
+table td:first-child, div.table div.td:first-child {
     text-align: left;
     border-left: 0;
 }
 
-table td {
+table td, div.table .td {
     text-align: left;
     padding: 12px;
     border-bottom: 1px solid #dfdfdf;
@@ -247,11 +251,11 @@ table.colorOddEven tr:nth-of-type(odd):not([class]) {
     background-color: #f9f9f9;
 }
 
-table tr:last-child > td {
+table tr:last-child > td, div.table div.tr:last-child > div.td {
     border-bottom: 0;
 }
 
-td.right {
+td.right, div.td.right {
     vertical-align: middle !important;
     text-align: right !important;
     font-size: 11px !important;

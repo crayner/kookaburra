@@ -42,10 +42,9 @@ export default function Widget(props) {
         widget_attr.style = {float: 'right'}
         widget_attr.className = 'btn-gibbon'
         widget_attr.onClick = (e) => functions.submitForm(e,form)
-        widget_attr.onClick = (e) => functions.submitForm(e,form)
         return (
             <div {...wrapper_attr}>
-                <span className={'emphasis small'}>* {form.help}</span>
+                <span className={'emphasis small'}>{form.help}</span>
                 <button {...widget_attr}>{Parser(form.label)}</button>
             </div>
         )

@@ -32,7 +32,7 @@ export default function QuickLoanDisplay(props) {
     }
 
     return (
-        <div className={'smallIntBorder fullWidth'}>
+        <div className={'smallIntBorder fullWidth table'}>
             <h3>{functions.translate('Loan List')}</h3>
             {display}
         </div>

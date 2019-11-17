@@ -244,6 +244,8 @@ export default class QuickLoanApp extends Component {
                     errors = errors.concat(data.errors)
                     let form = {...data.form}
                     form.errors = errors
+                    if (pressed === 'clear')
+                        form.errors = []
                     form.children.search.value = ''
                     this.submit[parentName] = false
                     this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...form})}, this.singleForm), setPanelErrors({...form}, {}))
