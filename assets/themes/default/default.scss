@@ -1456,18 +1456,20 @@ input[value="1"] + .slider:before, input[value="Y"] + .slider:before {
 [data-title] {
     position: relative;
 }
-.max240 {
-    max-height: 240px;
-    max-width: 240px;
+
+@mixin max-class($size) {
+    .max#{$size} {
+        max-height: $size * 1px;
+        max-width: $size * 1px;
+    }
 }
-.max200 {
-    max-height: 200px;
-    max-width: 200px;
-}
-.max75 {
-    max-height: 75px;
-    max-width: 75px;
-}
+
+@include max-class(240);
+@include max-class(200);
+@include max-class(150);
+@include max-class(100);
+@include max-class(75);
+
 .text-centre {
     text-align: center!important;
 }

@@ -260,12 +260,15 @@ trait EntityTrait
      *
      * @param string $className
      * @return ObjectRepository|null
-     * @throws \Exception
      */
     public function getRepository(?string $className = ''): ?ObjectRepository
     {
         if ($this->isValidEntityManager()) {
-            $className = $className ?: $this->getEntityName();
+            try {
+                $className = $className ?: $this->getEntityName();
+            } catch (\Exception $e) {
+                return null;
+            }
             return $this->getEntityManager()->getRepository($className);
         }
         return null;

@@ -625,9 +625,11 @@ class Person implements EntityInterface
     private $image_240;
 
     /**
-     * @return null|string
+     * getImage240
+     * @param bool $default
+     * @return string|null
      */
-    public function getImage240(bool $default = false): ?string
+    public function getImage240(bool $default = true): ?string
     {
         if (empty($this->image_240) && $default)
             return '/build/static/DefaultPerson.png';
@@ -2768,7 +2770,9 @@ class Person implements EntityInterface
 
         $result['class'] = $class;
         $result['asset'] = $path;
-
+        $result['fileName'] = $path;
+        $result['title'] = $this->formatName(['informal' => true]);
+        $result['fileExists'] = true;
         return $result;
     }
 
@@ -2932,5 +2936,20 @@ class Person implements EntityInterface
     {
         $languages = Languages::getNames();
         return array_flip($languages);
+    }
+
+    /**
+     * uniqueIdentifier
+     * @return string
+     */
+    public function uniqueIdentifier(): string
+    {
+        if (is_string($this->getStudentID()) && $this->getStudentID() !== '')
+            return $this->getStudentID();
+
+        if (is_string($this->getUsername()) && $this->getUsername() !== '')
+                return $this->getUsername();
+
+        return str_pad($this->getId(), 10, '0', STR_PAD_LEFT);
     }
 }

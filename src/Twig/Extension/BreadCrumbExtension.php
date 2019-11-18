@@ -35,6 +35,7 @@ class BreadCrumbExtension extends AbstractExtension
     public function __construct(BreadCrumbs $breadCrumbs) {
         $this->breadCrumbs = $breadCrumbs;
     }
+
     /**
      * @return string
      */

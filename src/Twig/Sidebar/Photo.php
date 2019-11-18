@@ -12,7 +12,6 @@
 
 namespace App\Twig\Sidebar;
 
-
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
 use App\Util\ImageHelper;

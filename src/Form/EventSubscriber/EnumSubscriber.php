@@ -44,7 +44,7 @@ class EnumSubscriber implements EventSubscriberInterface
         if (empty($className))
             $className = $form->getParent()->getConfig()->getOption('data_class');
 
-        if (empty($method))
+        if (null === $method)
             $method = 'get' . ucfirst($name) . 'List';
         if (false !== $options['choice_list_prefix']) {
             if (empty($options['choice_list_prefix']) || $options['choice_list_prefix'] === 'hillrange_enum_choice') {
