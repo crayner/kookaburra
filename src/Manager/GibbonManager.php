@@ -12,7 +12,6 @@
 
 namespace App\Manager;
 
-use Gibbon\Contracts\Comms\Mailer;
 use Kookaburra\SystemAdmin\Entity\Action;
 use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;

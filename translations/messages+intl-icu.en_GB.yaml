@@ -129,13 +129,13 @@ Preferred Name: Preferred Name
 Return to: Return to
 Formal Assessment: Formal Assessment
 Basic Information: Basic Information
-Print: Print
 Start typing a name...: Start typing a name...
 Action: Action
 Class: Class
 Student: Student
 My Website: My Website
 Close: Close
+Print: Print
 return:
     error:
         0: 'Your request failed because you do not have access to this action.'

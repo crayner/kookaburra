@@ -105,6 +105,9 @@
     "firebase/php-jwt": {
         "version": "v5.0.0"
     },
+    "fpdf/fpdf": {
+        "version": "1.81.2"
+    },
     "friendsofsymfony/ckeditor-bundle": {
         "version": "2.0",
         "recipe": {

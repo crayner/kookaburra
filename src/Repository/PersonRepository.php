@@ -118,9 +118,11 @@ class PersonRepository extends ServiceEntityRepository
     public function findStudentsByRollGroup(RollGroup $rollGroup, string $sortBy = 'rollOrder')
     {
         $query = $this->createQueryBuilder('p')
+            ->select(['p','se','s'])
             ->join('p.studentEnrolments', 'se')
             ->leftJoin('p.staff', 's')
             ->where('se.rollGroup = :rollGroup')
+            ->andWhere('s.id IS NULL')
             ->setParameter('rollGroup', $rollGroup)
             ->andWhere('p.status = :full')
             ->setParameter('full', 'Full');
@@ -244,8 +246,30 @@ class PersonRepository extends ServiceEntityRepository
             ->andWhere('se.schoolYear = :currentYear')
             ->setParameter('currentYear', SchoolYearHelper::getCurrentSchoolYear())
             ->join('se.rollGroup', 'rg')
+            ->leftJoin('p.staff', 's')
+            ->andWhere('s.id IS NULL')
             ->orderBy('rg.name', 'ASC')
             ->addOrderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * findCurrentParents
+     * @return array
+     */
+    public function findCurrentParents(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select(['p','fa','s'])
+            ->join('p.adults', 'fa')
+            ->where('(fa.contactPriority <= 2 and fa.contactPriority > 0)')
+            ->andWhere('p.status = :full')
+            ->leftJoin('p.staff', 's')
+            ->andWhere('s.id IS NULL')
+            ->setParameter('full', 'Full')
+            ->orderBy('p.surname', 'ASC')
             ->addOrderBy('p.preferredName', 'ASC')
             ->getQuery()
             ->getResult();
@@ -270,5 +294,24 @@ class PersonRepository extends ServiceEntityRepository
         } catch (NonUniqueResultException $e) {
             return null;
         }
+    }
+
+    /**
+     * findOthers
+     * @return array
+     */
+    public function findOthers(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.adults', 'fa')
+            ->where('fa.id IS NULL')
+            ->leftJoin('p.studentEnrolments', 'se')
+            ->andWhere('se.id IS NULL')
+            ->leftJoin('p.staff', 's')
+            ->andWhere('s.id IS NULL')
+            ->orderBy('p.surname', 'ASC')
+            ->addOrderBy('p.preferredName', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }

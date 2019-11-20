@@ -121,8 +121,7 @@ class ProviderFactory
 
         $providerName = str_replace('Entity', 'Provider', $namespace) . '\\' . $entityName . 'Provider';
         if (class_exists($providerName)) {
-            self::$instances[$entityName] = new $providerName(self::$factory);
-            return self::$instances[$entityName];
+            return self::addInstance($entityName,  new $providerName(self::$factory));
         }
 
         if (self::$stack->getParentRequest()) {
@@ -130,8 +129,7 @@ class ProviderFactory
                 $module = self::$stack->getParentRequest()->attributes->get('module');
                 $providerName = '\Kookaburra\\' . str_replace(' ', '', $module->getName()) . '\Provider\\' . $entityName . 'Provider';
                 if (class_exists($providerName)) {
-                    self::$instances[$entityName] = new $providerName(self::$factory);
-                    return self::$instances[$entityName];
+                    return self::addInstance($entityName,  new $providerName(self::$factory));
                 }
             }
         }
@@ -141,13 +139,11 @@ class ProviderFactory
                 $module = self::$stack->getCurrentRequest()->attributes->get('module');
                 $providerName = '\Kookaburra\\' . str_replace(' ', '', $module->getName()) . '\Provider\\' . $entityName . 'Provider';
                 if (class_exists($providerName)) {
-                    self::$instances[$entityName] = new $providerName(self::$factory);
-                    return self::$instances[$entityName];
+                    return self::addInstance($entityName,  new $providerName(self::$factory));
                 }
             }
         }
 
-        dump(self::$stack, self::$stack->getParentRequest());
         throw new ProviderException(sprintf('The Entity Provider for the "%s" entity is not available.', $entityName));
     }
 
@@ -221,5 +217,21 @@ class ProviderFactory
     public static function getStack(): RequestStack
     {
         return self::$stack;
+    }
+
+    /**
+     * addInstance
+     * @param string $name
+     * @param EntityProviderInterface $provider
+     * @return EntityProviderInterface
+     */
+    public static function addInstance(string $name, EntityProviderInterface $provider): EntityProviderInterface
+    {
+        if (isset(self::$instances[$name]))
+            return self::$instances[$name];
+
+        self::$instances[$name] = $provider;
+
+        return self::$instances[$name];
     }
 }

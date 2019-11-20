@@ -132,4 +132,16 @@ class ImageHelper
     {
         return new Photo($entity, $method, $size, $class);
     }
+
+    /**
+     * getAbsoluteImageURL
+     * @param string $type
+     * @param string|null $link
+     * @return string|null
+     */
+    public static function getAbsoluteImagePath(?string $link): ?string
+    {
+        $link = ltrim(str_replace(self::getAbsolutePath(), '', $link), '/\\');
+        return self::getAbsolutePath() . '/' . str_replace('\\', '/', $link);
+    }
 }

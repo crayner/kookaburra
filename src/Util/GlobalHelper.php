@@ -204,10 +204,22 @@ class GlobalHelper
     /**
      * getParam
      * @param string $name
+     * @param null $default
      * @return mixed|null
      */
-    public static function getParam(string $name)
+    public static function getParam(string $name, $default = null)
     {
-        return self::$params->has($name) ? self::$params->get($name) : null;
+        return self::hasParam($name) ? self::$params->get($name) : $default;
+    }
+
+    /**
+     * getParameter
+     * @param string $name
+     * @param null $default
+     * @return mixed|null
+     */
+    public static function getParameter(string $name, $default = null)
+    {
+        return self::getParam($name, $default);
     }
 }

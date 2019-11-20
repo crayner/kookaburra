@@ -2694,7 +2694,7 @@ class Person implements EntityInterface
             $title = isset($format['title']) ? (bool) $format['title'] : false;
         }
         $name = $preferredName ? $this->getPreferredName() : $this->getFirstName();
-        $name = $initial ? substr($name, 0, 1): $name;
+        $name = $initial ? substr($name, 0, 1).'.' : $name;
         return Format::name($title ? $this->getTitle() : '', $name, $this->getSurname(),$this->getPrimaryRole() ? $this->getPrimaryRole()->getCategory() : 'Staff', $reverse, $informal);
     }
 

@@ -13,6 +13,7 @@
         "doctrine/annotations": "^1.7",
         "doctrine/doctrine-bundle": "^1.11",
         "doctrine/doctrine-migrations-bundle": "^2.0",
+        "fpdf/fpdf": "^1.81",
         "friendsofsymfony/ckeditor-bundle": "^2.1",
         "google/apiclient": "^2.2",
         "kookaburra/departments": "dev-master",
@@ -44,6 +45,7 @@
         "symfony/validator": "4.3.*",
         "symfony/webpack-encore-bundle": "^1.6",
         "symfony/yaml": "4.3.*",
+        "tecnickcom/tc-lib-barcode": "^1.15",
         "twig/cssinliner-extra": "3.x-dev"
     },
     "require-dev": {
