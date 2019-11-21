@@ -51,6 +51,11 @@ class MySQLSettings
     private $demo = 'N';
 
     /**
+     * @var string
+     */
+    private $prefix = '';
+
+    /**
      * getHost
      * @return string|null
      */
@@ -208,5 +213,25 @@ class MySQLSettings
     public function getDriverOptions(): array
     {
         return [];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * Prefix.
+     *
+     * @param string $prefix
+     * @return MySQLSettings
+     */
+    public function setPrefix(string $prefix): MySQLSettings
+    {
+        $this->prefix = $prefix;
+        return $this;
     }
 }

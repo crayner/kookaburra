@@ -33,7 +33,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Intl\Countries;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
@@ -45,6 +44,7 @@ class SystemType extends AbstractType
         $person = new Person();
         $provider = ProviderFactory::create(Setting::class);
         $baseUrl = $provider->getSettingByScope('System', 'absoluteURL', true);
+        $baseUrl->setValue(str_replace('http:', 'https:', $baseUrl->getValue()));
         $basePath = $provider->getSettingByScope('System', 'absolutePath', true);
         $systemName = $provider->getSettingByScope('System', 'systemName', true);
         $installType = $provider->getSettingByScope('System', 'installType', true);
