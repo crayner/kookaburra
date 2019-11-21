@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Gibbon-Responsive
+ * Kookaburra
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -30,7 +30,7 @@ class Department implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="smallint", name="gibbonDepartmentID", columnDefinition="INT(4) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="smallint", name="gibbonDepartmentID", columnDefinition="INT(4) UNSIGNED ZEROFILL")
      * @ORM\GeneratedValue
      */
     private $id;

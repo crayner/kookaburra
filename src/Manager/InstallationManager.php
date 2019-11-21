@@ -217,6 +217,7 @@ class InstallationManager
         $config['parameters']['databasePort']           = $setting->getPort();
         $config['parameters']['databaseUsername']       = $setting->getUser();
         $config['parameters']['databasePassword']       = $setting->getPassword();
+        $config['parameters']['databasePrefix']         = $setting->getPrefix();
         $config['parameters']['installation']['demo']   = $setting->isDemo(); ;
 
         $this->writeKookaburraYaml($config);

@@ -6,6 +6,7 @@
     "require": {
         "php": "^7.3.0",
         "ext-ctype": "*",
+        "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "aura/sqlquery": "3.*-dev",

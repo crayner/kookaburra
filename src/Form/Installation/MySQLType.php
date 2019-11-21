@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -99,6 +100,20 @@ class MySQLType extends AbstractType
                     ],
                     'constraints' => [
                         new NotBlank(),
+                    ],
+                    'translation_domain' => 'messages',
+                ]
+            )
+            ->add('prefix', TextType::class,
+                [
+                    'label' => 'Database Table Prefix',
+                    'help' => 'A prefix added to all table names.  Up to 6 characters in length',
+                    'attr' => [
+                        'class' => 'w-full',
+                        'maxLength' => 6,
+                    ],
+                    'constraints' => [
+                        new Length(['max' => 6]),
                     ],
                     'translation_domain' => 'messages',
                 ]

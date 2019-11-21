@@ -190,7 +190,7 @@ class Photo implements SidebarContentInterface
             $fileName = ImageHelper::getRelativeImageURL($this->getEntity()->$method());
             if (null === $fileName || '' === $fileName)
                 return $this->fileExists = false;
-            if (false !== file_get_contents($fileName)) {
+            if (is_file($fileName) || $this->url_exists($fileName)) {
                 $this->fileName = $fileName;
                 return $this->fileExists = true;
             }
@@ -229,5 +229,31 @@ class Photo implements SidebarContentInterface
             return $this->width = intval($x * $info[0]);
         }
         return $this->width;
+    }
+
+    /**
+     * url_exists
+     * @param $url
+     * @return int
+     */
+    private function url_exists($url){
+
+        if (function_exists('curl_version')) {
+            $resURL = curl_init($url);
+            curl_setopt($resURL, CURLOPT_HEADER, true);    // we want headers
+            curl_setopt($resURL, CURLOPT_NOBODY, true);    // dont need body
+            curl_setopt($resURL, CURLOPT_RETURNTRANSFER, true);    // catch output (do NOT print!)
+            curl_setopt($resURL, CURLOPT_FOLLOWLOCATION, false);
+            curl_exec($resURL);
+            $intReturnCode = curl_getinfo($resURL, CURLINFO_HTTP_CODE);
+            curl_close($resURL);
+            if ($intReturnCode != 200 && $intReturnCode != 301 && $intReturnCode != 302 && $intReturnCode != 304) {
+                return 0;
+            } else
+                return 1;
+        } else {
+            // do this the slow way
+            return false !== file_get_contents($url);
+        }
     }
 }

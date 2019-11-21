@@ -6,6 +6,7 @@ parameters:
     databasePassword: ~
     databaseName: ~
     databasePort: ~
+    databasePrefix: ''
     caching: 1
     absoluteURL: ''
     security.hierarchy.roles:

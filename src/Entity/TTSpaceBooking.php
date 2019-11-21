@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
- * Gibbon-Responsive
+ * Kookaburra
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -40,7 +40,7 @@ class TTSpaceBooking  implements EntityInterface
     /**
      * @var array
      */
-    private static $foreignKeyList = ['gibbonSpaceID', 'gibbonLibraryItemID'];
+    private static $foreignKeyList = ['gibbonSpaceID', 'library_item_id'];
 
     /**
      * @var integer|null

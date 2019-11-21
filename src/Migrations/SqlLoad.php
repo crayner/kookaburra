@@ -2,7 +2,7 @@
 /**
  * Created by PhpStorm.
  *
-* Gibbon-Mobile
+ * Kookaburra
  *
  * (c) 2018 Craig Rayner <craig@craigrayner.com>
  *
@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Migrations;
 
+use App\Util\GlobalHelper;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -61,10 +62,10 @@ class SqlLoad extends AbstractMigration
 
         $this->count = 0;
 
+        $prefix = GlobalHelper::getParam('databasePrefix');
+
         while(($line = $this->getSqlLine()) !== false)
-        {
-            $this->addSql($line);
-        }
+            $this->addSql(str_replace('__name__', $prefix, $line));
 
     }
 
