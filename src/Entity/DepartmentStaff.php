@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -42,7 +43,7 @@ class DepartmentStaff
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
      */
     private $person;

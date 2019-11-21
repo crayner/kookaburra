@@ -14,9 +14,9 @@ namespace App\Twig;
 
 use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
-use App\Entity\FamilyAdult;
+use Kookaburra\UserAdmin\Entity\FamilyAdult;
 use Kookaburra\SystemAdmin\Entity\Module;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\SystemAdmin\Entity\Role;
 use App\Entity\StudentEnrolment;
 use App\Manager\ScriptManager;

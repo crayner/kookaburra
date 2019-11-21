@@ -13,7 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\LibraryItem;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\Space;
 use App\Entity\TTSpaceBooking;
 use App\Provider\SettingProvider;

@@ -15,6 +15,7 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class ActivityAttendance
@@ -78,7 +79,7 @@ class ActivityAttendance implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDTaker",referencedColumnName="gibbonPersonID", nullable=false)
      */
     private $personTaker;

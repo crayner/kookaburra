@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Manager\EntityInterface;
+use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,7 +48,7 @@ class ImportHistory implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="performed_by", referencedColumnName="gibbonPersonID")
      */
     private $performedBy;

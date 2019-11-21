@@ -34,7 +34,7 @@ class FinanceExpenseApprover
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
      */
     private $person;
@@ -47,7 +47,7 @@ class FinanceExpenseApprover
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="gibbonPersonID", nullable=false)
      */
     private $personCreator;
@@ -60,7 +60,7 @@ class FinanceExpenseApprover
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDUpdate", referencedColumnName="gibbonPersonID")
      */
     private $personUpdate;

@@ -13,6 +13,7 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class StudentEnrolment
@@ -32,7 +33,7 @@ class StudentEnrolment
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person", inversedBy="studentEnrolments")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person", inversedBy="studentEnrolments")
      * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="gibbonPersonID", nullable=false)
      */
     private $person;

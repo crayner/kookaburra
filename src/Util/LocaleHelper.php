@@ -13,7 +13,7 @@
 namespace App\Util;
 
 use App\Entity\I18n;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Exception\ConnectionException;

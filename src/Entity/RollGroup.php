@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Kookaburra\UserAdmin\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -69,42 +70,42 @@ class RollGroup implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDTutor",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $tutor;
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDTutor2",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $tutor2;
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDTutor3",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $tutor3;
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDEA",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $assistant;
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDEA2",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $assistant2;
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDEA3",referencedColumnName="gibbonPersonID",nullable=true)
      */
     private $assistant3;

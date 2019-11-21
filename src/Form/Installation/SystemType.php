@@ -12,7 +12,7 @@
 
 namespace App\Form\Installation;
 
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\Setting;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;

@@ -50,7 +50,7 @@ class StaffAbsence implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="Person")
+     * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID",nullable=false)
      */
     private $person;
@@ -92,7 +92,7 @@ class StaffAbsence implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="Person")
+     * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDApproval", referencedColumnName="gibbonPersonID", nullable=true)
      */
     private $approvedBy;
@@ -111,7 +111,7 @@ class StaffAbsence implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="Person")
+     * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="gibbonPersonID", nullable=true)
      */
     private $createdBy;

@@ -12,7 +12,7 @@
 
 namespace App\Form\EventSubscriber;
 
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\YearGroup;
 use App\Util\SchoolYearHelper;
 use Doctrine\ORM\EntityRepository;

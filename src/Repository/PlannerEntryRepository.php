@@ -12,7 +12,7 @@
  */
 namespace App\Repository;
 
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\PlannerEntry;
 use App\Entity\SchoolYear;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

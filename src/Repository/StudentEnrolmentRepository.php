@@ -12,7 +12,7 @@
  */
 namespace App\Repository;
 
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\RollGroup;
 use App\Entity\StudentEnrolment;
 use App\Util\SchoolYearHelper;

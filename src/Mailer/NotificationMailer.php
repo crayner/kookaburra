@@ -13,7 +13,7 @@
 namespace App\Mailer;
 
 use Kookaburra\SystemAdmin\Entity\Notification;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Util\MailerHelper;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;

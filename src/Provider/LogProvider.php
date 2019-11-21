@@ -14,7 +14,7 @@ namespace App\Provider;
 
 use App\Entity\Log;
 use Kookaburra\SystemAdmin\Entity\Module;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\SchoolYear;
 use App\Manager\Traits\EntityTrait;
 use App\Util\GlobalHelper;

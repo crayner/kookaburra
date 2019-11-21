@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -57,7 +58,7 @@ class YearGroup implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDHOY",referencedColumnName="gibbonPersonID")
      * @Assert\Valid
      */

@@ -12,7 +12,7 @@
 
 namespace App\Logger;
 
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 
 /**

@@ -16,6 +16,7 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,7 +39,7 @@ class Staff implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\OneToOne(targetEntity="Person", inversedBy="staff")
+     * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person", inversedBy="staff")
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
      */
     private $person;

@@ -12,7 +12,7 @@
  */
 namespace App\Repository;
 
-use App\Entity\PersonUpdate;
+use Kookaburra\UserAdmin\Entity\PersonUpdate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

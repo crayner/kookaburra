@@ -13,7 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\CourseClass;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\SchoolYear;
 use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

@@ -41,7 +41,7 @@ class AttendanceLogRollGroup
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDTaker", referencedColumnName="gibbonPersonID", nullable=false)
      */
     private $personTaker;

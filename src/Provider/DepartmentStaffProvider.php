@@ -14,7 +14,7 @@ namespace App\Provider;
 
 use App\Entity\Department;
 use App\Entity\DepartmentStaff;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Manager\Traits\EntityTrait;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 

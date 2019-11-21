@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\AttendanceLogPerson;
 use App\Entity\CourseClass;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\RollGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;

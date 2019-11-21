@@ -17,6 +17,8 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Family;
+use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class ApplicationForm
@@ -502,7 +504,7 @@ class ApplicationForm
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="parent1gibbonPersonID",referencedColumnName="gibbonPersonID", nullable=true)
      */
     private $parent1;
@@ -822,7 +824,7 @@ class ApplicationForm
 
     /**
      * @var Family|null
-     * @ORM\ManyToOne(targetEntity="Family")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Family")
      * @ORM\JoinColumn(name="gibbonFamilyID", referencedColumnName="gibbonFamilyID", nullable=true)
      */
     private $family;

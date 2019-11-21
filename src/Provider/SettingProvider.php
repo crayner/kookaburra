@@ -13,7 +13,7 @@
 namespace App\Provider;
 
 use App\Entity\I18n;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\Setting;
 use App\Exception\SettingNotFoundException;
 use App\Form\Type\SettingsType;

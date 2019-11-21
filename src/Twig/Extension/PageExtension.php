@@ -14,7 +14,7 @@ namespace App\Twig\Extension;
 
 
 use App\Entity\I18n;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\SchoolYear;
 use App\Entity\Setting;
 use App\Exception\MissingClassException;

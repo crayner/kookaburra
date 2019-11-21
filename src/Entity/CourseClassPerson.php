@@ -15,6 +15,7 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,7 +48,7 @@ class CourseClassPerson implements EntityInterface
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person", inversedBy="courseClassPerson")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person", inversedBy="courseClassPerson")
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
      * @Assert\NotBlank()
      */

@@ -12,7 +12,7 @@
 
 namespace App\Provider;
 
-use App\Entity\PersonField;
+use Kookaburra\UserAdmin\Entity\PersonField;
 use App\Manager\Traits\EntityTrait;
 
 /**

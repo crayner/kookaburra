@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class Payment
@@ -44,7 +45,7 @@ class Payment
 
     /**
      * @var Person|null
-     * @ORM\ManyToOne(targetEntity="Person")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID")
      * Person recording the transaction
      */

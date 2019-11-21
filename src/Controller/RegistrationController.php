@@ -13,8 +13,8 @@
 namespace App\Controller;
 
 use Kookaburra\SystemAdmin\Entity\NotificationEvent;
-use App\Entity\Person;
-use App\Entity\PersonField;
+use Kookaburra\UserAdmin\Entity\Person;
+use Kookaburra\UserAdmin\Entity\PersonField;
 use App\Form\Registration\PublicType;
 use App\Mailer\NotificationMailer;
 use App\Provider\ProviderFactory;

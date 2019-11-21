@@ -12,7 +12,7 @@
 
 namespace App\Form\Registration;
 
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Form\Type\CustomFieldType;
 use App\Form\Type\EnumType;
 use App\Validator\Password;

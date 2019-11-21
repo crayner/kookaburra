@@ -14,7 +14,7 @@ namespace App\Manager;
 
 use App\Entity\Hook;
 use Kookaburra\SystemAdmin\Entity\Module;
-use App\Entity\Person;
+use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\Setting;
 use App\Entity\StudentEnrolment;
 use App\Provider\ProviderFactory;
