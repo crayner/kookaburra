@@ -13,10 +13,9 @@
 namespace App\Repository;
 
 use App\Entity\YearGroup;
-use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class YearGroupRepository
@@ -26,9 +25,9 @@ class YearGroupRepository extends ServiceEntityRepository
 {
     /**
      * YearGroupRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, YearGroup::class);
     }

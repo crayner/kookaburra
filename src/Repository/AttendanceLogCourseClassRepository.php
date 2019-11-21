@@ -15,7 +15,7 @@ namespace App\Repository;
 use App\Entity\AttendanceLogCourseClass;
 use App\Entity\CourseClass;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class AttendanceLogCourseClassRepository
@@ -25,9 +25,9 @@ class AttendanceLogCourseClassRepository extends ServiceEntityRepository
 {
     /**
      * AttendanceLogCourseClassRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AttendanceLogCourseClass::class);
     }

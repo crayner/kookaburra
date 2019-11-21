@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\UnitOutcome;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class UnitOutcomeRepository
@@ -24,9 +24,9 @@ class UnitOutcomeRepository extends ServiceEntityRepository
 {
     /**
      * UnitOutcomeRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, UnitOutcome::class);
     }

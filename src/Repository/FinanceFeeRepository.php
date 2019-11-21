@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\FinanceFee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class FinanceFeeRepository
@@ -24,9 +24,9 @@ class FinanceFeeRepository extends ServiceEntityRepository
 {
     /**
      * FinanceFeeRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FinanceFee::class);
     }

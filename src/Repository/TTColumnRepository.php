@@ -31,7 +31,7 @@ namespace App\Repository;
 
 use App\Entity\TTColumn;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class TTColumnRepository
@@ -41,9 +41,9 @@ class TTColumnRepository extends ServiceEntityRepository
 {
     /**
      * TTColumnRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TTColumn::class);
     }

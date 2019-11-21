@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\InternalAssessmentColumn;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class InternalAssessmentColumnRepository
@@ -24,9 +24,9 @@ class InternalAssessmentColumnRepository extends ServiceEntityRepository
 {
     /**
      * ApplicationFormRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, InternalAssessmentColumn::class);
     }

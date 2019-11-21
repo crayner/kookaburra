@@ -17,7 +17,7 @@ use App\Entity\Person;
 use App\Entity\SchoolYear;
 use App\Util\SchoolYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class CourseClassRepository
@@ -27,9 +27,9 @@ class CourseClassRepository extends ServiceEntityRepository
 {
     /**
      * CourseClassRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CourseClass::class);
     }

@@ -17,7 +17,7 @@ use App\Entity\CourseClass;
 use App\Entity\Person;
 use App\Entity\RollGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class AttendanceLogPersonRepository
@@ -27,9 +27,9 @@ class AttendanceLogPersonRepository extends ServiceEntityRepository
 {
     /**
      * AttendanceLogPersonRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, AttendanceLogPerson::class);
     }

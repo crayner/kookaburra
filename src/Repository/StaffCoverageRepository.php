@@ -15,7 +15,7 @@ namespace App\Repository;
 
 use App\Entity\StaffCoverage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class StaffCoverageRepository
@@ -25,9 +25,9 @@ class StaffCoverageRepository extends ServiceEntityRepository
 {
     /**
      * ApplicationFormRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, StaffCoverage::class);
     }

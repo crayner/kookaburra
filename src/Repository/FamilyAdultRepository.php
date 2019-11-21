@@ -18,7 +18,7 @@ use App\Entity\SchoolYear;
 use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class FamilyAdultRepository
@@ -28,9 +28,9 @@ class FamilyAdultRepository extends ServiceEntityRepository
 {
     /**
      * FamilyAdultRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FamilyAdult::class);
     }

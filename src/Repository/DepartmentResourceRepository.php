@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\DepartmentResource;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class DepartmentResourceRepository
@@ -24,9 +24,9 @@ class DepartmentResourceRepository extends ServiceEntityRepository
 {
     /**
      * DepartmentResourceRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, DepartmentResource::class);
     }

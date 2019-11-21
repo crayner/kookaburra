@@ -20,7 +20,7 @@ use App\Provider\SettingProvider;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpParser\Node\Stmt\Else_;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class TTSpaceBookingRepository
@@ -30,9 +30,9 @@ class TTSpaceBookingRepository extends ServiceEntityRepository
 {
     /**
      * TTSpaceBookingRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, TTSpaceBooking::class);
     }

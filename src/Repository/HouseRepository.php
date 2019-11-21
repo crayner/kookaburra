@@ -18,7 +18,7 @@ namespace App\Repository;
 
 use App\Entity\House;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class HouseRepository
@@ -28,9 +28,9 @@ class HouseRepository extends ServiceEntityRepository
 {
     /**
      * HouseRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, House::class);
     }

@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\ApplicationFormLink;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class ApplicationFormLinkRepository
@@ -24,9 +24,9 @@ class ApplicationFormLinkRepository extends ServiceEntityRepository
 {
     /**
      * ApplicationFormLinkRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ApplicationFormLink::class);
     }

@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\CourseClassMap;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class CourseClassMapRepository
@@ -24,9 +24,9 @@ class CourseClassMapRepository extends ServiceEntityRepository
 {
     /**
      * CourseClassMapRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CourseClassMap::class);
     }

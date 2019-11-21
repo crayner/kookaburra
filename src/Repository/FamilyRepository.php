@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\Family;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Class FamilyRepository
@@ -24,9 +24,9 @@ class FamilyRepository extends ServiceEntityRepository
 {
     /**
      * FamilyRepository constructor.
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Family::class);
     }
