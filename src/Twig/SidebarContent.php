@@ -67,13 +67,12 @@ class SidebarContent
         $this->twig = $twig;
     }
 
-
     /**
      * execute
      */
     public function execute(): void
     {
-
+        $this->getContent(true);
     }
 
     /**
@@ -82,12 +81,11 @@ class SidebarContent
     public function getContent(bool $refresh = false): ArrayCollection
     {
         $this->content = $this->content ?: new ArrayCollection();
-
-        if (!$this->isContentSorted() || $refresh) {
+        if ($this->content->count() > 0 && (!$this->isContentSorted() || $refresh)) {
             $iterator = $this->content->getIterator();
             $iterator->uasort(
                 function ($a, $b) {
-                    return $a->getPosition() . $a->getPriority() < $b->getPosition() . $b->getPriority() ? -1 : 1;
+                    return $a->getPosition() . $a->getPriority() < $b->getPosition() . $b->getPriority() ? 1 : -1;
                 }
             );
             $this->content  = new ArrayCollection(iterator_to_array($iterator, true));

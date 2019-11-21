@@ -13,7 +13,7 @@
 namespace App\Repository;
 
 use Kookaburra\UserAdmin\Entity\Person;
-use Kookaburra\UserAdmin\Entity\PersonMedical;
+use App\Entity\PersonMedical;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

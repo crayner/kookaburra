@@ -37,7 +37,7 @@ class GibbonLegacyExtension extends AbstractExtension
     }
 
     /**
-     * Custom translation function to allow custom string replacement
+     * Custom translations function to allow custom string replacement
      *
      * @param string        $text    Text to Translate.
      * @param array         $params  Assoc array of key value pairs for named
@@ -46,7 +46,7 @@ class GibbonLegacyExtension extends AbstractExtension
      *                               Or string of domain (for backward
      *                               compatibility, deprecated).
      *
-     * @return string The resulted translation string.
+     * @return string The resulted translations string.
      */
     public function __($text, $params=[], $options=[]): string
     {

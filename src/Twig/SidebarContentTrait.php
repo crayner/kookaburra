@@ -112,6 +112,9 @@ trait SidebarContentTrait
      */
     public function getName(): string
     {
-        return $this->name;
+        if (property_exists($this,'name'))
+            return $this->name;
+
+        return basename(__CLASS__);
     }
 }

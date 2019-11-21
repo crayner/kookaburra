@@ -912,19 +912,6 @@ Emergency 2Number 1: Emergency 2 Number 1
 Emergency 2 Number 2: Emergency 2 Number 2
 Emergency 2 Relationship: Emergency 2 Relationship
 View Departments: View Departments
-My Classes: My Classes
-Learning Areas: Learning Areas
-English: English
-Human Technologies: Human Technologies
-Humanities: Humanities
-Languages: Languages
-Mathematics: Mathematics
-Pastoral: Pastoral
-Physical Education: Physical Education
-Science: Science
-The Arts: The Arts
-Administration: Administration
-IT Services: IT Services
 'No staff have been allocated this this department!': 'No staff have been allocated this this department!'
 Installation of modules is done using the composer package manager.: Installation of modules is done using the composer package manager.
 Author: Author
@@ -1040,7 +1027,7 @@ Google API Key: Google API Key
 'Your requested included a valid Google Secret File.  The information was successfully stored.': 'Your requested included a valid Google Secret File.  The information was successfully stored.'
 'Your requested did not included a valid Google Secret File. All other Google changes where saved.': 'Your requested did not included a valid Google Secret File. All other Google changes where saved.'
 'Your request failed due to a file transfer issue.': Your request failed due to a file transfer issue.
-Changing the default language will give strange translation results until the cache is fully rebuilt.: Changing the default language will give strange translation results until the cache is fully rebuilt.
+Changing the default language will give strange translation results until the cache is fully rebuilt.: Changing the default language will give strange translations results until the cache is fully rebuilt.
 system_admin:
     importer:
         log_details: 'Full details of all errors and warnings are logged to the importer log at "{path}".'

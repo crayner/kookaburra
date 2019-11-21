@@ -162,7 +162,7 @@ class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, Tran
     }
 
     /**
-     * Translates the given choice message by choosing a translation according to a number.
+     * Translates the given choice message by choosing a translations according to a number.
      *
      * @param string      $id         The message id (may also be an object that can be cast to string)
      * @param int         $number     The number to use to find the indice of the message

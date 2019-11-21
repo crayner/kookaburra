@@ -1,4 +1,5 @@
 {% if getSidebar().valid %}
+    {% set sc = getSidebar().getContent(true) %}
     <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l{{ getSidebar().hidden ? ' hidden' : '' }}">
         {% for position in getSidebar().positionList %}
             {% if getSidebar().hasSectionContent(position) %}

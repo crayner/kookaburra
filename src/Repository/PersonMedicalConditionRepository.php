@@ -12,7 +12,7 @@
  */
 namespace App\Repository;
 
-use Kookaburra\UserAdmin\Entity\PersonMedicalCondition;
+use App\Entity\PersonMedicalCondition;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
