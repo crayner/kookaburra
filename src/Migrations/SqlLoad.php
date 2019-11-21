@@ -65,7 +65,7 @@ class SqlLoad extends AbstractMigration
         $prefix = GlobalHelper::getParam('databasePrefix');
 
         while(($line = $this->getSqlLine()) !== false)
-            $this->addSql(str_replace('__name__', $prefix, $line));
+            $this->addSql(str_replace('__prefix__', $prefix, $line));
 
     }
 
