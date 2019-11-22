@@ -20,7 +20,8 @@ import {
     replaceFormElement,
     findElementById,
     buildFormData,
-    isSubmit
+    isSubmit,
+    checkHiddenRows
 } from "./ContainerFunctions"
 
 export default class ContainerApp extends Component {
@@ -74,7 +75,8 @@ export default class ContainerApp extends Component {
         if (this.singleForm) {
             panelErrors = setPanelErrors({}, {})
         }
-        this.setMyState(this.state.forms, panelErrors)
+        let forms = checkHiddenRows({...this.state.forms})
+        this.setMyState(forms, panelErrors)
     }
     
     setMyState(forms, panelErrors){

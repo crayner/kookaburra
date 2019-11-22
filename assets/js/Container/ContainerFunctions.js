@@ -139,6 +139,8 @@ export function changeFormValue(form, find, value) {
             if (child.id === find.id) {
                 child.value = value
                 Object.assign(george[key], {...child})
+                if (typeof child.visibleByClass !== 'undefined')
+                    toggleRowsOnValue(value,child)
             } else {
                 Object.assign(george[key], changeFormValue({...child}, find, value))
             }
@@ -150,6 +152,45 @@ export function changeFormValue(form, find, value) {
     }
 }
 
+export function checkHiddenRows(forms) {
+    Object.keys(forms).map(key => {
+        let form = forms[key]
+        visibleByClass(form)
+    })
+
+    return {...forms}
+}
+
+function visibleByClass(form) {
+    if (typeof form.children !== 'undefined') {
+        Object.keys(form.children).map(key => {
+            let child = form.children[key]
+            visibleByClass(child)
+        })
+    }
+    if (typeof form.visibleByClass !== 'undefined' && form.visibleByClass !== false){
+        toggleRowsOnValue(form.value,form)
+    }
+}
+
+function toggleRowsOnValue(value, form) {
+    let elements = document.getElementsByClassName(form.visibleByClass)
+    if (value === form.visibleWhen) {
+        // Show the elements
+        Object.keys(elements).map(key => {
+            let child = elements[key]
+            if (child.classList.contains('hidden'))
+                child.classList.toggle('hidden')
+        })
+    } else {
+        // Hide the elements
+        Object.keys(elements).map(key => {
+            let child = elements[key]
+            if (!child.classList.contains('hidden'))
+                child.classList.toggle('hidden')
+        })
+    }
+}
 
 export function isSubmit(submit) {
     let result = false
