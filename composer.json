@@ -12,7 +12,7 @@
         "aura/sqlquery": "3.*-dev",
         "crayner/doctrine-bundle": "^1.0",
         "doctrine/annotations": "^1.7",
-        "doctrine/doctrine-bundle": "^1.11",
+        "doctrine/doctrine-bundle": "^1.12",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "fpdf/fpdf": "^1.81",
         "friendsofsymfony/ckeditor-bundle": "^2.1",
@@ -71,10 +71,10 @@
             "App\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "stable",
     "replace": {
         "paragonie/random_compat": "2.*",
         "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-curl": "*",
         "symfony/polyfill-iconv": "*",
         "symfony/polyfill-php73": "*",
         "symfony/polyfill-php72": "*",
