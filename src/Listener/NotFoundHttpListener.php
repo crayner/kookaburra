@@ -66,16 +66,16 @@ class NotFoundHttpListener implements EventSubscriberInterface
      */
     public function exception(ExceptionEvent $event)
     {
-        if ($event->getException() instanceof NotFoundHttpException
-            && strpos($event->getException()->getMessage(), 'object not found by the @ParamConverter annotation.') !== false
+        if ($event->getThrowable() instanceof NotFoundHttpException
+            && strpos($event->getThrowable()->getMessage(), 'object not found by the @ParamConverter annotation.') !== false
             && strpos($event->getRequest()->get('_route'), 'notification') === 0)
         {
             $event->getRequest()->getSession()->getBag('flashes')->add('error', 'return.error1');
             $response = new RedirectResponse($this->router->generate('notifications_manage'));
             $event->setResponse($response);
         }
-        if ($event->getException() instanceof NotFoundHttpException
-            && strpos($event->getException()->getMessage(), '@ParamConverter annotation') !== false
+        if ($event->getThrowable() instanceof NotFoundHttpException
+            && strpos($event->getThrowable()->getMessage(), '@ParamConverter annotation') !== false
             && $event->getRequest()->getContentType() === 'json')
         {
             $data = [];

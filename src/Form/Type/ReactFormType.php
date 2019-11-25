@@ -12,6 +12,7 @@
 
 namespace App\Form\Type;
 
+use App\Manager\EntityInterface;
 use App\Manager\ScriptManager;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationsHelper;
@@ -161,9 +162,29 @@ class ReactFormType extends AbstractType
             $vars['children'][$name] = $this->buildTemplateView($child);
         }
 
+        $vars['type'] = $this->renderFormType($view->vars['block_prefixes']);
+
         $vars['value'] = $view->vars['value'];
-        if (isset($view->vars['data']) && $view->vars['data'] !== $vars['value'])
+
+        if (is_object($view->vars['value']) && in_array(EntityInterface::class, class_implements($view->vars['value']))) {
+            $vars['value'] = $view->vars['value']->getId();
+        }
+
+        if ($vars['type'] === 'choice' && $view->vars['multiple']) {
+            if(!is_array($view->vars['value']))
+                $view->vars['value'] = [$view->vars['value']];
+            foreach($view->vars['value'] ?: [] as $q=>$w) {
+                if (is_object($w) && in_array(EntityInterface::class, class_implements($w))) {
+                    $view->vars['value'][$q] = $w->getId();
+                }
+            }
+            $vars['value'] = $view->vars['value'];
+        }
+
+        if (in_array($vars['value'], [null,'',[]]) && !in_array($view->vars['data'], ['',null,[]])) {
             $vars['value'] = $view->vars['data'];
+        }
+
         $vars['id'] = $view->vars['id'];
         $vars['name'] = $view->vars['name'];
         $vars['full_name'] = $view->vars['full_name'];
@@ -188,8 +209,12 @@ class ReactFormType extends AbstractType
         $vars['column_attr'] = $view->vars['column_attr'];
         $vars['row_id'] = $view->vars['row_id'];
         $vars['wrapper_class'] = $view->vars['wrapper_class'];
-        $vars['type'] = $this->renderFormType($view->vars['block_prefixes']);
         $vars['errors'] =  isset($view->vars['errors']) ? $this->renderErrors($view->vars['errors']) : [];
+        if (isset($view->vars['visibleByClass'])) {
+            $vars['visibleByClass'] = $view->vars['visibleByClass'];
+            $vars['visibleWhen'] = $view->vars['visibleWhen'];
+            $vars['values'] = $view->vars['values'];
+        }
         if (in_array($vars['type'], ['collection','unknown'])) {
             $vars['value'] = null;
         }

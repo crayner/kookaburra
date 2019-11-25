@@ -61,7 +61,6 @@ final class Version20000101010000 extends AbstractMigration
         $this->addSql('CREATE TABLE gibbonAttendanceLogRollGroup (gibbonAttendanceLogRollGroupID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, date DATE DEFAULT NULL, timestampTaken DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, gibbonRollGroupID INT(5) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDTaker INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_A6F88BEDA85AE4EC (gibbonRollGroupID), INDEX IDX_A6F88BED11A14ED (gibbonPersonIDTaker), PRIMARY KEY(gibbonAttendanceLogRollGroupID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonBehaviour (gibbonBehaviourID INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT, date DATE NOT NULL, type VARCHAR(8) NOT NULL, descriptor VARCHAR(100) DEFAULT NULL, level VARCHAR(100) DEFAULT NULL, comment LONGTEXT NOT NULL, followup LONGTEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPlannerEntryID INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonIDCreator INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_64915B371FA7520 (gibbonSchoolYearID), INDEX IDX_64915B3FE417281 (gibbonPlannerEntryID), INDEX IDX_64915B3FF59AAB0 (gibbonPersonIDCreator), INDEX gibbonPersonID (gibbonPersonID), PRIMARY KEY(gibbonBehaviourID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE gibbonBehaviourLetter (gibbonBehaviourLetterID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, letterLevel VARCHAR(1) NOT NULL, status VARCHAR(7) NOT NULL, recordCountAtCreation INT(3), body LONGTEXT NOT NULL, recipientList LONGTEXT NOT NULL, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, gibbonSchoolYearID INT(3) UNSIGNED ZEROFILL AUTO_INCREMENT, gibbonPersonID INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT, INDEX IDX_5F61F91071FA7520 (gibbonSchoolYearID), INDEX IDX_5F61F910CC6782D6 (gibbonPersonID), PRIMARY KEY(gibbonBehaviourLetterID)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
-        $this->addSql('CREATE TABLE gibbonCountry (printable_name VARCHAR(80) NOT NULL, iddCountryCode VARCHAR(7) NOT NULL, PRIMARY KEY(printable_name)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB AUTO_INCREMENT = 1');
         $this->addSql('CREATE TABLE `gibbonCourse` (
   `gibbonCourseID` int(8) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `name` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
@@ -1215,7 +1214,6 @@ final class Version20000101010000 extends AbstractMigration
         $this->addSql('DROP TABLE gibbonAttendanceLogRollGroup');
         $this->addSql('DROP TABLE gibbonBehaviour');
         $this->addSql('DROP TABLE gibbonBehaviourLetter');
-        $this->addSql('DROP TABLE gibbonCountry');
         $this->addSql('DROP TABLE gibbonCourse');
         $this->addSql('DROP TABLE gibbonCourseClass');
         $this->addSql('DROP TABLE gibbonCourseClassMap');

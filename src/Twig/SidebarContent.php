@@ -85,7 +85,9 @@ class SidebarContent
             $iterator = $this->content->getIterator();
             $iterator->uasort(
                 function ($a, $b) {
-                    return $a->getPosition() . $a->getPriority() < $b->getPosition() . $b->getPriority() ? 1 : -1;
+                    $ap = str_pad(1000 - $a->getPriority(), 5, '0', STR_PAD_LEFT);
+                    $bp = str_pad(1000 - $b->getPriority(), 5, '0', STR_PAD_LEFT);
+                    return $a->getPosition() . $ap < $b->getPosition() . $bp ? 1 : -1;
                 }
             );
             $this->content  = new ArrayCollection(iterator_to_array($iterator, true));

@@ -2,9 +2,10 @@
 namespace App\Form\Transform;
 
 use App\Manager\EntityInterface;
+use App\Provider\ProviderFactory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
@@ -13,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class EntityToStringTransformer implements DataTransformerInterface
 {
 	/**
-	 * @var \Doctrine\Common\Persistence\ObjectManager
+	 * @var EntityManager
 	 */
 	private $om;
 
@@ -39,12 +40,18 @@ class EntityToStringTransformer implements DataTransformerInterface
 
     /**
      * EntityToStringTransformer constructor.
-     * @param EntityManagerInterface|null $om
+     * @param EntityManager|array $om
      * @param array $options
      */
-	public function __construct(EntityManagerInterface $om, array $options)
+	public function __construct($om, array $options = [])
 	{
-		$this->om = $om;
+	    if ($om instanceof EntityManager) {
+            $this->om = $om;
+            trigger_error(sprintf('The injection of the %s is deprecated in %s.  Use only the options.', EntityManager::class, __CLASS__), E_USER_DEPRECATED);
+        } else {
+	        $this->om = ProviderFactory::getEntityManager();
+	        $options = $om;
+        }
 
 		$resolver = new OptionsResolver();
 		$resolver->setDefault('multiple', false);

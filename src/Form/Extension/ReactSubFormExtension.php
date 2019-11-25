@@ -64,7 +64,7 @@ class ReactSubFormExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('column_attr', ['boolean','array']);
         $resolver->setAllowedTypes('submit_on_change', ['boolean']);
 
-        $resolver->setAllowedValues('row_style', ['standard', 'single', 'header', 'collection_column', 'collection', 'hidden', 'transparent']);
+        $resolver->setAllowedValues('row_style', ['standard', 'single', 'header', 'collection_column', 'collection', 'hidden', 'transparent', 'multiple_widget']);
     }
 
     /**
@@ -83,5 +83,6 @@ class ReactSubFormExtension extends AbstractTypeExtension
         $view->vars['row_style'] = $options['row_style'];
         $view->vars['column_attr'] = $options['column_attr'];
         $view->vars['submit_on_change'] = $options['submit_on_change'];
+        $view->vars['data'] = isset($options['data']) ? $options['data'] : '';
     }
 }
