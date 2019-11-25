@@ -45,6 +45,10 @@ export default function Row(props) {
         return (<Standard form={form} functions={functions} />)
     }
 
+    if (form.row_style === 'multiple_widget') {
+        return (<Standard form={form} functions={functions} />)
+    }
+
     if (form.row_style === 'transparent' || form.row_style === 'repeated')
     {
         return Object.keys(form.children).map(childKey => {
@@ -57,6 +61,7 @@ export default function Row(props) {
     }
 
     console.log(form)
+    console.error("The form has an unknown row style. ", form.row_style)
     return (<tr><td> Form Row {form.row_style}</td></tr>)
 
 }

@@ -173,21 +173,27 @@ function visibleByClass(form) {
     }
 }
 
-function toggleRowsOnValue(value, form) {
+export function toggleRowsOnValue(value, form) {
     let elements = document.getElementsByClassName(form.visibleByClass)
+    Object.keys(elements).map(key => {
+        let child = elements[key]
+        if (!child.classList.contains('hiddenSlider'))
+            child.classList.toggle('hiddenSlider')
+    })
+
     if (value === form.visibleWhen) {
         // Show the elements
         Object.keys(elements).map(key => {
             let child = elements[key]
-            if (child.classList.contains('hidden'))
-                child.classList.toggle('hidden')
+            if (child.classList.contains('close'))
+                child.classList.toggle('close')
         })
     } else {
         // Hide the elements
         Object.keys(elements).map(key => {
             let child = elements[key]
-            if (!child.classList.contains('hidden'))
-                child.classList.toggle('hidden')
+            if (!child.classList.contains('close'))
+                child.classList.toggle('close')
         })
     }
 }

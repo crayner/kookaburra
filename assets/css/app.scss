@@ -125,3 +125,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .width1 {
     width: 1%;
 }
+.hiddenSlider {
+    overflow-y: hidden;
+    max-height: 500px;
+
+    transition-property: all;
+    transition-duration: .15s;
+    transition-timing-function: ease;
+}
+.hiddenSlider.close {
+    max-height: 0;
+}

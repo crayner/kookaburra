@@ -21,7 +21,8 @@ import {
     findElementById,
     buildFormData,
     isSubmit,
-    checkHiddenRows
+    checkHiddenRows,
+    toggleRowsOnValue
 } from "./ContainerFunctions"
 
 export default class ContainerApp extends Component {
@@ -52,6 +53,7 @@ export default class ContainerApp extends Component {
             addElement: this.addElement.bind(this),
             onCKEditorChange: this.onCKEditorChange.bind(this),
             generateNewPassword: this.generateNewPassword.bind(this),
+            toggleVisibleByClass: toggleRowsOnValue.bind(this)
         }
 
         this.state = {
@@ -189,6 +191,15 @@ export default class ContainerApp extends Component {
             return
         }
         let value = e.target.value
+        if (form.type === 'choice' && form.multiple) {
+            value = []
+            const options = e.target.options
+            for (var i = 0, l = options.length; i < l; i++) {
+                if (options[i].selected) {
+                    value.push(options[i].value);
+                }
+            }
+        }
         form.value = value
         const newValue = changeFormValue({...parentForm},form,value)
         this.setMyState(buildState(mergeParentForm(this.state.forms,parentName, newValue), this.singleForm))
