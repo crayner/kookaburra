@@ -15,6 +15,7 @@
  */
 namespace App\Entity;
 
+use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\HouseRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="House", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"}), @ORM\UniqueConstraint(name="nameShort", columns={"nameShort"})})
  */
-class House
+class House implements EntityInterface
 {
     /**
      * @var integer|null
