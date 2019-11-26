@@ -1044,3 +1044,22 @@ Set the SMTP port number - likely to be 25, 465 or 587.: Set the SMTP port numbe
 SMTP Encryption: SMTP Encryption
 Automatically sets the encryption based on the port, otherwise select one manually.: Automatically sets the encryption based on the port, otherwise select one manually.
 Password to use for SMTP authentication. Leave blank for no authentication.: Password to use for SMTP authentication. Leave blank for no authentication.
+Import User Photos: Import User Photos
+People Management: People Management
+Manage Custom Fields: Manage Custom Fields
+Manage Districts: Manage Districts
+Manage Families: Manage Families
+Manage People: Manage People
+Manage Permissions: Manage Permissions
+Manage Roles: Manage Roles
+Staff Application Form Settings: Staff Application Form Settings
+Student Management: Student Management
+Application Form Settings: Application Form Settings
+Public Registration Settings: Public Registration Settings
+Rollover: Rollover
+User Settings: User Settings
+Data Updater Settings: Data Updater Settings
+Manage Staff Settings: Manage Staff Settings
+Manage Students Settings: Manage Students Settings
+Manage User Settings: Manage User Settings
+UserAdmin: User Admin
