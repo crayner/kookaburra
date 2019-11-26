@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\TranslatorBagInterface;
-use Symfony\Component\Translation\TranslatorInterface as TranslatorInterfaceLegacy;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -29,7 +29,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @package App\Translation
  */
-class Translator implements TranslatorInterfaceLegacy, TranslatorInterface, TranslatorBagInterface
+class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleAwareInterface
 {
     /**
      * trans
