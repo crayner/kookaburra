@@ -19,6 +19,7 @@ use App\Provider\ProviderFactory;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Kookaburra\UserAdmin\Util\UserHelper;
+use Symfony\Component\Intl\Countries;
 
 class LocaleHelper
 {
@@ -92,5 +93,15 @@ class LocaleHelper
         } catch (TableNotFoundException $e) {
             return $locale;
         }
+    }
+
+    /**
+     * getCountryName
+     * @param string $code
+     * @return string
+     */
+    public static function getCountryName(string $code): string
+    {
+        return Countries::getName($code);
     }
 }

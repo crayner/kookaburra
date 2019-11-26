@@ -69,6 +69,5 @@ class FilePathType extends AbstractType
 	{
 		$builder->addModelTransformer(new FileToStringTransformer());
 		$builder->addEventSubscriber($this->fileSubscriber);
-
 	}
 }
