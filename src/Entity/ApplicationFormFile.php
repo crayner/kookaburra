@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class ApplicationFormFile
@@ -31,7 +32,7 @@ class ApplicationFormFile
     private $id;
 
     /**
-     * @var Person|null
+     * @var ApplicationForm|null
      * @ORM\ManyToOne(targetEntity="ApplicationForm")
      * @ORM\JoinColumn(name="gibbonApplicationFormID", referencedColumnName="gibbonApplicationFormID", nullable=false)
      */
@@ -68,18 +69,20 @@ class ApplicationFormFile
     }
 
     /**
-     * @return Person|null
+     * @return ApplicationForm|null
      */
-    public function getApplicationForm(): ?Person
+    public function getApplicationForm(): ?ApplicationForm
     {
         return $this->applicationForm;
     }
 
     /**
-     * @param Person|null $applicationForm
+     * ApplicationForm.
+     *
+     * @param ApplicationForm|null $applicationForm
      * @return ApplicationFormFile
      */
-    public function setApplicationForm(?Person $applicationForm): ApplicationFormFile
+    public function setApplicationForm(?ApplicationForm $applicationForm): ApplicationFormFile
     {
         $this->applicationForm = $applicationForm;
         return $this;

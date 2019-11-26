@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -227,7 +228,7 @@ class MarkbookColumn
     private $creator;
 
     /**
-     * @var \DateTime|null
+     * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
      * @ORM\JoinColumn(name="gibbonPersonIDLastEdit", referencedColumnName="gibbonPersonID", nullable=false)
      */
@@ -761,20 +762,20 @@ class MarkbookColumn
     }
 
     /**
-     * getLastEdit
-     * @return \DateTime|null
+     * @return Person|null
      */
-    public function getLastEdit(): ?\DateTime
+    public function getLastEdit(): ?Person
     {
         return $this->lastEdit;
     }
 
     /**
-     * setLastEdit
-     * @param \DateTime|null $lastEdit
+     * LastEdit.
+     *
+     * @param Person|null $lastEdit
      * @return MarkbookColumn
      */
-    public function setLastEdit(?\DateTime $lastEdit): MarkbookColumn
+    public function setLastEdit(?Person $lastEdit): MarkbookColumn
     {
         $this->lastEdit = $lastEdit;
         return $this;

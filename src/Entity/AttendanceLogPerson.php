@@ -12,6 +12,7 @@
  */
 namespace App\Entity;
 
+use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
 
