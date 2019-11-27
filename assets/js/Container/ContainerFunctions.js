@@ -155,7 +155,7 @@ export function changeFormValue(form, find, value) {
 export function checkHiddenRows(forms) {
     Object.keys(forms).map(key => {
         let form = forms[key]
-        visibleByClass(form)
+        forms[key] = visibleByClassInitial(form, createVisibleSets(form, {}))
     })
 
     return {...forms}
@@ -171,6 +171,47 @@ function visibleByClass(form) {
     if (typeof form.visibleByClass !== 'undefined' && form.visibleByClass !== false){
         toggleRowsOnValue(form.value,form)
     }
+    return form
+}
+
+function createVisibleSets(form, visibleSets) {
+    if (typeof form.children !== 'undefined') {
+        Object.keys(form.children).map(key => {
+            let child = form.children[key]
+
+            if (typeof child.visibleByClass !== 'undefined' && child.visibleByClass !== false){
+                var x = false
+                if (child.value === child.visibleWhen)
+                    x = true
+                visibleSets[child.visibleByClass] = x
+            }
+            visibleSets = createVisibleSets(child,visibleSets)
+        })
+    }
+    return visibleSets
+}
+
+function visibleByClassInitial(form, visibleSets) {
+    if (typeof form.children !== 'undefined') {
+        Object.keys(form.children).map(key => {
+            let child = form.children[key]
+            visibleByClassInitial(child,visibleSets)
+        })
+    }
+
+    Object.keys(visibleSets).map(name => {
+        let x = visibleSets[name]
+        if (typeof form.row_class === 'string' && form.row_class.includes(name)) {
+            let row_class = form.row_class
+            if (!row_class.includes('hiddenSlider'))
+                row_class = row_class + ' hiddenSlider'
+            if (!x && !row_class.includes('close'))
+                row_class = row_class + ' close'
+            form.row_class = row_class
+        }
+    })
+
+    return form
 }
 
 export function toggleRowsOnValue(value, form) {
