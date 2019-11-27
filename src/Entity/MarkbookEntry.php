@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

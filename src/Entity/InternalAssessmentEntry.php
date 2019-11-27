@@ -12,7 +12,7 @@
  */
 namespace App\Entity;
 
-use Kookaburra\UserAdmin\Util\SecurityHelper;
+use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

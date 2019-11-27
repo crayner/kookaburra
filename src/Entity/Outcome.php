@@ -15,6 +15,7 @@ namespace App\Entity;
 use App\Manager\Traits\BooleanList;
 use App\Validator as Correct;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\UserAdmin\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -305,7 +306,6 @@ class Outcome
      */
     public function __toString(): string
     {
-        dump($this);
         return $this->getName() . ' -> ' . (null !== $this->getDepartment() ? $this->getDepartment()->__toString() : '');
     }
 }
