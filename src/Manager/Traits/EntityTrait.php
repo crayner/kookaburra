@@ -462,4 +462,16 @@ trait EntityTrait
     {
         return $this->stack;
     }
+
+    /**
+     * refresh
+     * @param EntityInterface|null $entity
+     */
+    public function refresh(?EntityInterface $entity = null)
+    {
+        if (null !== $entity) {
+            $this->setEntity($entity);
+        }
+        $this->getEntityManager()->refresh($this->getEntity());
+    }
 }

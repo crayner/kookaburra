@@ -3,7 +3,7 @@
     {% for message in messages %}
         <div class="{{ label }}" id="message{{ label ~ loop.index0 }}">
             {% if message is iterable %}
-                {{ message[0]|trans(message[1]|default({}), message[2]|default('messages')) }}
+                {{ message[0]|trans(message[1]|default({}), message[2]|default('messages'))|raw }}
             {% else %}
                 {{ message|trans }}
             {% endif %}

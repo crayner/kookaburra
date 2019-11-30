@@ -9,11 +9,14 @@ use App\Manager\LegacyManager;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Flash;
 use App\Twig\SidebarContent;
+use Kookaburra\UserAdmin\Entity\Person;
+use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class LegacyController
@@ -75,6 +78,7 @@ class LegacyController extends AbstractController
             $this->addFlash('warning', 'Your session expired, so you were automatically logged out of the system.');
 
         $sidebar->addContent(new Flash());
+        $person = ProviderFactory::getRepository(Person::class)->find(1);
 
         return $this->render('default/welcome.html.twig',
             [

@@ -276,7 +276,7 @@ class Header
             }
 
             $return .= $name.' . ';
-            $return .= "<a class='link-white' href='".$this->session->get('absoluteURL')."/logout/'>".__('Logout')."</a> . <a class='link-white' href='".$this->session->get('absoluteURL')."/preferences/'>".__('Preferences').'</a>';
+            $return .= "<a class='link-white' href='".$this->session->get('absoluteURL')."/logout/'>".__('Logout')."</a> . <a class='link-white' href='".$this->session->get('absoluteURL')."/user/admin/preferences/'>".__('Preferences').'</a>';
             if ($_SESSION[$guid]['emailLink'] != '') {
                 $return .= "<span class='hidden sm:inline'> . <a class='link-white' target='_blank' href='".$_SESSION[$guid]['emailLink']."'>".__('Email').'</a></span>';
             }

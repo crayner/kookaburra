@@ -304,8 +304,7 @@ class InstallationManager
         $encoder = new NativePasswordEncoder();
 
         $password = $encoder->encodePassword($form->get('password')->getData(), null);
-        $person->setPasswordStrongSalt(null);
-        $person->setPasswordStrong($password);
+        $person->setPassword($password);
         $person->setStatus('Full');
         $person->setCanLogin('Y');
         $person->setPrimaryRole(ProviderFactory::getRepository(Role::class)->find(1));

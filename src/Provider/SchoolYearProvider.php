@@ -41,7 +41,7 @@ class SchoolYearProvider implements EntityProviderInterface
         }
         
         $session->set('gibbonSchoolYearID',$row->getId());
-        $session->set('gibbonSchoolYearName', $row->getName());
+        $session->set('gibbonAcademicYearID', $row->getId());
         $session->set('gibbonSchoolYearSequenceNumber', $row->getSequenceNumber());
         $session->set('gibbonSchoolYearFirstDay', $row->getFirstDay());
         $session->set('gibbonSchoolYearLastDay', $row->getLastDay());

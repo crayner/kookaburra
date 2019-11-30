@@ -18,7 +18,7 @@ For info about editing, see: https://twig.symfony.com/doc/2.x/
 {% endblock %}
 
 {% block footer %}
-    {{ __('If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:')|format(systemName, '<a href="' ~ absoluteURL ~ '/preferences/" style="' ~ linkStyle ~ '">', '</a>')|raw }}
+    {{ __('If you do not wish to receive email notifications from %1$s, please %2$sclick here%3$s to adjust your preferences:')|format(systemName, '<a href="' ~ absoluteURL ~ '/user/admin/preferences/" style="' ~ linkStyle ~ '">', '</a>')|raw }}
 
     <br/><br/>
 

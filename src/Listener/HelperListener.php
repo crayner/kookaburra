@@ -54,6 +54,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -101,6 +102,7 @@ class HelperListener implements EventSubscriberInterface
         LoggerInterface $logger,
         UrlGeneratorHelper $urlGeneratorHelper,
         GibbonManager $gibbonManager,
+        UserPasswordEncoderInterface $encoder,
         ParameterBagInterface $params
     ) {
         if ($container->hasParameter('installed') && $container->getParameter('installed')) {
@@ -110,7 +112,7 @@ class HelperListener implements EventSubscriberInterface
             $eh = new ErrorHelper($twig);
             $gh = new GlobalHelper($stack, $params);
             $sh = new SecurityHelper($logger, $authorizationChecker);
-            $uh = new UserHelper($tokenStorage);
+            $uh = new UserHelper($tokenStorage, $encoder);
             new TranslationsHelper($translator);
             new SchoolYearHelper($stack);
             new FileHelper($container->getParameter('absoluteURL'), $container->getParameter('upload_path'), $container->get('kernel')->getPublicDir());

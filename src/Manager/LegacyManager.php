@@ -151,8 +151,7 @@ class LegacyManager
         // Check for force password reset flag
         if ($session->has('passwordForceReset')) {
             if ($session->get('passwordForceReset') == 'Y' && $session->get('address') != 'preferences.php') {
-                $URL = $session->get('absoluteURL').'/preferences/';
-                $URL = $URL.'?forceReset=Y';
+                $URL = $session->get('absoluteURL').'/user/admin/preferences/Reset Password';
                 return new RedirectResponse($URL);
             }
         }

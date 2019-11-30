@@ -104,7 +104,7 @@ class MinorLinks implements ContentInterface
                 'class' => 'link-white',
                 'text' => 'Preferences',
                 'translation_domain' => 'messages',
-                'url' => ['route' => 'preferences'],
+                'url' => ['route' => 'user_admin__preferences'],
             ];
             if ($this->getSession()->get('emailLink', '') !== '') {
                 $links[] = [
