@@ -153,13 +153,20 @@ export default class ContainerApp extends Component {
 
     generateNewPassword(form) {
         const password = createPassword(form.generateButton.passwordPolicy)
-        let fullForm = getParentForm(this.state.forms,form)
+        let parentForm = getParentForm(this.state.forms,form)
         let id = form.id.replace('first', 'second')
-        fullForm = {...changeFormValue(fullForm,form,password)}
-        let second = findElementById(fullForm, id, {})
+        parentForm = {...changeFormValue(parentForm,form,password)}
+        let second = findElementById(parentForm, id, {})
+        id = id.replace('_second', '')
+        let parent = findElementById(parentForm, id, {})
         alert(form.generateButton.alertPrompt + ': ' + password)
-        fullForm = changeFormValue(fullForm,second,password)
-        this.setMyState(buildState(mergeParentForm(this.state.forms,getParentFormName(this.formNames,form),fullForm)))
+        let parentValue = {
+            first: password,
+            second: password
+        }
+        parentForm = changeFormValue(parentForm,parent,parentValue)
+        parentForm = changeFormValue(parentForm,second,password)
+        this.setMyState(buildState(mergeParentForm(this.state.forms,getParentFormName(this.formNames,form),parentForm)))
     }
 
     onCKEditorChange(event, editor, form) {

@@ -80,6 +80,14 @@ export default function Widget(props) {
         widget_attr.type = 'password'
         let button_attr = {}
 
+        if (form.name === 'second') {
+            return (
+                <div {...wrapper_attr}>
+                    <input {...widget_attr} defaultValue={form.value} />
+                    {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+                </div>
+            )
+        }
         return (
             <div {...wrapper_attr}>
                 <input {...widget_attr} defaultValue={form.value} />
