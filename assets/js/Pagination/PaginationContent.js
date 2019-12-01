@@ -3,6 +3,7 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import Img from 'react-image'
+import Parser from "react-html-parser"
 
 export default function PaginationContent(props) {
     const {
@@ -42,9 +43,9 @@ export default function PaginationContent(props) {
                     columnDefinition.contentKey.map((value, key) => {
                         if (key > 0)
                             columnContent.push(<span key={key}
-                                                     className={'small text-gray-600 italic'}><br/>{rowContent[value]}</span>)
+                                                     className={'small text-gray-600 italic'}><br/>{Parser(rowContent[value])}</span>)
                         else
-                            columnContent.push(<span key={key}>{rowContent[value]}</span>)
+                            columnContent.push(<span key={key}>{Parser(rowContent[value])}</span>)
                     })
                 }
             } else {

@@ -37,6 +37,7 @@ use App\Util\GlobalHelper;
 use App\Util\LocaleHelper;
 use App\Util\RelationshipHelper;
 use App\Util\SchoolYearHelper;
+use Kookaburra\UserAdmin\Manager\PersonNameManager;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
 use App\Util\TimetableHelper;
 use App\Util\TranslationsHelper;

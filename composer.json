@@ -13,7 +13,7 @@
         "aura/sqlquery": "3.*-dev",
         "crayner/doctrine-bundle": "^1.0",
         "doctrine/annotations": "^1.7",
-        "doctrine/doctrine-bundle": "^1.12",
+        "doctrine/doctrine-bundle": "1.12.*",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "fpdf/fpdf": "^1.81",
         "friendsofsymfony/ckeditor-bundle": "^2.1",
@@ -97,6 +97,8 @@
             "@auto-scripts"
         ]
     },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "conflict": {
         "symfony/symfony": "*"
     },

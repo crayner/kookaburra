@@ -97,7 +97,7 @@ class SettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (count($options['settings']) === 0)
-            throw new MissingOptionsException('The Settings have not been created.');
+            throw new MissingOptionsException('The Settings have not been created.', $options);
         foreach($options['settings'] as $setting) {
             $setting = $this->configureSetting($setting);
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);

@@ -119,6 +119,7 @@ class Format
      */
     public static function name($title, $preferredName, $surname, $roleCategory = 'Staff', $reverse = false, $informal = false)
     {
+        dd('Never use this.');
         self::setupFromSession();
         $output = '';
 
