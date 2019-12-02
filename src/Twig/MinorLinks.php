@@ -13,9 +13,6 @@
 namespace App\Twig;
 
 use Kookaburra\UserAdmin\Util\SecurityHelper;
-use Kookaburra\UserAdmin\Util\UserHelper;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class MinorLinks implements ContentInterface
 {
