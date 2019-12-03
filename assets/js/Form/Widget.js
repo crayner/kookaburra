@@ -229,7 +229,7 @@ export default function Widget(props) {
         )
     }
 
-    if (form.type === 'integer') {
+    if (form.type === 'number') {
         widget_attr.type = 'number'
         return (
             <div {...wrapper_attr}>

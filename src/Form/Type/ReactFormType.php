@@ -353,7 +353,9 @@ class ReactFormType extends AbstractType
         if (in_array('button', $prefixes))
             return 'button';
         if (in_array('integer', $prefixes))
-            return 'integer';
+            return 'number';
+        if (in_array('number', $prefixes))
+            return 'number';
         if (in_array('repeated', $prefixes))
             return 'transparent';
         if (in_array('react_sub_form', $prefixes))
