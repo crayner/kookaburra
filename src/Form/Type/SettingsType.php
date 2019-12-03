@@ -49,7 +49,6 @@ class SettingsType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'translation_domain' => 'messages',
                 'row_style' => 'transparent',
                 'mapped' => false,
                 'data_class' => null,

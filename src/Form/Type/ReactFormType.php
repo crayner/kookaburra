@@ -238,11 +238,17 @@ class ReactFormType extends AbstractType
             $vars['element_delete_options'] = $view->vars['element_delete_options'];
         }
 
-        if (!(null === $view->vars['label'] || false === $view->vars['label']))
-            $vars['label'] = $this->translate($view->vars['label'], $view->vars['label_translation_parameters'], $this->getTranslationDomain($view->vars['translation_domain']));
-
-        if (isset($view->vars['help']) && !(null === $view->vars['help'] || false === $view->vars['help']))
-            $vars['help'] = $this->translate($view->vars['help'], $view->vars['help_translation_parameters'], $this->getTranslationDomain($view->vars['translation_domain']));
+        if ($view->vars['translation_domain'] !== false) {
+            if (!(null === $view->vars['label'] || false === $view->vars['label']))
+                $vars['label'] = $this->translate($view->vars['label'], $view->vars['label_translation_parameters'], $this->getTranslationDomain($view->vars['translation_domain']));
+            if (isset($view->vars['help']) && !(null === $view->vars['help'] || false === $view->vars['help']) && $view->vars['translation_domain'] !== false)
+                $vars['help'] = $this->translate($view->vars['help'], $view->vars['help_translation_parameters'], $this->getTranslationDomain($view->vars['translation_domain']));
+        } else {
+            if (!(null === $view->vars['label'] || false === $view->vars['label']))
+                $vars['label'] = $view->vars['label'];
+            if (isset($view->vars['help']) && !(null === $view->vars['help'] || false === $view->vars['help']))
+                $vars['help'] = $view->vars['help'];
+        }
 
         foreach($view->vars['attr'] as $attrName=>$attr)
             if (in_array($attrName, ['title', 'placeholder']))

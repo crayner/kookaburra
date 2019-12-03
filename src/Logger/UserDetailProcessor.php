@@ -62,6 +62,6 @@ class UserDetailProcessor
      */
     public function getUsername(): string
     {
-        return $this->getUser() ? $this->getUser()->formatName() : '';
+        return $this->getUser() ? $this->getUser()->formatName(['style' => 'long', 'preferredName' => true]) : '';
     }
 }

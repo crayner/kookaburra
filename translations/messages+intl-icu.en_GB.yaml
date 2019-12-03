@@ -224,7 +224,6 @@ Confirm New Password: Confirm New Password
 Settings: Settings
 Personal Google Calendar ID: Personal Google Calendar ID
 'Google Calendar ID for your personal calendar.<br/>Only enables timetable integration when logging in via Google.': 'Google Calendar ID for your personal calendar.<br/>Only enables timetable integration when logging in via Google.'
-Personal Background: Personal Background
 'Set your own custom background image.<br/>Please provide URL to image.': 'Set your own custom background image.<br/>Please provide URL to image.'
 Personal Theme: Personal Theme
 Override the system theme.: Override the system theme.
@@ -891,7 +890,6 @@ Citizenship 2: Citizenship 2
 Citizenship 2 Passport: Citizenship 2 Passport
 National ID Card Number: National ID Card Number
 National ID Card Scan: National ID Card Scan
-Residency Status: Residency Status
 Visa Expiry Date: Visa Expiry Date
 Emergency 1 Name: Emergency 1 Name
 For students and staff only: 'For students and staff only. Use one of "{list}"'
@@ -1063,3 +1061,9 @@ Manage Staff Settings: Manage Staff Settings
 Manage Students Settings: Manage Students Settings
 Manage User Settings: Manage User Settings
 UserAdmin: User Admin
+Your session expired, so you were automatically logged out of the system.: Your session expired, so you were automatically logged out of the system.
+Comma-separated list of agreements that students might be asked to sign in school (e.g. ICT Policy).: Comma-separated list of agreements that students might be asked to sign in school (e.g. ICT Policy).
+Determines who to notify when a new student note is created.: Determines who to notify when a new student note is created.
+People Settings: People Settings
+Personal Preferences: Personal Preferences
+Manage People Settings: Manage People Settings

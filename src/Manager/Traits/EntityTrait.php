@@ -17,11 +17,15 @@ namespace App\Manager\Traits;
 
 use App\Manager\EntityInterface;
 use App\Manager\MessageManager;
-use App\Provider\EntityProviderInterface;
 use App\Provider\ProviderFactory;
+use App\Util\TranslationsHelper;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\DBAL\Exception\NotNullConstraintViolationException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Kookaburra\UserAdmin\Form\NoteCategoryType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -250,7 +254,7 @@ trait EntityTrait
                 $this->getEntityManager()->flush();
         } catch (\Exception $e)
         {
-            $this->getMessageManager()->add('danger', 'Your request failed due to a database error.', [], false);
+            $this->getMessageManager()->add('danger', 'return.error.2', [], 'messages');
         }
         return $this;
     }
@@ -473,5 +477,35 @@ trait EntityTrait
             $this->setEntity($entity);
         }
         $this->getEntityManager()->refresh($this->getEntity());
+    }
+
+    /**
+     * persistFlush
+     * @param EntityInterface $entity
+     * @param array $data
+     * @return array
+     */
+    public function persistFlush(EntityInterface $entity, array $data = []): array
+    {
+        try {
+            $this->getEntityManager()->persist($entity);
+            $this->getEntityManager()->flush();
+            $data['errors'] = ['class' => 'success', 'message' => TranslationsHelper::translate('return.success.0', [], 'messages')];
+        } catch (\PDOException $e) {
+            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
+            $data['status'] = 'error';
+        } catch (PDOException $e) {
+            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
+            $data['status'] = 'error';
+        } catch (NotNullConstraintViolationException $e) {
+            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
+            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
+            $data['status'] = 'error';
+        } catch (UniqueConstraintViolationException $e) {
+            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
+            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
+            $data['status'] = 'error';
+        }
+        return $data;
     }
 }
