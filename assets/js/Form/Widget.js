@@ -150,6 +150,7 @@ export default function Widget(props) {
             else if (typeof form.value.date !== "undefined")
                 value = form.value.date.toString().slice(0,10)
         }
+        value = value.slice(0,10)
         widget_attr.type = 'date'
         return (
             <div {...wrapper_attr}>

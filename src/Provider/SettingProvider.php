@@ -214,11 +214,16 @@ class SettingProvider implements EntityProviderInterface
      * @param string $value
      * @throws SettingNotFoundException
      */
-    public function setSettingByScope(string $scope, string $name, ?string $value)
+    public function setSettingByScope(string $scope, string $name, $value)
     {
         $setting = $this->getSettingByScope($scope, $name, true);
         if (false === $setting)
             throw new SettingNotFoundException($scope,$name);
+
+        if (is_array($value))
+            $value = implode(',',$value);
+        if ($value instanceof \DateTimeImmutable)
+            $value = $value->format('c');
 
         $setting->setValue($value);
         $this->saveEntity();
@@ -372,8 +377,15 @@ class SettingProvider implements EntityProviderInterface
                     if ($data instanceof File)
                         $data = str_replace(realpath(__DIR__ . '/../../public'), '', $data->getRealPath());
 
+                    if ($data instanceof \DateTimeImmutable || $data instanceof \DateTime)
+                        $data = $data->format('c');
+
                     if (is_object($data))
                         dump(get_class($data), $data);
+
+                    if (is_array($data))
+                        $data = implode(',',$data);
+
                     $this->setSettingByScope($setting['scope'], $setting['name'], $data);
                 }
             }

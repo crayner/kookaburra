@@ -16,6 +16,7 @@ namespace App\Form\Type;
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -102,7 +103,7 @@ class SettingsType extends AbstractType
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
             $builder->add($name, $setting['entry_type'], array_merge(
                 [
-                    'data' => $setting['setting']->getValue(),
+                    'data' => $setting['entry_type'] === ChoiceType::class ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue(),
                     'help' => $setting['setting']->getDescription(),
                     'label' => $setting['setting']->getNameDisplay(),
                     'setting_form' => true,

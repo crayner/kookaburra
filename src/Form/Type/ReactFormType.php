@@ -181,7 +181,7 @@ class ReactFormType extends AbstractType
             $vars['value'] = $view->vars['value'];
         }
 
-        if (in_array($vars['value'], [null,'',[]]) && !in_array($view->vars['data'], ['',null,[]])) {
+        if (empty($vars['value']) && !empty($view->vars['data'])) {
             $vars['value'] = $view->vars['data'];
         }
 
