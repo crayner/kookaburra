@@ -487,14 +487,12 @@ trait EntityTrait
      */
     public function persistFlush(EntityInterface $entity, array $data = []): array
     {
+        $data['status'] = isset($data['status']) ? $data['status'] : 'success';
         try {
             $this->getEntityManager()->persist($entity);
             $this->getEntityManager()->flush();
-            $data['errors'] = ['class' => 'success', 'message' => TranslationsHelper::translate('return.success.0', [], 'messages')];
-        } catch (\PDOException $e) {
-            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
-            $data['status'] = 'error';
-        } catch (PDOException $e) {
+            $data['errors'][] = ['class' => 'success', 'message' => TranslationsHelper::translate('return.success.0', [], 'messages')];
+        } catch (\PDOException | PDOException $e) {
             $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
             $data['status'] = 'error';
         } catch (NotNullConstraintViolationException $e) {
