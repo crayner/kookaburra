@@ -22,7 +22,7 @@
 {%- block header_row -%}
     <tr{% if row_class is not same as(false) %} class="{{ row_class|default("break") }}{% endif %}"{% if row_id is not same as(false) %} id="{{ row_id }}"{% endif %}>
         <td{% if label_class is not same as(false) %} class="{{ label_class|default("px-2 border-b-0 sm:border-b border-t-0") }}"{% endif %}{% if label_colspan > 1 %} colspan="{{ label_colspan }}"{% endif %}>
-            <h3>{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</h3>
+            <h3 id="{{ id }}">{{ label is not same as(false) ? (translation_domain is same as(false) ? label : label|trans({}, translation_domain)) }}</h3>
         </td>
     </tr>
 {%- endblock header_row -%}
