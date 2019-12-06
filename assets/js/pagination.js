@@ -5,7 +5,8 @@ import { render } from 'react-dom'
 import PaginationApp from "./Pagination/PaginationApp";
 
 window.onload = function () {
-    const paginationContent = document.getElementById('paginationContent')
+    var target = window.PAGINATION_PROPS.targetElement
+    const paginationContent = document.getElementById(target)
 
     if (paginationContent === null)
         render(<div>&nbsp;</div>, document.getElementById('dumpStuff'))

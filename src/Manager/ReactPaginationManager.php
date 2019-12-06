@@ -46,6 +46,11 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     private $scriptManager;
 
     /**
+     * @var string
+     */
+    private $targetElement = 'paginationContent';
+
+    /**
      * ReactPaginationManager constructor.
      */
     public function __construct(ScriptManager $scriptManager)
@@ -162,6 +167,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
             'row' => $this->getRow()->toArray(),
             'content' => $this->getContent(),
             'translations' => $this->getTranslations(),
+            'targetElement' => $this->getTargetElement(),
         ];
     }
 
@@ -194,5 +200,25 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         TranslationsHelper::addTranslation('Close');
         TranslationsHelper::addTranslation('Yes');
         return TranslationsHelper::getTranslations();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetElement(): string
+    {
+        return $this->targetElement;
+    }
+
+    /**
+     * TargetElement.
+     *
+     * @param string $targetElement
+     * @return ReactPaginationManager
+     */
+    public function setTargetElement(string $targetElement): ReactPaginationManager
+    {
+        $this->targetElement = $targetElement;
+        return $this;
     }
 }
