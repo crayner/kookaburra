@@ -12,6 +12,8 @@
 
 namespace App\Manager\Entity;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 /**
  * Class PaginationColumn
  * @package App\Manager\Entity
@@ -37,6 +39,11 @@ class PaginationColumn
      * @var bool
      */
     private $sort = false;
+
+    /**
+     * @var string
+     */
+    private $headerClass = '';
 
     /**
      * @var string
@@ -169,7 +176,7 @@ class PaginationColumn
      */
     public function setContentType(string $contentType): PaginationColumn
     {
-        $this->contentType = in_array($contentType, ['image','standard']) ? $contentType : 'standard';
+        $this->contentType = in_array($contentType, ['image','standard','link']) ? $contentType : 'standard';
         return $this;
     }
 
@@ -190,6 +197,26 @@ class PaginationColumn
     public function setOptions(array $options): PaginationColumn
     {
         $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeaderClass(): string
+    {
+        return $this->headerClass;
+    }
+
+    /**
+     * HeaderClass.
+     *
+     * @param string $headerClass
+     * @return PaginationColumn
+     */
+    public function setHeaderClass(string $headerClass): PaginationColumn
+    {
+        $this->headerClass = $headerClass;
         return $this;
     }
 

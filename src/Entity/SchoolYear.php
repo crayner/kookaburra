@@ -224,4 +224,14 @@ class SchoolYear implements EntityInterface
     {
        return $this->getName();
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

@@ -37,7 +37,28 @@ export default function PaginationContent(props) {
                     let className = typeof columnDefinition.options['class'] === 'undefined' ? '' : columnDefinition.options['class']
                     columnDefinition.contentKey.map((value, key) => {
                         if (key === 0)
-                            columnContent.push(<Img src={rowContent[value]} style={style} className={className} key={key} />)
+                            columnContent.push(<Img src={rowContent[value]} style={style} className={className}
+                                                    key={key}/>)
+                    })
+                } else if (columnDefinition.contentType === 'link') {
+                    let link = typeof columnDefinition.options['link'] === 'undefined' ? '#' : columnDefinition.options['link']
+                    let title = typeof columnDefinition.options['title'] === 'undefined' ? '' : columnDefinition.options['title']
+                    let style = typeof columnDefinition.options['style'] === 'undefined' ? {} : columnDefinition.options['style']
+                    let className = typeof columnDefinition.options['class'] === 'undefined' ? '' : columnDefinition.options['class']
+
+                    if (typeof columnDefinition.options['route_options'] === 'object') {
+                        Object.keys(columnDefinition.options['route_options']).map(x => {
+                            const search = columnDefinition.options['route_options'][x]
+                            link = link.replace('__' + search + '__', rowContent[search])
+                        })
+                    }
+
+                    columnDefinition.contentKey.map((value, key) => {
+                        if (key === 0)
+                            if (className === '')
+                                columnContent.push(<a href={link} title={title} style={style} key={key}>{Parser(rowContent[value])}</a>)
+                            else
+                                columnContent.push(<a href={link} title={title} className={className} style={style} key={key}>{Parser(rowContent[value])}</a>)
                     })
                 } else {
                     columnDefinition.contentKey.map((value, key) => {

@@ -136,3 +136,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .hiddenSlider.close {
     max-height: 0;
 }
+.vertical-font {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+.maxWidth50 {
+    max-width: 50px;
+}
+.minHeight100 {
+    min-height: 100px;
+    height: 100px;
+}

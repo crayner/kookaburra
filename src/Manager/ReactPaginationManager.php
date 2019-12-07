@@ -134,8 +134,12 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
                 $params = [];
                 foreach($action->getRouteParams() as $name=>$contentName)
                 {
-                    $contentName = 'get' . ucfirst($contentName);
-                    $params[$name] = $content->$contentName();
+                    if (isset($this->content[$q][$contentName])) {
+                        $params[$name] = $this->content[$q][$contentName];
+                    } else {
+                        $contentName = 'get' . ucfirst($contentName);
+                        $params[$name] = $content->$contentName();
+                    }
                 }
                 $this->content[$q]['actions'][] = UrlGeneratorHelper::getPath($action->getRoute(), $params);
             }
@@ -143,6 +147,15 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         $columns = new ArrayCollection();
         foreach($this->getRow()->getColumns() as $column)
         {
+            if ($column->getContentType() === 'link') {
+                $options = $column->getOptions();
+                $ro = [];
+                foreach((isset($options['route_options']) ? $options['route_options'] : []) as $q=>$w) {
+                    $ro[$q] = '__'.$w.'__';
+                }
+                $options['link'] =  UrlGeneratorHelper::getPath($options['route'], $ro);
+                $column->setOptions($options);
+            }
             $column->setLabel(TranslationsHelper::translate($column->getLabel()));
             $columns->add($column->toArray());
         }

@@ -157,8 +157,17 @@ class ScriptManager
     {
         $this->addEncoreEntryScriptTag($tag);
 
+        if ($this->getAppProps()->containsKey($tag)) {
+            $existing = $this->getAppProps()->get($tag);
+            $this->getAppProps()->remove($tag);
+            if (!isset($existing['contentList']))
+                $result['contentList'][] = $existing;
+            else
+                $result = $existing;
+            $result['contentList'][] = $props;
+            $props = $result;
+        }
         $this->getAppProps()->set($tag, $props);
-
         return $this;
     }
 

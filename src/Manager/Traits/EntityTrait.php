@@ -473,10 +473,12 @@ trait EntityTrait
      */
     public function refresh(?EntityInterface $entity = null)
     {
-        if (null !== $entity) {
+        if (null !== $entity && $this->entityName === get_class($entity)) {
             $this->setEntity($entity);
         }
-        $this->getEntityManager()->refresh($this->getEntity());
+        if ($entity === null)
+            $entity = $this->getEntity();
+        $this->getEntityManager()->refresh($entity);
     }
 
     /**
@@ -502,6 +504,27 @@ trait EntityTrait
         } catch (UniqueConstraintViolationException $e) {
             $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
             $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
+            $data['status'] = 'error';
+        }
+        return $data;
+    }
+
+    /**
+     * remove
+     * @param EntityInterface $entity
+     * @param array $data
+     * @param bool $flush
+     * @return array
+     */
+    public function remove(EntityInterface $entity, array $data = [], bool $flush = true): array
+    {
+        $data['status'] = isset($data['status']) ? $data['status'] : 'success';
+        try {
+            $this->getEntityManager()->remove($entity);
+            if ($flush) $this->getEntityManager()->flush();
+            $data['errors'][] = ['class' => 'success', 'message' => TranslationsHelper::translate('return.success.0', [], 'messages')];
+        } catch (\PDOException | PDOException $e) {
+            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
             $data['status'] = 'error';
         }
         return $data;

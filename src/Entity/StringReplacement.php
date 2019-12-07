@@ -207,9 +207,10 @@ class StringReplacement implements EntityInterface
 
     /**
      * toArray
+     * @param string|null $name
      * @return array
      */
-    public function toArray(): array
+    public function toArray(?string $name = NULL): array
     {
         $result =  (array) $this;
         $x = [];

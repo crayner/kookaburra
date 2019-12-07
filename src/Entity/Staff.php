@@ -384,4 +384,14 @@ class Staff implements EntityInterface
     {
         return $this->getPerson()->formatName();
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

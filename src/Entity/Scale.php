@@ -242,4 +242,14 @@ class Scale implements EntityInterface
     {
         return $this->getName() . ' ('. $this->getNameShort() .')';
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

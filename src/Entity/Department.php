@@ -294,4 +294,9 @@ class Department implements EntityInterface
     {
         return $this->getName() . ' (' . $this->getNameShort() . ')';
     }
+
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

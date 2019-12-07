@@ -21,7 +21,10 @@ export default function HeaderRow(props) {
         if (w === column.contentKey) {
             sort = (<span className={'fas fa-sort-' + sortColumnDirection + ' fa-fw text-gray-800'} style={{float: 'right'}}></span>)
         }
-        return (<th className={column.class} key={columnKey} onClick={() => sortColumn(column.contentKey)}>{sort}{column.label}{help}</th>)
+
+        let headerClass = column.headerClass !== '' ? column.headerClass : column.class
+
+        return (<th className={headerClass} key={columnKey} onClick={() => sortColumn(column.contentKey)}>{sort}{column.label}{help}</th>)
     })
 
     if (row.actions.length > 0) {

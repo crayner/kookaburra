@@ -180,4 +180,14 @@ class CourseClassPerson implements EntityInterface
     {
         return $this->getCourseClass()->courseClassName(true) . ': ' . $this->getPerson()->formatName();
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

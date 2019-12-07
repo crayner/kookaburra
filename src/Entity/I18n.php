@@ -378,9 +378,10 @@ class I18n implements EntityInterface
 
     /**
      * toArray
+     * @param string|null $name
      * @return array
      */
-    public function toArray() {
+    public function toArray(?string $name = NULL): array {
         return [
             "gibboni18nID" => $this->getId(), // legacy
             "id" => $this->getId(),

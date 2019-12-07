@@ -23,4 +23,11 @@ interface EntityInterface
      * @return int|null
      */
     public function getId(): ?int;
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array;
 }

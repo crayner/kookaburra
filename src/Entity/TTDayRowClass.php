@@ -160,4 +160,15 @@ class TTDayRowClass implements EntityInterface
     {
         return EntityHelper::__toArray(TTDayRowClass::class, $this, $ignore);
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
+
 }
