@@ -213,4 +213,14 @@ class MessengerTarget implements EntityInterface
     {
         return self::$typeList;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

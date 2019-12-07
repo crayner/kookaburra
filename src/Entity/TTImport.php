@@ -192,4 +192,14 @@ class TTImport implements EntityInterface
         $this->spaceName = $spaceName;
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

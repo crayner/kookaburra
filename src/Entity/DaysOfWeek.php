@@ -247,4 +247,14 @@ class DaysOfWeek implements EntityInterface
         $this->schoolClose = $schoolClose;
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

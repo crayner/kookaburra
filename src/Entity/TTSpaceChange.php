@@ -148,4 +148,14 @@ class TTSpaceChange  implements EntityInterface
         $this->person = $person;
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

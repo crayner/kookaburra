@@ -549,4 +549,14 @@ class StaffAbsence implements EntityInterface
         $this->staffAbsenceDate = $staffAbsenceDate;
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

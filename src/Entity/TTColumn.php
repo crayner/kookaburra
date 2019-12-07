@@ -157,4 +157,14 @@ class TTColumn implements EntityInterface
         $this->timetableColumnRows = $timetableColumnRows;
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

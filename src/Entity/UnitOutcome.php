@@ -146,4 +146,14 @@ class UnitOutcome implements EntityInterface
         $this->content = $content;
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

@@ -309,4 +309,14 @@ class SchoolYearSpecialDay implements EntityInterface
     {
         return $this->getDate()->format('Y-m-d');
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

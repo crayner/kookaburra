@@ -278,4 +278,14 @@ class StaffCoverageDate implements EntityInterface
         $this->reason = $reason;
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }

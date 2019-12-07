@@ -177,4 +177,14 @@ class ActivityAttendance implements EntityInterface
         $this->timestampTaken = $timestampTaken ?: new \DateTime('now');
         return $this;
     }
+
+    /**
+     * toArray
+     * @param string|null $name
+     * @return array
+     */
+    public function toArray(?string $name = null): array
+    {
+        return [];
+    }
 }
