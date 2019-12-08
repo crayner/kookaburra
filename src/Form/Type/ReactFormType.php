@@ -72,12 +72,16 @@ class ReactFormType extends AbstractType
                  'panels' => 1,
                  'columns' => 2,
                  'target' => 'formContent',
+                 'preFormContent' => false,
+                 'postFormContent' => false,
              ]
          );
 
          $resolver->setAllowedValues('template', ['table']); // future expansion
          $resolver->setAllowedTypes('panels', ['integer']);
          $resolver->setAllowedTypes('columns', ['integer']);
+         $resolver->setAllowedTypes('preFormContent', ['boolean', 'array']);
+         $resolver->setAllowedTypes('postFormContent', ['boolean', 'array']);
      }
 
      /**
@@ -96,17 +100,19 @@ class ReactFormType extends AbstractType
              $vars = $this->buildTemplateView($view);
              $vars['action'] = $options['action'];
              $vars['method'] = $options['method'];
+             $vars['preFormContent'] = $options['preFormContent'];
+             $vars['postFormContent'] = $options['postFormContent'];
          }
-         $this->addTranslation('Actions');
+         $this->addTranslation('Actions', [], 'messages');
          $this->addTranslation('File Download', [], 'messages');
          $this->addTranslation('Open Link', [], 'messages');
          $this->addTranslation('Yes/No', [], 'messages');
          $this->addTranslation('File Delete', [], 'messages');
          $this->addTranslation('Let me ponder your request', [], 'messages');
-         $this->addTranslation('Add');
-         $this->addTranslation('Delete');
-         $this->addTranslation('Close Message');
-         $this->addTranslation('There are no records to display.');
+         $this->addTranslation('Add', [], 'messages');
+         $this->addTranslation('Delete', [], 'messages');
+         $this->addTranslation('Close Message', [], 'messages');
+         $this->addTranslation('There are no records to display.', [], 'messages');
 
          $view->vars['toArray'] = $vars;
      }

@@ -2,10 +2,13 @@
 namespace App\Form\Type;
 
 use App\Form\Transform\EntityToStringTransformer;
+use App\Provider\ProviderFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HiddenEntityType extends AbstractType
@@ -62,4 +65,15 @@ class HiddenEntityType extends AbstractType
 			]
 		);
 	}
+
+    /**
+     * buildView
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
+     */
+	public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['data'] = ProviderFactory::getRepository($options['class'])->find($view->vars['value']);
+    }
 }

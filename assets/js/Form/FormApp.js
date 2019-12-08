@@ -4,6 +4,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Row from "./Template/Table/Row"
 import Messages from "../component/Messages"
+import PaginationApp from "../Pagination/PaginationApp"
 
 export default function FormApp(props) {
     const {
@@ -31,8 +32,21 @@ export default function FormApp(props) {
         table_attr.className = 'smallIntBorder fullWidth standardForm relative'
         if (form.row_class !== null) table_attr.className = form.row_class
 
+        let preFormContent = []
+        if (typeof form.preFormContent === 'object') {
+            if (form.preFormContent.targetElement === 'pagination')
+                preFormContent.push(<PaginationApp {...form.preFormContent} key={'pagination'} />)
+        }
+
+        let postFormContent = []
+        if (typeof form.postFormContent === 'object') {
+            if (form.postFormContent.targetElement === 'pagination')
+                postFormContent.push(<PaginationApp {...form.postFormContent} key={'pagination'} />)
+        }
+
         if (singleForm) {
             return (<div>
+                {preFormContent}
                 <Messages messages={form.errors} translate={functions.translate} />
                 <table {...table_attr}>
                     <tbody>
@@ -40,6 +54,7 @@ export default function FormApp(props) {
                     {rows}
                     </tbody>
                 </table>
+                {postFormContent}
             </div>)
         }
 
@@ -48,6 +63,7 @@ export default function FormApp(props) {
                     id={form.id}
                     {...form.attr}
                     method={form.method !== undefined ? form.method : 'POST'}>
+                    {preFormContent}
                     <Messages messages={form.errors} translate={functions.translate} />
                     <table {...table_attr}>
                         <tbody>
@@ -55,6 +71,7 @@ export default function FormApp(props) {
                             {rows}
                         </tbody>
                     </table>
+                    {postFormContent}
                 </form>
         )
     }

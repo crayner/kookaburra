@@ -487,12 +487,12 @@ trait EntityTrait
      * @param array $data
      * @return array
      */
-    public function persistFlush(EntityInterface $entity, array $data = []): array
+    public function persistFlush(EntityInterface $entity, array $data = [], bool $flush = true): array
     {
         $data['status'] = isset($data['status']) ? $data['status'] : 'success';
         try {
             $this->getEntityManager()->persist($entity);
-            $this->getEntityManager()->flush();
+            if ($flush) $this->getEntityManager()->flush();
             $data['errors'][] = ['class' => 'success', 'message' => TranslationsHelper::translate('return.success.0', [], 'messages')];
         } catch (\PDOException | PDOException $e) {
             $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
@@ -518,6 +518,8 @@ trait EntityTrait
      */
     public function remove(EntityInterface $entity, array $data = [], bool $flush = true): array
     {
+        if (! $this->getEntityManager()->contains($entity))
+            return $data;
         $data['status'] = isset($data['status']) ? $data['status'] : 'success';
         try {
             $this->getEntityManager()->remove($entity);
