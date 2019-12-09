@@ -2,32 +2,32 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
- *
- * (c) 2018 Craig Rayner <craig@craigrayner.com>
+ * kookaburra
+ * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * User: craig
- * Date: 23/11/2018
- * Time: 15:27
+ * Date: 9/12/2019
+ * Time: 12:05
  */
+
 namespace App\Repository;
 
-use App\Entity\StaffAbsence;
+use App\Entity\StudentNoteCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * Class StaffAbsenceRepository
+ * Class StudentNoteCategoryCategoryRepository
  * @package App\Repository
  */
-class StaffAbsenceRepository extends ServiceEntityRepository
+class StudentNoteCategoryRepository extends ServiceEntityRepository
 {
     /**
-     * StaffAbsenceRepository constructor.
+     * StudentNoteCategoryRepository constructor.
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, StaffAbsence::class);
+        parent::__construct($registry, StudentNoteCategory::class);
     }
 }

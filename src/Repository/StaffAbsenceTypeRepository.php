@@ -2,32 +2,32 @@
 /**
  * Created by PhpStorm.
  *
- * Kookaburra
- *
- * (c) 2018 Craig Rayner <craig@craigrayner.com>
+ * kookaburra
+ * (c) 2019 Craig Rayner <craig@craigrayner.com>
  *
  * User: craig
- * Date: 23/11/2018
- * Time: 15:27
+ * Date: 9/12/2019
+ * Time: 11:31
  */
+
 namespace App\Repository;
 
-use App\Entity\StaffAbsence;
+use App\Entity\StaffAbsenceType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * Class StaffAbsenceRepository
+ * Class StaffAbsenceTypeRepository
  * @package App\Repository
  */
-class StaffAbsenceRepository extends ServiceEntityRepository
+class StaffAbsenceTypeRepository extends ServiceEntityRepository
 {
     /**
-     * StaffAbsenceRepository constructor.
+     * StaffAbsenceTypeRepository constructor.
      * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, StaffAbsence::class);
+        parent::__construct($registry, StaffAbsenceType::class);
     }
 }

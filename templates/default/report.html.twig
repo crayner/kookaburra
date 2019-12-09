@@ -8,7 +8,6 @@
     <body class="print">
         <div id="wrap-report" class="mx-auto max-w-3xl">
             <div id="header-report" class="flex items-center w-full my-6">
-    {% dump(getSettingByScope('System', 'organisationLogo')) %}
                 <div id="header-logo" class="leading-none">
                     <img class="block max-w-full" alt="{{ getSettingByScope('System', 'organisationName') }}" src="{{ asset(getSettingByScope('System', 'organisationLogo')|default("/themes/Default/img/logo.png"), null, true) }}" width="400"/>
                 </div>
