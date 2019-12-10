@@ -16,6 +16,7 @@ use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
 use Kookaburra\UserAdmin\Entity\Person;
+use Kookaburra\UserAdmin\Entity\StaffAbsenceType;
 
 /**
  * Class StaffAbsence
@@ -37,7 +38,7 @@ class StaffAbsence implements EntityInterface
 
     /**
      * @var StaffAbsenceType|null
-     * @ORM\ManyToOne(targetEntity="StaffAbsenceType")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\StaffAbsenceType")
      * @ORM\JoinColumn(name="gibbonStaffAbsenceTypeID", referencedColumnName="gibbonStaffAbsenceTypeID",nullable=false)
      */
     private $staffAbsenceType;

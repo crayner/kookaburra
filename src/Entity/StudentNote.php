@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Kookaburra\UserAdmin\Entity\Person;
+use Kookaburra\UserAdmin\Entity\StudentNoteCategory;
 
 /**
  * Class StudentNote
@@ -40,7 +41,7 @@ class StudentNote
 
     /**
      * @var StudentNoteCategory|null
-     * @ORM\ManyToOne(targetEntity="StudentNoteCategory")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\StudentNoteCategory")
      * @ORM\JoinColumn(name="gibbonStudentNoteCategoryID",referencedColumnName="gibbonStudentNoteCategoryID")
      */
     private $studentNoteCategory;

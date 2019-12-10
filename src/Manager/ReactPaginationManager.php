@@ -18,6 +18,7 @@ use App\Provider\ProviderFactory;
 use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * Class ReactPaginationManager
@@ -122,23 +123,29 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     /**
      * translateContent
      * @return ReactPaginationManager
+     * @throws InvalidOptionsException
      */
     private function translateContent(): ReactPaginationManager
     {
         $this->execute();
         foreach($this->getContent() as $q=>$content) {
-            $this->content[$q] = $content->toArray();
+            $this->content[$q] = gettype($content) === 'object' ? $content->toArray() : $content;
             foreach($this->getRow()->getActions() as $action)
             {
                 $action->setTitle(TranslationsHelper::translate($action->getTitle()));
                 $params = [];
                 foreach($action->getRouteParams() as $name=>$contentName)
                 {
-                    if (isset($this->content[$q][$contentName])) {
-                        $params[$name] = $this->content[$q][$contentName];
-                    } else {
+                    if (gettype($content) === 'array' && isset($content[$contentName])) {
+                        $params[$name] = $content[$contentName];
+                    } else if (gettype($content) === 'object') {
                         $contentName = 'get' . ucfirst($contentName);
-                        $params[$name] = $content->$contentName();
+                        if (method_exists($content,$contentName))
+                            $params[$name] = $content->$contentName();
+                        else
+                            throw new InvalidOptionsException(sprintf('The method %s was not found in %s ', $contentName, get_class($content)));
+                    } else {
+                        throw new InvalidOptionsException(sprintf('Not able to correctly collect the content %s ', $contentName));
                     }
                 }
                 $this->content[$q]['actions'][] = UrlGeneratorHelper::getPath($action->getRoute(), $params);
@@ -173,7 +180,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * toArray
      * @return array
      */
-    public function toArray(): array
+    final public function toArray(): array
     {
         return [
             'pageMax' => $this->getPageMax(),
