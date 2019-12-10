@@ -87,6 +87,8 @@ export function wrapperAttr(form, defaultClass) {
 export function labelAttr(form, defaultClass) {
     let label_attr = {}
     label_attr.className = defaultClass
+    if (form.label_class !== '')
+        label_attr.className = form.label_class
     return label_attr
 }
 

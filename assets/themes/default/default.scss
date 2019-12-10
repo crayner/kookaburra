@@ -1482,3 +1482,22 @@ input[value="1"] + .slider:before, input[value="Y"] + .slider:before {
 .no-border {
     border: none;
 }
+.h3 {
+    font-size: 13pt;
+    margin: 20px 0 10px 0;
+    color: #444;
+    background-color: none;
+    padding: 0 0 0 0px;
+    text-align: left;
+    text-transform: uppercase;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+}
+tr .h3 {
+    border: none !important;
+}
+tr.break .h3 {
+    margin-top: 10px !important;
+    padding: 0;
+}
