@@ -141,6 +141,7 @@ return:
         0: 'Your request failed because you do not have access to this action.'
         1: Your request failed because your inputs were invalid.
         2: 'Your request failed due to a database error.'
+        8: Your request failed because some values are still in use within the data.
     error1: 'Your request failed because your inputs were invalid.'
     error2: 'Your request failed due to a database error.'
     success0: 'Your request was completed successfully.'

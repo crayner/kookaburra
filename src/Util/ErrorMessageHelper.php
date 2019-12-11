@@ -12,6 +12,8 @@
 
 namespace App\Util;
 
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+
 /**
  * Class ErrorMessageHelper
  * @package App\Util
@@ -69,6 +71,18 @@ class ErrorMessageHelper
     }
 
     /**
+     * convertToFlash
+     * @param array $data
+     * @param FlashBagInterface $flashBag
+     */
+    public static function convertToFlash(array $data, FlashBagInterface $flashBag)
+    {
+        foreach(self::uniqueErrors($data)['errors'] as $error) {
+            $flashBag->add($error['class'], $error['message']);
+        }
+    }
+
+    /**
      *         $returns['success0'] = __('Your request was completed successfully.');
     $returns['error0'] = __('Your request failed because you do not have access to this action.');
     $returns['error1'] = __('Your request failed because your inputs were invalid.');
@@ -78,6 +92,7 @@ class ErrorMessageHelper
     $returns['error5'] = __('Your request failed because there are no records to show.');
     $returns['error6'] = __('Your request was completed successfully, but there was a problem saving some uploaded files.');
     $returns['error7'] = __('Your request failed because some required values were not unique.');
+    $returns['error8'] = __('Your request failed because some values are still in use within the data.');
     $returns['warning0'] = __('Your optional extra data failed to save.');
     $returns['warning1'] = __('Your request was successful, but some data was not properly saved.');
     $returns['warning2'] = __('Your request was successful, but some data was not properly deleted.');
