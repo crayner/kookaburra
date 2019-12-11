@@ -1,0 +1,39 @@
+{% trans_default_domain 'messages' %}
+
+{% extends 'kookaburra.html.twig' %}
+
+{% block minor_links %}{% endblock %}
+
+{% block sidebar %}{% endblock %}
+{% block wrap %}
+    {% block header %}
+        <div id="header" class="relative bg-white flex justify-between items-center rounded-t" style="height: 2rem">
+            <a id="header-logo" class="block max-w-xs sm:max-w-full leading-none" href="{{ absoluteURL }}">
+                <img class="block max-w-full" alt="{{ app.request.session.get('organisationName') }}" src="{{ asset(organisationLogo|default("/themes/Default/img/logo.png"), null, true) }}" width="100"/>
+            </a>
+            <button type="button" class="close-button" onclick="window.close();" title="{{ 'Close'|trans }}"><span class="far fa-times-circle fa-fw" /></button>
+        </div>
+    {% endblock header %}
+    <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start flex-col lg:flex-row-reverse bg-transparent-100 clearfix">
+        <div id="content" class="w-full pt-0 sm:pt-6 lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
+            {% block soft_error %}
+                {% if softError is defined and softError|length > 0 %}
+                    <div class="error">{{ softError|trans(softErrorParams|default({})) }}</div>
+                {% endif %}
+                {% include 'components/sidebar/flashes.html.twig' %}
+                {% include 'components/messages.html.twig' %}
+            {% endblock soft_error %}
+
+
+            {% for type, alerts in alerts() %}
+                {% for text in alerts %}
+                    <div class="{{ type }}">{{ text|raw }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            {% block content %}
+                {{ content()|join("\n")|raw }}
+            {% endblock content %}
+        </div>
+    </div>
+{% endblock wrap %}
