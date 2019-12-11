@@ -18,6 +18,7 @@ namespace App\Manager\Traits;
 use App\Manager\EntityInterface;
 use App\Manager\MessageManager;
 use App\Provider\ProviderFactory;
+use App\Util\ErrorMessageHelper;
 use App\Util\TranslationsHelper;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Driver\PDOException;
@@ -524,10 +525,9 @@ trait EntityTrait
         try {
             $this->getEntityManager()->remove($entity);
             if ($flush) $this->getEntityManager()->flush();
-            $data['errors'][] = ['class' => 'success', 'message' => TranslationsHelper::translate('return.success.0', [], 'messages')];
+            $data = ErrorMessageHelper::getSuccessMessage($data);
         } catch (\PDOException | PDOException $e) {
-            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
-            $data['status'] = 'error';
+            $data = ErrorMessageHelper::getDatabaseErrorMessage($data);
         }
         return $data;
     }

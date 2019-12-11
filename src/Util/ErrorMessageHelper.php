@@ -32,6 +32,18 @@ class ErrorMessageHelper
         $data['status'] = 'error';
         return $data;
     }
+    /**
+     * getInvalidInputsMessage
+     * @param array $data
+     * @return array
+     */
+    public static function getDatabaseErrorMessage(array $data, bool $translate = false): array
+    {
+        //      error2 = return.error.2 = Your request failed due to a database error.
+        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationsHelper::translate('return.error.2', [], 'messages') : ['return.error.2', [], 'messages'])];
+        $data['status'] = 'error';
+        return $data;
+    }
 
     /**
      * getSuccessMessage
@@ -41,7 +53,7 @@ class ErrorMessageHelper
      */
     public static function getSuccessMessage(array $data, bool $translate = false): array
     {
-        //      error1 = return.error.1 = Your request failed because your inputs were invalid.
+        //      success0 = return.success.0 = Your request was completed successfully.
         $data['errors'][] = ['class' => 'success', 'message' => ($translate ? TranslationsHelper::translate('return.success.0', [], 'messages') : ['return.success.0', [], 'messages'])];
         $data['status'] = 'success';
         return $data;
@@ -83,7 +95,8 @@ class ErrorMessageHelper
     }
 
     /**
-     *         $returns['success0'] = __('Your request was completed successfully.');
+     *
+    $returns['success0'] = __('Your request was completed successfully.');
     $returns['error0'] = __('Your request failed because you do not have access to this action.');
     $returns['error1'] = __('Your request failed because your inputs were invalid.');
     $returns['error2'] = __('Your request failed due to a database error.');
