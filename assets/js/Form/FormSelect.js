@@ -10,6 +10,7 @@ export default function FormSelect(props) {
         wrapper_attr,
         widget_attr,
         errors,
+        functions,
     } = props
 
     var options = []
@@ -32,11 +33,21 @@ export default function FormSelect(props) {
         }
     })
 
+    let buttons = []
+    if (form.auto_refresh)  {
+        buttons.push(<button type="button" title={functions.translate('Refresh List')} key={'refresh'}
+                             className="button -ml-px button-right" onClick={() => functions.refreshChoiceList(form)}><span className={'fas fa-sync fa-fw'} /></button>)
+        if (form.add_url !== null)
+            buttons.push(<button type="button" title={functions.translate('Add Element to List')} key={'add'} onClick={() => functions.addElementToChoice(form)}
+                                 className="button -ml-px button-right" style={{marginRight: '32px'}}><span className={'fas fa-plus fa-fw'} /></button>)
+    }
+
     return (
         <div {...wrapper_attr}>
             <select multiple={form.multiple} {...widget_attr} value={form.value}>
                 {options}
             </select>
+            {buttons}
             {errors}
         </div>
     )
@@ -47,6 +58,7 @@ FormSelect.propTypes = {
     wrapper_attr: PropTypes.object.isRequired,
     widget_attr: PropTypes.object.isRequired,
     errors: PropTypes.array,
+    functions: PropTypes.object.isRequired,
 }
 
 FormSelect.defaultProps = {

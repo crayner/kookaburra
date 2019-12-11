@@ -61,7 +61,6 @@ export default class DepartmentEditApp extends Component {
         this.formNames = {}
         this.submit = {}
         this.singleForm = (Object.keys(props.forms).length === 1)
-        console.log(this.state)
     }
 
     componentDidMount() {

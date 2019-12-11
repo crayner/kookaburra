@@ -38,8 +38,17 @@ export function downloadFile(form) {
     openPage(route, {target: '_blank'}, false)
 }
 
-export function openUrl(file) {
-    window.open(file, '_blank')
+export function openUrl(file, target) {
+    if (typeof target === 'undefined')
+        target = '_blank'
+    let options = ''
+    if (typeof file === 'object') {
+        options = file
+        file = options['url']
+        target = options['target']
+        options = typeof options['options'] !== 'undefined' ? options['options'] : ''
+    }
+    window.open(file,target,options)
 }
 
 

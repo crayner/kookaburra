@@ -190,7 +190,7 @@ export default function Widget(props) {
     if (form.type === 'choice') {
         if (typeof form.visibleByClass !== 'undefined')
             functions.toggleVisibleByClass(form.value, form)
-        return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr} errors={errors}/>)
+        return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr} errors={errors} functions={functions}/>)
     }
 
     if (form.type === 'textarea') {

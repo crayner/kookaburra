@@ -1501,3 +1501,15 @@ tr.break .h3 {
     margin-top: 10px !important;
     padding: 0;
 }
+.close-button {
+    font-size: 20px;
+    background-color: transparent;
+    color: #8B0000;
+    float: right;
+}
+.close-button.gray {
+    color: #696969;
+}
+.close-button:hover {
+    color: #006400;
+}

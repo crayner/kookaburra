@@ -56,10 +56,17 @@ export function widgetAttr(form, defaultClass, functions) {
         widget_attr.onChange = (e) => functions[form.on_change](e,form)
     }
     widget_attr.onClick = null
-    if (form.on_click === false && typeof functions.onElementClick === 'function') {
-        widget_attr.onClick = (e) => functions.onElementClick(e,form)
-    } else if (typeof functions[form.on_click] === 'function') {
-        widget_attr.onClick = (e) => functions[form.on_click](e,form)
+    if (typeof form.on_click === 'object') {
+        const click = form.on_click
+        if (typeof functions[click.function] === 'function') {
+            widget_attr.onClick = (e) => functions[click.function](click)
+        }
+    } else {
+        if (form.on_click === false && typeof functions.onElementClick === 'function') {
+            widget_attr.onClick = (e) => functions.onElementClick(e, form)
+        } else if (typeof functions[form.on_click] === 'function') {
+            widget_attr.onClick = (e) => functions[form.on_click](e, form)
+        }
     }
     if (form.multiple !== false) widget_attr.multiple = true
 

@@ -113,6 +113,9 @@ class ReactFormType extends AbstractType
          $this->addTranslation('Delete', [], 'messages');
          $this->addTranslation('Close Message', [], 'messages');
          $this->addTranslation('There are no records to display.', [], 'messages');
+         $this->addTranslation('Refresh List', [], 'messages');
+         $this->addTranslation('Add Element to List', [], 'messages');
+         $this->addTranslation('The list has been refreshed.', [], 'messages');
 
          $view->vars['toArray'] = $vars;
      }
@@ -177,14 +180,19 @@ class ReactFormType extends AbstractType
         }
 
         if ($vars['type'] === 'choice' && $view->vars['multiple']) {
-            if(!is_array($view->vars['value']))
+            if (!is_array($view->vars['value']))
                 $view->vars['value'] = [$view->vars['value']];
-            foreach($view->vars['value'] ?: [] as $q=>$w) {
+            foreach ($view->vars['value'] ?: [] as $q => $w) {
                 if (is_object($w) && in_array(EntityInterface::class, class_implements($w))) {
                     $view->vars['value'][$q] = $w->getId();
                 }
             }
             $vars['value'] = $view->vars['value'];
+        }
+        if ($vars['type'] === 'choice') {
+            $vars['auto_refresh'] = $view->vars['auto_refresh'];
+            $vars['auto_refresh_url'] = $view->vars['auto_refresh_url'];
+            $vars['add_url'] = $view->vars['add_url'];
         }
 
         if (empty($vars['value']) && !empty($view->vars['data'])) {

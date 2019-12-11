@@ -53,7 +53,9 @@ export default class ContainerApp extends Component {
             addElement: this.addElement.bind(this),
             onCKEditorChange: this.onCKEditorChange.bind(this),
             generateNewPassword: this.generateNewPassword.bind(this),
-            toggleVisibleByClass: toggleRowsOnValue.bind(this)
+            toggleVisibleByClass: toggleRowsOnValue.bind(this),
+            refreshChoiceList: this.refreshChoiceList.bind(this),
+            addElementToChoice: this.addElementToChoice.bind(this)
         }
 
         this.state = {
@@ -96,7 +98,6 @@ export default class ContainerApp extends Component {
             submit: isSubmit(this.submit),
         })
     }
-
 
     translate(id){
         return trans(this.translations, id)
@@ -320,6 +321,30 @@ export default class ContainerApp extends Component {
         parentForm = {...replaceFormElement(parentForm, form)}
 
         this.setMyState(buildState({...mergeParentForm(this.state.forms,parentFormName,parentForm)}, this.singleForm))
+    }
+
+    refreshChoiceList(form) {
+        let parentForm = {...getParentForm(this.state.forms,form)}
+        const parentName = getParentFormName(this.formNames,form)
+        fetchJson(
+            form.auto_refresh_url,
+            {},
+            false)
+            .then(data => {
+                form.choices = {...data.choices}
+                parentForm = {...replaceFormElement(parentForm, form)}
+                parentForm.errors.push({'class': 'info', 'message': this.translate('The list has been refreshed.')})
+                this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName,parentForm)}, this.singleForm))
+            }).catch(error => {
+                parentForm.errors.push({'class': 'error', 'message': error})
+                this.submit[parentName] = false
+                this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...parentForm})}, this.singleForm), setPanelErrors({...form}, {}))
+            }
+        )
+    }
+
+    addElementToChoice(form) {
+        openUrl(form.add_url)
     }
 
     render() {

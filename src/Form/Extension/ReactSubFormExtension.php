@@ -57,7 +57,7 @@ class ReactSubFormExtension extends AbstractTypeExtension
         );
 
         $resolver->setAllowedTypes('panel', ['boolean', 'string']);
-        $resolver->setAllowedTypes('on_click', ['boolean','string']);
+        $resolver->setAllowedTypes('on_click', ['boolean','string', 'array']);
         $resolver->setAllowedTypes('on_change', ['boolean','string']);
         $resolver->setAllowedTypes('on_blur', ['boolean','string']);
         $resolver->setAllowedTypes('on_key_press', ['boolean','string']);
