@@ -33,6 +33,11 @@ class PaginationRow
     private $actions;
 
     /**
+     * @var Collection|PaginationFilter[]
+     */
+    private $filters;
+
+    /**
      * @return PaginationColumn[]|Collection
      */
     public function getColumns(): ArrayCollection
@@ -87,7 +92,7 @@ class PaginationRow
     }
 
     /**
-     * Actions.
+     * Add Action.
      *
      * @param array $actions
      * @return PaginationRow
@@ -100,6 +105,39 @@ class PaginationRow
     }
 
     /**
+     * @return PaginationFilter[]|ArrayCollection
+     */
+    public function getFilters(): ArrayCollection
+    {
+        return $this->filters = $this->filters ?: new ArrayCollection();
+    }
+
+    /**
+     * Filters.
+     *
+     * @param PaginationFilter[]|ArrayCollection $filters
+     * @return PaginationRow
+     */
+    public function setFilters(ArrayCollection $filters): PaginationRow
+    {
+        $this->filters = $filters;
+        return $this;
+    }
+
+    /**
+     * Add Filter.
+     *
+     * @param array $actions
+     * @return PaginationRow
+     */
+    public function addFilter(PaginationFilter $filter): PaginationRow
+    {
+        if (!$this->getFilters()->contains($filter))
+            $this->filters->add($filter);
+        return $this;
+    }
+
+    /**
      * toArray
      * @return array
      */
@@ -108,6 +146,7 @@ class PaginationRow
         return [
             'columns' => $this->getColumns()->toArray(),
             'actions' => $this->getActions()->toArray(),
+            'filters' => $this->getFilters()->toArray(),
             'actionTitle' => TranslationsHelper::translate('Actions'),
             'emptyContent' => TranslationsHelper::translate('There are no records to display.'),
             'caption' => TranslationsHelper::translate('Records {start}-{end} of {total}'),

@@ -5,9 +5,11 @@ import PropTypes from 'prop-types'
 import HeaderRow from "./HeaderRow"
 import firstBy from 'thenby'
 import PaginationContent from "./PaginationContent"
+import PaginationFilter from "./PaginationFilter"
 import AreYouSureDialog from "../component/AreYouSureDialog"
 import InformationDetail from "../component/InformationDetail"
 import {fetchJson} from "../component/fetchJson"
+import {isEmpty} from "../component/isEmpty"
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -15,6 +17,7 @@ export default class PaginationApp extends Component {
         this.pageMax = props.pageMax
         this.row = props.row
         this.content = props.content
+        this.filters = props.row.filters
         this.messages = props.translations
 
         this.sortColumn = this.sortColumn.bind(this)
@@ -25,6 +28,7 @@ export default class PaginationApp extends Component {
         this.deleteItem = this.deleteItem.bind(this)
         this.closeConfirm = this.closeConfirm.bind(this)
         this.adjustPageSize = this.adjustPageSize.bind(this)
+        this.changeFilter = this.changeFilter.bind(this)
         this.functions = {
             areYouSure: this.areYouSure.bind(this),
             displayInformation: this.displayInformation.bind(this)
@@ -36,11 +40,11 @@ export default class PaginationApp extends Component {
             sortDirection: '',
             results: [],
             offset: 0,
-            controls: [],
             pageMax: this.pageMax,
-            sizeButtons: [],
             confirm: false,
             information: false,
+            filteredContent: this.content,
+            filter: '',
         }
     }
 
@@ -110,7 +114,7 @@ export default class PaginationApp extends Component {
             direction = 'down'
         }
 
-        let result = this.paginateContent(this.sortContent(columnName,direction,this.content), this.state.offset)
+        let result = this.paginateContent(this.sortContent(columnName,direction,this.state.filteredContent), this.state.offset)
         this.setState({
             sortColumn: columnName,
             sortDirection: direction,
@@ -133,9 +137,13 @@ export default class PaginationApp extends Component {
         )
     }
 
-    paginateContent(content, offset, pageMax = 0) {
+    paginateContent(content, offset, pageMax = 0, filter = null) {
         if (pageMax === 0)
             pageMax = this.state.pageMax
+        if (this.state.filter === '') {
+            return content.slice(offset, offset + pageMax)
+        }
+        filter = filter === null ? this.state.filter : filter
 
         return content.slice(offset, offset + pageMax)
     }
@@ -156,30 +164,30 @@ export default class PaginationApp extends Component {
         let offset = this.state.offset
         while (offset <= this.content.length)
             offset = offset + this.state.pageMax
-        this.checkOffset(offset, this.state.pageMax)
+        this.checkOffset(this.state.filteredContent, offset, this.state.pageMax)
     }
 
-    checkOffset(offset, pageMax = 0) {
+    checkOffset(filteredContent, offset, pageMax = 0) {
         if (pageMax === 0)
             pageMax = this.state.pageMax
 
-        while (offset > this.content.length)
+        while (offset > filteredContent.length)
             offset = offset - pageMax
 
-        if (pageMax >= this.content.length)
+        if (pageMax >= filteredContent.length)
             offset = 0
 
         if (offset < 0)
             offset = 0
 
-        let result = this.paginateContent(this.sortContent('', '', this.content), offset, pageMax)
+        let result = this.paginateContent(this.sortContent('', '', filteredContent), offset, pageMax)
 
         this.setState({
             offset: offset,
             results: result,
-            control: this.buildControl(offset, result, pageMax),
             pageMax: pageMax,
-            sizeButtons: this.buildPageSizeControls(pageMax)
+            sizeButtons: this.buildPageSizeControls(pageMax),
+            filteredContent: filteredContent,
         })
     }
 
@@ -190,51 +198,80 @@ export default class PaginationApp extends Component {
         this.checkOffset(this.state.offset, size)
     }
 
-    buildPageSizeControls(pageMax) {
+    buildPageSizeControls() {
         let control = []
 
-        control.push(<a href={'#'} key={'10'} onClick={() => this.adjustPageSize(10)} className={(pageMax === 10 ? 'text-blue-600' : 'text-gray-600')}>10,</a>)
-        control.push(<a href={'#'} key={'25'} onClick={() => this.adjustPageSize(25)} className={(pageMax === 25 ? 'text-blue-600' : 'text-gray-600')}>25,</a>)
-        control.push(<a href={'#'} key={'50'} onClick={() => this.adjustPageSize(50)} className={(pageMax === 50 ? 'text-blue-600' : 'text-gray-600')}>50,</a>)
-        control.push(<a href={'#'} key={'All'} onClick={() => this.adjustPageSize('All')} className={(pageMax === this.content.length ? 'text-blue-600' : 'text-gray-600')}>All</a>)
+        if (this.state.filteredContent.length > 10) {
+            control.push(<a href={'#'} key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600' : 'text-gray-600')}>10,</a>)
+            control.push(<a href={'#'} key={'25'} onClick={() => this.adjustPageSize(25)}
+                            className={(this.state.pageMax === 25 ? 'text-blue-600' : 'text-gray-600')}>25,</a>)
+        }
+        if (this.state.filteredContent.length > 25)
+            control.push(<a href={'#'} key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600' : 'text-gray-600')}>50,</a>)
+        if (this.state.filteredContent.length > 50)
+            control.push(<a href={'#'} key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600' : 'text-gray-600')}>All</a>)
 
         return control
     }
 
-    buildControl(offset, result, pageMax = 0) {
-        if (this.content.length === 0)
+    buildControl() {
+        if (this.state.filteredContent.length === 0)
             return []
-        
-        if (pageMax === 0)
-            pageMax = this.state.pageMax
 
-        let content = this.row.caption.replace('{start}', (offset + 1))
-        content = content.replace('{end}', (result.length + offset))
-        content = content.replace('{total}', this.content.length)
+        let content = this.row.caption.replace('{start}', (this.state.offset + 1))
+        content = content.replace('{end}', (this.state.results.length + this.state.offset))
+        content = content.replace('{total}', this.state.filteredContent.length)
 
         let control = []
-        if (offset > 0) {
+        if (this.state.offset > 0) {
             control.push(<a href={'#'} key={'first'} onClick={() => this.firstPage()} title={this.row.firstPage}><span className={'text-gray-600 fas fa-angle-double-left fa-fw'}></span></a>)
         }
 
-        if (this.content.length > pageMax && offset > 0) {
+        if (this.state.filteredContent.length > this.state.pageMax && this.state.offset > 0) {
             control.push(<a href={'#'} key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span className={'text-gray-600 fas fa-angle-left fa-fw'}></span></a>)
         }
 
         control.push(<span key={'content'}>{content}</span>)
 
-        if (this.content.length > pageMax && pageMax + offset < this.content.length) {
+        if (this.state.filteredContent.length > this.state.pageMax && this.state.pageMax + this.state.offset < this.state.filteredContent.length) {
             control.push(<a href={'#'} key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span className={'text-gray-600 fas fa-angle-right fa-fw'}></span></a>)
             control.push(<a href={'#'} key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span className={'text-gray-600 fas fa-angle-double-right fa-fw'}></span></a>)
         }
         return control
     }
 
+    filterContent(filter) {
+        if (isEmpty(filter))
+            return this.content
+
+        filter = this.filters[filter]
+        const content = this.content.filter(value => {
+            if (filter.value === value[filter.contentKey])
+                return value
+        })
+
+        return content
+    }
+
+    changeFilter(e) {
+        const filteredContent = this.filterContent(e.target.value)
+        let result = this.paginateContent(this.sortContent('', '', filteredContent), 0, 0)
+        this.setState({
+            results: result,
+            control: this.buildControl(this.state.offset, result),
+            filter: e.target.value,
+            filteredContent: filteredContent,
+        })
+    }
+
     render () {
         return (
             <div>
-                <div className={'text-xs text-gray-600 text-left'}>{this.state.sizeButtons}
-                <div className={'text-xs text-gray-600 text-right'} style={{marginTop: '-12px'}}>{this.state.control}</div></div>
+                <div className={'text-xs text-gray-600 text-left'}>
+                    <PaginationFilter filter={this.state.filter} filters={this.filters} changeFilter={this.changeFilter} messages={this.messages}/>
+                    <span style={{float: 'left'}}>{this.buildPageSizeControls()}</span>
+                    <span style={{float: 'right'}}>{this.buildControl()}</span>
+                </div>
                 <table className={'w-full striped'}>
                     <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn} sortColumnDirection={this.state.sortDirection} />
                     <PaginationContent row={this.row} content={this.state.results} functions={this.functions} />

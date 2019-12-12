@@ -167,12 +167,21 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
             $columns->add($column->toArray());
         }
         $this->row->setColumns($columns);
+
         $actions = new ArrayCollection();
         foreach($this->getRow()->getActions() as $action)
         {
             $actions->add($action->toArray());
         }
         $this->row->setActions($actions);
+
+        $filters = new ArrayCollection();
+        foreach($this->row->getFilters() as $filter)
+        {
+            $filters->set($filter->getName(), $filter->toArray());
+        }
+        $this->row->setFilters($filters);
+
         return $this;
     }
 
@@ -219,6 +228,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         TranslationsHelper::addTranslation('This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!');
         TranslationsHelper::addTranslation('Close');
         TranslationsHelper::addTranslation('Yes');
+        TranslationsHelper::addTranslation('Filter');
         return TranslationsHelper::getTranslations();
     }
 
