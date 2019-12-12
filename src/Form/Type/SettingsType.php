@@ -98,12 +98,13 @@ class SettingsType extends AbstractType
     {
         if (count($options['settings']) === 0)
             throw new MissingOptionsException('The Settings have not been created.', $options);
+
         foreach($options['settings'] as $setting) {
             $setting = $this->configureSetting($setting);
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
             $builder->add($name, $setting['entry_type'], array_merge(
                 [
-                    'data' => $setting['entry_type'] === ChoiceType::class ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue(),
+                    'data' => $setting['entry_type'] === ChoiceType::class && isset($setting['entry_options']['multiple']) && $setting['entry_options']['multiple'] ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue(),
                     'help' => $setting['setting']->getDescription(),
                     'label' => $setting['setting']->getNameDisplay(),
                     'setting_form' => true,
