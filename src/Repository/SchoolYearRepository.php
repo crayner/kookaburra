@@ -50,4 +50,42 @@ class SchoolYearRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * selectSchoolYears
+     * @param string $status
+     * @param string $direction
+     * @return array
+     */
+    public function findByStatus(string $status = 'All', $direction = 'ASC'): array
+    {
+        $direction = $direction === 'DESC' ? "DESC" : 'ASC';
+        $query = $this->createQueryBuilder('s')
+            ->select(['s.id', 's.name'])
+            ->orderBy('s.firstDay', $direction);
+        switch($status) {
+            case 'Active':
+                return $query
+                    ->where('s.status = :current OR s.status = :future')
+                    ->setParameters(['current' => 'Current', 'future' => 'Upcoming'])
+                    ->getQuery()
+                    ->getResult();
+                break;
+            case 'Upcoming':
+                return $query
+                    ->where('s.status = :future')
+                    ->setParameters(['future' => 'Upcoming'])
+                    ->getQuery()
+                    ->getResult();
+                break;
+            case 'Past':
+                return $query
+                    ->where('s.status = :future')
+                    ->setParameters(['future' => 'Past'])
+                    ->getQuery()
+                    ->getResult();
+                break;
+        }
+        return $query->getQuery()->getResult();
+    }
 }

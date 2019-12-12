@@ -58,4 +58,20 @@ class SchoolYearProvider implements EntityProviderInterface
         $result = $this->getRepository()->findAllByOverlap($year);
         return $result === [] ? false : true;
     }
+
+    /**
+     * selectSchoolYears
+     * @param string $status
+     * @param string $direction
+     * @return array
+     */
+    public function selectSchoolYears(string $status = 'All', $direction = 'ASC'): array
+    {
+        $result = [];
+        foreach($this->getRepository()->findByStatus($status, $direction) as $item)
+        {
+            $result[$item['name']] = $item['id'];
+        }
+        return $result;
+    }
 }

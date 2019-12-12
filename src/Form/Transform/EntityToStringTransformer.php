@@ -116,7 +116,7 @@ class EntityToStringTransformer implements DataTransformerInterface
 		if (is_object($entity) && $entity instanceof $this->entityClass)
 		    return $entity->getId();
 
-        if (is_null($entity))
+        if (is_null($entity) || '' === $entity)
             return null;
 
 		throw new \Exception('What to do with: ' . json_encode($entity) . ' for class ' . $this->entityClass);
@@ -136,7 +136,7 @@ class EntityToStringTransformer implements DataTransformerInterface
 			return null;
 		}
 
-		if (!is_array($id))
+		if (is_string($id) || is_int($id))
 		{
 
 			$entity = $this->entityRepository->find($id);
