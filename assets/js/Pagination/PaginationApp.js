@@ -149,20 +149,20 @@ export default class PaginationApp extends Component {
     }
 
     firstPage(){
-        this.checkOffset(0)
+        this.checkOffset(this.state.filteredContent,0)
     }
 
     prevPage() {
-        this.checkOffset(this.state.offset - this.state.pageMax)
+        this.checkOffset(this.state.filteredContent,this.state.offset - this.state.pageMax)
     }
 
     nextPage() {
-        this.checkOffset(this.state.offset + this.state.pageMax)
+        this.checkOffset(this.state.filteredContent,this.state.offset + this.state.pageMax)
     }
 
     lastPage() {
         let offset = this.state.offset
-        while (offset <= this.content.length)
+        while (offset <= this.state.filteredContent.length)
             offset = offset + this.state.pageMax
         this.checkOffset(this.state.filteredContent, offset, this.state.pageMax)
     }
@@ -193,23 +193,24 @@ export default class PaginationApp extends Component {
 
     adjustPageSize(size) {
         if (size === 'All')
-            size = this.content.length
+            size = this.state.filteredContent.length
 
-        this.checkOffset(this.state.offset, size)
+        this.checkOffset(this.state.filteredContent,this.state.offset, size)
     }
 
     buildPageSizeControls() {
         let control = []
 
         if (this.state.filteredContent.length > 10) {
-            control.push(<a href={'#'} key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600' : 'text-gray-600')}>10,</a>)
-            control.push(<a href={'#'} key={'25'} onClick={() => this.adjustPageSize(25)}
-                            className={(this.state.pageMax === 25 ? 'text-blue-600' : 'text-gray-600')}>25,</a>)
+            control.push(<a href={'#'} key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600' : 'text-gray-600')}>10</a>)
+            control.push(<a href={'#'} key={'25'} onClick={() => this.adjustPageSize(25)} className={(this.state.pageMax === 25 ? 'text-blue-600' : 'text-gray-600')}>,25</a>)
         }
         if (this.state.filteredContent.length > 25)
-            control.push(<a href={'#'} key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600' : 'text-gray-600')}>50,</a>)
+            control.push(<a href={'#'} key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600' : 'text-gray-600')}>,50</a>)
         if (this.state.filteredContent.length > 50)
-            control.push(<a href={'#'} key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600' : 'text-gray-600')}>All</a>)
+            control.push(<a href={'#'} key={'100'} onClick={() => this.adjustPageSize(100)} className={(this.state.pageMax === 100 ? 'text-blue-600' : 'text-gray-600')}>,100</a>)
+        if (this.state.filteredContent.length > 100)
+            control.push(<a href={'#'} key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600' : 'text-gray-600')}>,{this.messages['All']}</a>)
 
         return control
     }

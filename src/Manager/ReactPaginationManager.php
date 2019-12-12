@@ -229,6 +229,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         TranslationsHelper::addTranslation('Close');
         TranslationsHelper::addTranslation('Yes');
         TranslationsHelper::addTranslation('Filter');
+        TranslationsHelper::addTranslation('All');
         return TranslationsHelper::getTranslations();
     }
 
