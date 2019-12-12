@@ -1,9 +1,11 @@
 <?php
 namespace App\Form\Type;
 
+use App\Form\Transform\ToggleToBooleanTransformer;
 use App\Manager\ScriptManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +24,12 @@ class ToggleType extends AbstractType
     public function __construct(ScriptManager $scriptManager)
     {
         $this->scriptManager = $scriptManager;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['use_boolean_values'])
+            $builder->addModelTransformer(new ToggleToBooleanTransformer());
     }
 
     /**
@@ -52,6 +60,10 @@ class ToggleType extends AbstractType
                'visibleByClass' => false,
                'visibleWhen' => 'Y',
                'values' => ['Y', 'N'],
+               'wrapper_class' => 'text-right',
+               'label_class' => 'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs',
+               'required' => false,
+               'use_boolean_values' => false,
            ]
        );
         $resolver->setAllowedTypes('visibleByClass', ['boolean', 'string']);
