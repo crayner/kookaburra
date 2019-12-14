@@ -13,6 +13,7 @@
 namespace App\Provider;
 
 use App\Entity\I18n;
+use Doctrine\Common\Collections\Collection;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\Setting;
 use App\Exception\SettingNotFoundException;
@@ -379,6 +380,11 @@ class SettingProvider implements EntityProviderInterface
 
                     if ($data instanceof \DateTimeImmutable || $data instanceof \DateTime)
                         $data = $data->format('c');
+
+                    if ($data instanceof Collection)
+                    {
+                        $data = json_encode($data->toArray());
+                    }
 
                     if (is_object($data))
                         dump(get_class($data), $data);

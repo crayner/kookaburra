@@ -15,6 +15,7 @@ namespace App\Form\Type;
 
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
+use Kookaburra\SystemAdmin\Form\SettingCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -24,6 +25,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Util\StringUtil;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
 
@@ -83,10 +85,13 @@ class SettingsType extends AbstractType
         $resolver->setAllowedTypes('name', 'string');
         $resolver->setAllowedTypes('entry_type', 'string');
         $resolver->setAllowedTypes('entry_options', 'array');
-        $resolver->setAllowedTypes('setting', Setting::class);
+        $resolver->setAllowedTypes('setting', ['boolean', Setting::class]);
 
         $setting['setting'] = ProviderFactory::create(Setting::class)->getSettingByScope($setting['scope'], $setting['name'], true);
-        return $resolver->resolve($setting);
+        $setting = $resolver->resolve($setting);
+        if (false === $setting['setting'])
+            throw new InvalidOptionsException(sprintf('The setting %s - %s was not found in the database.',$setting['scope'], $setting['name']));
+        return $setting;
     }
 
     /**
@@ -102,11 +107,15 @@ class SettingsType extends AbstractType
         foreach($options['settings'] as $setting) {
             $setting = $this->configureSetting($setting);
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
+            if ($setting['entry_type'] instanceof SettingCollectionType && empty($setting['setting']->getValue()))
+                $setting['data'] = [];
+
             $builder->add($name, $setting['entry_type'], array_merge(
                 [
                     'data' => $setting['entry_type'] === ChoiceType::class && isset($setting['entry_options']['multiple']) && $setting['entry_options']['multiple'] ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue(),
                     'help' => $setting['setting']->getDescription(),
                     'label' => $setting['setting']->getNameDisplay(),
+                    'required' => false,
                     'setting_form' => true,
                 ],
                 $setting['entry_options']));
