@@ -346,8 +346,10 @@ class SettingProvider implements EntityProviderInterface
 
         if ($form->isValid()) {
             $this->saveSettings($form, $content, $translator);
-            if (count($this->getErrors()) === 0)
+            if (count($this->getErrors()) === 0) {
+                $data['status'] = 'success';
                 return $this->addError(['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.')])->getErrors();
+            }
             else
                 return $this->getErrors();
         }
@@ -481,5 +483,23 @@ class SettingProvider implements EntityProviderInterface
         if ($result === null)
             return null;
         return ProviderFactory::getRepository($class)->find($result);
+    }
+
+    /**
+     * getStatus
+     * @return string
+     */
+    public function getStatus(): string
+    {
+        $status = 'success';
+        foreach($this->getErrors() as $error)
+            if ($error['class'] === 'error') {
+                $status = 'error';
+                break;
+            }
+        if ($error['class'] === 'warning') {
+            $status = 'warning';
+        }
+        return $status;
     }
 }
