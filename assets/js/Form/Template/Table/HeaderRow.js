@@ -17,18 +17,18 @@ export default function HeaderRow(props) {
     if (columns > 1) {
         column_attr.colSpan = columns
     }
-    let label = (<h3>{form.label}</h3>)
+    let label = (<h3 {...form.label_attr}>{form.label}</h3>)
     if (form.header_type === 'h4')
-        label = (<h4>{form.label}</h4>)
+        label = (<h4 {...form.label_attr}>{form.label}</h4>)
 
     let help = ''
     if (typeof form.help === 'string')
-        help = form.help
+        help = (<div {...form.help_attr}>{Parser(form.help)}</div>)
 
     return (<tr {...row_attr}>
         <td {...column_attr}>
             {label}
-            {Parser(help)}
+            {help}
         </td>
     </tr>)
 
