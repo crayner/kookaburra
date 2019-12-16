@@ -16,7 +16,6 @@ use App\Twig\ModuleMenu;
 use App\Twig\Sidebar\Login;
 use App\Twig\Sidebar\Welcome;
 use App\Twig\SidebarContent;
-use Kookaburra\Library\Form\ReturnActionType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,7 +114,8 @@ class SidebarListener implements EventSubscriberInterface
         if (count($x) < 2 && !in_array($moduleName, ['home']))
             return ;
 
-        switch ($moduleName) {
+        switch ($route) {
+            case 'user_admin__registration_public':
             case 'home':
                 $this->getSidebar()->addContent(new Login());
                 break;
