@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Util\StringUtil;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -28,6 +29,14 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class CustomFieldType extends AbstractType
 {
+    private $field;
+
+    /**
+     * buildForm
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return FormBuilderInterface|void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $name = 'value';
@@ -36,6 +45,7 @@ class CustomFieldType extends AbstractType
         foreach($options['customFields'] as $field)
             if ($fieldID === $field->getId())
                 break;
+        $this->field = $field;
 
         switch($field->getType()) {
             case 'date':
@@ -49,6 +59,7 @@ class CustomFieldType extends AbstractType
                         ],
                         'help' => $field->getDescription(),
                         'translation_domain' => false,
+                        'input' => 'date_immutable',
                         'constraints' => $field->getRequired() === 'Y' ? [
                             new NotBlank(),
                         ] : [],
@@ -168,8 +179,21 @@ class CustomFieldType extends AbstractType
             [
                 'translation_domain' => false,
                 'data_class' => null,
-                'customFields' => [],
             ]
         );
+        $resolver->setRequired(
+            [
+                'customFields',
+            ]
+        );
+    }
+
+    /**
+     * getBlockPrefix
+     * @return string
+     */
+    public function getBlockPrefix()
+    {
+        return 'react_sub_form';
     }
 }

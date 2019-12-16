@@ -81,6 +81,7 @@ class ToggleType extends AbstractType
         $view->vars['visibleByClass'] = $options['visibleByClass'];
         $view->vars['visibleWhen'] = $options['visibleWhen'];
         $view->vars['values'] = $options['values'];
+        $view->vars['errors'] = $form->getParent()->getErrors();
         $this->scriptManager->addPageScript('components/toggle_visibleByClass.html.twig', ['id' => $view->vars['id']]);
     }
 }

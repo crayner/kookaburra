@@ -180,7 +180,6 @@ export default function Widget(props) {
         )
     }
 
-
     if (form.type === 'collection') {
         if (typeof form.children === 'undefined')
             form.children = []
@@ -204,7 +203,7 @@ export default function Widget(props) {
 
     if (form.type === 'toggle') {
         widget_attr.type = 'hidden'
-        wrapper_attr.className += ' right'
+        wrapper_attr.className += ' w-full right'
         let button_attr = {}
         button_attr.onClick = (e) => functions.onElementChange(e, form)
         button_attr.className = 'button'

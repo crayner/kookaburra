@@ -171,7 +171,7 @@
     {% if getSettingByScope('User Admin', 'enablePublicRegistration') is same as('Y') %}
         <div class="column-no-break">
             <h2>{{'Register'|trans}}</h2>
-            <p><a href="{{ path('registration_public') }}">{{ 'Join our learning community.'|trans }}</a> {{ "It's free!"|trans }}</p>
+            <p><a href="{{ path('user_admin__registration_public') }}">{{ 'Join our learning community.'|trans }}</a> {{ "It's free!"|trans }}</p>
         </div>
     {% endif %}
 {% endif %}

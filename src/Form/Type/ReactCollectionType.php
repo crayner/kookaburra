@@ -91,5 +91,6 @@ class ReactCollectionType extends AbstractType
         $view->vars['element_delete_route'] = $options['element_delete_route'];
         $view->vars['element_delete_options'] = $options['element_delete_options'];
         $view->vars['header_row'] = $options['header_row'];
+        $view->vars['label'] = $options['label'];
     }
 }

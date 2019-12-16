@@ -172,7 +172,8 @@ class ReactFormType extends AbstractType
         }
 
         $vars['type'] = $this->renderFormType($view->vars['block_prefixes']);
-
+if($vars['type'] === 'toggle')
+    dump($view);
         $vars['value'] = $view->vars['value'];
 
         if (is_object($view->vars['value']) && in_array(EntityInterface::class, class_implements($view->vars['value']))) {
@@ -223,7 +224,7 @@ class ReactFormType extends AbstractType
         $vars['column_attr'] = $view->vars['column_attr'];
         $vars['row_id'] = $view->vars['row_id'];
         $vars['wrapper_class'] = $view->vars['wrapper_class'];
-        $vars['errors'] =  isset($view->vars['errors']) ? $this->renderErrors($view->vars['errors']) : [];
+        $vars['errors'] = isset($view->vars['errors']) ? $this->renderErrors($view->vars['errors']) : [];
         if (isset($view->vars['visibleByClass'])) {
             $vars['visibleByClass'] = $view->vars['visibleByClass'];
             $vars['visibleWhen'] = $view->vars['visibleWhen'];
@@ -263,6 +264,14 @@ class ReactFormType extends AbstractType
             if (isset($view->vars['help']) && !(null === $view->vars['help'] || false === $view->vars['help']))
                 $vars['help'] = $view->vars['help'];
         }
+        if (isset($view->vars['label']) && !isset($vars['label']))
+            $vars['label'] = $view->vars['label'];
+        if (isset($view->vars['help']) && !isset($vars['help']))
+            $vars['help'] = $view->vars['help'];
+        if (isset($view->vars['label_attr']))
+            $vars['label_attr'] = $view->vars['label_attr'];
+        if (isset($view->vars['help_attr']))
+            $vars['help_attr'] = $view->vars['help_attr'];
 
         foreach($view->vars['attr'] as $attrName=>$attr)
             if (in_array($attrName, ['title', 'placeholder']))

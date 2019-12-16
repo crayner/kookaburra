@@ -51,6 +51,13 @@ export default function Row(props) {
 
     if (form.row_style === 'transparent' || form.row_style === 'repeated')
     {
+        if (form.type === 'collection') {
+            Object.keys(form.children).map(childKey => {
+                let child = form.children[childKey]
+                return (<Widget form={child} functions={functions} />)
+            })
+        }
+
         return Object.keys(form.children).map(childKey => {
             let child = form.children[childKey]
             if (child.type === 'password_generator' && childKey === 'second') {
