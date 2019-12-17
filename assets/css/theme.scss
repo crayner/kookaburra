@@ -352,3 +352,11 @@ input.button, a.button, button.button {
     max-height: 80%;
     overflow: auto;
 }
+.primary {
+    background-color: #007BFF;
+    border-color: #00008B;
+    color: white;
+}
+.pointer-hover:hover {
+    cursor: pointer;
+}

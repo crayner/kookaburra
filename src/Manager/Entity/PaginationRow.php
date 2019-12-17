@@ -154,6 +154,38 @@ class PaginationRow
             'prevPage' => TranslationsHelper::translate('Previous Page'),
             'nextPage' => TranslationsHelper::translate('Next Page'),
             'lastPage' => TranslationsHelper::translate('Last Page'),
+            'search' => $this->isSearch(),
+            'filterGroups' => $this->isFilterGroups(),
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSearch(): bool
+    {
+        foreach($this->getColumns() as $column)
+        {
+            if ($column['search'])
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFilterGroups(): bool
+    {
+        foreach($this->getFilters() as $filter)
+        {
+            if ($filter['group'] === null)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

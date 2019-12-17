@@ -11,8 +11,11 @@ export default function HeaderRow(props) {
         sortColumnDirection,
     } = props
 
-    let columns = Object.keys(row.columns).map(columnKey => {
+    let columns = []
+    Object.keys(row.columns).map(columnKey => {
         const column = row.columns[columnKey]
+        if (column.dataOnly)
+            return
         const help = column.help !== null ? (<span className={'small text-gray-600 italic'}><br/>{column.help}</span>) : ''
         let sort = column.sort === true ? (<span className={'fas fa-sort fa-fw text-gray-600'} style={{float: 'right'}}></span>) : ''
         let w = sortColumnName
@@ -24,13 +27,14 @@ export default function HeaderRow(props) {
 
         let headerClass = column.headerClass !== '' ? column.headerClass : column.class
 
-        return (<th className={headerClass} key={columnKey} onClick={() => sortColumn(column.contentKey)}>{sort}{column.label}{help}</th>)
+        columns.push(<th className={headerClass} key={columnKey} onClick={() => sortColumn(column.contentKey)}>{sort}{column.label}{help}</th>)
     })
 
     if (row.actions.length > 0) {
         columns.push(<th className={'column width1'} key={'actions'}>{row.actionTitle}</th>)
     }
-    return (<thead><tr className={'head text-xs'}>{columns}</tr></thead>)
+
+    return (<tr className={'head text-xs'}>{columns}</tr>)
 }
 
 

@@ -27,8 +27,11 @@ export default function PaginationContent(props) {
     let rows = Object.keys(content).map(rowKey => {
         const rowContent = content[rowKey]
 
-        let columns = Object.keys(row.columns).map(columnKey => {
+        let columns = []
+        Object.keys(row.columns).map(columnKey => {
             let columnDefinition = row.columns[columnKey]
+            if (columnDefinition.dataOnly)
+                return
             let columnContent = []
             if (typeof columnDefinition.contentKey === 'object')
             {
@@ -73,8 +76,7 @@ export default function PaginationContent(props) {
                 columnContent = [rowContent[columnDefinition.contentKey]]
             }
 
-            return (<td key={columnKey} className={columnDefinition.class}>{columnContent}</td> )
-
+            columns.push(<td key={columnKey} className={columnDefinition.class}>{columnContent}</td> )
         })
 
         // add Actions column

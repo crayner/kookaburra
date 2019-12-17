@@ -40,6 +40,11 @@ class PaginationFilter
     private $contentKey;
 
     /**
+     * @var string|null
+     */
+    private $group;
+
+    /**
      * @return string
      */
     public function getName(): string
@@ -120,6 +125,26 @@ class PaginationFilter
     }
 
     /**
+     * @return string|null
+     */
+    public function getGroup(): ?string
+    {
+        return $this->group;
+    }
+
+    /**
+     * Group.
+     *
+     * @param string|null $group
+     * @return PaginationFilter
+     */
+    public function setGroup(?string $group): PaginationFilter
+    {
+        $this->group = $group;
+        return $this;
+    }
+
+    /**
      * toArray
      * @return array
      */
@@ -130,6 +155,7 @@ class PaginationFilter
         foreach($result as $q=>$w)
             $x[str_replace("\x00App\Manager\Entity\PaginationFilter\x00", '', $q)] = $w;
         $x['label'] = TranslationsHelper::translate($x['label'] ?: $x['name']);
+        $x['group'] = $x['group'] ? TranslationsHelper::translate($x['group']) : null;
         return $x;
     }
 }

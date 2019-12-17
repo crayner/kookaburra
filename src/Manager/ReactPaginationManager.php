@@ -224,12 +224,15 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      */
     public function getTranslations(): array
     {
-        TranslationsHelper::addTranslation('Are you sure you want to delete this record?');
-        TranslationsHelper::addTranslation('This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!');
-        TranslationsHelper::addTranslation('Close');
-        TranslationsHelper::addTranslation('Yes');
-        TranslationsHelper::addTranslation('Filter');
-        TranslationsHelper::addTranslation('All');
+        TranslationsHelper::addTranslation('Are you sure you want to delete this record?', [], 'messages');
+        TranslationsHelper::addTranslation('This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!', [], 'messages');
+        TranslationsHelper::addTranslation('Close', [], 'messages');
+        TranslationsHelper::addTranslation('Yes', [], 'messages');
+        TranslationsHelper::addTranslation('Filter', [], 'messages');
+        TranslationsHelper::addTranslation('All', [], 'messages');
+        TranslationsHelper::addTranslation('Clear', [], 'messages');
+        TranslationsHelper::addTranslation('Search for', [], 'messages');
+        TranslationsHelper::addTranslation('Filter Select', [], 'messages');
         return TranslationsHelper::getTranslations();
     }
 

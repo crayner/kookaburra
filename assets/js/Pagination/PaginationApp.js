@@ -6,10 +6,10 @@ import HeaderRow from "./HeaderRow"
 import firstBy from 'thenby'
 import PaginationContent from "./PaginationContent"
 import PaginationFilter from "./PaginationFilter"
+import PaginationSearch from "./PaginationSearch"
 import AreYouSureDialog from "../component/AreYouSureDialog"
 import InformationDetail from "../component/InformationDetail"
 import {fetchJson} from "../component/fetchJson"
-import {isEmpty} from "../component/isEmpty"
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -19,6 +19,9 @@ export default class PaginationApp extends Component {
         this.content = props.content
         this.filters = props.row.filters
         this.messages = props.translations
+        this.search = props.row.search
+        this.filterGroups = props.row.filterGroups
+        this.columnCount = 0
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
@@ -29,6 +32,8 @@ export default class PaginationApp extends Component {
         this.closeConfirm = this.closeConfirm.bind(this)
         this.adjustPageSize = this.adjustPageSize.bind(this)
         this.changeFilter = this.changeFilter.bind(this)
+        this.changeSearch = this.changeSearch.bind(this)
+        this.clearSearch = this.clearSearch.bind(this)
         this.functions = {
             areYouSure: this.areYouSure.bind(this),
             displayInformation: this.displayInformation.bind(this)
@@ -44,12 +49,23 @@ export default class PaginationApp extends Component {
             confirm: false,
             information: false,
             filteredContent: this.content,
-            filter: '',
+            filter: [],
+            filterGroups: {},
+            search: '',
         }
     }
 
     componentDidMount() {
         let result = this.paginateContent(this.content,this.state.offset)
+        this.columnCount = 0
+        this.row.columns.map(column => {
+            if (column.dataOnly === false)
+                this.columnCount = this.columnCount + 1
+        })
+
+        if (this.row.actions.length > 0)
+            this.columnCount = this.columnCount + 1
+
         this.setState({
             results: result,
             control: this.buildControl(this.state.offset, result),
@@ -140,10 +156,9 @@ export default class PaginationApp extends Component {
     paginateContent(content, offset, pageMax = 0, filter = null) {
         if (pageMax === 0)
             pageMax = this.state.pageMax
-        if (this.state.filter === '') {
+        if (this.state.filter === []) {
             return content.slice(offset, offset + pageMax)
         }
-        filter = filter === null ? this.state.filter : filter
 
         return content.slice(offset, offset + pageMax)
     }
@@ -241,40 +256,131 @@ export default class PaginationApp extends Component {
         return control
     }
 
-    filterContent(filter) {
-        if (isEmpty(filter))
-            return this.content
+    filterContent(filter, search) {
+        if (filter === [])
+            filter = this.state.filter
 
-        filter = this.filters[filter]
-        const content = this.content.filter(value => {
-            if (filter.value === value[filter.contentKey])
-                return value
+        let content = this.content
+        filter.map(filterValue => {
+            const filterDetail = this.filters[filterValue]
+            let filtered = content.filter(value => {
+                if (filterDetail.value === value[filterDetail.contentKey])
+                    return value
+            })
+            content = filtered
         })
 
+        if (this.search && search !== '') {
+            search = search.toLowerCase()
+            let filtered = []
+            content.filter(value => {
+                let selected = false
+                this.row.columns.map(column => {
+                    if (column.search) {
+                        column.contentKey.map(key => {
+                            if (!selected && typeof value[key] !== 'undefined' && value[key].toLowerCase().includes(search)) {
+                                selected = true
+                                filtered.push(value)
+                            }
+                        })
+                    }
+                })
+            })
+            content = filtered
+        }
         return content
     }
 
-    changeFilter(e) {
-        const filteredContent = this.filterContent(e.target.value)
+    changeFilter(value) {
+        if (typeof value.group === 'undefined') {
+            if (value.target.value === '')
+                return
+            value = this.filters[value.target.value]
+        }
+
+        let filterGroups = {...this.state.filterGroups}
+        let filter = this.state.filter
+        if (this.filterGroups) {
+            let was = filterGroups[value.group]
+            if (was === undefined) {
+                filterGroups[value.group] = value.name
+            } else if (was === value.name) {
+                delete filterGroups[value.group]
+            } else {
+                filterGroups[value.group] = value.name
+            }
+            filter = Object.keys(filterGroups).map(q => {
+                return filterGroups[q]
+            })
+        } else {
+            filter = [value.name]
+        }
+        const filteredContent = this.filterContent(filter, this.state.search)
         let result = this.paginateContent(this.sortContent('', '', filteredContent), 0, 0)
         this.setState({
             results: result,
             control: this.buildControl(this.state.offset, result),
-            filter: e.target.value,
+            filter: filter,
             filteredContent: filteredContent,
+            filterGroups: filterGroups
         })
+    }
+
+    changeSearch(e) {
+        const filteredContent = this.filterContent(this.state.filter, e.target.value)
+
+        let results = this.paginateContent(this.sortContent('', '', filteredContent), 0, 0)
+
+        this.setState({
+            search: e.target.value,
+            results: results,
+            control: this.buildControl(this.state.offset, results),
+            filteredContent: filteredContent
+        })
+    }
+
+    clearSearch(e) {
+        const filteredContent = this.filterContent(this.state.filter, '')
+
+        let results = this.paginateContent(this.sortContent('', '', filteredContent), 0, 0)
+
+        this.setState({
+            search: '',
+            results: results,
+            control: this.buildControl(this.state.offset, results),
+            filteredContent: filteredContent
+        })
+    }
+
+    searchFilter() {
+        if (this.search)
+            return ''
+        if (Object.keys(this.filters).length > 0)
+            return ''
+        return 'none'
     }
 
     render () {
         return (
             <div>
                 <div className={'text-xs text-gray-600 text-left'}>
-                    <PaginationFilter filter={this.state.filter} filters={this.filters} changeFilter={this.changeFilter} messages={this.messages}/>
-                    <span style={{float: 'left'}}>{this.buildPageSizeControls()}</span>
+                    <span style={{float: 'left', clear: 'both'}}>{this.buildPageSizeControls()}</span>
                     <span style={{float: 'right'}}>{this.buildControl()}</span>
                 </div>
                 <table className={'w-full striped'}>
-                    <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn} sortColumnDirection={this.state.sortDirection} />
+                    <thead>
+                        <tr style={{display: this.searchFilter()}}>
+                            <td colSpan={this.columnCount}>
+                                <table className={'noIntBorder fullWidth relative'}>
+                                    <tbody>
+                                        <PaginationSearch search={this.search} messages={this.messages} clearSearch={this.clearSearch} changeSearch={this.changeSearch} searchValue={this.state.search} />
+                                        <PaginationFilter filter={this.state.filter} filters={this.filters} changeFilter={this.changeFilter} messages={this.messages} filterGroups={this.state.filterGroups} />
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn} sortColumnDirection={this.state.sortDirection} />
+                    </thead>
                     <PaginationContent row={this.row} content={this.state.results} functions={this.functions} />
                 </table>
                 <AreYouSureDialog messages={this.messages} doit={() => this.deleteItem(this.path)} cancel={() => this.closeConfirm()} confirm={this.state.confirm} />

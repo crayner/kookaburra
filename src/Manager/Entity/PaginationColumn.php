@@ -12,8 +12,6 @@
 
 namespace App\Manager\Entity;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 /**
  * Class PaginationColumn
  * @package App\Manager\Entity
@@ -59,6 +57,16 @@ class PaginationColumn
      * @var array
      */
     private $options = [];
+
+    /**
+     * @var bool
+     */
+    private $search = false;
+
+    /**
+     * @var bool
+     */
+    private $dataOnly = false;
 
     /**
      * @return string|null
@@ -217,6 +225,46 @@ class PaginationColumn
     public function setHeaderClass(string $headerClass): PaginationColumn
     {
         $this->headerClass = $headerClass;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSearch(): bool
+    {
+        return $this->search;
+    }
+
+    /**
+     * Search.
+     *
+     * @param bool $search
+     * @return PaginationColumn
+     */
+    public function setSearch(bool $search): PaginationColumn
+    {
+        $this->search = $search;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDataOnly(): bool
+    {
+        return $this->dataOnly;
+    }
+
+    /**
+     * DataOnly.
+     *
+     * @param bool $dataOnly
+     * @return PaginationColumn
+     */
+    public function setDataOnly(bool $dataOnly): PaginationColumn
+    {
+        $this->dataOnly = $dataOnly;
         return $this;
     }
 

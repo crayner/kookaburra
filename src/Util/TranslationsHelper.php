@@ -64,24 +64,42 @@ class TranslationsHelper
 
     /**
      * addTranslation
-     * @return ReactFormType
+     * @param string|null $id
+     * @param array $options
+     * @param string|null $domain
      */
-    public static function addTranslation(string $id, array $options = [], ?string $domain = null)
+    public static function addTranslation(?string $id, array $options = [], ?string $domain = null)
     {
-        self::getTranslations();
-        self::$translations[$id] = self::translate($id, $options, $domain ?: self::getDomain());
+        if (null !== $id) {
+            self::getTranslations();
+            self::$translations[$id] = self::translate($id, $options, $domain ?: self::getDomain());
+        }
+    }
+
+    /**
+     * addTranslation
+     * @param string|null $id
+     * @param array $options
+     * @param string|null $domain
+     */
+    public static function setTranslation(string $id, string $value, array $options = [], ?string $domain = null)
+    {
+        if (null !== $id && null !== $value) {
+            self::getTranslations();
+            self::$translations[$id] = self::translate($value, $options, $domain ?: self::getDomain());
+        }
     }
 
     /**
      * translate
-     * @param string $id
+     * @param string|null $id
      * @param array $params
-     * @param string|null $domain  Override the default messages.
-     * @return string
+     * @param string|null $domain
+     * @return string|null
      */
-    public static function translate(string $id, array $params = [], ?string $domain = null): string
+    public static function translate(?string $id, array $params = [], ?string $domain = null): ?string
     {
-        if (null === self::$translator)
+        if (null === self::$translator || null === $id)
             return $id;
         return self::$translator->trans($id, $params, $domain ?: self::getDomain());
     }

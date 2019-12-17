@@ -8,26 +8,66 @@ export default function PaginationFilter(props) {
         changeFilter,
         filters,
         filter,
+        filterGroups,
         messages,
     } = props
 
     if (Object.keys(filters).length === 0)
-        return ('')
+        return (<tr style={{display: 'none'}}/>)
 
-    let key = 0
-    let filterOptions = Object.keys(filters).map(name => {
+    let optionGroups = []
+    Object.keys(filters).map(name => {
         let value = filters[name]
-        return (<option value={value.name}>{value.label}</option>)
+        if (!optionGroups.includes(value.group))
+            optionGroups.push(value.group)
     })
-    filterOptions.unshift(<option value={''}>{messages['Filter']}</option>)
+    let filterOptions = []
+    optionGroups.map(group => {
+        let options = Object.keys(filters).filter(name => {
+            let value = filters[name]
+            if (group === value.group)
+                return value
+        })
+        const choices = options.map(name => {
+            let value = filters[name]
+            return (<option value={value.name} key={name}>{value.label}</option>)
+        })
+        filterOptions.push(<optgroup key={group} label={group}>{choices}</optgroup> )
+    })
+    filterOptions.unshift(<option value={''} key={0}>{messages['Filter']}</option>)
 
-    return (<select id={'filter_select'} style={{float: 'left', margin: '-3px 20px 5px 0', maxHeight: '20px'}} value={filter} onChange={(e) => changeFilter(e)}>{filterOptions}</select>)
+    let activeFilters = []
+    if (filterGroups !== {}) {
+        activeFilters = Object.keys(filterGroups).map(q => {
+            const name = filterGroups[q]
+            const value = filters[name]
+            return (<span onClick={() => changeFilter(value)} className={'primary button-like pointer-hover'} key={q}>{name}&nbsp;<span className={'far fa-times-circle fa-fw'}></span></span>)
+        })
+    }
+
+    return (<tr className={'flex flex-col sm:flex-row justify-between content-center p-0'}>
+                <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0">
+                    <label htmlFor="manage_search_search">{messages['Filter Select']}</label>
+                    <div style={{marginTop: '7px', height: '20px'}}>
+                    {activeFilters}
+                    </div>
+                </td>
+                <td className={'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0'}>
+                    <div className={'flex-1 relative'}>
+                        <select id={'filter_select'} onChange={(e) => changeFilter(e)} value={''} className={'w-full'}>{filterOptions}</select>
+                    </div>
+                </td>
+            </tr>)
 }
 
 PaginationFilter.propTypes = {
-    filter: PropTypes.string.isRequired,
-    filters: PropTypes.object.isRequired,
+    filter: PropTypes.array.isRequired,
+    filters: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.object,
+    ]).isRequired,
     changeFilter: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
+    filterGroups: PropTypes.object.isRequired,
 }
 
