@@ -17,6 +17,8 @@ use App\Manager\EntityInterface;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
 use Kookaburra\SystemAdmin\Manager\StringReplacementPagination;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Class ImageHelper
@@ -143,5 +145,34 @@ class ImageHelper
     {
         $link = ltrim(str_replace(self::getAbsolutePath(), '', $link), '/\\');
         return self::getAbsolutePath() . '/' . str_replace('\\', '/', $link);
+    }
+
+    /**
+     * deleteImage
+     * @param string $image
+     * @return bool
+     */
+    public static function deleteImage(string $image): bool
+    {
+        if (!is_file(self::getAbsoluteImagePath($image)))
+            return true;
+        $file = new File(self::getAbsoluteImagePath($image));
+        $fs = new Filesystem();
+        $fs->remove($file->getRealPath());
+        return true;
+    }
+
+    /**
+     * getRelativePath
+     * Relative to the public path
+     * @param string $image
+     */
+    public static function getRelativePath(?string $image)
+    {
+        if (empty($image)) return '';
+        $image = str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '|', $image);
+        $abs = str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '|', self::getAbsolutePath());
+
+        return str_replace('|', DIRECTORY_SEPARATOR, str_replace($abs, '', $image));
     }
 }

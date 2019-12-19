@@ -23,7 +23,7 @@ class StringHelper
      * @param string $value
      * @return string
      */
-    public static function toCamelCase(string $value): string
+    public static function toSnakeCase(string $value): string
     {
         return strtolower(preg_replace('/[A-Z]/', '_\\0', lcfirst(preg_replace('/[^A-Za-z0-9:]/', '', $value))));
     }

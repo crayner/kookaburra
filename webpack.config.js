@@ -25,6 +25,7 @@ Encore
     .addEntry('default', './assets/themes/default/default.js')
     .addEntry('container','./assets/js/container.js')
     .addEntry('pagination','./assets/js/pagination.js')
+    .addEntry('photoLoader','./assets/js/photoLoader.js')
     .addStyleEntry('css/theme', './assets/css/theme.scss')
     .addStyleEntry('css/app', './assets/css/app.scss')
     .splitEntryChunks()
