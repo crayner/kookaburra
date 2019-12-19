@@ -72,25 +72,25 @@ export default function RenderPeople(props) {
         }
 
         return (
-                <Dropzone
-                    getUploadParams={getUploadParams}
-                    onChangeStatus={handleChangeStatus}
-                    maxFiles={1}
-                    multiple={false}
-                    canCancel={false}
-                    maxSizeBytes={350000}
-                    validate={validateImage}
-                    accept="image/jpeg,image/png"
-                    InputComponent={dropFilesHere}
-                    styles={{
-                        dropzone: {height: 120, border: '1px solid gray'},
-                        dropzoneActive: {borderColor: 'green', backgroundColor: 'aquamarine'},
-                        dropzoneReject: {borderColor: 'red', backgroundColor: 'moccasin'},
-                    }}
-                    classNames={{
-                        previewImage: 'user max100',
-                    }}
-                />
+            <Dropzone
+                getUploadParams={getUploadParams}
+                onChangeStatus={handleChangeStatus}
+                maxFiles={1}
+                multiple={false}
+                canCancel={false}
+                maxSizeBytes={350000}
+                validate={validateImage}
+                accept="image/jpeg,image/png"
+                InputComponent={dropFilesHere}
+                styles={{
+                    dropzone: {height: 120, border: '1px solid gray'},
+                    dropzoneActive: {borderColor: 'green', backgroundColor: 'aquamarine'},
+                    dropzoneReject: {borderColor: 'red', backgroundColor: 'moccasin'},
+                }}
+                classNames={{
+                    previewImage: 'user max100',
+                }}
+            />
         )
     }
 
