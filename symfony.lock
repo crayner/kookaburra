@@ -153,6 +153,9 @@
     "kookaburra/roll-groups": {
         "version": "dev-master"
     },
+    "kookaburra/school-admin": {
+        "version": "dev-master"
+    },
     "kookaburra/system-admin": {
         "version": "dev-master"
     },

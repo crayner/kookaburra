@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d1f71589c01197cd265cb13e79a8c83",
+    "content-hash": "86f822abb71c4e436b5a73936ed1fc21",
     "packages": [
         {
             "name": "aura/sqlquery",
@@ -1993,6 +1993,48 @@
                 "doctrine"
             ],
             "time": "2019-12-09T02:16:11+00:00"
+        },
+        {
+            "name": "kookaburra/school-admin",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crayner/kookaburra-school-admin.git",
+                "reference": "04dd184c9587050aa77e8caf6949eb304cf30e92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/crayner/kookaburra-school-admin/zipball/04dd184c9587050aa77e8caf6949eb304cf30e92",
+                "reference": "04dd184c9587050aa77e8caf6949eb304cf30e92",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Kookaburra\\SchoolAdmin\\": "/src/"
+                },
+                "exclude-from-classmap": [
+                    "/tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Craig Rayner",
+                    "email": "craig@craigrayner.com"
+                }
+            ],
+            "description": "Kookaburra School Administration",
+            "keywords": [
+                "doctrine"
+            ],
+            "time": "2019-12-20T21:04:42+00:00"
         },
         {
             "name": "kookaburra/system-admin",
@@ -7788,6 +7830,7 @@
         "kookaburra/departments": 20,
         "kookaburra/library": 5,
         "kookaburra/roll-groups": 20,
+        "kookaburra/school-admin": 20,
         "kookaburra/system-admin": 20,
         "kookaburra/user-admin": 20,
         "symfony/twig-pack": 20,

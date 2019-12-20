@@ -20,4 +20,5 @@ return [
     Kookaburra\Library\KookaburraLibraryBundle::class => ['all' => true],
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
+    Kookaburra\SchoolAdmin\KookaburraSchoolAdminBundle::class => ['all' => true],
 ];

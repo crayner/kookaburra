@@ -24,6 +24,7 @@
         "kookaburra/departments": "dev-master",
         "kookaburra/library": "1.0.00-RC4",
         "kookaburra/roll-groups": "dev-master",
+        "kookaburra/school-admin": "dev-master",
         "kookaburra/system-admin": "dev-master",
         "kookaburra/user-admin": "dev-master",
         "matthewbdaly/sms-client": "^1.0",
