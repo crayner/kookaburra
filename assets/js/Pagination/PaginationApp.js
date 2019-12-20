@@ -10,6 +10,7 @@ import PaginationSearch from "./PaginationSearch"
 import AreYouSureDialog from "../component/AreYouSureDialog"
 import InformationDetail from "../component/InformationDetail"
 import {fetchJson} from "../component/fetchJson"
+import {buildState, getParentFormName, mergeParentForm} from "../Container/ContainerFunctions"
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -21,6 +22,7 @@ export default class PaginationApp extends Component {
         this.messages = props.translations
         this.search = props.row.search
         this.filterGroups = props.row.filterGroups
+        this.contentLoader = props.contentLoader
         this.columnCount = 0
 
         this.sortColumn = this.sortColumn.bind(this)
@@ -66,11 +68,39 @@ export default class PaginationApp extends Component {
         if (this.row.actions.length > 0)
             this.columnCount = this.columnCount + 1
 
+        if (this.contentLoader !== false) {
+            this.row.emptyContent = this.messages['Loading Content...']
+            this.loadContent()
+        }
         this.setState({
             results: result,
             control: this.buildControl(this.state.offset, result),
             sizeButtons: this.buildPageSizeControls(this.state.pageMax),
             confirm: false,
+        })
+    }
+
+    loadContent() {
+        fetchJson(this.contentLoader, {}, false)
+            .then(data => {
+                if (data.status === 'success'){
+                    this.content = data.content
+                    this.pageMax = data.pageMax
+                    let result = this.paginateContent(this.content,0, this.pageMax)
+                    this.row.emptyContent = this.messages['There are no records to display.']
+                    this.setState({
+                        results: result
+                    })
+                } else {
+                    this.setState({
+                        information: data.message
+                    })
+                }
+            }).catch(error => {
+                console.error(error)
+                this.setState({
+                    information: error
+                })
         })
     }
 
@@ -153,12 +183,9 @@ export default class PaginationApp extends Component {
         )
     }
 
-    paginateContent(content, offset, pageMax = 0, filter = null) {
+    paginateContent(content, offset, pageMax = 0) {
         if (pageMax === 0)
             pageMax = this.state.pageMax
-        if (this.state.filter === []) {
-            return content.slice(offset, offset + pageMax)
-        }
 
         return content.slice(offset, offset + pageMax)
     }

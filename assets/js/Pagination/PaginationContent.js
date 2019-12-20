@@ -10,18 +10,22 @@ export default function PaginationContent(props) {
         row,
         content,
         functions,
-        scrollToElement,
     } = props
 
     if (content.length === 0)
     {
         return (
-            <tbody><tr><td colSpan={row.columns.length + 1}>
-            <div className="h-48 rounded-sm border bg-gray-100 shadow-inner overflow-hidden">
-            < div className="w-full h-full flex flex-col items-center justify-center text-gray-600 text-lg">
-                {row.emptyContent}
-            </div>
-            </div>></td></tr></tbody>)
+            <tbody>
+                <tr>
+                    <td colSpan={row.columns.length + 1}>
+                        <div className="h-48 rounded-sm border bg-gray-100 shadow-inner overflow-hidden">
+                            < div className="w-full h-full flex flex-col items-center justify-center text-gray-600 text-lg">
+                                {row.emptyContent}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>)
     }
 
     let rows = Object.keys(content).map(rowKey => {

@@ -52,6 +52,11 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     private $targetElement = 'paginationContent';
 
     /**
+     * @var string|bool
+     */
+    private $contentLoader = false;
+
+    /**
      * ReactPaginationManager constructor.
      */
     public function __construct(ScriptManager $scriptManager)
@@ -195,6 +200,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),
             'content' => $this->getContent(),
+            'contentLoader' => $this->getContentLoader(),
             'translations' => $this->getTranslations(),
             'targetElement' => $this->getTargetElement(),
         ];
@@ -233,6 +239,8 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         TranslationsHelper::addTranslation('Clear', [], 'messages');
         TranslationsHelper::addTranslation('Search for', [], 'messages');
         TranslationsHelper::addTranslation('Filter Select', [], 'messages');
+        TranslationsHelper::addTranslation('There are no records to display.', [],'messages');
+        TranslationsHelper::addTranslation('Loading Content...', [],'messages');
         return TranslationsHelper::getTranslations();
     }
 
@@ -253,6 +261,27 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     public function setTargetElement(string $targetElement): ReactPaginationManager
     {
         $this->targetElement = $targetElement;
+        return $this;
+    }
+
+    /**
+     * @return bool|string
+     */
+    public function getContentLoader()
+    {
+        return $this->contentLoader;
+    }
+
+    /**
+     * ContentLoader.
+     *
+     * Url of the content loader
+     * @param bool|string $contentLoader
+     * @return ReactPaginationManager
+     */
+    public function setContentLoader(string $contentLoader)
+    {
+        $this->contentLoader = $contentLoader;
         return $this;
     }
 }
