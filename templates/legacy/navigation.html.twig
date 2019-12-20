@@ -43,11 +43,13 @@
             </ul>
         </nav>
     {% endif %}
-    
-    {% for code in page.extraSidebar if sidebar and sidebarPosition == 'bottom' %}
-    <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-0">
-        {{ code|raw }}
-    </div>
-    {% endfor %}
+
+    {% if sidebar and sidebarPosition == 'bottom' %}
+        {% for code in page.extraSidebar %}
+            <div class="md:column-2 lg:column-1 pt-6 sm:pt-16 lg:pt-0">
+                {{ code|raw }}
+            </div>
+        {% endfor %}
+    {% endif %}
 </div>
 

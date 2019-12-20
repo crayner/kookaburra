@@ -2,6 +2,9 @@
     "aura/sqlquery": {
         "version": "2.7.1"
     },
+    "crayner/ckeditor-bundle": {
+        "version": "2.1.51"
+    },
     "crayner/doctrine-bundle": {
         "version": "1.0.02"
     },
@@ -46,9 +49,6 @@
             "./src/Entity/.gitignore",
             "./src/Repository/.gitignore"
         ]
-    },
-    "doctrine/doctrine-cache-bundle": {
-        "version": "1.3.5"
     },
     "doctrine/doctrine-migrations-bundle": {
         "version": "1.2",
@@ -107,18 +107,6 @@
     },
     "fpdf/fpdf": {
         "version": "1.81.2"
-    },
-    "friendsofsymfony/ckeditor-bundle": {
-        "version": "2.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "2.0",
-            "ref": "8eb1cd0962ded6a6d6e1e5a9b6d3e888f9f94ff6"
-        },
-        "files": [
-            "./config/packages/fos_ckeditor.yaml"
-        ]
     },
     "google/apiclient": {
         "version": "2.0",
@@ -219,6 +207,9 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/event-dispatcher": {
+        "version": "1.0.0"
+    },
     "psr/http-message": {
         "version": "1.0.1"
     },
@@ -270,9 +261,6 @@
     },
     "symfony/css-selector": {
         "version": "4.4.x-dev"
-    },
-    "symfony/debug": {
-        "version": "v4.3.1"
     },
     "symfony/debug-bundle": {
         "version": "4.1",

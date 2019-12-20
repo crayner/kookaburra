@@ -29,7 +29,7 @@ class SettingsExtension extends AbstractTypeExtension
      * getExtendedTypes
      * @return array|iterable
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): iterable
     {
         return [
             FormType::class,
