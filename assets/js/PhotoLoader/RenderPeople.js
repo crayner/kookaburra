@@ -59,15 +59,15 @@ export default function RenderPeople(props) {
                     message = messages['error_height_width'].replace('{height}', meta.height).replace('{width}', meta.width)
                 const ratio = meta.width / meta.height
                 if ((ratio < 0.7 || ratio > 0.84) && message === '')
-                    message = messages['error_ratio'].replace('{ratio}', ratio)
+                    message = messages['error_ratio'].replace('{ratio}', ratio.toFixed(2))
                 addMessage(message ,'error')
                 remove()
             }
         }
 
-        const dropFilesHere = () => {
+        const dropFilesHere = (meta) => {
             return (<div style={{width: '100%', height: '100%', textAlign: 'center', verticalAlign: 'middle', position: 'relative'}}>
-                <span style={{position: 'absolute', margin: 0, top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>{messages['Drop Image Here']}</span>
+                <span style={{position: 'absolute', margin: 0, top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.8rem'}}>{meta.extra.reject ? messages['Images [.jpg, .png, .jpeg] only'] : messages['Drop Image Here']}</span>
             </div>)
         }
 
@@ -112,7 +112,7 @@ export default function RenderPeople(props) {
             <tr id="" className=" flex flex-col sm:flex-row justify-between content-center p-0">
                 <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0  px-2 border-b-0 sm:border-b border-t-0 ">
                     <label className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Replace this image']}<br/><span style={{fontWeight: 'normal'}}>{chosen.name}</span>
-                        <button type={'button'} className={'close-button grey'} title={messages['Remove Photo']} onClick={() => removePhoto(chosen)} style={{float: 'right'}} >
+                        <button type={'button'} className={'close-button grey'} title={messages['Remove Photo']} onClick={() => removePhoto(chosen)} style={{float: 'right', marginTop: '-19px'}} >
                             <span className={'fas fa-eraser fa-fw'} />
                         </button>
                         <img src={chosen.photo} title={chosen.name} className={'user max100 right'} style={{float: 'right', marginTop: '-19px'}} />

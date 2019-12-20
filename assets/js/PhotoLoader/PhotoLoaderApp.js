@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import RenderPeople from "./RenderPeople"
 import {fetchJson} from "../component/fetchJson"
-import {buildState, changeFormValue, getParentFormName, mergeParentForm} from "../Container/ContainerFunctions"
 
 export default class PhotoLoaderApp extends Component {
     constructor (props) {
@@ -12,6 +11,7 @@ export default class PhotoLoaderApp extends Component {
         this.people = props.people
         this.messages = props.messages
         this.absolute_url = props.absolute_url
+        this.timeout = null
 
         this.selectPerson = this.selectPerson.bind(this)
         this.addMessage = this.addMessage.bind(this)
@@ -31,12 +31,13 @@ export default class PhotoLoaderApp extends Component {
             status: status,
             message: message
         }
+        clearTimeout(this.timeout)
         let messages = this.state.messages
         messages.push(message)
         this.setState({
             messages: messages,
         })
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
             this.setState({
                 messages: []
             })
@@ -103,7 +104,6 @@ export default class PhotoLoaderApp extends Component {
             {},
             false
             ).then(data => {
-                console.log(data)
                 if (data.status === 'success') {
                     this.replacePerson(data.person)
                 } else if (data.status === 'error') {
