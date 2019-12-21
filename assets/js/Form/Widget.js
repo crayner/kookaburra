@@ -217,7 +217,7 @@ export default function Widget(props) {
         } else {
             form.value = 'N'
         }
-        if (typeof form.visibleByClass !== 'undefined')
+        if (typeof form.visibleByClass !== 'undefined' && form.visibleByClass !== false)
             functions.toggleVisibleByClass(form.value, form)
 
         return (
