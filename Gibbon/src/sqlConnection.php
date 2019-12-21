@@ -174,6 +174,7 @@ class sqlConnection implements ConnectionInterface
             $this->result->execute($data);
             $this->querySuccess = true;
         } catch(\PDOException $e) {
+            throw $e;
             $this->error = $e->getMessage();
             trigger_error(($error !== NULL)? str_replace('{message}', $this->error, $error) : $this->error, E_USER_WARNING);
         }

@@ -19,7 +19,7 @@ export default function PaginationContent(props) {
                 <tr>
                     <td colSpan={row.columns.length + 1}>
                         <div className="h-48 rounded-sm border bg-gray-100 shadow-inner overflow-hidden">
-                            < div className="w-full h-full flex flex-col items-center justify-center text-gray-600 text-lg">
+                            <div className="w-full h-full flex flex-col items-center justify-center text-gray-600 text-lg">
                                 {row.emptyContent}
                             </div>
                         </div>

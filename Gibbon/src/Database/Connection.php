@@ -194,6 +194,7 @@ class Connection implements ConnectionInterface
      */
     protected function handleQueryException($e)
     {
+        throw $e;
         trigger_error($e->getMessage(), E_USER_WARNING);
 
         return new \PDOStatement();
