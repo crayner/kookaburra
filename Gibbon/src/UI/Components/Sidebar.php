@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\UI\Components;
 
-use App\Entity\SchoolYear;
+use Kookaburra\SchoolAdmin\Entity\SchoolYear;
 use App\Manager\GibbonManager;
 use App\Provider\ProviderFactory;
 use App\Provider\SchoolYearProvider;

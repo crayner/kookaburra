@@ -14,8 +14,8 @@ namespace App\Repository;
 
 use App\Entity\CourseClass;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\SchoolYear;
-use App\Util\SchoolYearHelper;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
+use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -46,18 +46,18 @@ class CourseClassRepository extends ServiceEntityRepository
             ->leftJoin('cc.course', 'c')
             ->where('ccp.person = :person')
             ->setParameter('person', $person)
-            ->andWhere('c.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', SchoolYearHelper::getCurrentSchoolYear())
+            ->andWhere('c.academicYear = :academicYear')
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
             ->getQuery()
             ->getResult();
     }
 
     /**
      * findAccessibleClasses
-     * @param SchoolYear $schoolYear
+     * @param AcademicYear $schoolYear
      * @return mixed
      */
-    public function findAccessibleClasses(SchoolYear $schoolYear, string $classTitle)
+    public function findAccessibleClasses(AcademicYear $schoolYear, string $classTitle)
     {
         $result = $this->createQueryBuilder('cc')
             ->select([
@@ -66,8 +66,8 @@ class CourseClassRepository extends ServiceEntityRepository
                 'c.name AS search'
             ])
             ->join('cc.course', 'c')
-            ->where('c.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', $schoolYear)
+            ->where('c.academicYear = :academicYear')
+            ->setParameter('academicYear', $schoolYear)
             ->orderBy('text')
             ->getQuery()
             ->getResult();
@@ -76,18 +76,18 @@ class CourseClassRepository extends ServiceEntityRepository
 
     /**
      * findByPersonSchoolYear
-     * @param SchoolYear $schoolYear
+     * @param AcademicYear $schoolYear
      * @param Person $person
      * @return mixed
      */
-    public function findByPersonSchoolYear(SchoolYear $schoolYear, Person $person)
+    public function findByPersonSchoolYear(AcademicYear $schoolYear, Person $person)
     {
         return $this->createQueryBuilder('cc')
             ->distinct()
             ->leftJoin('cc.course', 'c')
             ->leftjoin('cc.courseClassPeople', 'ccp', 'with', 'ccp.person = :person')
-            ->where('c.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', $schoolYear)
+            ->where('c.academicYear = :academicYear')
+            ->setParameter('academicYear', $schoolYear)
             ->setParameter('person', $person)
             ->andWhere('ccp.role NOT LIKE :role')
             ->setParameter('role', '% - Left%')

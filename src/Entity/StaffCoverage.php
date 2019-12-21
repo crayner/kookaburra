@@ -15,6 +15,7 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
@@ -43,11 +44,11 @@ class StaffCoverage implements EntityInterface
     private $staffAbsence;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\OneToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID", nullable=false)
+     * @var AcademicYear|null
+     * @ORM\OneToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="gibbonAcademicYearID", nullable=false)
      */
-    private $schoolYear;
+    private $AcademicYear;
 
     /**
      * @var Person|null
@@ -183,22 +184,22 @@ class StaffCoverage implements EntityInterface
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->AcademicYear;
     }
 
     /**
-     * SchoolYear.
+     * AcademicYear.
      *
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $AcademicYear
      * @return StaffCoverage
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): StaffCoverage
+    public function setAcademicYear(?AcademicYear $AcademicYear): StaffCoverage
     {
-        $this->schoolYear = $schoolYear;
+        $this->AcademicYear = $AcademicYear;
         return $this;
     }
 

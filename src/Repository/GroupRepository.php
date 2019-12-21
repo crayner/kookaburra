@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\Group;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Util\SchoolYearHelper;
+use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -44,8 +44,8 @@ class GroupRepository extends ServiceEntityRepository
             ->leftJoin('g.people', 'gp')
             ->where('gp.person = :person')
             ->setParameter('person', $person)
-            ->andWhere('g.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', SchoolYearHelper::getCurrentSchoolYear())
+            ->andWhere('g.academicYear = :academicYear')
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
             ->getQuery()
             ->getResult();
     }

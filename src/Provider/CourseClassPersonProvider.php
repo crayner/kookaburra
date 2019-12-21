@@ -15,7 +15,7 @@ namespace App\Provider;
 use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
 use App\Manager\Traits\EntityTrait;
-use App\Util\SchoolYearHelper;
+use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 
 class CourseClassPersonProvider implements EntityProviderInterface
 {
@@ -32,7 +32,7 @@ class CourseClassPersonProvider implements EntityProviderInterface
      */
     public function getClassStudentList(CourseClass $class): array
     {
-        $schoolYear = SchoolYearHelper::getCurrentSchoolYear();
+        $schoolYear = AcademicYearHelper::getCurrentSchoolYear();
         $date = new \DateTime(date('Y-m-d'));
 
         $list = $this->getRepository()->findStudentsInClass($class, $schoolYear, $date);

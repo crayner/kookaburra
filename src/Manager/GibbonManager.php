@@ -13,7 +13,7 @@
 namespace App\Manager;
 
 use Kookaburra\SystemAdmin\Entity\Action;
-use App\Entity\SchoolYear;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use App\Provider\ProviderFactory;
 use App\Session\GibbonSession;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
@@ -437,12 +437,12 @@ class GibbonManager implements ContainerAwareInterface
     private function prepareSchoolYear(): self
     {
         $session = $this->request->getSession();
-        if (!$session->has('gibbonSchoolYearIDCurrent')) {
-            $schoolYear = ProviderFactory::getRepository(SchoolYear::class)->findOneByStatus('Current');
+        if (!$session->has('AcademicYearIDCurrent')) {
+            $schoolYear = ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current');
             if ($schoolYear) {
-                $session->set('gibbonSchoolYearIDCurrent', $schoolYear->getId());
-                $session->set('gibbonSchoolYearNameCurrent', $schoolYear->getName());
-                $session->set('gibbonSchoolYearSequenceNumberCurrent', $schoolYear->getSequenceNumber());
+                $session->set('AcademicYearIDCurrent', $schoolYear->getId());
+                $session->set('gibbonAcademicYearNameCurrent', $schoolYear->getName());
+                $session->set('gibbonAcademicYearSequenceNumberCurrent', $schoolYear->getSequenceNumber());
                 $session->set('schoolYearCurrent', $schoolYear);
             }
         }

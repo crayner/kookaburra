@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,9 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Course
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Course", indexes={@ORM\Index(name="gibbonSchoolYearID", columns={"gibbonSchoolYearID"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameYear",columns={ "gibbonSchoolYearID", "name"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameShortYear",columns={ "gibbonSchoolYearID", "nameShort"})})
- * @UniqueEntity({"schoolYear", "name"})
- * @UniqueEntity({"schoolYear", "nameShort"})
+ * @ORM\Table(options={"auto_increment": 1}, name="Course", indexes={@ORM\Index(name="academic_year", columns={"academic_year"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameYear",columns={ "academic_year", "name"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameShortYear",columns={ "academic_year", "nameShort"})})
+ * @UniqueEntity({"academicYear", "name"})
+ * @UniqueEntity({"academicYear", "nameShort"})
  */
 class Course implements EntityInterface
 {
@@ -44,11 +45,11 @@ class Course implements EntityInterface
     private $id;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID", nullable=false)
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      */
-    private $schoolYear;
+    private $academicYear;
 
     /**
      * @var Department|null
@@ -131,20 +132,20 @@ class Course implements EntityInterface
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->academicYear;
     }
 
     /**
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $academicYear
      * @return Course
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): Course
+    public function setAcademicYear(?AcademicYear $academicYear): Course
     {
-        $this->schoolYear = $schoolYear;
+        $this->academicYear = $academicYear;
         return $this;
     }
 

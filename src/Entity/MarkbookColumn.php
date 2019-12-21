@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
+use Kookaburra\SchoolAdmin\Entity\AcademicYearTerm;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,11 +69,11 @@ class MarkbookColumn
     private $plannerEntry;
 
     /**
-     * @var SchoolYearTerm|null
-     * @ORM\ManyToOne(targetEntity="SchoolYearTerm")
-     * @ORM\JoinColumn(name="gibbonSchoolYearTermID", referencedColumnName="gibbonSchoolYearTermID")
+     * @var AcademicYearTerm|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYearTerm")
+     * @ORM\JoinColumn(name="gibbonAcademicYearTermID", referencedColumnName="gibbonAcademicYearTermID")
      */
-    private $schoolYearTerm;
+    private $AcademicYearTerm;
 
     /**
      * @var integer|null
@@ -325,20 +326,20 @@ class MarkbookColumn
     }
 
     /**
-     * @return SchoolYearTerm|null
+     * @return AcademicYearTerm|null
      */
-    public function getSchoolYearTerm(): ?SchoolYearTerm
+    public function getAcademicYearTerm(): ?AcademicYearTerm
     {
-        return $this->schoolYearTerm;
+        return $this->AcademicYearTerm;
     }
 
     /**
-     * @param SchoolYearTerm|null $schoolYearTerm
+     * @param AcademicYearTerm|null $AcademicYearTerm
      * @return MarkbookColumn
      */
-    public function setSchoolYearTerm(?SchoolYearTerm $schoolYearTerm): MarkbookColumn
+    public function setAcademicYearTerm(?AcademicYearTerm $AcademicYearTerm): MarkbookColumn
     {
-        $this->schoolYearTerm = $schoolYearTerm;
+        $this->AcademicYearTerm = $AcademicYearTerm;
         return $this;
     }
 

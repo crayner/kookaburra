@@ -15,7 +15,7 @@ namespace App\Repository;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\RollGroup;
 use App\Entity\StudentEnrolment;
-use App\Util\SchoolYearHelper;
+use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -47,8 +47,8 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
             ->leftJoin('se.rollGroup', 'rg')
             ->where('rg.tutor = :person OR rg.tutor2 = :person OR rg.tutor3 = :person')
             ->setParameter('person', $person)
-            ->andWhere('se.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', SchoolYearHelper::getCurrentSchoolYear())
+            ->andWhere('se.academicYear = :academicYear')
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
             ->getQuery()
             ->getResult();
         $results = [];
@@ -67,9 +67,9 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
         $x = $this->createQueryBuilder('se')
             ->select('DISTINCT yg.id AS yearGroupList')
             ->leftJoin('se.yearGroup', 'yg')
-            ->where('se.schoolYear = :schoolYear')
+            ->where('se.academicYear = :academicYear')
             ->andWhere('se.person = :person')
-            ->setParameter('schoolYear', SchoolYearHelper::getCurrentSchoolYear())
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
             ->setParameter('person', $person)
             ->getQuery()
             ->getResult();
@@ -82,7 +82,7 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
 
     /**
      * getStudentEnrolmentCount
-     * @param integer|null $gibbonSchoolYearID
+     * @param integer|null $AcademicYearID
      * @return int
      */
     public function getStudentEnrolmentCount(?int $schoolYearID = null): int
@@ -91,7 +91,7 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
             ->select('COUNT(p.id)')
             ->join('se.person', 'p')
             ->join('se.rollGroup', 'rg')
-            ->join('rg.schoolYear', 'sy')
+            ->join('rg.academicYear', 'sy')
             ->where('sy.id = :sy_id')
             ->setParameter('sy_id', intval($schoolYearID))
             ->getQuery()

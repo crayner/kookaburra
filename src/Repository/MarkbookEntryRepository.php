@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\MarkbookEntry;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\SchoolYear;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -36,11 +36,11 @@ class MarkbookEntryRepository extends ServiceEntityRepository
     /**
      * findAttainmentOrEffortConcerns
      * @param Person $person
-     * @param SchoolYear $schoolYear
+     * @param AcademicYear $schoolYear
      * @return mixed
      * @throws \Exception
      */
-    public function findAttainmentOrEffortConcerns(Person $person, SchoolYear $schoolYear)
+    public function findAttainmentOrEffortConcerns(Person $person, AcademicYear $schoolYear)
     {
         return $this->createQueryBuilder('me')
             ->join('me.markbookColumn', 'mc')
@@ -49,12 +49,12 @@ class MarkbookEntryRepository extends ServiceEntityRepository
             ->where('me.student = :person')
             ->andWhere('(me.attainmentConcern = :yes OR me.effortConcern = :yes)')
             ->andWhere('mc.complete = :yes')
-            ->andWhere('c.schoolYear = :schoolYear')
+            ->andWhere('c.academicYear = :academicYear')
             ->andWhere('mc.completeDate <= :today')
             ->andWhere('mc.completeDate > :date')
             ->setParameter('person', $person)
             ->setParameter('yes', 'Y')
-            ->setParameter('schoolYear', $schoolYear)
+            ->setParameter('academicYear', $schoolYear)
             ->setParameter('today', new \DateTime(date('Y-m-d'))) // today
             ->setParameter('date', new \DateTime(date('Y-m-d', strtotime('-60 day')))) // 60 days ago
             ->getQuery()

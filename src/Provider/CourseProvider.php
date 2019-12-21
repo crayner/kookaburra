@@ -33,6 +33,6 @@ class CourseProvider implements EntityProviderInterface
      */
     public function getByDepartment(Department $department): array
     {
-        return $this->getRepository()->findByDepartment($department, $this->getSession()->get('schoolYear'));
+        return $this->getRepository()->findByDepartment($department, $this->getSession()->get('academicYear'));
     }
 }

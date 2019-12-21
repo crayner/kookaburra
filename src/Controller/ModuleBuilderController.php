@@ -30,8 +30,8 @@ class ModuleBuilderController extends AbstractController
      */
     public function build()
     {
-        dump('Change the search detail here to map a module/actions/permissions');
-        $module = ProviderFactory::create(Module::class)->find(2);
+        $module = ProviderFactory::create(Module::class)->find(1); //School Admin
+        dump('Change the search detail here to map a module/actions/permissions. Currently ' . $module->getName());
         $result = [];
         $x['name'] = $module->getName();
         $x['description'] = $module->getDescription();

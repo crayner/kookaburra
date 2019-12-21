@@ -15,7 +15,7 @@ namespace App\Provider;
 use App\Entity\Log;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\SchoolYear;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use App\Manager\Traits\EntityTrait;
 use App\Util\GlobalHelper;
 
@@ -35,7 +35,7 @@ class LogProvider implements EntityProviderInterface
 
     /**
      * setLog
-     * @param int|SchoolYear|null $schoolYearID
+     * @param int|AcademicYear|null $schoolYearID
      * @param int|Module|null $moduleID
      * @param int|Person|null $personID
      * @param $title
@@ -56,7 +56,7 @@ class LogProvider implements EntityProviderInterface
         $provider->setEntity($log);
         $person = $personID instanceof Person ? $personID : $provider->getRepository(Person::class)->find(intval($personID));
         $module = $moduleID instanceof Module ? $moduleID : $provider->getRepository(Module::class)->find(intval($moduleID));
-        $schoolYear = $schoolYearID instanceof SchoolYear ? $schoolYearID : $provider->getRepository(SchoolYear::class)->find(intval($schoolYearID));
+        $schoolYear = $schoolYearID instanceof AcademicYear ? $schoolYearID : $provider->getRepository(AcademicYear::class)->find(intval($schoolYearID));
         $log->setPerson($person)
             ->setModule($module)
             ->setSchoolYear($schoolYear)

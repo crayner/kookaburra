@@ -14,7 +14,7 @@ namespace App\Session;
 use App\Entity\I18n;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\SystemAdmin\Entity\Role;
-use App\Entity\SchoolYear;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Gibbon\Contracts\Database\Connection;
@@ -85,13 +85,13 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
             case 'guid':
                 return $this->guid();
                 break;
-            case 'schoolYear':
+            case 'academicYear':
                 if (null === $this->getAttributeBag()->get($name, null))
                 {
-                    $id = $this->getAttributeBag()->get('gibbonSchoolYearID', 0);
-                    $schoolYear = ProviderFactory::getRepository(SchoolYear::class)->find($id) ?: ProviderFactory::getRepository(SchoolYear::class)->findOneByStatus('Current');
-                    $this->set('schoolYear', $schoolYear);
-                    $this->set('gibbonSchoolYearID', $schoolYear->getId());
+                    $id = $this->getAttributeBag()->get('AcademicYearID', 0);
+                    $schoolYear = ProviderFactory::getRepository(AcademicYear::class)->find($id) ?: ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current');
+                    $this->set('academicYear', $schoolYear);
+                    $this->set('AcademicYearID', $schoolYear->getId());
                     return $this->getAttributeBag()->get($name, null);
                 }
                 break;
@@ -107,9 +107,9 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
      */
     public function set($name, $value = null)
     {
-        if ($name === 'gibbonSchoolYearID' && (null === $value || '' === $value || 0 === $value))
+        if ($name === 'AcademicYearID' && (null === $value || '' === $value || 0 === $value))
         {
-            $schoolYear = ProviderFactory::getRepository(SchoolYear::class)->findOneBy(['status' => 'Current']);
+            $schoolYear = ProviderFactory::getRepository(AcademicYear::class)->findOneBy(['status' => 'Current']);
             $value = $schoolYear ? $schoolYear->getId() : null;
         }
         $this->getAttributeBag()->set($name, $value);

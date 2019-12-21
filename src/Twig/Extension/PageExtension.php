@@ -12,10 +12,9 @@
 
 namespace App\Twig\Extension;
 
-
 use App\Entity\I18n;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\SchoolYear;
 use App\Entity\Setting;
 use App\Exception\MissingClassException;
 use App\Manager\EntityInterface;
@@ -40,6 +39,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
+/**
+ * Class PageExtension
+ * @package App\Twig\Extension
+ */
 class PageExtension extends AbstractExtension
 {
     /**
@@ -150,7 +153,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('getEncoreEntryCSSFiles', [$this->scriptManager, 'getEncoreEntryCSSFiles']),
             new TwigFunction('getToggleScripts', [$this->scriptManager, 'getToggleScripts']),
             new TwigFunction('pageManager', [$this, 'pageManager']),
-            new TwigFunction('getSchoolYears', [$this, 'getSchoolYears']),
+            new TwigFunction('getAcademicYears', [$this, 'getAcademicYears']),
             new TwigFunction('getActiveLanguages', [$this, 'getActiveLanguages']),
             new TwigFunction('getBackgroundImage', [$this, 'getBackgroundImage']),
             new TwigFunction('version_compare', [$this, 'version_compare']),
@@ -324,12 +327,12 @@ class PageExtension extends AbstractExtension
     }
 
     /**
-     * getSchoolYears
-     * @return SchoolYear[]|object[]
+     * getAcademicYears
+     * @return array
      */
-    public function getSchoolYears(): array
+    public function getAcademicYears(): array
     {
-        return ProviderFactory::getRepository(SchoolYear::class)->findBy([],['firstDay' => 'ASC', 'lastDay' => 'ASC']);
+        return ProviderFactory::getRepository(AcademicYear::class)->findBy([], ['firstDay' => 'ASC', 'lastDay' => 'ASC']);
     }
 
     /**

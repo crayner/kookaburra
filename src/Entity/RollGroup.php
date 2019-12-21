@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,9 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class RollGroup
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\RollGroupRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="RollGroup", uniqueConstraints={@ORM\UniqueConstraint(name="nameSchoolYear", columns={"name","gibbonSchoolYearID"}), @ORM\UniqueConstraint(name="nameShortSchoolYear", columns={"nameShort","gibbonSchoolYearID"})})
- * @UniqueEntity({"name","schoolYear"})
- * @UniqueEntity({"nameShort","schoolYear"})
+ * @ORM\Table(options={"auto_increment": 1}, name="RollGroup", uniqueConstraints={@ORM\UniqueConstraint(name="nameAcademicYear", columns={"name","academic_year"}), @ORM\UniqueConstraint(name="nameShortAcademicYear", columns={"nameShort","academic_year"})})
+ * @UniqueEntity({"name","academicYear"})
+ * @UniqueEntity({"nameShort","academicYear"})
  */
 class RollGroup implements EntityInterface
 {
@@ -48,11 +49,11 @@ class RollGroup implements EntityInterface
     private $id;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID", nullable=false)
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      */
-    private $schoolYear;
+    private $academicYear;
 
     /**
      * @var string|null
@@ -171,20 +172,20 @@ class RollGroup implements EntityInterface
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->academicYear;
     }
 
     /**
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $academicYear
      * @return RollGroup
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): RollGroup
+    public function setAcademicYear(?AcademicYear $academicYear): RollGroup
     {
-        $this->schoolYear = $schoolYear;
+        $this->academicYear = $academicYear;
         return $this;
     }
 

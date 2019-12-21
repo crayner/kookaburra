@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\PlannerEntry;
-use App\Entity\SchoolYear;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Connection;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -40,7 +40,7 @@ class PlannerEntryRepository extends ServiceEntityRepository
      * @return mixed
      * @throws \Exception
      */
-    public function findStaffDashboardContent(string $today, SchoolYear $schoolYear, Person $person)
+    public function findStaffDashboardContent(string $today, AcademicYear $schoolYear, Person $person)
     {
         $results = $this->createQueryBuilder('pe')
             ->select('pe, cc, c, ccp, sh')
@@ -48,8 +48,8 @@ class PlannerEntryRepository extends ServiceEntityRepository
             ->join('cc.course', 'c')
             ->join('cc.courseClassPeople', 'ccp')
             ->leftJoin('pe.studentHomeworkEntries', 'sh', 'WITH', 'ccp.person = sh.person', 'pe.id')
-            ->where('c.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', $schoolYear)
+            ->where('c.academicYear = :academicYear')
+            ->setParameter('academicYear', $schoolYear)
             ->andWhere('pe.date = :today')
             ->setParameter('today', $today)
             ->andWhere('ccp.person = :currentUser')
@@ -67,8 +67,8 @@ class PlannerEntryRepository extends ServiceEntityRepository
                 ->join('pe.courseClass', 'cc')
                 ->join('pe.plannerEntryGuests', 'peg')
                 ->join('cc.course', 'c')
-                ->where('c.schoolYear = :schoolYear')
-                ->setParameter('schoolYear', $schoolYear)
+                ->where('c.academicYear = :academicYear')
+                ->setParameter('academicYear', $schoolYear)
                 ->andWhere('pe.date = :today')
                 ->setParameter('today', $today)
                 ->andWhere('peg.person = :currentUser')
@@ -81,11 +81,11 @@ class PlannerEntryRepository extends ServiceEntityRepository
     /**
      * findStudentDashboardContent
      * @param string $today
-     * @param SchoolYear $schoolYear
+     * @param AcademicYear $schoolYear
      * @param Person $person
      * @return array
      */
-    public function findStudentDashboardContent(string $today, SchoolYear $schoolYear, Person $person)
+    public function findStudentDashboardContent(string $today, AcademicYear $schoolYear, Person $person)
     {
         $today = '2019-04-29';
         $results = $this->createQueryBuilder('pe')
@@ -94,8 +94,8 @@ class PlannerEntryRepository extends ServiceEntityRepository
             ->join('cc.course', 'c')
             ->join('cc.courseClassPeople', 'ccp')
             ->leftJoin('pe.studentHomeworkEntries', 'sh', 'WITH', 'ccp.person = sh.person', 'pe.id')
-            ->where('c.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', $schoolYear)
+            ->where('c.academicYear = :academicYear')
+            ->setParameter('academicYear', $schoolYear)
             ->andWhere('ccp.person = :currentUser')
             ->setParameter('currentUser', $person)
             ->getQuery()
@@ -109,8 +109,8 @@ class PlannerEntryRepository extends ServiceEntityRepository
                 ->join('pe.courseClass', 'cc')
                 ->join('pe.plannerEntryGuests', 'peg')
                 ->join('cc.course', 'c')
-                ->where('c.schoolYear = :schoolYear')
-                ->setParameter('schoolYear', $schoolYear)
+                ->where('c.academicYear = :academicYear')
+                ->setParameter('academicYear', $schoolYear)
                 ->andWhere('pe.date = :today')
                 ->setParameter('today', $today)
                 ->andWhere('peg.person = :currentUser')

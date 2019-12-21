@@ -13,13 +13,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class PersonUpdate
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PersonUpdateRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="PersonUpdate", indexes={@ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID", "gibbonSchoolYearID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="PersonUpdate", indexes={@ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID", "gibbonAcademicYearID"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class PersonUpdate
@@ -33,11 +34,11 @@ class PersonUpdate
     private $id;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID", nullable=true)
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="gibbonAcademicYearID", nullable=true)
      */
-    private $schoolYear;
+    private $AcademicYear;
 
     /**
      * @var string|null
@@ -418,20 +419,20 @@ class PersonUpdate
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->AcademicYear;
     }
 
     /**
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $AcademicYear
      * @return PersonUpdate
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): PersonUpdate
+    public function setAcademicYear(?AcademicYear $AcademicYear): PersonUpdate
     {
-        $this->schoolYear = $schoolYear;
+        $this->AcademicYear = $AcademicYear;
         return $this;
     }
 

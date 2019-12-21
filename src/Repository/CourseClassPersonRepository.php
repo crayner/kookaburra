@@ -15,7 +15,7 @@ namespace App\Repository;
 use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\SchoolYear;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -36,11 +36,11 @@ class CourseClassPersonRepository extends ServiceEntityRepository
 
     /**
      * findAccessibleClasses
-     * @param SchoolYear $schoolYear
+     * @param AcademicYear $schoolYear
      * @param Person $person
      * @return mixed
      */
-    public function findAccessibleClasses(SchoolYear $schoolYear, Person $person, string $classTitle)
+    public function findAccessibleClasses(AcademicYear $schoolYear, Person $person, string $classTitle)
     {
         $result = $this->createQueryBuilder('ccp')
             ->select([
@@ -50,10 +50,10 @@ class CourseClassPersonRepository extends ServiceEntityRepository
             ])
             ->join('ccp.courseClass', 'cc')
             ->join('cc.course', 'c')
-            ->where('c.schoolYear = :schoolYear')
+            ->where('c.academicYear = :academicYear')
             ->andWhere('ccp.person = :person')
             ->orderBy('text')
-            ->setParameters(['schoolYear' => $schoolYear, 'person' => $person])
+            ->setParameters(['academicYear' => $schoolYear, 'person' => $person])
             ->getQuery()
             ->getResult();
         return $result;
@@ -62,11 +62,11 @@ class CourseClassPersonRepository extends ServiceEntityRepository
     /**
      * findStudentsInClass
      * @param CourseClass $class
-     * @param SchoolYear $schoolYear
+     * @param AcademicYear $schoolYear
      * @param \DateTime $date
      * @return array
      */
-    public function findStudentsInClass(CourseClass $class, SchoolYear $schoolYear, \DateTime $date): array
+    public function findStudentsInClass(CourseClass $class, AcademicYear $schoolYear, \DateTime $date): array
     {
         return $this->createQueryBuilder('ccp')
             ->select(['ccp.role','p.surname','p.preferredName','p.email','p.studentID','rg.nameShort AS rollGroup'])
@@ -77,10 +77,10 @@ class CourseClassPersonRepository extends ServiceEntityRepository
             ->andWhere('p.status = :full')
             ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')
             ->andWhere('(p.dateEnd IS NULL OR p.dateEnd >= :today)')
-            ->andWhere('se.schoolYear = :schoolYear')
+            ->andWhere('se.academicYear = :academicYear')
             ->setParameter('courseClass', $class)
             ->setParameter('full', 'Full')
-            ->setParameter('schoolYear', $schoolYear)
+            ->setParameter('academicYear', $schoolYear)
             ->setParameter('today', $date)
             ->orderBy('ccp.role')
             ->addOrderBy('p.surname')

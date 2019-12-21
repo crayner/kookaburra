@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
@@ -43,11 +44,11 @@ class Group
     private $owner;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID", nullable=false)
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="gibbonAcademicYearID", nullable=false)
      */
-    private $schoolYear;
+    private $AcademicYear;
 
     /**
      * @var string|null
@@ -110,20 +111,20 @@ class Group
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->AcademicYear;
     }
 
     /**
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $AcademicYear
      * @return Group
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): Group
+    public function setAcademicYear(?AcademicYear $AcademicYear): Group
     {
-        $this->schoolYear = $schoolYear;
+        $this->AcademicYear = $AcademicYear;
         return $this;
     }
 

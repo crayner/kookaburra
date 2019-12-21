@@ -13,13 +13,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class PersonMedicalUpdate
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\PersonMedicalUpdateRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="PersonMedicalUpdate", indexes={@ORM\Index(name="gibbonMedicalIndex", columns={"gibbonPersonID","gibbonPersonMedicalID","gibbonSchoolYearID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="PersonMedicalUpdate", indexes={@ORM\Index(name="gibbonMedicalIndex", columns={"gibbonPersonID","gibbonPersonMedicalID","gibbonAcademicYearID"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class PersonMedicalUpdate
@@ -33,11 +34,11 @@ class PersonMedicalUpdate
     private $id;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID")
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="gibbonAcademicYearID")
      */
-    private $schoolYear;
+    private $AcademicYear;
 
     /**
      * @var string
@@ -126,20 +127,20 @@ class PersonMedicalUpdate
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->AcademicYear;
     }
 
     /**
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $AcademicYear
      * @return PersonMedicalUpdate
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): PersonMedicalUpdate
+    public function setAcademicYear(?AcademicYear $AcademicYear): PersonMedicalUpdate
     {
-        $this->schoolYear = $schoolYear;
+        $this->AcademicYear = $AcademicYear;
         return $this;
     }
 

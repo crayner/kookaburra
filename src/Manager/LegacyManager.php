@@ -446,8 +446,8 @@ class LegacyManager
         // Show warning if not in the current school year
         // TODO: When we implement routing, these can become part of the HTTP middleware.
         if ($isLoggedIn) {
-            if ($session->get('gibbonSchoolYearID') != $session->get('gibbonSchoolYearIDCurrent')) {
-                $page->addWarning('<b><u>'.sprintf(__('Warning: you are logged into the system in school year {oneString}, which is not the current year.'), $session->get('gibbonSchoolYearName')).'</b></u>'.__('Your data may not look quite right (for example, students who have left the school will not appear in previous years), but you should be able to edit information from other years which is not available in the current year.'));
+            if ($session->get('AcademicYearID') != $session->get('AcademicYearIDCurrent')) {
+                $page->addWarning('<b><u>'.sprintf(__('Warning: you are logged into the system in academic year {oneString}, which is not the current year.'), $session->get('gibbonAcademicYearName')).'</b></u>'.__('Your data may not look quite right (for example, students who have left the school will not appear in previous years), but you should be able to edit information from other years which is not available in the current year.'));
             }
         }
 
@@ -481,7 +481,7 @@ class LegacyManager
         if ($isLoggedIn) {
             if ($cacheLoad || !$session->has('fastFinder')) {
                 $templateData = getFastFinder($connection2, $guid);
-                $templateData['enrolmentCount'] = $this->providerFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($session->get('gibbonSchoolYearID'));
+                $templateData['enrolmentCount'] = $this->providerFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($session->get('AcademicYearID'));
 
                 $fastFinder = $page->fetchFromTemplate('legacy/finder.html.twig', $templateData);
                 $session->set('fastFinder', $fastFinder);

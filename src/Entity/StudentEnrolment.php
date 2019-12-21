@@ -13,13 +13,14 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class StudentEnrolment
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StudentEnrolmentRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="StudentEnrolment", indexes={@ORM\Index(name="gibbonSchoolYearID", columns={"gibbonSchoolYearID"}), @ORM\Index(name="gibbonYearGroupID", columns={"gibbonYearGroupID"}), @ORM\Index(name="gibbonRollGroupID", columns={"gibbonRollGroupID"}), @ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID","gibbonSchoolYearID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="StudentEnrolment", indexes={@ORM\Index(name="gibbonAcademicYearID", columns={"gibbonAcademicYearID"}), @ORM\Index(name="gibbonYearGroupID", columns={"gibbonYearGroupID"}), @ORM\Index(name="gibbonRollGroupID", columns={"gibbonRollGroupID"}), @ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID","gibbonAcademicYearID"})})
  */
 class StudentEnrolment
 {
@@ -39,12 +40,12 @@ class StudentEnrolment
     private $person;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID", nullable=false)
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      *
      */
-    private $schoolYear;
+    private $academicYear;
 
     /**
      * @var YearGroup|null
@@ -103,20 +104,20 @@ class StudentEnrolment
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->academicYear;
     }
 
     /**
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $academicYear
      * @return StudentEnrolment
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): StudentEnrolment
+    public function setAcademicYear(?AcademicYear $academicYear): StudentEnrolment
     {
-        $this->schoolYear = $schoolYear;
+        $this->academicYear = $academicYear;
         return $this;
     }
 

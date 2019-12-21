@@ -77,7 +77,7 @@ class FastFinder implements ContentInterface
         $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses' ? ', '.$this->getTranslator()->trans('Classes', [], 'messages') : '';
         $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/students/student_view.php') ? ', '.$this->getTranslator()->trans('Students', [], 'messages') : '';
         $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php') ? ', '.$this->getTranslator()->trans('Staff', [], 'messages') : '';
-        $templateData['trans_enrolmentCount'] = $templateData['roleCategory'] === 'Staff' ? $this->getTranslator()->trans('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('gibbonSchoolYearID')) : '';
+        $templateData['trans_enrolmentCount'] = $templateData['roleCategory'] === 'Staff' ? $this->getTranslator()->trans('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '';
         $templateData['themeName'] = $this->getSession()->get('gibbonThemeName');
         $templateData['trans_placeholder'] = $this->getTranslator()->trans('Start typing a name...', [], 'messages');
         $templateData['trans_close'] = $this->getTranslator()->trans('Close', [], 'messages');
@@ -196,9 +196,9 @@ class FastFinder implements ContentInterface
             // CLASSES
             if ($classIsAccessible) {
                 if ($highestActionClass === 'Lesson Planner_viewEditAllClasses' || $highestActionClass === 'Lesson Planner_viewAllEditMyClasses') {
-                    $classes = ProviderFactory::getRepository(CourseClass::class)->findAccessibleClasses($this->getSession()->get('schoolYear'), '');
+                    $classes = ProviderFactory::getRepository(CourseClass::class)->findAccessibleClasses($this->getSession()->get('academicYear'), '');
                 } else {
-                    $classes = ProviderFactory::getRepository(CourseClassPerson::class)->findAccessibleClasses($this->getSession()->get('schoolYear'), $this->getToken()->getToken()->getUser()->getPerson(), '');
+                    $classes = ProviderFactory::getRepository(CourseClassPerson::class)->findAccessibleClasses($this->getSession()->get('academicYear'), $this->getToken()->getToken()->getUser()->getPerson(), '');
                 }
             }
             CacheHelper::setCacheValue('fastFinderClasses', $classes ?: []);
@@ -265,7 +265,7 @@ class FastFinder implements ContentInterface
             $highestActionStudent = SecurityHelper::getHighestGroupedAction( '/modules/students/student_view.php');
             if ($studentIsAccessible) {
                 if ($highestActionStudent === 'View Student Profile_myChildren') {
-                    $students = ProviderFactory::getRepository(FamilyAdult::class)->findStudentsOfParentFastFinder($this->getToken()->getToken()->getUser()->getPerson(), '', $this->getSession()->get('schoolYear'));
+                    $students = ProviderFactory::getRepository(FamilyAdult::class)->findStudentsOfParentFastFinder($this->getToken()->getToken()->getUser()->getPerson(), '', $this->getSession()->get('academicYear'));
                 } elseif ($highestActionStudent == 'View Student Profile_my') {
                     $person = ProviderFactory::getRepository(Person::class)->find(2761);
                     $students = [];
@@ -273,7 +273,7 @@ class FastFinder implements ContentInterface
                     $student['id'] = 'Stu-' . $person->getId();
                     $student['text'] = ' - ' . $person->getSurname() . ', ' . $person->getPreferredName();
                     foreach($person->getStudentEnrolments() AS $se) {
-                        if ($se->getSchoolYear()->getId() === $this->getSession()->get('schoolYear')->getId()) {
+                        if ($se->getSchoolYear()->getId() === $this->getSession()->get('academicYear')->getId()) {
                             $rollGroup = $se->getRollGroup();
                             break;
                         }
@@ -282,7 +282,7 @@ class FastFinder implements ContentInterface
                     $student['search'] = $person->getUsername() . ' ' . $person->getFirstName() . ' ' . $person->getEmail();
                     $students[] = $student;
                 } else {
-                    $students = ProviderFactory::getRepository(Person::class)->findStudentsForFastFinder($this->getSession()->get('schoolYear'), '');
+                    $students = ProviderFactory::getRepository(Person::class)->findStudentsForFastFinder($this->getSession()->get('academicYear'), '');
                 }
             }
             CacheHelper::setCacheValue('fastFinderStudents', $students);

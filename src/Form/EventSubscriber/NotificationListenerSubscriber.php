@@ -14,7 +14,7 @@ namespace App\Form\EventSubscriber;
 
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\YearGroup;
-use App\Util\SchoolYearHelper;
+use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -59,7 +59,7 @@ class NotificationListenerSubscriber implements EventSubscriberInterface
         if ($data['scopeType'] === 'gibbonPersonIDStudent') {
             $options = $form->get('scopeID')->getConfig()->getOptions();
             $form->remove('scopeID');
-            $schoolYear = SchoolYearHelper::getCurrentSchoolYear();
+            $schoolYear = AcademicYearHelper::getCurrentSchoolYear();
             $today = new \DateTime(date('Y-m-d'));
             $form->add('scopeID', EntityType::class, array_merge($options, [
                 'label' => 'Scope Type Choice',
@@ -67,8 +67,8 @@ class NotificationListenerSubscriber implements EventSubscriberInterface
                 'query_builder' => function(EntityRepository $er) use ($schoolYear,$today) {
                     return $er->createQueryBuilder('p')
                         ->join('p.studentEnrolments','se')
-                        ->where('se.schoolYear = :schoolYear')
-                        ->setParameter('schoolYear', $schoolYear)
+                        ->where('se.academicYear = :academicYear')
+                        ->setParameter('academicYear', $schoolYear)
                         ->andWhere('p.status = :full')
                         ->setParameter('full', 'Full')
                         ->andWhere('(p.dateStart IS NULL OR p.dateStart <= :today)')

@@ -14,13 +14,14 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class FinanceInvoiceeUpdate
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\FinanceInvoiceeUpdateRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="FinanceInvoiceeUpdate", indexes={@ORM\Index(name="gibbonInvoiceeIndex", columns={"gibbonFinanceInvoiceeID", "gibbonSchoolYearID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="FinanceInvoiceeUpdate", indexes={@ORM\Index(name="gibbonInvoiceeIndex", columns={"gibbonFinanceInvoiceeID", "gibbonAcademicYearID"})})
  * @ORM\HasLifecycleCallbacks()
  */
 class FinanceInvoiceeUpdate
@@ -36,11 +37,11 @@ class FinanceInvoiceeUpdate
     private $id;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="gibbonSchoolYearID", nullable=true)
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="gibbonAcademicYearID", nullable=true)
      */
-    private $schoolYear;
+    private $AcademicYear;
 
     /**
      * @var string
@@ -146,20 +147,20 @@ class FinanceInvoiceeUpdate
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->AcademicYear;
     }
 
     /**
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $AcademicYear
      * @return FinanceInvoiceeUpdate
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): FinanceInvoiceeUpdate
+    public function setAcademicYear(?AcademicYear $AcademicYear): FinanceInvoiceeUpdate
     {
-        $this->schoolYear = $schoolYear;
+        $this->AcademicYear = $AcademicYear;
         return $this;
     }
 

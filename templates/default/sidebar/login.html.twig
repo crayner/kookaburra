@@ -22,9 +22,9 @@
                                 </td>
                                 <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth">
                                     <div class="flex-1 relative">
-                                        <select id="gibbonSchoolYearIDGoogle" name="gibbonSchoolYearIDGoogle" class="fullWidth">
-                                            {% for schoolYear in getSchoolYears() %}
-                                                <option value="{{ schoolYear.id }}"{{ schoolYear.status is same as('Current') ? ' selected' : '' }}>{{ schoolYear.name}}</option>
+                                        <select id="gibbonAcademicYearIDGoogle" name="gibbonAcademicYearIDGoogle" class="fullWidth">
+                                            {% for academicYear in getAcademicYears() %}
+                                                <option value="{{ academicYear.id }}"{{ academicYear.status is same as('Current') ? ' selected' : '' }}>{{ academicYear.name}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -71,9 +71,9 @@
                     var x = document.getElementById('googleOptions')
                     var href = '{{ url('google_oauth') }}'
                     if (x.style.display == 'flex') {
-                        var googleSchoolYear = document.getElementById('gibbonSchoolYearIDGoogle').value
+                        var googleAcademicYear = document.getElementById('gibbonAcademicYearIDGoogle').value
                         var googleLanguage = document.getElementById('gibboni18nIDGoogle').value
-                        href = href + '?state=' + googleSchoolYear+':'+googleLanguage+':'+q
+                        href = href + '?state=' + googleAcademicYear+':'+googleLanguage+':'+q
                     } else {
                         href = href + '?state=0:0:'+q
                     }
@@ -116,9 +116,9 @@
                     </td>
                     <td class="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 fullWidth">
                         <div class="flex-1 relative">
-                            <select id="gibbonSchoolYearID" name="gibbonSchoolYearID" class="fullWidth">
-                                {% for schoolYear in getSchoolYears() %}
-                                    <option value="{{ schoolYear.id }}"{{ schoolYear.status is same as('Current') ? ' selected' : '' }}>{{ schoolYear.name}}</option>
+                            <select id="gibbonAcademicYearID" name="gibbonAcademicYearID" class="fullWidth">
+                                {% for academicYear in getAcademicYears() %}
+                                    <option value="{{ academicYear.id }}"{{ academicYear.status is same as('Current') ? ' selected' : '' }}>{{ academicYear.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>

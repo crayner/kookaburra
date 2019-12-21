@@ -716,13 +716,13 @@ INSERT INTO `gibbonScaleGrade` (`gibbonScaleGradeID`, `gibbonScaleID`, `value`, 
 (0000329, 00015, '4', 'Level 4', 5, 'N'),
 (0000330, 00015, '3', 'Level 3', 6, 'N');
 
-INSERT INTO `gibbonSchoolYear` (`gibbonSchoolYearID`, `name`, `status`, `sequenceNumber`, `firstDay`, `lastDay`) VALUES
+INSERT INTO `gibbonAcademicYear` (`AcademicYearID`, `name`, `status`, `sequenceNumber`, `firstDay`, `lastDay`) VALUES
 (023, '2017-2018', 'Past', 1, '2017-08-16', '2018-06-28'),
 (024, '2018-2019', 'Past', 2, '2018-08-20', '2019-06-30'),
 (025, '2019-2020', 'Current', 3, '2019-08-20', '2020-06-30'),
 (026, '2020-2021', 'Upcoming', 4, '2020-08-20', '2021-06-30');
 
-INSERT INTO `gibbonSchoolYearTerm` (`gibbonSchoolYearTermID`, `gibbonSchoolYearID`, `sequenceNumber`, `name`, `nameShort`, `firstDay`, `lastDay`) VALUES
+INSERT INTO `gibbonAcademicYearTerm` (`gibbonAcademicYearTermID`, `AcademicYearID`, `sequenceNumber`, `name`, `nameShort`, `firstDay`, `lastDay`) VALUES
 (00025, 023, 22, 'Term 1', 'T1', '2017-08-16', '2017-12-15'),
 (00026, 023, 23, 'Term 2', 'T2', '2018-01-08', '2018-03-28'),
 (00027, 023, 24, 'Term 3', 'T3', '2018-04-16', '2018-06-28'),

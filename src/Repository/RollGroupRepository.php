@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\RollGroup;
-use App\Entity\SchoolYear;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -39,15 +39,15 @@ class RollGroupRepository extends ServiceEntityRepository
      * @param Person $tutor
      * @return array
      */
-    public function findByTutor(Person $tutor, ?SchoolYear $schoolYear): array
+    public function findByTutor(Person $tutor, ?AcademicYear $schoolYear): array
     {
         $schoolYear = $schoolYear ?: SchoolYearHelper::getCurrentSchoolYear();
         return $this->createQueryBuilder('rg')
             ->select('rg')
             ->where('rg.tutor = :person OR rg.tutor2 = :person OR rg.tutor3 = :person OR rg.assistant = :person OR rg.assistant2 = :person OR rg.assistant3 = :person')
             ->setParameter('person', $tutor)
-            ->andWhere('rg.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', $schoolYear)
+            ->andWhere('rg.academicYear = :academicYear')
+            ->setParameter('academicYear', $schoolYear)
             ->getQuery()
             ->getResult();
     }
@@ -55,25 +55,25 @@ class RollGroupRepository extends ServiceEntityRepository
     /**
      * findOneByPersonSchoolYear
      * @param Person $person
-     * @param SchoolYear $schoolYear
+     * @param AcademicYear $schoolYear
      * @return RollGroup|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneByPersonSchoolYear(Person $person, SchoolYear $schoolYear): ?RollGroup
+    public function findOneByPersonSchoolYear(Person $person, AcademicYear $schoolYear): ?RollGroup
     {
         if (UserHelper::isStaff())
-            return $this->findOneBy(['tutor' => $person, 'schoolYear' => $schoolYear]);
+            return $this->findOneBy(['tutor' => $person, 'academicYear' => $schoolYear]);
         return $this->findOneByStudent($person, $schoolYear);
     }
 
     /**
      * findOneByStudent
      * @param Person $person
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $schoolYear
      * @return RollGroup|null
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneByStudent(Person $person, ?SchoolYear $schoolYear): ?RollGroup
+    public function findOneByStudent(Person $person, ?AcademicYear $schoolYear): ?RollGroup
     {
         $schoolYear = $schoolYear ?: SchoolYearHelper::getCurrentSchoolYear();
         return $this->createQueryBuilder('rg')
@@ -81,8 +81,8 @@ class RollGroupRepository extends ServiceEntityRepository
             ->leftJoin('rg.studentEnrolments', 'se')
             ->where('se.person = :person')
             ->setParameter('person', $person)
-            ->andWhere('rg.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', $schoolYear)
+            ->andWhere('rg.academicYear = :academicYear')
+            ->setParameter('academicYear', $schoolYear)
             ->orderBy('se.rollOrder', 'ASC')
             ->setMaxResults(1)
             ->getQuery()

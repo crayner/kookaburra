@@ -40,9 +40,9 @@ class CourseClassProvider implements EntityProviderInterface
     {
         $result = [];
         if ($person instanceof SecurityUser)
-            $result = $this->getRepository()->findByPersonSchoolYear($this->getSession()->get('schoolYear'), $person->getPerson());
+            $result = $this->getRepository()->findByPersonSchoolYear($this->getSession()->get('academicYear'), $person->getPerson());
         elseif ($person instanceof Person)
-            $result = $this->getRepository()->findByPersonSchoolYear($this->getSession()->get('schoolYear'), $person);
+            $result = $this->getRepository()->findByPersonSchoolYear($this->getSession()->get('academicYear'), $person);
 
         if (count($result) > 0 && null !== $sidebar) {
             $myClasses = new MyClasses();

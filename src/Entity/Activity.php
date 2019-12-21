@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 
 /**
  * Class Action
@@ -45,11 +46,11 @@ class Activity implements EntityInterface
     private $active = 'Y';
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearID",referencedColumnName="gibbonSchoolYearID", nullable=false)
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="gibbonAcademicYearID",referencedColumnName="gibbonAcademicYearID", nullable=false)
      */
-    private $schoolYear;
+    private $AcademicYear;
 
     /**
      * @var string|null
@@ -82,9 +83,9 @@ class Activity implements EntityInterface
 
     /**
      * @var string|null
-     * @ORM\Column(type="text", name="gibbonSchoolYearTermIDList")
+     * @ORM\Column(type="text", name="gibbonAcademicYearTermIDList")
      */
-    private $schoolYearTermList;
+    private $AcademicYearTermList;
 
     /**
      * @var \DateTime|null
@@ -199,20 +200,20 @@ class Activity implements EntityInterface
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYear(): ?SchoolYear
+    public function getAcademicYear(): ?AcademicYear
     {
-        return $this->schoolYear;
+        return $this->AcademicYear;
     }
 
     /**
-     * @param SchoolYear|null $schoolYear
+     * @param AcademicYear|null $AcademicYear
      * @return Activity
      */
-    public function setSchoolYear(?SchoolYear $schoolYear): Activity
+    public function setAcademicYear(?AcademicYear $AcademicYear): Activity
     {
-        $this->schoolYear = $schoolYear;
+        $this->AcademicYear = $AcademicYear;
         return $this;
     }
 
@@ -309,18 +310,18 @@ class Activity implements EntityInterface
     /**
      * @return string|null
      */
-    public function getSchoolYearTermList(): ?string
+    public function getAcademicYearTermList(): ?string
     {
-        return $this->schoolYearTermList;
+        return $this->AcademicYearTermList;
     }
 
     /**
-     * @param string|null $schoolYearTermList
+     * @param string|null $AcademicYearTermList
      * @return Activity
      */
-    public function setSchoolYearTermList(?string $schoolYearTermList): Activity
+    public function setAcademicYearTermList(?string $AcademicYearTermList): Activity
     {
-        $this->schoolYearTermList = $schoolYearTermList;
+        $this->AcademicYearTermList = $AcademicYearTermList;
         return $this;
     }
 

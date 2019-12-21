@@ -1597,12 +1597,12 @@ function getModuleCategory($address, $connection2)
 
 /**
  * GET THE CURRENT YEAR AND SET IT AS A GLOBAL VARIABLE
- * @deprecated Use SchoolYearProvider::setCurrentSchoolYear($session)
+ * @deprecated Use AcademicYearProvider::setCurrentSchoolYear($session)
  */
 function setCurrentSchoolYear($guid,  $connection2)
 {
     $x = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
-    throw new \Gibbon\Exception(sprintf('setCurrentSchoolYear is deprecated. Use SchoolYearProvider::setCurrentSchoolYear($session). Called in %s on line %s', $x[0]['file'], $x[0]['line']));
+    throw new \Gibbon\Exception(sprintf('setCurrentSchoolYear is deprecated. Use AcademicYearProvider::setCurrentSchoolYear($session). Called in %s on line %s', $x[0]['file'], $x[0]['line']));
     return;
     //Run query
     try {

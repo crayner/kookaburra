@@ -17,6 +17,7 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Family;
 use Kookaburra\UserAdmin\Entity\Person;
 
@@ -208,11 +209,11 @@ class ApplicationForm
     private $visaExpiryDate;
 
     /**
-     * @var SchoolYear|null
-     * @ORM\ManyToOne(targetEntity="SchoolYear")
-     * @ORM\JoinColumn(name="gibbonSchoolYearIDEntry",referencedColumnName="gibbonSchoolYearID", nullable=false)
+     * @var AcademicYear|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
+     * @ORM\JoinColumn(name="academic_year_entry",referencedColumnName="id", nullable=false)
      */
-    private $schoolYearEntry;
+    private $academicYearEntry;
 
     /**
      * @var YearGroup|null
@@ -1376,36 +1377,36 @@ class ApplicationForm
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getSchoolYearEntry(): ?SchoolYear
+    public function getAcademicYearEntry(): ?AcademicYear
     {
-        return $this->schoolYearEntry;
+        return $this->academicYearEntry;
     }
 
     /**
-     * @param SchoolYear|null $schoolYearEntry
+     * @param AcademicYear|null $academicYearEntry
      * @return ApplicationForm
      */
-    public function setSchoolYearEntry(?SchoolYear $schoolYearEntry): ApplicationForm
+    public function setAcademicYearEntry(?AcademicYear $academicYearEntry): ApplicationForm
     {
-        $this->schoolYearEntry = $schoolYearEntry;
+        $this->academicYearEntry = $academicYearEntry;
         return $this;
     }
 
     /**
-     * @return SchoolYear|null
+     * @return AcademicYear|null
      */
-    public function getYearGroupEntry(): ?SchoolYear
+    public function getYearGroupEntry(): ?AcademicYear
     {
         return $this->yearGroupEntry;
     }
 
     /**
-     * @param SchoolYear|null $yearGroupEntry
+     * @param AcademicYear|null $yearGroupEntry
      * @return ApplicationForm
      */
-    public function setYearGroupEntry(?SchoolYear $yearGroupEntry): ApplicationForm
+    public function setYearGroupEntry(?AcademicYear $yearGroupEntry): ApplicationForm
     {
         $this->yearGroupEntry = $yearGroupEntry;
         return $this;

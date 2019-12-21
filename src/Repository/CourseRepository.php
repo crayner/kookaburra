@@ -15,8 +15,8 @@ namespace App\Repository;
 use App\Entity\Course;
 use App\Entity\Department;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\SchoolYear;
-use App\Util\SchoolYearHelper;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
+use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -46,8 +46,8 @@ class CourseRepository extends ServiceEntityRepository
             ->leftJoin('cc.courseClassPeople', 'ccp')
             ->where('ccp.person = :person')
             ->setParameter('person', $person)
-            ->andWhere('c.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', SchoolYearHelper::getCurrentSchoolYear())
+            ->andWhere('c.academicYear = :academicYear')
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
             ->getQuery()
             ->getResult();
     }
@@ -57,7 +57,7 @@ class CourseRepository extends ServiceEntityRepository
      * @param Department $department
      * @return array
      */
-    public function findByDepartment(Department $department, SchoolYear $schoolYear): array
+    public function findByDepartment(Department $department, AcademicYear $schoolYear): array
     {
         return $this->createQueryBuilder('c')
             ->join('c.courseClasses', 'cc')
@@ -65,8 +65,8 @@ class CourseRepository extends ServiceEntityRepository
             ->setParameter('department', $department)
             ->andWhere('c.yearGroupList != :empty')
             ->setParameter('empty', '')
-            ->andWhere('c.schoolYear = :schoolYear')
-            ->setParameter('schoolYear', $schoolYear)
+            ->andWhere('c.academicYear = :academicYear')
+            ->setParameter('academicYear', $schoolYear)
             ->groupBy('c.id')
             ->orderBy('c.nameShort', 'ASC')
             ->addOrderBy('c.name', 'ASC')
@@ -77,7 +77,7 @@ class CourseRepository extends ServiceEntityRepository
                         JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID)
                         WHERE gibbonDepartmentID=:gibbonDepartmentID
                         AND gibbonYearGroupIDList <> ''
-                        AND gibbonSchoolYearID=(SELECT gibbonSchoolYearID FROM gibbonSchoolYear WHERE status='Current')
+                        AND AcademicYearID=(SELECT AcademicYearID FROM gibbonAcademicYear WHERE status='Current')
                         GROUP BY gibbonCourse.gibbonCourseID
                         ORDER BY nameShort, name";
     */
