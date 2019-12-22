@@ -39,7 +39,7 @@ class FinanceInvoiceeUpdate
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="gibbonAcademicYearID", nullable=true)
+     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="id", nullable=true)
      */
     private $AcademicYear;
 

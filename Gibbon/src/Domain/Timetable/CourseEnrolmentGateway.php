@@ -50,7 +50,7 @@ class CourseEnrolmentGateway extends QueryableGateway
             ->innerJoin('gibbonCourseClass', 'gibbonCourseClass.gibbonCourseClassID=gibbonCourseClassPerson.gibbonCourseClassID')
             ->innerJoin('gibbonCourse', 'gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID')
             ->innerJoin('gibbonPerson', 'gibbonPerson.gibbonPersonID=gibbonCourseClassPerson.gibbonPersonID')
-            ->where('gibbonCourse.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonCourse.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
             ->where('gibbonCourseClassPerson.gibbonCourseClassID = :gibbonCourseClassID')
             ->bindValue('gibbonCourseClassID', $gibbonCourseClassID);
@@ -92,7 +92,7 @@ class CourseEnrolmentGateway extends QueryableGateway
             ->innerJoin('gibbonCourseClass', 'gibbonCourseClass.gibbonCourseClassID=gibbonCourseClassPerson.gibbonCourseClassID')
             ->innerJoin('gibbonCourse', 'gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID')
             ->innerJoin('gibbonPerson', 'gibbonPerson.gibbonPersonID=gibbonCourseClassPerson.gibbonPersonID')
-            ->where('gibbonCourse.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonCourse.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
             ->where('gibbonCourseClassPerson.gibbonPersonID = :gibbonPersonID')
             ->bindValue('gibbonPersonID', $gibbonPersonID);
@@ -121,7 +121,7 @@ class CourseEnrolmentGateway extends QueryableGateway
                     JOIN gibbonPerson ON (gibbonCourseClassPerson.gibbonPersonID=gibbonPerson.gibbonPersonID) 
                     WHERE gibbonPerson.status='Full' AND gibbonCourseClassPerson.role = 'Teacher') 
                     AS teacher ON (teacher.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID)
-                WHERE gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID 
+                WHERE gibbonCourse.academic_year=:gibbonSchoolYearID 
                 AND FIND_IN_SET(:gibbonYearGroupID, gibbonCourse.gibbonYearGroupIDList) 
                 GROUP BY gibbonCourseClass.gibbonCourseClassID
                 ORDER BY course, class";
@@ -153,7 +153,7 @@ class CourseEnrolmentGateway extends QueryableGateway
                     JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseClassID=gibbonCourseClassPerson.gibbonCourseClassID)
                     JOIN gibbonCourse ON (gibbonCourse.gibbonCourseID=gibbonCourseClass.gibbonCourseID) 
                     WHERE gibbonCourseClassPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID 
-                    AND gibbonCourse.gibbonSchoolYearID=gibbonRollGroup.gibbonSchoolYearID 
+                    AND gibbonCourse.academic_year=gibbonRollGroup.gibbonSchoolYearID 
                     AND gibbonCourseClassPerson.role = 'Student') AS classCount
                 FROM gibbonPerson 
                 JOIN gibbonStudentEnrolment ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID) 

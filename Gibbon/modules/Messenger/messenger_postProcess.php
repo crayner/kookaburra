@@ -386,7 +386,7 @@ else {
                                             JOIN gibbonCourseClassPerson ON (gibbonCourseClassPerson.gibbonPersonID=gibbonStaff.gibbonPersonID)
                                             JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseClassID=gibbonCourseClassPerson.gibbonCourseClassID)
                                             JOIN gibbonCourse ON (gibbonCourse.gibbonCourseID=gibbonCourseClass.gibbonCourseID)
-                                            WHERE gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID
+                                            WHERE gibbonCourse.academic_year=:gibbonSchoolYearID
                                             AND FIND_IN_SET(:gibbonYearGroupID, gibbonCourse.gibbonYearGroupIDList)
                                             AND NOT gibbonPerson.email=''
                                             AND gibbonPerson.status='Full')

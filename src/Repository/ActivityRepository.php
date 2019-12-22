@@ -46,7 +46,7 @@ class ActivityRepository extends ServiceEntityRepository
             ->where('a_s.person = :person')
             ->setParameter('person', $person)
             ->andWhere('a.academicYear = :academicYear')
-            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
             ->getQuery()
             ->getResult();
     }
@@ -64,7 +64,7 @@ class ActivityRepository extends ServiceEntityRepository
             ->where('a_s.person = :person')
             ->setParameter('person', $person)
             ->andWhere('a.academicYear = :academicYear')
-            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
             ->getQuery()
             ->getResult();
     }

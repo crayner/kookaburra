@@ -47,7 +47,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/curriculumMapping_
 
 
 	$data = array('gibbonSchoolYearID' => $_SESSION[$guid]['gibbonSchoolYearID']);
-	$sql = "SELECT gibbonCourse.gibbonCourseID, gibbonCourse.name, gibbonDepartment.name AS department FROM gibbonCourse LEFT JOIN gibbonDepartment ON (gibbonCourse.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID) WHERE gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID AND NOT gibbonYearGroupIDList='' ORDER BY department, gibbonCourse.nameShort";
+	$sql = "SELECT gibbonCourse.gibbonCourseID, gibbonCourse.name, gibbonDepartment.name AS department FROM gibbonCourse LEFT JOIN gibbonDepartment ON (gibbonCourse.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID) WHERE gibbonCourse.academic_year=:gibbonSchoolYearID AND NOT gibbonYearGroupIDList='' ORDER BY department, gibbonCourse.nameShort";
 	$result = $pdo->executeQuery($data, $sql);
 
 	$courses = ($result->rowCount() > 0)? $result->fetchAll() : array();
@@ -73,7 +73,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/curriculumMapping_
         //Check course exists
         try {
             $data = array('gibbonSchoolYearID' => $_SESSION[$guid]['gibbonSchoolYearID'], 'gibbonCourseID' => $gibbonCourseID);
-            $sql = "SELECT gibbonCourse.*, gibbonDepartment.name AS department FROM gibbonCourse LEFT JOIN gibbonDepartment ON (gibbonCourse.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID) WHERE gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID AND NOT gibbonYearGroupIDList='' AND gibbonCourseID=:gibbonCourseID ORDER BY department, nameShort";
+            $sql = "SELECT gibbonCourse.*, gibbonDepartment.name AS department FROM gibbonCourse LEFT JOIN gibbonDepartment ON (gibbonCourse.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID) WHERE gibbonCourse.academic_year=:gibbonSchoolYearID AND NOT gibbonYearGroupIDList='' AND gibbonCourseID=:gibbonCourseID ORDER BY department, nameShort";
             $result = $connection2->prepare($sql);
             $result->execute($data);
         } catch (PDOException $e) {

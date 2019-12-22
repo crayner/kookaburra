@@ -20,7 +20,9 @@ import {
     replaceFormElement,
     findElementById,
     buildFormData,
-    isSubmit
+    isSubmit,
+    checkHiddenRows,
+    toggleRowsOnValue
 } from "../Container/ContainerFunctions"
 
 export default class LibraryApp extends Component {
@@ -51,6 +53,7 @@ export default class LibraryApp extends Component {
             onCKEditorChange: this.onCKEditorChange.bind(this),
             generateNewPassword: this.generateNewPassword.bind(this),
             selectLibraryAndType: this.selectLibraryAndType.bind(this),
+            toggleVisibleByClass: toggleRowsOnValue.bind(this),
             loadGoogleBookData: this.loadGoogleBookData.bind(this),
             renderImageLocation: this.renderImageLocation.bind(this)
         }
@@ -76,7 +79,8 @@ export default class LibraryApp extends Component {
         if (this.singleForm) {
             panelErrors = setPanelErrors( {}, {})
         }
-        this.setMyState(this.state.forms, panelErrors)
+        let forms = checkHiddenRows({...this.state.forms})
+        this.setMyState(forms, panelErrors)
     }
 
     loadGoogleBookData(){

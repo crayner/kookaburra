@@ -32,16 +32,26 @@ class BehaviourRepository extends ServiceEntityRepository
         parent::__construct($registry, Behaviour::class);
     }
 
-    public function findNegativeInLast60Days(Person $person): ?array
+    /**
+     * findNegativeInLast60Days
+     * @param Person $person
+     * @return array|null
+     */
+    public function findNegativeInLast60Days(Person $person): array
     {
-        return $this->createQueryBuilder('b')
-            ->where('b.person = :person')
-            ->andWhere('b.type = :negative')
-            ->andWhere('b.date > :date')
-            ->setParameter('date', new \DateTime('-60 days'))
-            ->setParameter('negative', 'Negative')
-            ->setParameter('person', $person)
-            ->getQuery()
-            ->getResult();
+        try {
+            return $this->createQueryBuilder('b')
+                ->where('b.person = :person')
+                ->andWhere('b.type = :negative')
+                ->andWhere('b.date > :date')
+                ->setParameter('date', new \DateTime('-60 days'))
+                ->setParameter('negative', 'Negative')
+                ->setParameter('person', $person)
+                ->getQuery()
+                ->getResult();
+        } catch (\Exception $e) {
+            throw $e;
+            return [];
+        }
     }
 }

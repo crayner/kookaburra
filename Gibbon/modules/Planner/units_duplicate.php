@@ -63,8 +63,8 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/units_duplicate.ph
                     $data = array('gibbonSchoolYearID' => $gibbonSchoolYearID, 'gibbonCourseID' => $gibbonCourseID);
                     $sql = 'SELECT gibbonCourseID, gibbonCourse.name, gibbonCourse.nameShort, gibbonSchoolYear.name AS schoolYear
                         FROM gibbonCourse
-                        JOIN gibbonSchoolYear ON (gibbonCourse.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID)
-                        WHERE gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID
+                        JOIN gibbonSchoolYear ON (gibbonCourse.academic_year=gibbonSchoolYear.gibbonSchoolYearID)
+                        WHERE gibbonCourse.academic_year=:gibbonSchoolYearID
                         AND gibbonCourseID=:gibbonCourseID';
                 } elseif ($highestAction == 'Unit Planner_learningAreas') {
                     $data = array('gibbonSchoolYearID' => $gibbonSchoolYearID, 'gibbonCourseID' => $gibbonCourseID, 'gibbonPersonID' => $_SESSION[$guid]['gibbonPersonID']);
@@ -72,10 +72,10 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/units_duplicate.ph
                         FROM gibbonCourse
                             JOIN gibbonDepartment ON (gibbonCourse.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID)
                             JOIN gibbonDepartmentStaff ON (gibbonDepartmentStaff.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID)
-                            JOIN gibbonSchoolYear ON (gibbonCourse.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID)
+                            JOIN gibbonSchoolYear ON (gibbonCourse.academic_year=gibbonSchoolYear.gibbonSchoolYearID)
                         WHERE gibbonDepartmentStaff.gibbonPersonID=:gibbonPersonID
                             AND (role='Coordinator' OR role='Assistant Coordinator' OR role='Teacher (Curriculum)')
-                            AND gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID AND gibbonCourseID=:gibbonCourseID
+                            AND gibbonCourse.academic_year=:gibbonSchoolYearID AND gibbonCourseID=:gibbonCourseID
                         ORDER BY gibbonCourse.nameShort";
                 }
                 $result = $connection2->prepare($sql);
@@ -162,10 +162,10 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/units_duplicate.ph
 
                                 if ($highestAction == 'Unit Planner_all') {
                                     $data = array();
-                                    $sql = 'SELECT gibbonCourse.gibbonSchoolYearID as chainedTo, gibbonCourseID AS value, gibbonCourse.nameShort AS name FROM gibbonCourse JOIN gibbonSchoolYear ON (gibbonCourse.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID) ORDER BY nameShort';
+                                    $sql = 'SELECT gibbonCourse.academic_year as chainedTo, gibbonCourseID AS value, gibbonCourse.nameShort AS name FROM gibbonCourse JOIN gibbonSchoolYear ON (gibbonCourse.academic_year=gibbonSchoolYear.gibbonSchoolYearID) ORDER BY nameShort';
                                 } elseif ($highestAction == 'Unit Planner_learningAreas') {
                                     $data = array('gibbonPersonID' => $_SESSION[$guid]['gibbonPersonID']);
-                                    $sql = "SELECT gibbonCourse.gibbonSchoolYearID as chainedTo, gibbonCourseID AS value, gibbonCourse.nameShort AS name FROM gibbonCourse JOIN gibbonSchoolYear ON (gibbonCourse.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID) JOIN gibbonDepartment ON (gibbonCourse.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID) JOIN gibbonDepartmentStaff ON (gibbonDepartmentStaff.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID) WHERE gibbonDepartmentStaff.gibbonPersonID=:gibbonPersonID AND (role='Coordinator' OR role='Assistant Coordinator' OR role='Teacher (Curriculum)') ORDER BY gibbonCourse.nameShort";
+                                    $sql = "SELECT gibbonCourse.academic_year as chainedTo, gibbonCourseID AS value, gibbonCourse.nameShort AS name FROM gibbonCourse JOIN gibbonSchoolYear ON (gibbonCourse.academic_year=gibbonSchoolYear.gibbonSchoolYearID) JOIN gibbonDepartment ON (gibbonCourse.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID) JOIN gibbonDepartmentStaff ON (gibbonDepartmentStaff.gibbonDepartmentID=gibbonDepartment.gibbonDepartmentID) WHERE gibbonDepartmentStaff.gibbonPersonID=:gibbonPersonID AND (role='Coordinator' OR role='Assistant Coordinator' OR role='Teacher (Curriculum)') ORDER BY gibbonCourse.nameShort";
                                 }
                                 $row = $form->addRow();
                                     $row->addLabel('gibbonCourseIDTarget', __('Course'));
@@ -196,7 +196,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/units_duplicate.ph
 
                                     try {
                                         $dataSelect2 = array('gibbonCourseID' => $gibbonCourseIDTarget);
-                                        $sqlSelect2 = 'SELECT gibbonCourse.name AS course, gibbonSchoolYear.name AS year FROM gibbonCourse JOIN gibbonSchoolYear ON (gibbonCourse.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID) WHERE gibbonCourseID=:gibbonCourseID';
+                                        $sqlSelect2 = 'SELECT gibbonCourse.name AS course, gibbonSchoolYear.name AS year FROM gibbonCourse JOIN gibbonSchoolYear ON (gibbonCourse.academic_year=gibbonSchoolYear.gibbonSchoolYearID) WHERE gibbonCourseID=:gibbonCourseID';
                                         $resultSelect2 = $connection2->prepare($sqlSelect2);
                                         $resultSelect2->execute($dataSelect2);
                                     } catch (PDOException $e) {

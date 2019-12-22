@@ -47,7 +47,7 @@ class CourseRepository extends ServiceEntityRepository
             ->where('ccp.person = :person')
             ->setParameter('person', $person)
             ->andWhere('c.academicYear = :academicYear')
-            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
             ->getQuery()
             ->getResult();
     }

@@ -196,7 +196,7 @@ function getMessages($guid, $connection2, $mode = '', $date = '')
                 JOIN gibbonCourseClassPerson ON (gibbonCourseClass.gibbonCourseClassID=gibbonCourseClassPerson.gibbonCourseClassID)
                 JOIN gibbonStaff ON (gibbonCourseClassPerson.gibbonPersonID=gibbonStaff.gibbonPersonID)
                 WHERE gibbonStaff.gibbonPersonID=:gibbonPersonID0
-                AND gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID0
+                AND gibbonCourse.academic_year=:gibbonSchoolYearID0
                 AND gibbonMessengerTarget.type='Year Group' AND gibbonMessengerTarget.staff='Y' AND
                 (messageWall_date1=:date4 OR messageWall_date2=:date5 OR messageWall_date3=:date6)
                 GROUP BY gibbonMessenger.gibbonMessengerID )";

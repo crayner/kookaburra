@@ -70,7 +70,7 @@ class CourseGateway extends QueryableGateway
         $sql = "SELECT gibbonCourseClass.gibbonCourseClassID, gibbonCourse.name as courseName, gibbonCourse.nameShort as course, gibbonCourseClass.nameShort as class 
                 FROM gibbonCourse 
                 JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID) 
-                WHERE gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID 
+                WHERE gibbonCourse.academic_year=:gibbonSchoolYearID 
                 ORDER BY gibbonCourse.nameShort, gibbonCourseClass.nameShort";
 
         return $this->db()->select($sql, $data);
@@ -93,10 +93,10 @@ class CourseGateway extends QueryableGateway
     public function getCourseClassByID($gibbonCourseClassID)
     {
         $data = array('gibbonCourseClassID' => $gibbonCourseClassID);
-        $sql = "SELECT gibbonCourseClassID, gibbonCourseClass.name, gibbonCourseClass.nameShort, gibbonCourse.gibbonCourseID, gibbonCourse.name AS courseName, gibbonCourse.nameShort as courseNameShort, gibbonCourse.description AS courseDescription, gibbonCourse.gibbonSchoolYearID, gibbonSchoolYear.name as yearName, gibbonYearGroupIDList 
+        $sql = "SELECT gibbonCourseClassID, gibbonCourseClass.name, gibbonCourseClass.nameShort, gibbonCourse.gibbonCourseID, gibbonCourse.name AS courseName, gibbonCourse.nameShort as courseNameShort, gibbonCourse.description AS courseDescription, gibbonCourse.academic_year, gibbonSchoolYear.name as yearName, gibbonYearGroupIDList 
                 FROM gibbonCourseClass
                 JOIN gibbonCourse ON (gibbonCourse.gibbonCourseID=gibbonCourseClass.gibbonCourseID)
-                JOIN gibbonSchoolYear ON (gibbonCourse.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID)
+                JOIN gibbonSchoolYear ON (gibbonCourse.academic_year=gibbonSchoolYear.gibbonSchoolYearID)
                 WHERE gibbonCourseClassID=:gibbonCourseClassID";
 
         return $this->db()->selectOne($sql, $data);

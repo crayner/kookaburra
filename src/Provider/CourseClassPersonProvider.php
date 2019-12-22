@@ -32,7 +32,7 @@ class CourseClassPersonProvider implements EntityProviderInterface
      */
     public function getClassStudentList(CourseClass $class): array
     {
-        $schoolYear = AcademicYearHelper::getCurrentSchoolYear();
+        $schoolYear = AcademicYearHelper::getCurrentAcademicYear();
         $date = new \DateTime(date('Y-m-d'));
 
         $list = $this->getRepository()->findStudentsInClass($class, $schoolYear, $date);

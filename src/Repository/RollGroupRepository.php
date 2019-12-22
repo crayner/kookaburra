@@ -41,7 +41,7 @@ class RollGroupRepository extends ServiceEntityRepository
      */
     public function findByTutor(Person $tutor, ?AcademicYear $schoolYear): array
     {
-        $schoolYear = $schoolYear ?: SchoolYearHelper::getCurrentSchoolYear();
+        $schoolYear = $schoolYear ?: SchoolYearHelper::getCurrentAcademicYear();
         return $this->createQueryBuilder('rg')
             ->select('rg')
             ->where('rg.tutor = :person OR rg.tutor2 = :person OR rg.tutor3 = :person OR rg.assistant = :person OR rg.assistant2 = :person OR rg.assistant3 = :person')
@@ -75,7 +75,7 @@ class RollGroupRepository extends ServiceEntityRepository
      */
     public function findOneByStudent(Person $person, ?AcademicYear $schoolYear): ?RollGroup
     {
-        $schoolYear = $schoolYear ?: SchoolYearHelper::getCurrentSchoolYear();
+        $schoolYear = $schoolYear ?: SchoolYearHelper::getCurrentAcademicYear();
         return $this->createQueryBuilder('rg')
             ->select('rg')
             ->leftJoin('rg.studentEnrolments', 'se')

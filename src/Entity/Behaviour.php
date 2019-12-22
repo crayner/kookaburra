@@ -36,9 +36,9 @@ class Behaviour
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="gibbonAcademicYearID", nullable=false)
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      */
-    private $AcademicYear;
+    private $academicYear;
 
     /**
      * @var \DateTime|null
@@ -131,16 +131,16 @@ class Behaviour
      */
     public function getAcademicYear(): ?AcademicYear
     {
-        return $this->AcademicYear;
+        return $this->academicYear;
     }
 
     /**
-     * @param AcademicYear|null $AcademicYear
+     * @param AcademicYear|null $academicYear
      * @return Behaviour
      */
-    public function setAcademicYear(?AcademicYear $AcademicYear): Behaviour
+    public function setAcademicYear(?AcademicYear $academicYear): Behaviour
     {
-        $this->AcademicYear = $AcademicYear;
+        $this->academicYear = $academicYear;
         return $this;
     }
 

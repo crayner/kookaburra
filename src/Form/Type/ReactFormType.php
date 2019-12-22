@@ -172,8 +172,6 @@ class ReactFormType extends AbstractType
         }
 
         $vars['type'] = $this->renderFormType($view->vars['block_prefixes']);
-if($vars['type'] === 'toggle')
-    dump($view);
         $vars['value'] = $view->vars['value'];
 
         if (is_object($view->vars['value']) && in_array(EntityInterface::class, class_implements($view->vars['value']))) {

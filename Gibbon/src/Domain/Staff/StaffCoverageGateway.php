@@ -182,7 +182,7 @@ class StaffCoverageGateway extends QueryableGateway
                 WHERE gibbonStaffCoverage.gibbonStaffCoverageID=:gibbonStaffCoverageID 
                 AND (gibbonCourseClassPerson.role = 'Teacher' OR gibbonCourseClassPerson.role = 'Assistant')
                 AND gibbonStaffCoverageDate.date=:date
-                AND gibbonCourse.gibbonSchoolYearID=gibbonStaffCoverage.gibbonSchoolYearID
+                AND gibbonCourse.academic_year=gibbonStaffCoverage.gibbonSchoolYearID
                 AND (gibbonStaffCoverageDate.allDay='Y' 
                     OR (gibbonStaffCoverageDate.allDay='N' AND gibbonTTColumnRow.timeStart <= gibbonStaffCoverageDate.timeEnd AND gibbonTTColumnRow.timeEnd >= gibbonStaffCoverageDate.timeStart)
                 )

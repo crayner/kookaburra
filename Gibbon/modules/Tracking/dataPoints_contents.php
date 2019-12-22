@@ -72,7 +72,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Tracking/dataPoints.php') 
             $internalResults = array();
             try {
                 $data = array();
-                $sql = 'SELECT gibbonStudentEnrolment.gibbonYearGroupID, gibbonCourse.name AS course, gibbonInternalAssessmentColumn.type, gibbonPersonIDStudent, attainmentValue, completeDate, gibbonInternalAssessmentColumn.name AS assessment FROM gibbonInternalAssessmentEntry JOIN gibbonPerson ON (gibbonInternalAssessmentEntry.gibbonPersonIDStudent=gibbonPerson.gibbonPersonID) JOIN gibbonInternalAssessmentColumn ON (gibbonInternalAssessmentEntry.gibbonInternalAssessmentColumnID=gibbonInternalAssessmentColumn.gibbonInternalAssessmentColumnID) JOIN gibbonCourseClass ON (gibbonInternalAssessmentColumn.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID) JOIN gibbonCourse ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID) JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.gibbonPersonID=gibbonPerson.gibbonPersonID AND gibbonStudentEnrolment.gibbonSchoolYearID=gibbonCourse.gibbonSchoolYearID) ORDER BY gibbonCourse.name, gibbonInternalAssessmentColumn.name, gibbonPersonIDStudent, completeDate DESC';
+                $sql = 'SELECT gibbonStudentEnrolment.gibbonYearGroupID, gibbonCourse.name AS course, gibbonInternalAssessmentColumn.type, gibbonPersonIDStudent, attainmentValue, completeDate, gibbonInternalAssessmentColumn.name AS assessment FROM gibbonInternalAssessmentEntry JOIN gibbonPerson ON (gibbonInternalAssessmentEntry.gibbonPersonIDStudent=gibbonPerson.gibbonPersonID) JOIN gibbonInternalAssessmentColumn ON (gibbonInternalAssessmentEntry.gibbonInternalAssessmentColumnID=gibbonInternalAssessmentColumn.gibbonInternalAssessmentColumnID) JOIN gibbonCourseClass ON (gibbonInternalAssessmentColumn.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID) JOIN gibbonCourse ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID) JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.gibbonPersonID=gibbonPerson.gibbonPersonID AND gibbonStudentEnrolment.gibbonSchoolYearID=gibbonCourse.academic_year) ORDER BY gibbonCourse.name, gibbonInternalAssessmentColumn.name, gibbonPersonIDStudent, completeDate DESC';
                 $result = $connection2->prepare($sql);
                 $result->execute($data);
             } catch (PDOException $e) {
@@ -193,7 +193,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Tracking/dataPoints.php') 
                                 JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID)
                                 JOIN gibbonInternalAssessmentColumn ON (gibbonInternalAssessmentColumn.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID)
                             WHERE gibbonYearGroup.gibbonYearGroupID=:gibbonYearGroupID".$countYear."
-                                AND gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID".$countYear."
+                                AND gibbonCourse.academic_year=:gibbonSchoolYearID".$countYear."
                                 AND gibbonInternalAssessmentColumn.completeDate<='".date('Y-m-d')."'
                             ) UNION ";
                         $countYear ++;

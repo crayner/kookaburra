@@ -59,7 +59,7 @@ class NotificationListenerSubscriber implements EventSubscriberInterface
         if ($data['scopeType'] === 'gibbonPersonIDStudent') {
             $options = $form->get('scopeID')->getConfig()->getOptions();
             $form->remove('scopeID');
-            $schoolYear = AcademicYearHelper::getCurrentSchoolYear();
+            $schoolYear = AcademicYearHelper::getCurrentAcademicYear();
             $today = new \DateTime(date('Y-m-d'));
             $form->add('scopeID', EntityType::class, array_merge($options, [
                 'label' => 'Scope Type Choice',

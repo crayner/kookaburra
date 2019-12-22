@@ -46,7 +46,7 @@ class StaffCoverage implements EntityInterface
     /**
      * @var AcademicYear|null
      * @ORM\OneToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="gibbonAcademicYearID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonAcademicYearID", referencedColumnName="id", nullable=false)
      */
     private $AcademicYear;
 

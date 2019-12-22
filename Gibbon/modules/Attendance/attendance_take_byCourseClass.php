@@ -47,12 +47,12 @@ if (isActionAccessible($guid, $connection2, "/modules/Attendance/attendance_take
             $data = array('gibbonPersonID' => $_SESSION[$guid]['gibbonPersonID'], 'gibbonSchoolYearID' => $_SESSION[$guid]['gibbonSchoolYearID']);
             $sql = "SELECT gibbonCourseClass.gibbonCourseClassID, gibbonSchoolYear.firstDay, gibbonSchoolYear.lastDay
                     FROM gibbonCourse
-                    JOIN gibbonSchoolYear ON (gibbonCourse.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID)
+                    JOIN gibbonSchoolYear ON (gibbonCourse.academic_year=gibbonSchoolYear.gibbonSchoolYearID)
                     JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID)
                     JOIN gibbonCourseClassPerson ON (gibbonCourseClassPerson.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID)
                     WHERE gibbonPersonID=:gibbonPersonID
                     AND gibbonCourseClass.attendance='Y'
-                    AND gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID";
+                    AND gibbonCourse.academic_year=:gibbonSchoolYearID";
             $result = $connection2->prepare($sql);
             $result->execute($data);
         } catch (PDOException $e) {
@@ -108,11 +108,11 @@ if (isActionAccessible($guid, $connection2, "/modules/Attendance/attendance_take
                 // Check class
                 try {
                     $data = array("gibbonCourseClassID" => $gibbonCourseClassID, "gibbonSchoolYearID" => $_SESSION[$guid]["gibbonSchoolYearID"]);
-                    $sql = "SELECT gibbonCourseClass.*, gibbonCourse.gibbonSchoolYearID,firstDay, lastDay,
+                    $sql = "SELECT gibbonCourseClass.*, gibbonCourse.academic_year,firstDay, lastDay,
                     gibbonCourse.nameShort AS course, gibbonCourseClass.nameShort AS class FROM gibbonCourse
-                    JOIN gibbonSchoolYear ON (gibbonCourse.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID)
+                    JOIN gibbonSchoolYear ON (gibbonCourse.academic_year=gibbonSchoolYear.gibbonSchoolYearID)
                     JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID)
-                    WHERE gibbonCourseClass.gibbonCourseClassID=:gibbonCourseClassID AND gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID";
+                    WHERE gibbonCourseClass.gibbonCourseClassID=:gibbonCourseClassID AND gibbonCourse.academic_year=:gibbonSchoolYearID";
 
                     $result = $connection2->prepare($sql);
                     $result->execute($data);

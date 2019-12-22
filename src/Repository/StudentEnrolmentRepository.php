@@ -48,7 +48,7 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
             ->where('rg.tutor = :person OR rg.tutor2 = :person OR rg.tutor3 = :person')
             ->setParameter('person', $person)
             ->andWhere('se.academicYear = :academicYear')
-            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
             ->getQuery()
             ->getResult();
         $results = [];
@@ -69,7 +69,7 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
             ->leftJoin('se.yearGroup', 'yg')
             ->where('se.academicYear = :academicYear')
             ->andWhere('se.person = :person')
-            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
             ->setParameter('person', $person)
             ->getQuery()
             ->getResult();

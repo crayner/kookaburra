@@ -59,7 +59,7 @@ class CourseSyncGateway extends QueryableGateway
             ->innerJoin('gibbonCourseClass', 'gibbonCourseClass.gibbonCourseClassID=gibbonCourseClassMap.gibbonCourseClassID')
             ->innerJoin('gibbonCourse', 'gibbonCourse.gibbonCourseID=gibbonCourseClass.gibbonCourseID')
             ->where('FIND_IN_SET(gibbonYearGroup.gibbonYearGroupID, gibbonCourse.gibbonYearGroupIDList)')
-            ->where('gibbonCourse.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonCourse.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
             ->groupBy(['gibbonYearGroup.gibbonYearGroupID']);
 

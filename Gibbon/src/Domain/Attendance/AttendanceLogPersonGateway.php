@@ -99,7 +99,7 @@ class AttendanceLogPersonGateway extends QueryableGateway
             ->bindValue('gibbonPersonID', $gibbonPersonID)
             ->where("gibbonCourseClassPerson.role = 'Student'")
             ->where("gibbonCourseClass.attendance='Y'")
-            ->where('gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID')
+            ->where('gibbonCourse.academic_year=:gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
             ->where('NOT (gibbonAttendanceLogPerson.gibbonAttendanceLogPersonID IS NULL AND timetable.gibbonCourseClassID IS NULL)')
             ->bindValue('date', $date)

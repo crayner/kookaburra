@@ -56,7 +56,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/planner_duplicate.
         } else {
             try {
                 $data = array('gibbonSchoolYearID' => $_SESSION[$guid]['gibbonSchoolYearID'], 'gibbonPlannerEntryID' => $gibbonPlannerEntryID_org);
-                $sql = 'SELECT *, gibbonPlannerEntry.description AS description FROM gibbonPlannerEntry JOIN gibbonCourseClass ON (gibbonPlannerEntry.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID) JOIN gibbonCourse ON (gibbonCourse.gibbonCourseID=gibbonCourseClass.gibbonCourseID) WHERE gibbonPlannerEntryID=:gibbonPlannerEntryID AND gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID';
+                $sql = 'SELECT *, gibbonPlannerEntry.description AS description FROM gibbonPlannerEntry JOIN gibbonCourseClass ON (gibbonPlannerEntry.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID) JOIN gibbonCourse ON (gibbonCourse.gibbonCourseID=gibbonCourseClass.gibbonCourseID) WHERE gibbonPlannerEntryID=:gibbonPlannerEntryID AND gibbonCourse.academic_year=:gibbonSchoolYearID';
                 $result = $connection2->prepare($sql);
                 $result->execute($data);
             } catch (PDOException $e) {

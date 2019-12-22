@@ -45,7 +45,7 @@ class GroupRepository extends ServiceEntityRepository
             ->where('gp.person = :person')
             ->setParameter('person', $person)
             ->andWhere('g.academicYear = :academicYear')
-            ->setParameter('academicYear', AcademicYearHelper::getCurrentSchoolYear())
+            ->setParameter('academicYear', AcademicYearHelper::getCurrentAcademicYear())
             ->getQuery()
             ->getResult();
     }

@@ -68,7 +68,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Timetable Admin/courseEnro
                 JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseID=gibbonCourse.gibbonCourseID)
                 JOIN gibbonYearGroup ON (gibbonYearGroup.gibbonYearGroupID=:gibbonYearGroupID)
                 WHERE FIND_IN_SET(gibbonYearGroup.gibbonYearGroupID, gibbonCourse.gibbonYearGroupIDList)
-                AND gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID
+                AND gibbonCourse.academic_year=:gibbonSchoolYearID
                 GROUP BY gibbonCourseClass.gibbonCourseClassID
                 ORDER BY gibbonCourse.nameShort, gibbonCourseClass.nameShort
                 ";
@@ -82,7 +82,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Timetable Admin/courseEnro
                 JOIN gibbonYearGroup ON (FIND_IN_SET(gibbonYearGroup.gibbonYearGroupID, gibbonCourse.gibbonYearGroupIDList))
                 LEFT JOIN gibbonCourseClassMap ON (gibbonCourseClassMap.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID AND gibbonCourseClassMap.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID)
                 WHERE gibbonYearGroup.gibbonYearGroupID=:gibbonYearGroupID
-                AND gibbonCourse.gibbonSchoolYearID=:gibbonSchoolYearID
+                AND gibbonCourse.academic_year=:gibbonSchoolYearID
                 GROUP BY gibbonCourseClass.gibbonCourseClassID
                 ORDER BY gibbonCourse.name, gibbonCourseClass.nameShort
                 ";
