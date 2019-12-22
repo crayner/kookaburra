@@ -381,6 +381,8 @@ class ReactFormType extends AbstractType
             return 'transparent';
         if (in_array('react_sub_form', $prefixes))
             return 'transparent';
+        if (in_array('time', $prefixes))
+            return 'time';
 
 //        dump($prefixes);
         return 'unknown';
