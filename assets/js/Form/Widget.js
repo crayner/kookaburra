@@ -160,6 +160,21 @@ export default function Widget(props) {
         )
     }
 
+    if (form.type === 'time') {
+        let value = form.value
+        if (form.value !== null && typeof form.value === 'object') {
+            console.log(value)
+        }
+        value = value.slice(0,8)
+        widget_attr.type = 'time'
+        return (
+            <div {...wrapper_attr}>
+                <input {...widget_attr} defaultValue={value} />
+                {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+            </div>
+        )
+    }
+
     if (form.type === 'text') {
         widget_attr.type = 'text'
         return (
