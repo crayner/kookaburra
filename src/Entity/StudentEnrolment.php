@@ -20,7 +20,7 @@ use Kookaburra\UserAdmin\Entity\Person;
  * Class StudentEnrolment
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StudentEnrolmentRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="StudentEnrolment", indexes={@ORM\Index(name="gibbonAcademicYearID", columns={"gibbonAcademicYearID"}), @ORM\Index(name="gibbonYearGroupID", columns={"gibbonYearGroupID"}), @ORM\Index(name="gibbonRollGroupID", columns={"gibbonRollGroupID"}), @ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID","gibbonAcademicYearID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="StudentEnrolment", indexes={@ORM\Index(name="academic_year", columns={"academic_year"}), @ORM\Index(name="gibbonYearGroupID", columns={"gibbonYearGroupID"}), @ORM\Index(name="gibbonRollGroupID", columns={"gibbonRollGroupID"}), @ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID","academic_year"})})
  */
 class StudentEnrolment
 {

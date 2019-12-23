@@ -125,9 +125,9 @@ class PaginationFilter
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getGroup(): ?string
+    public function getGroup(): string
     {
         return $this->group;
     }
@@ -135,10 +135,10 @@ class PaginationFilter
     /**
      * Group.
      *
-     * @param string|null $group
+     * @param string $group
      * @return PaginationFilter
      */
-    public function setGroup(?string $group): PaginationFilter
+    public function setGroup(string $group): PaginationFilter
     {
         $this->group = $group;
         return $this;

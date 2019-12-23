@@ -10,6 +10,7 @@ export default function PaginationFilter(props) {
         filter,
         filterGroups,
         messages,
+        defaultFilters
     } = props
 
     if (Object.keys(filters).length === 0)
@@ -47,7 +48,7 @@ export default function PaginationFilter(props) {
 
     return (<tr className={'flex flex-col sm:flex-row justify-between content-center p-0'}>
                 <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0 px-2 border-b-0 sm:border-b border-t-0">
-                    <label htmlFor="manage_search_search">{messages['Filter Select']}</label>
+                    <label htmlFor="manage_search_search">{messages['Filter Select']}{defaultFilters ? <span className={'text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0'}><br />{messages['Default filtering is enforced.']}</span>: ''}</label>
                     <div style={{marginTop: '7px', height: '20px'}}>
                     {activeFilters}
                     </div>
@@ -69,5 +70,6 @@ PaginationFilter.propTypes = {
     changeFilter: PropTypes.func.isRequired,
     messages: PropTypes.object.isRequired,
     filterGroups: PropTypes.object.isRequired,
+    defaultFilters: PropTypes.bool.isRequired,
 }
 

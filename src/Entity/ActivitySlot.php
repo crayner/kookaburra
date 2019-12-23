@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\DaysOfWeek;
 
 /**
  * Class ActivitySlot
@@ -52,7 +53,7 @@ class ActivitySlot
 
     /**
      * @var DaysOfWeek|null
-     * @ORM\ManyToOne(targetEntity="DaysOfWeek")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\DaysOfWeek")
      * @ORM\JoinColumn(name="gibbonDaysOfWeekID",referencedColumnName="gibbonDaysOfWeekID", nullable=false)
      */
     private $dayOfWeek;

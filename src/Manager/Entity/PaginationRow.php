@@ -15,6 +15,8 @@ namespace App\Manager\Entity;
 use App\Util\TranslationsHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class PaginationRow
@@ -36,6 +38,11 @@ class PaginationRow
      * @var Collection|PaginationFilter[]
      */
     private $filters;
+
+    /**
+     * @var array|null
+     */
+    private $defaultFilter;
 
     /**
      * @return PaginationColumn[]|Collection
@@ -133,7 +140,7 @@ class PaginationRow
     public function addFilter(PaginationFilter $filter): PaginationRow
     {
         if (!$this->getFilters()->contains($filter))
-            $this->filters->add($filter);
+            $this->filters->set($filter->getName(),$filter);
         return $this;
     }
 
@@ -156,6 +163,7 @@ class PaginationRow
             'lastPage' => TranslationsHelper::translate('Last Page'),
             'search' => $this->isSearch(),
             'filterGroups' => $this->isFilterGroups(),
+            'defaultFilter' => $this->getDefaultFilter(),
         ];
     }
 
@@ -187,5 +195,32 @@ class PaginationRow
             }
         }
         return true;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getDefaultFilter(): ?array
+    {
+        return $this->defaultFilter;
+    }
+
+    /**
+     * DefaultFilter.
+     *
+     * @param array $defaultFilter
+     * @return PaginationRow
+     */
+    public function setDefaultFilter(array $defaultFilter): PaginationRow
+    {
+        $this->defaultFilter = [];
+        foreach($defaultFilter as $w)
+        {
+            if (!$this->getFilters()->containsKey($w))
+                throw new MissingOptionsException(sprintf('The filter name "%s" has not been defined.', $w));
+            $this->defaultFilter[$w] = $this->getFilters()->get($w)->toArray();
+        }
+
+        return $this;
     }
 }

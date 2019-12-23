@@ -71,7 +71,7 @@ class MarkbookColumn
     /**
      * @var AcademicYearTerm|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYearTerm")
-     * @ORM\JoinColumn(name="gibbonAcademicYearTermID", referencedColumnName="gibbonAcademicYearTermID")
+     * @ORM\JoinColumn(name="gibbonAcademicYearTermID", referencedColumnName="id")
      */
     private $AcademicYearTerm;
 

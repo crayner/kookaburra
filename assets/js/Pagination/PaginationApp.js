@@ -23,6 +23,7 @@ export default class PaginationApp extends Component {
         this.search = props.row.search
         this.filterGroups = props.row.filterGroups
         this.contentLoader = props.contentLoader
+        this.defaultFilter = props.row.defaultFilter
         this.columnCount = 0
 
         this.sortColumn = this.sortColumn.bind(this)
@@ -58,7 +59,6 @@ export default class PaginationApp extends Component {
     }
 
     componentDidMount() {
-        let result = this.paginateContent(this.content,this.state.offset)
         this.columnCount = 0
         this.row.columns.map(column => {
             if (column.dataOnly === false)
@@ -72,12 +72,8 @@ export default class PaginationApp extends Component {
             this.row.emptyContent = this.messages['Loading Content...']
             this.loadContent()
         }
-        this.setState({
-            results: result,
-            control: this.buildControl(this.state.offset, result),
-            sizeButtons: this.buildPageSizeControls(this.state.pageMax),
-            confirm: false,
-        })
+
+        this.changeFilter(null)
     }
 
     loadContent() {
@@ -267,18 +263,18 @@ export default class PaginationApp extends Component {
 
         let control = []
         if (this.state.offset > 0) {
-            control.push(<a href={'#'} key={'first'} onClick={() => this.firstPage()} title={this.row.firstPage}><span className={'text-gray-600 fas fa-angle-double-left fa-fw'}></span></a>)
+            control.push(<a href={'#'} key={'first'} onClick={() => this.firstPage()} title={this.row.firstPage}><span className={'text-gray-600 fas fa-angle-double-left fa-fw'}/></a>)
         }
 
         if (this.state.filteredContent.length > this.state.pageMax && this.state.offset > 0) {
-            control.push(<a href={'#'} key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span className={'text-gray-600 fas fa-angle-left fa-fw'}></span></a>)
+            control.push(<a href={'#'} key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span className={'text-gray-600 fas fa-angle-left fa-fw'}/></a>)
         }
 
         control.push(<span key={'content'}>{content}</span>)
 
         if (this.state.filteredContent.length > this.state.pageMax && this.state.pageMax + this.state.offset < this.state.filteredContent.length) {
-            control.push(<a href={'#'} key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span className={'text-gray-600 fas fa-angle-right fa-fw'}></span></a>)
-            control.push(<a href={'#'} key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span className={'text-gray-600 fas fa-angle-double-right fa-fw'}></span></a>)
+            control.push(<a href={'#'} key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span className={'text-gray-600 fas fa-angle-right fa-fw'}/></a>)
+            control.push(<a href={'#'} key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span className={'text-gray-600 fas fa-angle-double-right fa-fw'}/></a>)
         }
         return control
     }
@@ -319,13 +315,36 @@ export default class PaginationApp extends Component {
     }
 
     changeFilter(value) {
-        if (typeof value.group === 'undefined') {
+        let filterGroups = {...this.state.filterGroups}
+        if (value === null) {
+            if (this.defaultFilter === null) {
+                let result = this.paginateContent(this.content,this.state.offset)
+                this.setState({
+                    results: result,
+                    control: this.buildControl(this.state.offset, result),
+                    sizeButtons: this.buildPageSizeControls(this.state.pageMax),
+                    confirm: false,
+                })
+                return
+            } else if (this.state.filter.length === 0) {
+                filterGroups = {}
+                Object.keys(this.defaultFilter).map(key => {
+                    if (value === null) {
+                        value = this.defaultFilter[key]
+                        filterGroups[value.group] = ''
+                    } else {
+                        const x = this.defaultFilter[key]
+                        filterGroups[x.group] = x.name
+                    }
+                })
+            } else
+                filterGroups = {...this.state.filterGroups}
+        } else if (typeof value.group === 'undefined') {
             if (value.target.value === '')
                 return
             value = this.filters[value.target.value]
         }
 
-        let filterGroups = {...this.state.filterGroups}
         let filter = this.state.filter
         if (this.filterGroups) {
             let was = filterGroups[value.group]
@@ -336,6 +355,16 @@ export default class PaginationApp extends Component {
             } else {
                 filterGroups[value.group] = value.name
             }
+
+            if (this.defaultFilter !== null) {
+                Object.keys(this.defaultFilter).map(key => {
+                    value = this.defaultFilter[key]
+                    if (typeof filterGroups[value.group] === 'undefined')
+                        filterGroups[value.group] = value.name
+                })
+
+            }
+
             filter = Object.keys(filterGroups).map(q => {
                 return filterGroups[q]
             })
@@ -401,7 +430,7 @@ export default class PaginationApp extends Component {
                                 <table className={'noIntBorder fullWidth relative'}>
                                     <tbody>
                                         <PaginationSearch search={this.search} messages={this.messages} clearSearch={this.clearSearch} changeSearch={this.changeSearch} searchValue={this.state.search} />
-                                        <PaginationFilter filter={this.state.filter} filters={this.filters} changeFilter={this.changeFilter} messages={this.messages} filterGroups={this.state.filterGroups} />
+                                        <PaginationFilter filter={this.state.filter} filters={this.filters} changeFilter={this.changeFilter} messages={this.messages} filterGroups={this.state.filterGroups} defaultFilters={this.defaultFilter !== null} />
                                     </tbody>
                                 </table>
                             </td>

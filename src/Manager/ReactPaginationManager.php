@@ -241,6 +241,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         TranslationsHelper::addTranslation('Filter Select', [], 'messages');
         TranslationsHelper::addTranslation('There are no records to display.', [],'messages');
         TranslationsHelper::addTranslation('Loading Content...', [],'messages');
+        TranslationsHelper::addTranslation('Default filtering is enforced.', [], 'messages');
         return TranslationsHelper::getTranslations();
     }
 
