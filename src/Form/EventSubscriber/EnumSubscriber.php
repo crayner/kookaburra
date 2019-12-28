@@ -2,6 +2,7 @@
 namespace App\Form\EventSubscriber;
 
 use App\Exception\MissingClassException;
+use App\Form\Type\ChoiceWithVisibleClassType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormEvent;
@@ -94,6 +95,6 @@ class EnumSubscriber implements EventSubscriberInterface
         ];
 
         //Replace the existing form element.
-        $form->getParent()->add($name, ChoiceType::class, $options);
+        $form->getParent()->add($name, ChoiceWithVisibleClassType::class, $options);
     }
 }

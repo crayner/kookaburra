@@ -65,9 +65,9 @@ class PaginationFilter
     }
 
     /**
-     * @return string
+     * @return string|array
      */
-    public function getLabel(): string
+    public function getLabel()
     {
         return $this->label;
     }
@@ -75,10 +75,10 @@ class PaginationFilter
     /**
      * Label.
      *
-     * @param string $label
+     * @param string|array $label
      * @return PaginationFilter
      */
-    public function setLabel(string $label): PaginationFilter
+    public function setLabel($label): PaginationFilter
     {
         $this->label = $label;
         return $this;
@@ -154,7 +154,10 @@ class PaginationFilter
         $x = [];
         foreach($result as $q=>$w)
             $x[str_replace("\x00App\Manager\Entity\PaginationFilter\x00", '', $q)] = $w;
-        $x['label'] = TranslationsHelper::translate($x['label'] ?: $x['name']);
+        if (is_array($x['label']))
+            $x['label'] = TranslationsHelper::translate($x['label'][0],$x['label'][1],$x['label'][2]);
+        else
+            $x['label'] = TranslationsHelper::translate($x['label'] ?: $x['name']);
         $x['group'] = $x['group'] ? TranslationsHelper::translate($x['group']) : null;
         return $x;
     }

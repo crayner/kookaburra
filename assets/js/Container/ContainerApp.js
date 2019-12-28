@@ -240,7 +240,8 @@ export default class ContainerApp extends Component {
                     let form = {...data.form}
                     form.errors = errors
                     this.submit[parentName] = false
-                    this.setMyState(buildState({...mergeParentForm(this.state.forms,parentName, {...form})}, this.singleForm), setPanelErrors({...form}, {}))
+                    let forms = checkHiddenRows({...mergeParentForm(this.state.forms, parentName, {...form})})
+                    this.setMyState(buildState(forms, this.singleForm), setPanelErrors({...form}, {}))
                 }
             }).catch(error => {
                 parentForm.errors.push({'class': 'error', 'message': error})

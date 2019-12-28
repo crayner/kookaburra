@@ -17,12 +17,12 @@ export default function HeaderRow(props) {
         if (column.dataOnly)
             return
         const help = column.help !== null ? (<span className={'small text-gray-600 italic'}><br/>{column.help}</span>) : ''
-        let sort = column.sort === true ? (<span className={'fas fa-sort fa-fw text-gray-600'} style={{float: 'right'}}></span>) : ''
+        let sort = column.sort === true ? (<span className={'fas fa-sort fa-fw text-gray-600'} style={{float: 'right'}}/>) : ''
         let w = sortColumnName
         if (typeof sortColumnName === 'array')
             w = sortColumnName[0]
         if (w === column.contentKey) {
-            sort = (<span className={'fas fa-sort-' + sortColumnDirection + ' fa-fw text-gray-800'} style={{float: 'right'}}></span>)
+            sort = (<span className={'fas fa-sort-' + sortColumnDirection + ' fa-fw text-gray-800'} style={{float: 'right'}}/>)
         }
 
         let headerClass = column.headerClass !== '' ? column.headerClass : column.class
