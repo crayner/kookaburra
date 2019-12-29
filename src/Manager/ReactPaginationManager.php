@@ -13,11 +13,16 @@
 namespace App\Manager;
 
 use App\Entity\Setting;
+use App\Exception\MissingClassException;
 use App\Manager\Entity\PaginationRow;
 use App\Provider\ProviderFactory;
+use App\Util\StringHelper;
 use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
@@ -55,6 +60,21 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * @var string|bool
      */
     private $contentLoader = false;
+
+    /**
+     * @var array
+     */
+    private $initialFilter = [];
+
+    /**
+     * @var RequestStack
+     */
+    private $stack;
+
+    /**
+     * @var string|null
+     */
+    private $storeFilterURL;
 
     /**
      * ReactPaginationManager constructor.
@@ -203,6 +223,8 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
             'contentLoader' => $this->getContentLoader(),
             'translations' => $this->getTranslations(),
             'targetElement' => $this->getTargetElement(),
+            'storeFilterURL' => $this->getStoreFilterURL(),
+            'initialFilter' => $this->getInitialFilter(),
         ];
     }
 
@@ -283,6 +305,120 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     public function setContentLoader(string $contentLoader)
     {
         $this->contentLoader = $contentLoader;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStoreFilterURL(): ?string
+    {
+        return $this->storeFilterURL;
+    }
+
+    /**
+     * StoreFilterURL.
+     *
+     * @param string|null $storeFilterURL
+     * @return ReactPaginationManager
+     */
+    public function setStoreFilterURL(?string $storeFilterURL): ReactPaginationManager
+    {
+        $this->storeFilterURL = $storeFilterURL;
+        $this->readInitialFilter();
+        return $this;
+    }
+
+    /**
+     * getStoredFilter
+     * @return array
+     */
+    public function getInitialFilter(): array
+    {
+        return $this->initialFilter;
+    }
+
+    /**
+     * InitialFilter.
+     *
+     * @param array $initialFilter
+     * @return ReactPaginationManager
+     */
+    public function setInitialFilter(array $initialFilter): ReactPaginationManager
+    {
+        $this->initialFilter = $initialFilter;
+        return $this;
+    }
+
+    /**
+     * @return RequestStack
+     * @throws MissingClassException
+     */
+    public function getStack(): RequestStack
+    {
+        if (null === $this->stack)
+            trigger_error(sprintf('The request stack has not been injected into the class %s.  Use the calls function to setStack in the service configuration for this class.', get_class($this)), E_USER_ERROR);
+        return $this->stack;
+    }
+
+    /**
+     * Stack.
+     *
+     * @param RequestStack $stack
+     * @return ReactPaginationManager
+     */
+    public function setStack(RequestStack $stack): ReactPaginationManager
+    {
+        $this->stack = $stack;
+        return $this;
+    }
+
+    /**
+     * getRequest
+     * @return Request|null
+     * @throws MissingClassException
+     */
+    private function getRequest(): Request
+    {
+        return $this->getStack()->getCurrentRequest();
+    }
+
+    /**
+     * getSession
+     * @return SessionInterface
+     * @throws MissingClassException
+     */
+    private function getSession(): SessionInterface
+    {
+        return $this->getRequest()->getSession();
+    }
+
+    /**
+     * readInitialFilter
+     * @return array
+     * @throws MissingClassException
+     */
+    public function readInitialFilter(): array
+    {
+        $session = $this->getSession();
+        $name = StringHelper::toSnakeCase(basename(get_class($this)));
+        if ($session->has($name))
+            $this->setInitialFilter($session->get($name));
+        return $this->getInitialFilter();
+    }
+
+    /**
+     * writeInitialFilter
+     * @param array $filter
+     * @return ReactPaginationManager
+     */
+    public function writeInitialFilter(array $filter): ReactPaginationManager
+    {
+        $session = $this->getSession();
+        $name = StringHelper::toSnakeCase(basename(get_class($this)));
+        // @todo Filter modification ???
+
+        $session->set($name, $filter);
         return $this;
     }
 }

@@ -14,7 +14,7 @@ namespace App\Exception;
 
 use Throwable;
 
-class MissingClassException extends \Exception
+class MissingClassException extends \RuntimeException
 {
     /**
      * MissingClassException constructor.

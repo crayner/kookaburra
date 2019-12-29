@@ -24,7 +24,9 @@ export default class PaginationApp extends Component {
         this.filterGroups = props.row.filterGroups
         this.contentLoader = props.contentLoader
         this.defaultFilter = props.row.defaultFilter
+        this.initialFilter = props.initialFilter
         this.columnCount = 0
+        this.storeFilterURL = props.storeFilterURL
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
@@ -52,7 +54,7 @@ export default class PaginationApp extends Component {
             confirm: false,
             information: false,
             filteredContent: this.content,
-            filter: [],
+            filter: this.initialFilter,
             filterGroups: {},
             search: '',
         }
@@ -326,8 +328,22 @@ export default class PaginationApp extends Component {
                     confirm: false,
                 })
                 return
-            } else if (this.state.filter.length === 0) {
+            } else if (Object.keys(filterGroups).length === 0) {
                 filterGroups = {}
+                if (this.state.filter.length > 0) {
+                    let loop = 0
+                    this.state.filter.map(name => {
+                        const filter = this.filters[name]
+                        if (loop === 0) {
+                            filterGroups[filter.group] = ''
+                            value = filter
+                        } else {
+                            filterGroups[filter.group] = filter.value
+                        }
+                        loop = loop + 1
+                    })
+                }
+
                 Object.keys(this.defaultFilter).map(key => {
                     if (value === null) {
                         value = this.defaultFilter[key]
@@ -337,8 +353,7 @@ export default class PaginationApp extends Component {
                         filterGroups[x.group] = x.name
                     }
                 })
-            } else
-                filterGroups = {...this.state.filterGroups}
+            }
         } else if (typeof value.group === 'undefined') {
             if (value.target.value === '')
                 return
@@ -416,7 +431,19 @@ export default class PaginationApp extends Component {
         return 'none'
     }
 
+    storeFilter()
+    {
+        if (null === this.storeFilterURL)
+            return
+        fetchJson(
+            this.storeFilterURL,
+            {method: 'POST', body: JSON.stringify(this.state.filter)},
+            false
+        )
+    }
+
     render () {
+        this.storeFilter()
         return (
             <div>
                 <div className={'text-xs text-gray-600 text-left'}>
@@ -451,4 +478,5 @@ PaginationApp.propTypes = {
     row: PropTypes.object.isRequired,
     content: PropTypes.array.isRequired,
     translations: PropTypes.object.isRequired,
+    storeFilterURL: PropTypes.string,
 }
