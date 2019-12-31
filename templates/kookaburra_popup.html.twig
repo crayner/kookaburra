@@ -11,10 +11,14 @@
             <a id="header-logo" class="block max-w-xs sm:max-w-full leading-none" href="{{ absoluteURL }}">
                 <img class="block max-w-full" alt="{{ app.request.session.get('organisationName') }}" src="{{ asset(organisationLogo|default("/themes/Default/img/logo.png"), null, true) }}" width="100"/>
             </a>
-            <button type="button" class="close-button" onclick="window.close();" title="{{ 'Close'|trans }}"><span class="far fa-times-circle fa-fw" /></button>
+            {% if return is defined %}
+                <button type="button" class="close-button no-print" onclick="window.open('{{ return }}','_self');" title="{{ 'Return'|trans }}"><span class="fas fa-reply fa-fw" /></button>
+            {% else %}
+                <button type="button" class="close-button no-print" onclick="window.close();" title="{{ 'Close'|trans }}"><span class="far fa-times-circle fa-fw" /></button>
+            {% endif %}
         </div>
     {% endblock header %}
-    <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start flex-col lg:flex-row-reverse bg-transparent-100 clearfix">
+    <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start flex-col lg:flex-row-reverse bg-transparent-100 clearfix" style="background-color: white">
         <div id="content" class="w-full pt-0 sm:pt-6 lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
             {% block soft_error %}
                 {% if softError is defined and softError|length > 0 %}

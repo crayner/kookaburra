@@ -158,3 +158,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     padding: 4px 10px;
     margin-right: 3px;
 }
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}

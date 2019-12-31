@@ -1,5 +1,9 @@
 {% trans_default_domain 'messages' %}
 
+{% if bodyStyle is not defined %}
+    {% set bodyStyle = "background: url('" ~ asset(getBackgroundImage()) ~ "') repeat fixed center top olivedrab!important;" %}
+{% endif %}
+
 {% block full_document %}
 <!DOCTYPE html>
 <html {{ rightToLeft() ? 'dir="rtl"' : '' }}>
@@ -8,7 +12,7 @@
     {% endblock head %}
 
     {% block body %}
-    <body style="background: url('{{ asset(getBackgroundImage()) }}') repeat fixed center top olivedrab!important;">
+    <body style="{{ bodyStyle }}">
 
         {% block wrap %}
 
