@@ -17,6 +17,7 @@ namespace App\Controller;
 
 use App\Provider\ProviderFactory;
 use Kookaburra\SystemAdmin\Entity\Module;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
@@ -29,7 +30,8 @@ class ModuleBuilderController extends AbstractController
 {
     /**
      * Module Builder
-     * @Route("/module/build/")
+     * @Route("/module/action/build/", name="module_action_build")
+     * @IsGranted("ROLE_SYSTEM_ADMIN")
      */
     public function build()
     {

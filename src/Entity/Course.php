@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Kookaburra\Departments\Entity\Department;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,7 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Course
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Course", indexes={@ORM\Index(name="academic_year", columns={"academic_year"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameYear",columns={ "academic_year", "name"})}, uniqueConstraints={@ORM\UniqueConstraint(name="nameShortYear",columns={ "academic_year", "nameShort"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Course",
+ *     indexes={@ORM\Index(name="academic_year",columns={"academic_year"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="nameYear",columns={ "academic_year","name"}), @ORM\UniqueConstraint(name="nameShortYear",columns={"academic_year","nameShort"})})
  * @UniqueEntity({"academicYear", "name"})
  * @UniqueEntity({"academicYear", "nameShort"})
  */
@@ -53,8 +56,8 @@ class Course implements EntityInterface
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="Department")
-     * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="gibbonDepartmentID",nullable=true)
+     * @ORM\ManyToOne(targetEntity="Kookaburra\Departments\Entity\Department")
+     * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="id",nullable=true)
      */
     private $department;
 
