@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\Setting;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class SettingRepository

@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\RubricCell;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class RubricCellRepository

@@ -15,7 +15,7 @@ namespace App\Repository;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\PersonMedical;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class PersonMedicalRepository

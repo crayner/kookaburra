@@ -437,7 +437,7 @@ class LegacyManager
         // Get house logo and set session variable, only on first load after login (for performance)
         if ($session->get('pageLoads') == 0 and $session->has('username') and !$session->has('gibbonHouseIDLogo')) {
             $dataHouse = array('gibbonHouseID' => $session->get('gibbonHouseID'));
-            $sqlHouse = "SELECT `logo`, `name` FROM `gibbonHouse` WHERE `gibbonHouseID`=:gibbonHouseID";
+            $sqlHouse = "SELECT `logo`, `name` FROM `gibbonHouse` WHERE `id`=:gibbonHouseID";
             $house = $pdo->selectOne($sqlHouse, $dataHouse);
 
             if (!empty($house)) {

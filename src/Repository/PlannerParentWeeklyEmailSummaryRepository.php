@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\PlannerParentWeeklyEmailSummary;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class PlannerParentWeeklyEmailSummaryRepository

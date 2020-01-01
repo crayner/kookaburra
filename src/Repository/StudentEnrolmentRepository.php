@@ -18,7 +18,7 @@ use App\Entity\StudentEnrolment;
 use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class StudentEnrolmentRepository

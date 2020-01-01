@@ -42,7 +42,7 @@ class FileSubscriber implements EventSubscriberInterface
 	public function preSetData(FormEvent $event)
 	{
 		$data = $event->getData();
-		if ((null !== $data) && !file_exists(__DIR__.'/../../../public'.$data) && !file_exists($data))
+		if (null !== $data && !file_exists(__DIR__.'/../../../public'.$data) && !file_exists($data) && strpos($data, 'uploads/') === false)
 		{
 			$data = null;
 			$event->setData($data);

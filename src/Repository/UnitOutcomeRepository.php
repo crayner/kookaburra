@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\UnitOutcome;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class UnitOutcomeRepository

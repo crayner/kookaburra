@@ -17,7 +17,7 @@ namespace App\Repository;
 
 use App\Entity\Theme;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class ThemeRepository

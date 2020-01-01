@@ -17,7 +17,7 @@ use App\Entity\RollGroup;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class RollGroupRepository

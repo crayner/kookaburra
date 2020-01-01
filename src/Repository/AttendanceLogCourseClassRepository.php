@@ -15,7 +15,7 @@ namespace App\Repository;
 use App\Entity\AttendanceLogCourseClass;
 use App\Entity\CourseClass;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class AttendanceLogCourseClassRepository

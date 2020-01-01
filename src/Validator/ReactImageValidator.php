@@ -15,11 +15,14 @@
 
 namespace App\Validator;
 
-
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\ImageValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/**
+ * Class ReactImageValidator
+ * @package App\Validator
+ */
 class ReactImageValidator extends ImageValidator
 {
     /**

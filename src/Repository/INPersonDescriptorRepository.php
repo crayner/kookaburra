@@ -15,7 +15,7 @@ namespace App\Repository;
 use App\Entity\INPersonDescriptor;
 use Kookaburra\UserAdmin\Entity\Person;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class INPersonDescriptorRepository

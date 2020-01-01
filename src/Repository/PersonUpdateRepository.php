@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use Kookaburra\UserAdmin\Entity\PersonUpdate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class PersonUpdateRepository

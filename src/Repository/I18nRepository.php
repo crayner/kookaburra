@@ -18,7 +18,7 @@ namespace App\Repository;
 use App\Entity\I18n;
 use App\Util\LocaleHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class I18nRepository

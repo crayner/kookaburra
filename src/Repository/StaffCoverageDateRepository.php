@@ -17,7 +17,7 @@ namespace App\Repository;
 
 use App\Entity\StaffCoverageDate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class StaffCoverageDateRepository

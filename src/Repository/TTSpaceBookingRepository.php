@@ -20,7 +20,7 @@ use App\Provider\SettingProvider;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpParser\Node\Stmt\Else_;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class TTSpaceBookingRepository

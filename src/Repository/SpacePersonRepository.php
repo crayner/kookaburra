@@ -14,7 +14,7 @@ namespace App\Repository;
 
 use App\Entity\SpacePerson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class SpacePersonRepository

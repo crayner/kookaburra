@@ -15,7 +15,7 @@ namespace App\Repository;
 
 use App\Entity\MarkbookColumn;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class MarkbookColumnRepository

@@ -17,7 +17,7 @@ use App\Entity\CourseClassPerson;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class CourseClassPersonRepository
