@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86f822abb71c4e436b5a73936ed1fc21",
+    "content-hash": "eaac1874e19c94d65ffa244fd7c6d15b",
     "packages": [
         {
             "name": "aura/sqlquery",
@@ -1336,27 +1336,26 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.11",
+            "version": "2.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23"
+                "reference": "834593d5900615639208417760ba6a17299e2497"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/92dd169c32f6f55ba570c309d83f5209cefb5e23",
-                "reference": "92dd169c32f6f55ba570c309d83f5209cefb5e23",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/834593d5900615639208417760ba6a17299e2497",
+                "reference": "834593d5900615639208417760ba6a17299e2497",
                 "shasum": ""
             },
             "require": {
                 "doctrine/lexer": "^1.0.1",
-                "php": ">= 5.5"
+                "php": ">=5.5"
             },
             "require-dev": {
-                "dominicsayers/isemail": "dev-master",
-                "phpunit/phpunit": "^4.8.35||^5.7||^6.0",
-                "satooshi/php-coveralls": "^1.0.1",
-                "symfony/phpunit-bridge": "^4.4@dev"
+                "dominicsayers/isemail": "^3.0.7",
+                "phpunit/phpunit": "^4.8.36|^7.5.15",
+                "satooshi/php-coveralls": "^1.0.1"
             },
             "suggest": {
                 "ext-intl": "PHP Internationalization Libraries are required to use the SpoofChecking validation"
@@ -1390,7 +1389,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-08-13T17:33:27+00:00"
+            "time": "2019-12-30T08:14:25+00:00"
         },
         {
             "name": "firebase/php-jwt",
@@ -1631,16 +1630,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.5.0",
+            "version": "6.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5"
+                "reference": "43ece0e75098b7ecd8d13918293029e555a50f82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5",
-                "reference": "dbc2bc3a293ed6b1ae08a3651e2bfd213d19b6a5",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/43ece0e75098b7ecd8d13918293029e555a50f82",
+                "reference": "43ece0e75098b7ecd8d13918293029e555a50f82",
                 "shasum": ""
             },
             "require": {
@@ -1694,7 +1693,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2019-12-07T18:20:45+00:00"
+            "time": "2019-12-23T11:57:10+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -1874,12 +1873,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-departments.git",
-                "reference": "4223a315f56799dab8fab0ba6fbefae7b3f1c942"
+                "reference": "3338bf52e6d32444221a995389d807f08bb40844"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-departments/zipball/4223a315f56799dab8fab0ba6fbefae7b3f1c942",
-                "reference": "4223a315f56799dab8fab0ba6fbefae7b3f1c942",
+                "url": "https://api.github.com/repos/crayner/kookaburra-departments/zipball/3338bf52e6d32444221a995389d807f08bb40844",
+                "reference": "3338bf52e6d32444221a995389d807f08bb40844",
                 "shasum": ""
             },
             "require": {
@@ -1908,7 +1907,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2019-12-10T06:49:45+00:00"
+            "time": "2020-01-01T00:11:40+00:00"
         },
         {
             "name": "kookaburra/library",
@@ -1958,12 +1957,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-roll-groups.git",
-                "reference": "6f13240be9a38ea356b1f440144e7214090c90e5"
+                "reference": "fbde66eb8f4e928577944b073d07fc3584705404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-roll-groups/zipball/6f13240be9a38ea356b1f440144e7214090c90e5",
-                "reference": "6f13240be9a38ea356b1f440144e7214090c90e5",
+                "url": "https://api.github.com/repos/crayner/kookaburra-roll-groups/zipball/fbde66eb8f4e928577944b073d07fc3584705404",
+                "reference": "fbde66eb8f4e928577944b073d07fc3584705404",
                 "shasum": ""
             },
             "require": {
@@ -1992,7 +1991,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2019-12-09T02:16:11+00:00"
+            "time": "2019-12-31T07:14:02+00:00"
         },
         {
             "name": "kookaburra/school-admin",
@@ -2000,12 +1999,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-school-admin.git",
-                "reference": "04dd184c9587050aa77e8caf6949eb304cf30e92"
+                "reference": "c3b5ec6eddb2b936119076329909966da6af4c3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-school-admin/zipball/04dd184c9587050aa77e8caf6949eb304cf30e92",
-                "reference": "04dd184c9587050aa77e8caf6949eb304cf30e92",
+                "url": "https://api.github.com/repos/crayner/kookaburra-school-admin/zipball/c3b5ec6eddb2b936119076329909966da6af4c3b",
+                "reference": "c3b5ec6eddb2b936119076329909966da6af4c3b",
                 "shasum": ""
             },
             "require": {
@@ -2034,7 +2033,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2019-12-20T21:04:42+00:00"
+            "time": "2020-01-01T00:10:41+00:00"
         },
         {
             "name": "kookaburra/system-admin",
@@ -2042,12 +2041,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-system-admin.git",
-                "reference": "43e2c2ced46e8e21e36c59b7821fa3c47d30a725"
+                "reference": "8c6a1a6ef769a376140b017d73770943d84add60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-system-admin/zipball/43e2c2ced46e8e21e36c59b7821fa3c47d30a725",
-                "reference": "43e2c2ced46e8e21e36c59b7821fa3c47d30a725",
+                "url": "https://api.github.com/repos/crayner/kookaburra-system-admin/zipball/8c6a1a6ef769a376140b017d73770943d84add60",
+                "reference": "8c6a1a6ef769a376140b017d73770943d84add60",
                 "shasum": ""
             },
             "require": {
@@ -2076,7 +2075,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2019-12-19T22:33:52+00:00"
+            "time": "2020-01-01T00:12:38+00:00"
         },
         {
             "name": "kookaburra/user-admin",
@@ -2084,12 +2083,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-user-admin.git",
-                "reference": "5695dbab623ba8610439d6fb400df3338ab2f3b0"
+                "reference": "6abb09da3a9c17e26930e17037626864650fc13f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-user-admin/zipball/5695dbab623ba8610439d6fb400df3338ab2f3b0",
-                "reference": "5695dbab623ba8610439d6fb400df3338ab2f3b0",
+                "url": "https://api.github.com/repos/crayner/kookaburra-user-admin/zipball/6abb09da3a9c17e26930e17037626864650fc13f",
+                "reference": "6abb09da3a9c17e26930e17037626864650fc13f",
                 "shasum": ""
             },
             "require": {
@@ -2118,7 +2117,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2019-12-20T00:57:00+00:00"
+            "time": "2020-01-01T00:11:44+00:00"
         },
         {
             "name": "markbaker/complex",
@@ -2334,16 +2333,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "2.0.1",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "f9d56fd2f5533322caccdfcddbb56aedd622ef1c"
+                "reference": "c861fcba2ca29404dc9e617eedd9eff4616986b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f9d56fd2f5533322caccdfcddbb56aedd622ef1c",
-                "reference": "f9d56fd2f5533322caccdfcddbb56aedd622ef1c",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c861fcba2ca29404dc9e617eedd9eff4616986b8",
+                "reference": "c861fcba2ca29404dc9e617eedd9eff4616986b8",
                 "shasum": ""
             },
             "require": {
@@ -2411,7 +2410,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2019-11-13T10:27:43+00:00"
+            "time": "2019-12-20T14:22:59+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -2588,16 +2587,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "4.3.2",
+            "version": "4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "b83ff7cfcfee7827e1e78b637a5904fe6a96698e"
+                "reference": "da3fd972d6bafd628114f7e7e036f45944b62e9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/b83ff7cfcfee7827e1e78b637a5904fe6a96698e",
-                "reference": "b83ff7cfcfee7827e1e78b637a5904fe6a96698e",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/da3fd972d6bafd628114f7e7e036f45944b62e9c",
+                "reference": "da3fd972d6bafd628114f7e7e036f45944b62e9c",
                 "shasum": ""
             },
             "require": {
@@ -2609,6 +2608,7 @@
             "require-dev": {
                 "doctrine/instantiator": "^1.0.5",
                 "mockery/mockery": "^1.0",
+                "phpdocumentor/type-resolver": "0.4.*",
                 "phpunit/phpunit": "^6.4"
             },
             "type": "library",
@@ -2635,7 +2635,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2019-09-12T14:27:41+00:00"
+            "time": "2019-12-28T18:55:12+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -3259,16 +3259,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v5.5.2",
+            "version": "v5.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "92acfcc610e2180c52790ec3ff2e893f67e76b32"
+                "reference": "98f0807137b13d0acfdf3c255a731516e97015de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/92acfcc610e2180c52790ec3ff2e893f67e76b32",
-                "reference": "92acfcc610e2180c52790ec3ff2e893f67e76b32",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/98f0807137b13d0acfdf3c255a731516e97015de",
+                "reference": "98f0807137b13d0acfdf3c255a731516e97015de",
                 "shasum": ""
             },
             "require": {
@@ -3333,7 +3333,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2019-12-12T16:21:49+00:00"
+            "time": "2019-12-27T08:57:19+00:00"
         },
         {
             "name": "symfony/asset",
@@ -7002,12 +7002,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/cssinliner-extra.git",
-                "reference": "431402520025e077268de4978a4206e5fb8c0103"
+                "reference": "d7c951e935d65c0cfd9a63bb08541a297f230f3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/cssinliner-extra/zipball/431402520025e077268de4978a4206e5fb8c0103",
-                "reference": "431402520025e077268de4978a4206e5fb8c0103",
+                "url": "https://api.github.com/repos/twigphp/cssinliner-extra/zipball/d7c951e935d65c0cfd9a63bb08541a297f230f3a",
+                "reference": "d7c951e935d65c0cfd9a63bb08541a297f230f3a",
                 "shasum": ""
             },
             "require": {
@@ -7016,7 +7016,7 @@
                 "twig/twig": "^2.4|^3.0"
             },
             "require-dev": {
-                "symfony/phpunit-bridge": "^4.4@dev"
+                "symfony/phpunit-bridge": "^4.4|^5.0"
             },
             "type": "library",
             "extra": {
@@ -7048,20 +7048,20 @@
                 "inlining",
                 "twig"
             ],
-            "time": "2019-10-17T07:27:07+00:00"
+            "time": "2019-12-27T07:33:44+00:00"
         },
         {
             "name": "twig/extra-bundle",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/twig-extra-bundle.git",
-                "reference": "c56821429490e351003a09b7ed0c917feec2355f"
+                "reference": "ce5c97dd566d9acd5d1fbd5eb76b6d264614725a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/c56821429490e351003a09b7ed0c917feec2355f",
-                "reference": "c56821429490e351003a09b7ed0c917feec2355f",
+                "url": "https://api.github.com/repos/twigphp/twig-extra-bundle/zipball/ce5c97dd566d9acd5d1fbd5eb76b6d264614725a",
+                "reference": "ce5c97dd566d9acd5d1fbd5eb76b6d264614725a",
                 "shasum": ""
             },
             "require": {
@@ -7071,11 +7071,11 @@
                 "twig/twig": "^2.4|^3.0"
             },
             "require-dev": {
-                "twig/cssinliner-extra": "^2.12|^3.0@dev",
-                "twig/html-extra": "^2.12@dev|^3.0@dev",
-                "twig/inky-extra": "^2.12@dev|^3.0@dev",
-                "twig/intl-extra": "^2.12@dev|^3.0@dev",
-                "twig/markdown-extra": "^2.12@dev|^3.0@dev"
+                "twig/cssinliner-extra": "^2.12|^3.0",
+                "twig/html-extra": "^2.12|^3.0",
+                "twig/inky-extra": "^2.12|^3.0",
+                "twig/intl-extra": "^2.12|^3.0",
+                "twig/markdown-extra": "^2.12|^3.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -7107,31 +7107,30 @@
                 "extra",
                 "twig"
             ],
-            "time": "2019-10-17T07:30:08+00:00"
+            "time": "2019-12-28T07:09:27+00:00"
         },
         {
             "name": "twig/twig",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "9b58bb8ac7a41d72fbb5a7dc643e07923e5ccc26"
+                "reference": "28f856a4c57eeb24485916e8a68403f41a133616"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9b58bb8ac7a41d72fbb5a7dc643e07923e5ccc26",
-                "reference": "9b58bb8ac7a41d72fbb5a7dc643e07923e5ccc26",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/28f856a4c57eeb24485916e8a68403f41a133616",
+                "reference": "28f856a4c57eeb24485916e8a68403f41a133616",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2.9",
+                "php": "^7.2.5",
                 "symfony/polyfill-ctype": "^1.8",
                 "symfony/polyfill-mbstring": "^1.3"
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "^3.4|^4.2|^5.0",
-                "symfony/phpunit-bridge": "^4.4@dev|^5.0"
+                "symfony/phpunit-bridge": "^4.4|^5.0"
             },
             "type": "library",
             "extra": {
@@ -7157,7 +7156,6 @@
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "https://twig.symfony.com/contributors",
                     "role": "Contributors"
                 },
                 {
@@ -7171,7 +7169,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-11-15T20:38:32+00:00"
+            "time": "2019-12-28T07:17:28+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -7276,6 +7274,7 @@
                 "code",
                 "zf"
             ],
+            "abandoned": "laminas/laminas-code",
             "time": "2019-12-10T19:21:15+00:00"
         },
         {
@@ -7330,6 +7329,7 @@
                 "events",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-eventmanager",
             "time": "2018-04-25T15:33:34+00:00"
         }
     ],
@@ -7840,6 +7840,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.3.0",
+        "ext-calendar": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-iconv": "*",

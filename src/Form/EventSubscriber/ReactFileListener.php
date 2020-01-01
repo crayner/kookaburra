@@ -15,6 +15,7 @@
 
 namespace App\Form\EventSubscriber;
 
+use App\Util\ImageHelper;
 use App\Util\JsonFileUploadHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\SubmitEvent;
@@ -70,33 +71,34 @@ class ReactFileListener implements EventSubscriberInterface
     {
         $request = $this->stack->getCurrentRequest();
         if ($request->getContentType() === 'json') {
-            $targetPath = realpath(__DIR__ . '/../../../public/uploads') . DIRECTORY_SEPARATOR . date('Y') . DIRECTORY_SEPARATOR . date('m');
             $form = $event->getForm();
             $this->getParentNames($form);
-            $data = $form->getData();
             $value = $this->getValueFromContent($form, json_decode($request->getContent(), true));
-            if ('' === $value || null === $value) {
-                $event->setData($data);
+            if (empty($value)) {
+                $event->setData(null);
                 return;
             }
             $file = JsonFileUploadHelper::saveFile($value, $form->getConfig()->getOption('file_prefix'));
-            $validator = Validation::createValidator();
-            $x = $validator->validate($file, $form->getConfig()->getOption('constraints'));
-            if ($x->count() > 0) {
-                unlink($file->getRealPath());
-                foreach ($x as $constraint)
-                    $form->addError(new FormError($constraint->getMessage()));
+            if (null === $file) {
                 $data = null;
             } else {
-                $public = realpath(__DIR__ . '/../../../public');
-                $data = str_replace($public, '', $file->getRealPath());
+                $validator = Validation::createValidator();
+                $x = $validator->validate($file, $form->getConfig()->getOption('constraints'));
+                if ($x->count() > 0) {
+                    unlink($file->getRealPath());
+                    foreach ($x as $constraint)
+                        $form->addError(new FormError($constraint->getMessage()));
+                    $data = null;
+                } else {
+                    $public = realpath(__DIR__ . '/../../../public');
+                    $data = str_replace($public, '', $file->getRealPath());
 
-                // Remove existing file..
-                $file = $form->getData();
-                if (!in_array($file, [null,'']) && $file !== $data) {
-                    $file = realpath($file) ?: ($public . DIRECTORY_SEPARATOR . $file ?: false);
-                    if (false !== $file && is_file($file))
-                        unlink($file);
+                    // Remove existing file..
+                    $file = $form->getData();
+                    if (!in_array($file, [null, '']) && $file !== $data) {
+                        $file = realpath($file) ?: ($public . DIRECTORY_SEPARATOR . $file ?: false);
+                        ImageHelper::deleteImage($file);
+                    }
                 }
             }
             $event->setData($data);

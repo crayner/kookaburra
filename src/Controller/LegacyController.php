@@ -78,7 +78,6 @@ class LegacyController extends AbstractController
             $this->addFlash('warning', 'Your session expired, so you were automatically logged out of the system.');
 
         $sidebar->addContent(new Flash());
-        $person = ProviderFactory::getRepository(Person::class)->find(1);
 
         return $this->render('default/welcome.html.twig',
             [

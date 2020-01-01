@@ -20,6 +20,7 @@ use App\Manager\EntityInterface;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
 use Kookaburra\SystemAdmin\Manager\StringReplacementPagination;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -154,10 +155,15 @@ class ImageHelper
      * deleteImage
      * @param string $image
      * @return bool
+     * @throws IOException
      */
     public static function deleteImage(string $image): bool
     {
         if (!is_file(self::getAbsoluteImagePath($image)))
+            return true;
+        if (strpos($image, '/static/') !== false)
+            return true;
+        if (strpos($image, '\\static\\') !== false)
             return true;
         $file = new File(self::getAbsoluteImagePath($image));
         $fs = new Filesystem();
@@ -177,5 +183,19 @@ class ImageHelper
         $abs = str_replace([DIRECTORY_SEPARATOR, '\\', '/'], '|', self::getAbsolutePath());
 
         return str_replace('|', DIRECTORY_SEPARATOR, str_replace($abs, '', $image));
+    }
+
+    /**
+     * isFileInPublic
+     * @param string|null $file
+     * @return bool
+     */
+    public static function isFileInPublic(?string $file): bool
+    {
+        if (empty($file))
+            return false;
+
+        $file = self::getAbsoluteImagePath($file);
+        return is_file($file);
     }
 }

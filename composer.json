@@ -53,7 +53,7 @@
         "symfony/webpack-encore-bundle": "^1.6",
         "symfony/yaml": "^4.0 || ^5.0",
         "tecnickcom/tc-lib-barcode": "^1.15",
-        "twig/cssinliner-extra": "3.x-dev",
+        "twig/cssinliner-extra": "3.x-dev"
     },
     "require-dev": {
         "symfony/debug-pack": "^1.0",
