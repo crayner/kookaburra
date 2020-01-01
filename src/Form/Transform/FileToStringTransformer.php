@@ -38,7 +38,7 @@ class FileToStringTransformer implements DataTransformerInterface
 	 */
 	public function reverseTransform($data)
 	{
-        if (null === $data)
+	    if (null === $data)
 	        return $data;
         $relative = __DIR__ . '/../../../public';
         $file = is_file($data) ? $data : (is_file($relative.$data) ? realpath($relative.$data) : '');

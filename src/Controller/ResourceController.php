@@ -15,7 +15,6 @@
 
 namespace App\Controller;
 
-use App\Util\ImageHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -69,12 +68,12 @@ class ResourceController extends AbstractController
             $public = realpath(__DIR__ . '/../../public');
             $file = is_file($file) ? $file : (is_file($public . $file) ? $public . $file : '');
             if (is_file($file)) {
-                ImageHelper::deleteImage($file);
+                unlink($file);
                 $data['errors'][] = ['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.')];
             } else {
                 $data['errors'][] = ['class' => 'warning', 'message' => $translator->trans('Your request was successful, but some data was not properly deleted.')];
             }
-            $data['errors'][] = ['class' => 'info', 'message' => $translator->trans('You must submit the form to save this empty value.')];
+            $data['errors'][] = ['class' => 'info', 'message' => $translator->trans('You must submit the form to save this empty value.', [], 'kookaburra')];
             $data['status'] = 'success';
         } else {
             $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because you do not have access to this action.')];
