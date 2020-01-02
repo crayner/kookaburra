@@ -20,6 +20,10 @@ export default function HeaderRow(props) {
     let label = (<h3 {...form.label_attr}>{form.label}</h3>)
     if (form.header_type === 'h4')
         label = (<h4 {...form.label_attr}>{form.label}</h4>)
+    if (form.header_type === 'h5')
+        label = (<h5 {...form.label_attr}>{form.label}</h5>)
+    if (form.header_type === 'h6')
+        label = (<h6 {...form.label_attr}>{form.label}</h6>)
 
     let help = ''
     if (typeof form.help === 'string')

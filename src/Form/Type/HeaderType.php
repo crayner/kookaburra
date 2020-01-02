@@ -17,6 +17,8 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -47,5 +49,16 @@ class HeaderType extends AbstractType
     public function getParent()
     {
         return FormType::class;
+    }
+
+    /**
+     * buildView
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['header_type'] = $options['header_type'];
     }
 }

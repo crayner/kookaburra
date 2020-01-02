@@ -141,7 +141,10 @@ h6 {
     margin-bottom: 10px;
     font-size: 11pt;
 }
-
+td h6 {
+    text-transform: none;
+    border: none;
+}
 div.blockView h1,
 div.blockView h2,
 div.blockView h3,

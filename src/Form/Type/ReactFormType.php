@@ -201,6 +201,9 @@ class ReactFormType extends AbstractType
             $vars['value'] = $view->vars['data'];
         }
 
+        if (isset($view->vars['header_type']))
+            $vars['header_type'] = $view->vars['header_type'];
+
         $vars['id'] = $view->vars['id'];
         $vars['name'] = $view->vars['name'];
         $vars['full_name'] = $view->vars['full_name'];
@@ -252,6 +255,12 @@ class ReactFormType extends AbstractType
             $vars['allow_add'] = $view->vars['allow_add'];
             $vars['element_delete_route'] = $view->vars['element_delete_route'];
             $vars['element_delete_options'] = $view->vars['element_delete_options'];
+        }
+        if (in_array($vars['type'], ['simple_array'])) {
+            if (isset($view->vars['prototype']))
+                $vars['prototype'] = $this->buildTemplateView($view->vars['prototype']);
+            $vars['allow_delete'] = $view->vars['allow_delete'];
+            $vars['allow_add'] = $view->vars['allow_add'];
         }
 
         if ($view->vars['translation_domain'] !== false) {
@@ -370,6 +379,8 @@ class ReactFormType extends AbstractType
             return 'display';
         if (in_array('hidden', $prefixes))
             return 'hidden';
+        if (in_array('simple_array', $prefixes))
+            return 'simple_array';
         if (in_array('collection', $prefixes))
             return 'collection';
         if (in_array('submit', $prefixes))

@@ -68,7 +68,7 @@ class ReactSubFormExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('column_attr', ['boolean','array']);
         $resolver->setAllowedTypes('submit_on_change', ['boolean']);
 
-        $resolver->setAllowedValues('row_style', ['standard', 'single', 'header', 'collection_column', 'collection', 'hidden', 'transparent', 'multiple_widget']);
+        $resolver->setAllowedValues('row_style', ['standard', 'single', 'header', 'collection_column', 'collection', 'hidden', 'transparent', 'multiple_widget','simple_array']);
     }
 
     /**

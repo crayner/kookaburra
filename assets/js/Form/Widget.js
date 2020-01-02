@@ -9,6 +9,7 @@ import CollectionApp from "./CollectionApp"
 import {isEmpty} from "../component/isEmpty"
 import FormSelect from "./FormSelect"
 import Parser from "react-html-parser"
+import SimpleArray from "./SimpleArray"
 
 export default function Widget(props) {
     const {
@@ -260,6 +261,12 @@ export default function Widget(props) {
                 {form.value}
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
+        )
+    }
+
+    if (form.type === 'simple_array') {
+        return (
+            <SimpleArray wrapper_attr={wrapper_attr} form={form} functions={functions} errors={form.errors} />
         )
     }
 

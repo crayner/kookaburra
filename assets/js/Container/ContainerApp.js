@@ -24,6 +24,7 @@ import {
     checkHiddenRows,
     toggleRowsOnValue
 } from "./ContainerFunctions"
+import {isEmpty} from "../component/isEmpty"
 
 export default class ContainerApp extends Component {
     constructor (props) {
@@ -55,7 +56,9 @@ export default class ContainerApp extends Component {
             generateNewPassword: this.generateNewPassword.bind(this),
             toggleVisibleByClass: toggleRowsOnValue.bind(this),
             refreshChoiceList: this.refreshChoiceList.bind(this),
-            addElementToChoice: this.addElementToChoice.bind(this)
+            addElementToChoice: this.addElementToChoice.bind(this),
+            removeSimpleArrayValue: this.removeSimpleArrayValue.bind(this),
+            addSimpleArrayValue: this.addSimpleArrayValue.bind(this),
         }
 
         this.state = {
@@ -198,6 +201,8 @@ export default class ContainerApp extends Component {
             }
             return
         }
+        if (form.type === 'simple_array')
+            console.log(form)
         let value = e.target.value
         if (form.type === 'choice' && form.multiple) {
             value = []
@@ -209,8 +214,7 @@ export default class ContainerApp extends Component {
             }
         }
         form.value = value
-        const newValue = changeFormValue({...parentForm},form,value)
-        this.setMyState(buildState(mergeParentForm(this.state.forms,parentName, newValue), this.singleForm))
+        this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue({...parentForm},form,value)), this.singleForm))
         if (submitOnChange)
             this.submitForm({},form)
     }
@@ -346,6 +350,55 @@ export default class ContainerApp extends Component {
 
     addElementToChoice(form) {
         openUrl(form.add_url)
+    }
+
+    removeSimpleArrayValue(form,parent)
+    {
+        let key = form.name
+        parent.children.splice(key,1)
+
+        let values = []
+        let children = []
+        parent.children.map((child,key) => {
+            child.id = form.id + '_' + key
+            child.name = key
+            child.full_name = form.full_name + '[' + key + ']'
+            values.push(child.value)
+            children.push(child)
+        })
+        parent.value = values
+        parent.children = children
+
+        let parentForm = {...getParentForm(this.state.forms,parent)}
+        const parentName = getParentFormName(this.formNames,parent)
+        this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue(parentForm,parent,parent.value)),this.singleForm))
+    }
+
+    addSimpleArrayValue(form)
+    {
+        let value = form.children[form.children.length - 1].value
+        if (isEmpty(value)) return
+        const key = form.children.length
+        let child = {...form.prototype}
+        child.id = form.id + '_' + key
+        child.name = key
+        child.value = ''
+        child.full_name = form.full_name + '[' + key + ']'
+        form.children.push(child)
+        let values = []
+        const children = []
+        form.children.map((child,key) => {
+            child.id = form.id + '_' + key
+            child.name = key
+            child.full_name = form.full_name + '[' + key + ']'
+            values.push(child.value)
+            children.push(child)
+        })
+        form.value = values
+        form.children = children
+        let parentForm = {...getParentForm(this.state.forms,form)}
+        const parentName = getParentFormName(this.formNames,form)
+        this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue(parentForm,form,form.value)),this.singleForm))
     }
 
     render() {

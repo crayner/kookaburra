@@ -67,6 +67,11 @@ export default function Row(props) {
         })
     }
 
+    if (form.row_style === 'simple_array') {
+        return (<Standard form={form} functions={functions} />)
+    }
+
+
     console.log(form)
     console.error("The form has an unknown row style. ", form.row_style)
     return (<tr><td> Form Row {form.row_style}</td></tr>)
