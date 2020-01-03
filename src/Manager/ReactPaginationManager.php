@@ -80,6 +80,11 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     private $storeFilterURL;
 
     /**
+     * @var boolean
+     */
+    private $sortList = false;
+
+    /**
      * ReactPaginationManager constructor.
      */
     public function __construct(ScriptManager $scriptManager)
@@ -222,6 +227,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         return [
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),
+            'sortList' => $this->isSortList(),
             'content' => $this->getContent(),
             'contentLoader' => $this->getContentLoader(),
             'translations' => $this->getTranslations(),
@@ -422,6 +428,26 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         // @todo Filter modification ???
 
         $session->set($name, $filter);
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSortList(): bool
+    {
+        return $this->sortList;
+    }
+
+    /**
+     * SortList.
+     *
+     * @param bool $sortList
+     * @return ReactPaginationManager
+     */
+    public function setSortList(bool $sortList): ReactPaginationManager
+    {
+        $this->sortList = $sortList;
         return $this;
     }
 }

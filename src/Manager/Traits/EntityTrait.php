@@ -245,7 +245,7 @@ trait EntityTrait
         if ($validator && ($list = $validator->validate($this->getEntity()))->count() > 0)
         {
             foreach($list as $error)
-                $this->getMessageManager()->add('danger', $error->getMessage(), [], false);
+                $this->getMessageManager()->add('error', $error->getMessage(), [], false);
             return $this;
         }
         try {
@@ -254,7 +254,7 @@ trait EntityTrait
                 $this->getEntityManager()->flush();
         } catch (\Exception $e)
         {
-            $this->getMessageManager()->add('danger', 'return.error.2', [], 'messages');
+            $this->getMessageManager()->add('error', 'return.error.2', [], 'messages');
         }
         return $this;
     }
@@ -385,7 +385,7 @@ trait EntityTrait
             $this->getEntityManager()->flush();
         } catch (\Exception $e)
         {
-            $this->getMessageManager()->add('danger', 'Your request failed due to a database error.', [], false);
+            $this->getMessageManager()->add('error', 'return.error.2', [], 'messages');
         }
         return $this;
     }

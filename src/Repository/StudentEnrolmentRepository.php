@@ -12,6 +12,11 @@
  */
 namespace App\Repository;
 
+use Doctrine\DBAL\Driver\PDOException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
+use Kookaburra\SchoolAdmin\Entity\YearGroup;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\RollGroup;
 use App\Entity\StudentEnrolment;
@@ -87,16 +92,56 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
      */
     public function getStudentEnrolmentCount(?int $schoolYearID = null): int
     {
-        $x = $this->createQueryBuilder('se')
-            ->select('COUNT(p.id)')
-            ->join('se.person', 'p')
-            ->join('se.rollGroup', 'rg')
-            ->join('rg.academicYear', 'sy')
-            ->where('sy.id = :sy_id')
-            ->setParameter('sy_id', intval($schoolYearID))
-            ->getQuery()
-            ->getSingleScalarResult();
+        try {
+            return intval($this->createQueryBuilder('se')
+                ->select('COUNT(p.id)')
+                ->join('se.person', 'p')
+                ->join('se.rollGroup', 'rg')
+                ->join('rg.academicYear', 'sy')
+                ->where('sy.id = :sy_id')
+                ->setParameter('sy_id', intval($schoolYearID))
+                ->getQuery()
+                ->getSingleScalarResult());
+        } catch ( NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
 
-        return intval($x);
+    /**
+     * countEnrolmentsByAcademicYear
+     * @param AcademicYear $year
+     * @return int
+     */
+    public function countEnrolmentsByAcademicYear(AcademicYear $year): int
+    {
+        try {
+            return intval($this->createQueryBuilder('se')
+                ->select('COUNT(se.id)')
+                ->where('se.academicYear = :year')
+                ->setParameter('year', $year)
+                ->getQuery()
+                ->getSingleScalarResult());
+        } catch ( NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
+    }
+
+    /**
+     * countEnrolmentsByYearGroup
+     * @param YearGroup $year
+     * @return int
+     */
+    public function countEnrolmentsByYearGroup(YearGroup $year): int
+    {
+        try {
+            return intval($this->createQueryBuilder('se')
+                ->select('COUNT(se.id)')
+                ->where('se.yearGroup = :year')
+                ->setParameter('year', $year)
+                ->getQuery()
+                ->getSingleScalarResult());
+        } catch ( NoResultException | NonUniqueResultException $e) {
+            return 0;
+        }
     }
 }

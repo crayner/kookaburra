@@ -16,7 +16,7 @@
 namespace App\Form\EventSubscriber;
 
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\YearGroup;
+use Kookaburra\SchoolAdmin\Entity\YearGroup;
 use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
