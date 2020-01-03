@@ -8,9 +8,9 @@ import PaginationApp from "../Pagination/PaginationApp"
 
 export default function FormApp(props) {
     const {
-       functions,
-       form,
-       formName,
+        functions,
+        form,
+        formName,
         singleForm,
     } = props
 

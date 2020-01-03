@@ -22,7 +22,8 @@ import {
     buildFormData,
     isSubmit,
     checkHiddenRows,
-    toggleRowsOnValue
+    toggleRowsOnValue,
+    initialContentLoaders
 } from "./ContainerFunctions"
 import {isEmpty} from "../component/isEmpty"
 
@@ -60,16 +61,19 @@ export default class ContainerApp extends Component {
             removeSimpleArrayValue: this.removeSimpleArrayValue.bind(this),
             addSimpleArrayValue: this.addSimpleArrayValue.bind(this),
         }
+        this.contentManager = this.contentManager.bind(this)
 
         this.state = {
             selectedPanel: props.selectedPanel,
             forms: {...props.forms},
             panelErrors: {},
             submit: false,
+            content: {},
         }
         this.formNames = {}
         this.submit = {}
         this.singleForm = (Object.keys(props.forms).length === 1)
+        this.contentLoaders = props.contentLoader
     }
 
     componentDidMount() {
@@ -82,10 +86,23 @@ export default class ContainerApp extends Component {
         if (this.singleForm) {
             panelErrors = setPanelErrors({}, {})
         }
+        initialContentLoaders(this.contentLoaders, this.contentManager)
         let forms = checkHiddenRows({...this.state.forms})
         this.setMyState(forms, panelErrors)
     }
-    
+
+    contentManager(loader,content) {
+        if (typeof loader === 'undefined' || typeof content === 'undefined')
+            return false
+
+        let fullContent = this.state.content
+        fullContent[loader.target] = {loader: loader, content: content}
+        this.setState({
+            content: {...fullContent}
+        })
+        return true
+    }
+
     setMyState(forms, panelErrors){
         if (typeof forms.panelErrors !== 'undefined') {
             panelErrors = forms.panelErrors
@@ -405,7 +422,7 @@ export default class ContainerApp extends Component {
         return (
             <section>
                 {this.state.submit ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
-                <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} />
+                <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} />
             </section>
         )
     }

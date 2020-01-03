@@ -6,12 +6,14 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import '../../css/react-tabs.scss';
 import Parser from "html-react-parser"
 import FormApp from "../Form/FormApp"
+import PaginationApp from "../Pagination/PaginationApp"
 
 export default function Panels(props) {
     const {
         panels,
         selectedIndex,
         functions,
+        externalContent,
         singleForm,
         translations,
         panelErrors,
@@ -31,10 +33,29 @@ export default function Panels(props) {
     })
 
     const content = Object.keys(panels).map(name => {
-        const panelContent = renderPanelContent(panels[name], props)
+        const panel = panels[name]
+        const panelContent = renderPanelContent(panel, props)
+        let preContent = []
+        let postContent = []
+        if (panel.preContent !== null) {
+            preContent = panel.preContent.map(name => {
+                if (typeof externalContent[name] !== 'undefined')
+                    return renderExternalContent(externalContent[name])
+                return ''
+            })
+        }
+        if (panel.postContent !== null) {
+            postContent = panel.postContent.map(name => {
+                if (typeof externalContent[name] !== 'undefined')
+                    return renderExternalContent(externalContent[name])
+                return ''
+            })
+        }
         return (
             <TabPanel key={name}>
+                {preContent}
                 {panelContent}
+                {postContent}
             </TabPanel>
         )
     })
@@ -72,6 +93,7 @@ export default function Panels(props) {
 Panels.propTypes = {
     panels: PropTypes.object.isRequired,
     forms: PropTypes.object.isRequired,
+    externalContent: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
     translations: PropTypes.object.isRequired,
     panelErrors: PropTypes.object.isRequired,
@@ -80,7 +102,6 @@ Panels.propTypes = {
 }
 
 function renderPanelContent(panel, props){
-
     if (null !== panel.content){
         return Parser(panel.content)
     }
@@ -93,5 +114,15 @@ function renderPanelContent(panel, props){
         {...props}
         formName={panel.name}
         form={form} />
+}
+
+function renderExternalContent(data){
+    if (data.loader.type === 'pagination') {
+        return (<PaginationApp {...data.content} key={data.loader.target} />)
+    }
+    if (data.loader.type === 'text') {
+        return (<section key={data.loader.target}>{Parser(data.content)}</section>)
+    }
+    console.log(data)
 }
 

@@ -308,3 +308,22 @@ export function buildFormData(data, form) {
         return form.value
     }
 }
+
+export function initialContentLoaders(loaders, contentManager) {
+    if (loaders === null) return
+
+    loaders.map(loader => {
+        setTimeout(contentLoader(loader, contentManager), 50)
+    })
+}
+
+export function contentLoader(loader, contentManager) {
+    fetchJson(loader.route, {}, false)
+        .then(data => {
+            if (data.status === 'success')
+                contentManager(loader, data.content)
+
+            if (loader.timer > 0)
+                setTimeout(contentLoader(loader,contentManager), loader.timer)
+        })
+}

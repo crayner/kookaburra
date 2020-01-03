@@ -61,6 +61,11 @@ class Container
     private $application;
 
     /**
+     * @var array|null
+     */
+    private $contentLoader;
+
+    /**
      * @return string
      */
     public function getTarget(): string
@@ -91,6 +96,7 @@ class Container
             'content' => $this->getContent(),
             'panels' => $this->getPanels(),
             'forms' => $this->getForms(),
+            'contentLoader' => $this->getContentLoader(),
             'selectedPanel' => $this->getSelectedPanel(),
             'application' => $this->getApplication(),
         ];
@@ -178,6 +184,8 @@ class Container
             [
                 'disabled' => false,
                 'content' => null,
+                'preContent' => null,
+                'postContent' => null,
                 'translationDomain' => 'messages',
             ]
         );
@@ -187,6 +195,8 @@ class Container
         $resolver->setAllowedTypes('disabled', 'boolean');
         $resolver->setAllowedTypes('content', ['string', 'null']);
         $resolver->setAllowedTypes('index', 'integer');
+        $resolver->setAllowedTypes('preContent', ['array', 'null']);
+        $resolver->setAllowedTypes('postContent', ['array', 'null']);
 
         $resolver->resolve($panel->toArray());
 
@@ -285,6 +295,42 @@ class Container
     public function addForm(string $name, FormView $form): Container
     {
         $this->getForms()->set($name, $form->vars['toArray']);
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getContentLoader(): ?array
+    {
+        return $this->contentLoader;
+    }
+
+    /**
+     * ContentLoader.
+     *
+     * @param array|null $contentLoader
+     * @return Container
+     */
+    public function setContentLoader(?array $contentLoader): Container
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(
+            [
+                'route',
+                'target',
+            ]);
+        $resolver->setDefaults([
+            'timer' => 0,
+            'type' => 'text',
+        ]);
+        $resolver->setAllowedTypes('route', 'string');
+        $resolver->setAllowedTypes('target', 'string');
+        $resolver->setAllowedTypes('timer', 'integer');
+        $resolver->setAllowedValues('type', ['text', 'pagination']);
+        foreach($contentLoader as $q=>$content)
+            $contentLoader[$q] = $resolver->resolve($content);
+        $this->contentLoader = $contentLoader;
         return $this;
     }
 }

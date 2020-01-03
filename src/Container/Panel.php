@@ -56,6 +56,16 @@ class Panel
     private $index;
 
     /**
+     * @var array|null
+     */
+    private $preContent;
+
+    /**
+     * @var array|null
+     */
+    private $postContent;
+
+    /**
      * Panel constructor.
      * @param null|string $name
      */
@@ -143,6 +153,8 @@ class Panel
             'content' => $this->getContent(),
             'index' => $this->getIndex(),
             'translationDomain' => $this->getTranslationDomain(),
+            'preContent' => $this->getPreContent(),
+            'postContent' => $this->getPostContent(),
         ];
 
         return $result;
@@ -205,6 +217,46 @@ class Panel
     public function setIndex(?int $index): Panel
     {
         $this->index = $index;
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getPreContent(): ?array
+    {
+        return $this->preContent;
+    }
+
+    /**
+     * PreContent.
+     * Inject the names of containers for content.
+     * @param array|null $preContent
+     * @return Panel
+     */
+    public function setPreContent(?array $preContent): Panel
+    {
+        $this->preContent = $preContent;
+        return $this;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getPostContent(): ?array
+    {
+        return $this->postContent;
+    }
+
+    /**
+     * PostContent.
+     * Inject the names of containers for content.
+     * @param array|null $postContent
+     * @return Panel
+     */
+    public function setPostContent(?array $postContent): Panel
+    {
+        $this->postContent = $postContent;
         return $this;
     }
 }

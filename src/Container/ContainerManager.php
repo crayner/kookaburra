@@ -132,6 +132,7 @@ class ContainerManager
                 'forms' => null,
                 'selectedPanel' => null,
                 'application' => null,
+                'contentLoader' => null,
             ]
         );
 
@@ -141,6 +142,7 @@ class ContainerManager
         $resolver->setAllowedTypes('panels', [ArrayCollection::class, 'null']);
         $resolver->setAllowedTypes('forms', [ArrayCollection::class, 'null']);
         $resolver->setAllowedTypes('application', ['string', 'null']);
+        $resolver->setAllowedTypes('contentLoader', ['array', 'null']);
 
         $resolver->resolve($container->toArray());
 
@@ -168,6 +170,7 @@ class ContainerManager
             $container['showSubmitButton'] = $this->isShowSubmitButton();
             $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
             $container['extras'] = ReactFormHelper::getExtras();
+            $container['contentLoader'] = $container['contentLoader'];
             $containers[$target] = $container;
         }
 

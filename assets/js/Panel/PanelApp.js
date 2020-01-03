@@ -12,9 +12,9 @@ export default function PanelApp(props) {
         forms,
         selectedPanel,
         functions,
-        singleForm
+        singleForm,
+        content
     } = props
-
 
     const tabIndex = panels[selectedPanel].index
 
@@ -29,13 +29,14 @@ export default function PanelApp(props) {
         return <FormApp {...props} form={forms[name]} functions={functions} formName={name} singleForm={singleForm} />
     }
     return (
-        <Panels {...props} panels={panels} selectedIndex={tabIndex} functions={functions} singleForm={singleForm} />
+        <Panels {...props} panels={panels} selectedIndex={tabIndex} functions={functions} singleForm={singleForm} externalContent={content} />
     )
 }
 
 PanelApp.propTypes = {
     panels: PropTypes.object.isRequired,
     forms: PropTypes.object.isRequired,
+    content: PropTypes.object.isRequired,
     selectedPanel: PropTypes.string,
     functions: PropTypes.object.isRequired,
     singleForm: PropTypes.bool.isRequired,
