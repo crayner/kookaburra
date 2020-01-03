@@ -50,10 +50,12 @@ class SimpleArraySubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         if (!is_array($data))
             $data= [];
-        $last = end($data);
-        while (empty(trim($last))) {
-            array_pop($data);
+        if (count($data) > 0) {
             $last = end($data);
+            while (empty(trim($last)) && count($data) > 0) {
+                array_pop($data);
+                $last = end($data);
+            }
         }
         $name = count($data);
         $data[] = '';
@@ -73,10 +75,12 @@ class SimpleArraySubscriber implements EventSubscriberInterface
         $data = $event->getData();
         if (!is_array($data))
             $data = [];
-        $last = end($data);
-        while (empty(trim($last))) {
-            array_pop($data);
+        if (count($data) > 0) {
             $last = end($data);
+            while (empty(trim($last)) && count($data) > 0) {
+                array_pop($data);
+                $last = end($data);
+            }
         }
         $event->setData($data);
         $form = $event->getForm();
