@@ -15,11 +15,14 @@
 
 namespace App\Provider;
 
-
 use App\Entity\Course;
-use App\Entity\Department;
+use Kookaburra\Departments\Entity\Department;
 use App\Manager\Traits\EntityTrait;
 
+/**
+ * Class CourseProvider
+ * @package App\Provider
+ */
 class CourseProvider implements EntityProviderInterface
 {
     use EntityTrait;

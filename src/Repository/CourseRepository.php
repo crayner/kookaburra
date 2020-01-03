@@ -13,7 +13,7 @@
 namespace App\Repository;
 
 use App\Entity\Course;
-use App\Entity\Department;
+use Kookaburra\Departments\Entity\Department;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
