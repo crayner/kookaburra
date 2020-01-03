@@ -18,6 +18,7 @@ namespace App\Entity;
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
+use Kookaburra\SchoolAdmin\Entity\YearGroup;
 use Kookaburra\UserAdmin\Entity\Family;
 use Kookaburra\UserAdmin\Entity\Person;
 
@@ -217,8 +218,8 @@ class ApplicationForm
 
     /**
      * @var YearGroup|null
-     * @ORM\ManyToOne(targetEntity="YearGroup")
-     * @ORM\JoinColumn(name="gibbonYearGroupIDEntry",referencedColumnName="gibbonYearGroupID", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\YearGroup")
+     * @ORM\JoinColumn(name="gibbonYearGroupIDEntry",referencedColumnName="id", nullable=false)
      */
     private $yearGroupEntry;
 
