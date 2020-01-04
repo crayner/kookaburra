@@ -12,6 +12,7 @@
  */
 namespace App\Entity;
 
+use Kookaburra\RollGroups\Entity\RollGroup;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +21,9 @@ use Doctrine\ORM\Mapping as ORM;
  * Class AttendanceLogRollGroup
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\AttendanceLogRollGroupRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="AttendanceLogRollGroup")
+ * @ORM\Table(options={"auto_increment": 1}, name="AttendanceLogRollGroup",
+ *      indexes={@ORM\Index(name="roll_group",columns={"roll_group"})}
+ * )
  * @ORM\HasLifecycleCallbacks
  */
 class AttendanceLogRollGroup
@@ -35,8 +38,8 @@ class AttendanceLogRollGroup
 
     /**
      * @var RollGroup|null
-     * @ORM\ManyToOne(targetEntity="RollGroup")
-     * @ORM\JoinColumn(name="gibbonRollGroupID", referencedColumnName="gibbonRollGroupID", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Kookaburra\RollGroups\Entity\RollGroup")
+     * @ORM\JoinColumn(name="roll_group", referencedColumnName="id", nullable=false)
      */
     private $rollGroup;
 
