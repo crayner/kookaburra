@@ -14,13 +14,18 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\Facility;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
  * Class TTSpaceChange
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTSpaceChangeRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TTSpaceChange", indexes={@ORM\Index(name="gibbonTTDayRowClassID", columns={"gibbonTTDayRowClassID"}), @ORM\Index(name="date", columns={"date"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="TTSpaceChange",
+ *     indexes={@ORM\Index(name="gibbonTTDayRowClassID", columns={"gibbonTTDayRowClassID"}),
+ *     @ORM\Index(name="date", columns={"date"}),
+ *     @ORM\Index(name="facility", columns={"facility"})
+ *     })
  */
 class TTSpaceChange  implements EntityInterface
 {
@@ -41,10 +46,10 @@ class TTSpaceChange  implements EntityInterface
 
     /**
      * @var Facility|null
-     * @ORM\ManyToOne(targetEntity="Facility")
-     * @ORM\JoinColumn(name="gibbonSpaceID",referencedColumnName="gibbonSpaceID")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\Facility")
+     * @ORM\JoinColumn(name="facility",referencedColumnName="id")
      */
-    private $space;
+    private $facility;
 
     /**
      * @var \DateTime|null
@@ -98,18 +103,20 @@ class TTSpaceChange  implements EntityInterface
     /**
      * @return Facility|null
      */
-    public function getSpace(): ?Facility
+    public function getFacility(): ?Facility
     {
-        return $this->space;
+        return $this->facility;
     }
 
     /**
-     * @param Facility|null $space
+     * Facility.
+     *
+     * @param Facility|null $facility
      * @return TTSpaceChange
      */
-    public function setSpace(?Facility $space): TTSpaceChange
+    public function setFacility(?Facility $facility): TTSpaceChange
     {
-        $this->space = $space;
+        $this->facility = $facility;
         return $this;
     }
 
