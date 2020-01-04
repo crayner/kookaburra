@@ -13,12 +13,18 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\RollGroups\Entity\RollGroup;
+use Kookaburra\SchoolAdmin\Entity\YearGroup;
 
 /**
  * Class CourseClassMap
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseClassMapRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="CourseClassMap", uniqueConstraints={@ORM\UniqueConstraint(name="gibbonCourseClassID", columns={"gibbonCourseClassID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="CourseClassMap",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="gibbonCourseClassID", columns={"gibbonCourseClassID"})},
+ *     indexes={@ORM\Index(name="roll_group",columns{"roll_group"}),
+ *     @ORM\Index(name="year_group",columns{"year_group"})}
+ * )
  */
 class CourseClassMap
 {
@@ -33,21 +39,21 @@ class CourseClassMap
     /**
      * @var CourseClass|null
      * @ORM\ManyToOne(targetEntity="CourseClass")
-     * @ORM\JoinColumn(name="gibbonCourseClassID", referencedColumnName="gibbonCourseClassID", nullable=true)
+     * @ORM\JoinColumn(name="gibbonCourseClassID",referencedColumnName="gibbonCourseClassID", nullable=true)
      */
     private $courseClass;
 
     /**
      * @var RollGroup|null
      * @ORM\ManyToOne(targetEntity="RollGroup")
-     * @ORM\JoinColumn(name="gibbonRollGroupID", referencedColumnName="gibbonRollGroupID", nullable=true)
+     * @ORM\JoinColumn(name="roll_group",referencedColumnName="id",nullable=true)
      */
     private $rollGroup;
 
     /**
      * @var YearGroup|null
      * @ORM\ManyToOne(targetEntity="YearGroup")
-     * @ORM\JoinColumn(name="gibbonYearGroupID", referencedColumnName="gibbonYearGroupID", nullable=true)
+     * @ORM\JoinColumn(name="year_group",referencedColumnName="id",nullable=true)
      */
     private $yearGroup;
 
