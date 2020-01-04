@@ -292,8 +292,6 @@ export function buildFormData(data, form) {
                 data[child.name] = buildFormData({}, child)
                 //this.setMessageByElementErrors(child)
         })
-        if (form.type === 'simple_array')
-            console.log(form,data)
         return data
     } else if (typeof form.children === 'array' && form.children.length > 0) {
             form.children.map(child => {
