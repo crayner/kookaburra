@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\OutcomeRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="Outcome",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="nameDepartment", columns={"name","gibbonDepartmentID"}),@ORM\UniqueConstraint(name="nameShortDescription", columns={"nameShort","gibbonDepartmentID"})},
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="nameDepartment", columns={"name","department"}),@ORM\UniqueConstraint(name="nameShortDescription", columns={"nameShort","department"})},
  *     indexes={@ORM\Index(name="department",columns={"department"})})
  * @UniqueEntity({"name","department"})
  * @UniqueEntity({"nameShort","department"})
