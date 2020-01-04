@@ -52,7 +52,7 @@ class FirstAidGateway extends QueryableGateway
             ->innerJoin('gibbonYearGroup', 'gibbonStudentEnrolment.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID')
             ->innerJoin('gibbonRollGroup', 'gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID')
             ->leftJoin('gibbonPerson AS firstAider', 'gibbonFirstAid.gibbonPersonIDFirstAider=firstAider.gibbonPersonID')
-            ->where('gibbonStudentEnrolment.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonStudentEnrolment.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID);
 
         $criteria->addFilterRules([

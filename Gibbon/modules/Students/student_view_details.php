@@ -553,7 +553,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                                 JOIN gibbonSchoolYear ON (gibbonStudentEnrolment.academic_year=gibbonSchoolYear.gibbonSchoolYearID)
                                 WHERE gibbonPersonID=:gibbonPersonID
                                 AND (gibbonSchoolYear.status = 'Current' OR gibbonSchoolYear.status='Past')
-                                ORDER BY gibbonStudentEnrolment.gibbonSchoolYearID";
+                                ORDER BY gibbonStudentEnrolment.academic_year";
                             $resultSelect = $connection2->prepare($sqlSelect);
                             $resultSelect->execute($dataSelect);
                         } catch (PDOException $e) {

@@ -34,7 +34,7 @@ function getInternalAssessmentRecord($guid, $connection2, $gibbonPersonID, $role
     //Get school years in reverse order
     try {
         $dataYears = array('gibbonPersonID' => $gibbonPersonID);
-        $sqlYears = "SELECT * FROM gibbonSchoolYear JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID) WHERE (status='Current' OR status='Past') AND gibbonPersonID=:gibbonPersonID ORDER BY sequenceNumber DESC";
+        $sqlYears = "SELECT * FROM gibbonSchoolYear JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.academic_year=gibbonSchoolYear.gibbonSchoolYearID) WHERE (status='Current' OR status='Past') AND gibbonPersonID=:gibbonPersonID ORDER BY sequenceNumber DESC";
         $resultYears = $connection2->prepare($sqlYears);
         $resultYears->execute($dataYears);
     } catch (PDOException $e) {

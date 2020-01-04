@@ -58,7 +58,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/firstAidRecord_ed
                     JOIN gibbonStudentEnrolment ON (patient.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID)
                     JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
                     JOIN gibbonYearGroup ON (gibbonStudentEnrolment.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID)
-                WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID AND gibbonFirstAidID=:gibbonFirstAidID";
+                WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID AND gibbonFirstAidID=:gibbonFirstAidID";
             $result = $connection2->prepare($sql);
             $result->execute($data);
         } catch (PDOException $e) {

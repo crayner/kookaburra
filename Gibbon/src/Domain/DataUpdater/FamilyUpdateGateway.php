@@ -78,7 +78,7 @@ class FamilyUpdateGateway extends QueryableGateway
             ->innerJoin('gibbonStudentEnrolment', 'gibbonStudentEnrolment.gibbonPersonID=gibbonPerson.gibbonPersonID')
             ->leftJoin('gibbonFamilyUpdate', 'gibbonFamilyUpdate.gibbonFamilyID=gibbonFamily.gibbonFamilyID')
             ->where("gibbonPerson.status='Full'")
-            ->where('gibbonStudentEnrolment.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonStudentEnrolment.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
             ->where('FIND_IN_SET(gibbonStudentEnrolment.gibbonYearGroupID, :gibbonYearGroupIDList)')
             ->bindValue('gibbonYearGroupIDList', $gibbonYearGroupIDList)
@@ -147,7 +147,7 @@ class FamilyUpdateGateway extends QueryableGateway
             LEFT JOIN gibbonPersonMedicalUpdate ON (gibbonPersonMedicalUpdate.gibbonPersonID=gibbonPerson.gibbonPersonID)
             WHERE FIND_IN_SET(gibbonFamilyChild.gibbonFamilyID, :gibbonFamilyIDList) 
             AND gibbonPerson.status='Full'
-            AND gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+            AND gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
             GROUP BY gibbonFamilyChild.gibbonPersonID 
             ORDER BY gibbonYearGroup.sequenceNumber, gibbonRollGroup.nameShort, gibbonPerson.surname, gibbonPerson.preferredName";
 

@@ -67,9 +67,9 @@ class BehaviourGateway extends QueryableGateway
             ->innerJoin('gibbonStudentEnrolment', 'student.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID')
             ->innerJoin('gibbonRollGroup', 'gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID')
             ->leftJoin('gibbonPerson AS creator', 'gibbonBehaviour.gibbonPersonIDCreator=creator.gibbonPersonID')
-            ->where('gibbonBehaviour.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonBehaviour.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
-            ->where('gibbonStudentEnrolment.gibbonSchoolYearID=gibbonBehaviour.gibbonSchoolYearID');
+            ->where('gibbonStudentEnrolment.academic_year=gibbonBehaviour.academic_year');
 
         if (!empty($gibbonPersonIDCreator)) {
             $query->where('gibbonBehaviour.gibbonPersonIDCreator = :gibbonPersonIDCreator')
@@ -122,8 +122,8 @@ class BehaviourGateway extends QueryableGateway
             ->innerJoin('gibbonRollGroup', 'gibbonRollGroup.gibbonRollGroupID=gibbonStudentEnrolment.gibbonRollGroupID')
             ->innerJoin('gibbonYearGroup', 'gibbonYearGroup.gibbonYearGroupID=gibbonStudentEnrolment.gibbonYearGroupID')
             ->leftJoin('gibbonBehaviour', "gibbonBehaviour.gibbonPersonID=gibbonPerson.gibbonPersonID AND gibbonBehaviour.type='Negative' 
-                AND gibbonBehaviour.gibbonSchoolYearID=gibbonStudentEnrolment.gibbonSchoolYearID")
-            ->where('gibbonStudentEnrolment.gibbonSchoolYearID = :gibbonSchoolYearID')
+                AND gibbonBehaviour.academic_year=gibbonStudentEnrolment.academic_year")
+            ->where('gibbonStudentEnrolment.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
             ->where("gibbonPerson.status = 'Full'")
             ->groupBy(['gibbonPerson.gibbonPersonID']);
@@ -178,7 +178,7 @@ class BehaviourGateway extends QueryableGateway
             ])
             ->innerJoin('gibbonPerson', 'gibbonBehaviourLetter.gibbonPersonID=gibbonPerson.gibbonPersonID')
             ->innerJoin('gibbonStudentEnrolment', 'gibbonStudentEnrolment.gibbonPersonID=gibbonPerson.gibbonPersonID 
-                AND gibbonStudentEnrolment.gibbonSchoolYearID=gibbonBehaviourLetter.gibbonSchoolYearID')
+                AND gibbonStudentEnrolment.academic_year=gibbonBehaviourLetter.gibbonSchoolYearID')
             ->innerJoin('gibbonRollGroup', 'gibbonRollGroup.gibbonRollGroupID=gibbonStudentEnrolment.gibbonRollGroupID')
             ->where('gibbonBehaviourLetter.gibbonSchoolYearID = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
@@ -209,7 +209,7 @@ class BehaviourGateway extends QueryableGateway
             ->leftJoin('gibbonPerson AS creator', 'gibbonBehaviour.gibbonPersonIDCreator=creator.gibbonPersonID')
             ->where('gibbonBehaviour.gibbonPersonID = :gibbonPersonID')
             ->bindValue('gibbonPersonID', $gibbonPersonID)
-            ->where('gibbonBehaviour.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonBehaviour.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID);
 
             return $this->runQuery($query, $criteria);

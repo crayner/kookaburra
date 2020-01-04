@@ -70,7 +70,7 @@ class HouseGateway extends QueryableGateway
                         AND (gibbonPerson.dateStart IS NULL OR gibbonPerson.dateStart<=:today)
                         AND (gibbonPerson.dateEnd IS NULL OR gibbonPerson.dateEnd>=:today)")
             ->leftJoin('gibbonStudentEnrolment', 'gibbonStudentEnrolment.gibbonPersonID=gibbonPerson.gibbonPersonID
-                        AND gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID')
+                        AND gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID')
             ->leftJoin('gibbonYearGroup', 'gibbonYearGroup.gibbonYearGroupID=gibbonStudentEnrolment.gibbonYearGroupID')
             ->groupBy(['gibbonYearGroup.gibbonYearGroupID', 'gibbonHouse.gibbonHouseID'])
             ->having('total > 0')

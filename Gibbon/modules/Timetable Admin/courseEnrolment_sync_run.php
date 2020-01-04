@@ -133,7 +133,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Timetable Admin/courseEnro
                 JOIN gibbonCourseClass ON (gibbonCourseClass.gibbonCourseClassID=gibbonCourseClassMap.gibbonCourseClassID)
                 JOIN gibbonCourse ON (gibbonCourse.gibbonCourseID=gibbonCourseClass.gibbonCourseID)
                 LEFT JOIN gibbonCourseClassPerson ON (gibbonCourseClassPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID AND gibbonCourseClassPerson.gibbonCourseClassID=gibbonCourseClassMap.gibbonCourseClassID  AND gibbonCourseClassPerson.role = 'Student')
-                WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+                WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
                 AND gibbonCourseClassMap.gibbonYearGroupID=:gibbonYearGroupID
                 AND gibbonPerson.status='Full'
                 AND (gibbonPerson.dateStart IS NULL OR gibbonPerson.dateStart<=:date)

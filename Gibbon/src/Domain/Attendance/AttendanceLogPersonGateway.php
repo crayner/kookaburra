@@ -176,7 +176,7 @@ class AttendanceLogPersonGateway extends QueryableGateway
                 ->innerJoin('gibbonStudentEnrolment', 'gibbonAttendanceLogPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID')
                 ->where('FIND_IN_SET(gibbonStudentEnrolment.gibbonRollGroupID, :rollGroups)')
                 ->bindValue('rollGroups', implode(',', $rollGroups))
-                ->where('gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID')
+                ->where('gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID')
                 ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID);
         }
 

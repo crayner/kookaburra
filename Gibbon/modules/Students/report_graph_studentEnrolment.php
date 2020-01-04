@@ -137,7 +137,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/report_graph_stud
             $data = array('date' => $date);
             $sql = "SELECT {$groupBy} as groupBy, COUNT(DISTINCT gibbonPerson.gibbonPersonID) as count, :date as date
                     FROM gibbonSchoolYear
-                    LEFT JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID)
+                    LEFT JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.academic_year=gibbonSchoolYear.gibbonSchoolYearID)
                     LEFT JOIN gibbonYearGroup ON (gibbonYearGroup.gibbonYearGroupID=gibbonStudentEnrolment.gibbonYearGroupID)
                     LEFT JOIN gibbonPerson ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID)
                     WHERE (gibbonPerson.dateStart IS NULL OR gibbonPerson.dateStart <= :date)

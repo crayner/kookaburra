@@ -64,7 +64,7 @@ class FinanceFormFactory extends DatabaseFormFactory
                 JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
                 JOIN gibbonFinanceInvoicee ON (gibbonFinanceInvoicee.gibbonPersonID=gibbonPerson.gibbonPersonID)
                 WHERE gibbonPerson.status='Full' 
-                AND gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+                AND gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
                 ORDER BY gibbonRollGroup.name, surname, preferredName";
         }
         else {
@@ -73,7 +73,7 @@ class FinanceFormFactory extends DatabaseFormFactory
                 JOIN gibbonStudentEnrolment ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID)
                 JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
                 JOIN gibbonFinanceInvoicee ON (gibbonFinanceInvoicee.gibbonPersonID=gibbonPerson.gibbonPersonID)
-                WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+                WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
                 ORDER BY gibbonRollGroup.name, surname, preferredName";
         }
 

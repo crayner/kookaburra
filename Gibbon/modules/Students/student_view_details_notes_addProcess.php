@@ -49,7 +49,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                 $data = array('gibbonPersonID' => $gibbonPersonID, 'gibbonSchoolYearID' => $_SESSION[$guid]['gibbonSchoolYearID']);
                 $sql = 'SELECT gibbonPerson.surname, gibbonPerson.preferredName, gibbonPerson.status, gibbonStudentEnrolment.gibbonYearGroupID
                     FROM gibbonPerson
-                    LEFT JOIN gibbonStudentEnrolment ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID AND gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID)
+                    LEFT JOIN gibbonStudentEnrolment ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID AND gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID)
                     WHERE gibbonPerson.gibbonPersonID=:gibbonPersonID';
                 $result = $connection2->prepare($sql);
                 $result->execute($data);
@@ -114,7 +114,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
     								FROM gibbonStudentEnrolment
     								JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
     								LEFT JOIN gibbonPerson ON ((gibbonPerson.gibbonPersonID=gibbonRollGroup.gibbonPersonIDTutor AND gibbonPerson.status='Full') OR (gibbonPerson.gibbonPersonID=gibbonRollGroup.gibbonPersonIDTutor2 AND gibbonPerson.status='Full') OR (gibbonPerson.gibbonPersonID=gibbonRollGroup.gibbonPersonIDTutor3 AND gibbonPerson.status='Full'))
-    								WHERE gibbonStudentEnrolment.gibbonPersonID=:gibbonPersonID AND gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID";
+    								WHERE gibbonStudentEnrolment.gibbonPersonID=:gibbonPersonID AND gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID";
                                 $result = $connection2->prepare($sql);
                                 $result->execute($data);
                             } catch (PDOException $e) { print $e->getMessage(); }

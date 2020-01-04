@@ -20,7 +20,12 @@ use App\Exception\MissingMethodException;
 
 trait EntityGlobals
 {
-
+    /**
+     * get
+     * @param string $name
+     * @param array $parameters
+     * @return mixed
+     */
     public function get(string $name, array $parameters = [])
     {
         $name = 'get'.ucfirst($name);

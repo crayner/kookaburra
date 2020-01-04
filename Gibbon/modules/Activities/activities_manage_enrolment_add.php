@@ -128,7 +128,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Activities/activities_mana
 					JOIN gibbonStudentEnrolment ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID) 
 					JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
 					JOIN gibbonYearGroup ON (gibbonStudentEnrolment.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID)
-					WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+					WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
 					AND FIND_IN_SET(gibbonYearGroup.gibbonYearGroupID, :gibbonYearGroupIDList)
 					AND gibbonPerson.status='FULL' 
 					AND (dateStart IS NULL OR dateStart<=:date) AND (dateEnd IS NULL  OR dateEnd>=:date) 

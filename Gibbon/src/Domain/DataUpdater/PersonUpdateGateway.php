@@ -81,7 +81,7 @@ class PersonUpdateGateway extends QueryableGateway
             ->leftJoin('gibbonPersonMedicalUpdate', 'gibbonPersonMedicalUpdate.gibbonPersonID=gibbonPerson.gibbonPersonID')
             ->where("gibbonPerson.status = 'Full'")
             ->where("FIND_IN_SET(gibbonPerson.gibbonPersonID, :gibbonPersonIDList)")
-            ->where("gibbonStudentEnrolment.gibbonSchoolYearID = :gibbonSchoolYearID")
+            ->where("gibbonStudentEnrolment.academic_year = :gibbonSchoolYearID")
             ->bindValue('gibbonPersonIDList', implode(',', $gibbonPersonIDList))
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID)
             ->groupBy(['gibbonPerson.gibbonPersonID'])

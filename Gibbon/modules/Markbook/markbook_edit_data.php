@@ -237,7 +237,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_edit_dat
                             LEFT JOIN gibbonMarkbookEntry ON (gibbonMarkbookEntry.gibbonMarkbookColumnID=:gibbonMarkbookColumnID AND gibbonMarkbookEntry.gibbonPersonIDStudent=gibbonCourseClassPerson.gibbonPersonID)
                             LEFT JOIN gibbonMarkbookTarget ON (gibbonMarkbookTarget.gibbonCourseClassID=gibbonCourseClass.gibbonCourseClassID AND gibbonMarkbookTarget.gibbonPersonIDStudent=gibbonPerson.gibbonPersonID)
                             LEFT JOIN gibbonScaleGrade ON (gibbonMarkbookTarget.gibbonScaleGradeID=gibbonScaleGrade.gibbonScaleGradeID)
-                            WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID AND gibbonCourseClassPerson.gibbonCourseClassID=:gibbonCourseClassID
+                            WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID AND gibbonCourseClassPerson.gibbonCourseClassID=:gibbonCourseClassID
                             AND gibbonPerson.status='Full' AND gibbonCourseClassPerson.role='Student'
                             AND (dateStart IS NULL OR dateStart<=:today) AND (dateEnd IS NULL OR dateEnd>=:today)";
 
@@ -297,7 +297,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Markbook/markbook_edit_dat
                             JOIN gibbonPerson ON (gibbonCourseClassPerson.gibbonPersonID=gibbonPerson.gibbonPersonID)
                             JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.gibbonPersonID=gibbonCourseClassPerson.gibbonPersonID)
                             JOIN gibbonINPersonDescriptor ON (gibbonPerson.gibbonPersonID=gibbonINPersonDescriptor.gibbonPersonID)
-                            WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID AND gibbonCourseClassPerson.gibbonCourseClassID=:gibbonCourseClassID
+                            WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID AND gibbonCourseClassPerson.gibbonCourseClassID=:gibbonCourseClassID
                             AND gibbonPerson.status='Full' AND gibbonCourseClassPerson.role='Student'
                             AND (dateStart IS NULL OR dateStart<=:today) AND (dateEnd IS NULL OR dateEnd>=:today)";
                     $result = $pdo->executeQuery($data, $sql);

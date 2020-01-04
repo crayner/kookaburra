@@ -39,7 +39,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/report_students_n
                 JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
                 LEFT JOIN gibbonFamilyChild ON (gibbonFamilyChild.gibbonPersonID=gibbonPerson.gibbonPersonID)
                 LEFT JOIN gibbonFamily ON (gibbonFamilyChild.gibbonFamilyID=gibbonFamily.gibbonFamilyID)
-            WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+            WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
                 AND gibbonPerson.status='Full'
             ORDER BY rollGroup, surname, preferredName";
         $result = $connection2->prepare($sql);
@@ -103,7 +103,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/report_students_n
                         JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.gibbonPersonID=gibbonPerson.gibbonPersonID)
                         JOIN gibbonFamilyChild ON (gibbonFamilyChild.gibbonPersonID=gibbonPerson.gibbonPersonID)
                         JOIN gibbonFamily ON (gibbonFamilyChild.gibbonFamilyID=gibbonFamily.gibbonFamilyID)
-                    WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+                    WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
                         AND gibbonPerson.status='Full'
                         AND gibbonFamily.gibbonFamilyID=:gibbonFamilyID
                     ORDER BY gibbonFamily.gibbonFamilyID, dob";

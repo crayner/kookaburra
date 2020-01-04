@@ -138,7 +138,7 @@ else {
 							LEFT JOIN gibbonPerson AS parent1 ON (parent1Fam.gibbonPersonID=parent1.gibbonPersonID AND parent1.status='Full' AND NOT parent1.surname IS NULL)
 							LEFT JOIN gibbonFamilyAdult AS parent2Fam ON (parent2Fam.gibbonFamilyID=gibbonFamilyChild.gibbonFamilyID AND parent2Fam.contactPriority=2 AND parent2Fam.contactEmail='Y')
 							LEFT JOIN gibbonPerson AS parent2 ON (parent2Fam.gibbonPersonID=parent2.gibbonPersonID AND parent2.status='Full' AND NOT parent2.surname IS NULL)
-							WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+							WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
 							AND gibbonPerson.status='Full'
 							AND (gibbonPerson.dateStart IS NULL OR gibbonPerson.dateStart<=:today) AND (gibbonPerson.dateEnd IS NULL OR gibbonPerson.dateEnd>=:today)
 							GROUP BY gibbonPerson.gibbonPersonID

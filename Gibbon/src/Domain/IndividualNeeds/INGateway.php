@@ -53,7 +53,7 @@ class INGateway extends QueryableGateway
             ->innerJoin('gibbonYearGroup', 'gibbonStudentEnrolment.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID')
             ->innerJoin('gibbonRollGroup', 'gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID')
             ->innerJoin('gibbonINPersonDescriptor', 'gibbonINPersonDescriptor.gibbonPersonID=gibbonPerson.gibbonPersonID')
-            ->where('gibbonStudentEnrolment.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonStudentEnrolment.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID);
 
         $criteria->addFilterRules([
@@ -116,7 +116,7 @@ class INGateway extends QueryableGateway
             ->where('(gibbonPerson.dateStart IS NULL OR gibbonPerson.dateStart<=:today)')
             ->where('(gibbonPerson.dateEnd IS NULL OR gibbonPerson.dateEnd>=:today)')
             ->bindValue('today', date('Y-m-d'))
-            ->where('gibbonStudentEnrolment.gibbonSchoolYearID = :gibbonSchoolYearID')
+            ->where('gibbonStudentEnrolment.academic_year = :gibbonSchoolYearID')
             ->bindValue('gibbonSchoolYearID', $gibbonSchoolYearID);
 
         if (!empty($gibbonYearGroupID)) {

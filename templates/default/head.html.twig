@@ -6,7 +6,6 @@ Copyright (C) 2019, Craig Rayner
     {% if module.title is defined %}
         {% set titleValue = titleValue ~ ' - ' ~ module.title|trans({}, module.domain|default('messages')) %}
     {% endif %}
-    <!-- OK why -->
     <head>
         {% block meta %}
             <title>{% block title %}Kookaburra{{ titleValue }}{% endblock %}</title>

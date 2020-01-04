@@ -144,7 +144,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Attendance/report_students
                     status='Full'
                     AND (dateStart IS NULL OR dateStart<='".date('Y-m-d')."')
                     AND (dateEnd IS NULL  OR dateEnd>='".date('Y-m-d')."')
-                    AND gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+                    AND gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
                     $whereExtra
                     ";
 

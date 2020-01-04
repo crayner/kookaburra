@@ -326,7 +326,7 @@ class DatabaseFormFactory extends FormFactory
                     JOIN gibbonStudentEnrolment ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID) 
                     JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
                     JOIN gibbonYearGroup ON (gibbonStudentEnrolment.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID)
-                    WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+                    WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
                     AND gibbonPerson.status='FULL' 
                     AND (dateStart IS NULL OR dateStart<=:date) AND (dateEnd IS NULL  OR dateEnd>=:date) 
                     ORDER BY rollGroupName, gibbonPerson.surname, gibbonPerson.preferredName";

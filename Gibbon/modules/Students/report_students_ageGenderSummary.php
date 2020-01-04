@@ -32,7 +32,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/report_students_a
     //Work out ages in school
     try {
         $dataList = array('gibbonSchoolYearID' => $_SESSION[$guid]['gibbonSchoolYearID']);
-        $sqlList = "SELECT gibbonStudentEnrolment.gibbonYearGroupID, dob, gender FROM gibbonPerson, gibbonStudentEnrolment, gibbonYearGroup WHERE gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID AND gibbonStudentEnrolment.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID AND status='FULL' AND (dateStart IS NULL OR dateStart<='".date('Y-m-d')."') AND (dateEnd IS NULL  OR dateEnd>='".date('Y-m-d')."') AND gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID ORDER BY dob DESC";
+        $sqlList = "SELECT gibbonStudentEnrolment.gibbonYearGroupID, dob, gender FROM gibbonPerson, gibbonStudentEnrolment, gibbonYearGroup WHERE gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID AND gibbonStudentEnrolment.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID AND status='FULL' AND (dateStart IS NULL OR dateStart<='".date('Y-m-d')."') AND (dateEnd IS NULL  OR dateEnd>='".date('Y-m-d')."') AND gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID ORDER BY dob DESC";
         $resultList = $connection2->prepare($sqlList);
         $resultList->execute($dataList);
     } catch (PDOException $e) {

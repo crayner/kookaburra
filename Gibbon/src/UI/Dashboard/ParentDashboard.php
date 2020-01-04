@@ -75,7 +75,7 @@ class ParentDashboard implements OutputableInterface
                         JOIN gibbonStudentEnrolment ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID)
                         JOIN gibbonYearGroup ON (gibbonStudentEnrolment.gibbonYearGroupID=gibbonYearGroup.gibbonYearGroupID)
                         JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
-                        WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID
+                        WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID
                         AND gibbonFamilyID=:gibbonFamilyID
                         AND gibbonPerson.status='Full'
                         AND (dateStart IS NULL OR dateStart<=:today)
@@ -603,7 +603,7 @@ class ParentDashboard implements OutputableInterface
             }
             try {
                 $dataYears = array('gibbonPersonID' => $gibbonPersonID);
-                $sqlYears = "SELECT * FROM gibbonStudentEnrolment JOIN gibbonSchoolYear ON (gibbonStudentEnrolment.gibbonSchoolYearID=gibbonSchoolYear.gibbonSchoolYearID) WHERE gibbonSchoolYear.status='Current' AND gibbonPersonID=:gibbonPersonID ORDER BY sequenceNumber DESC";
+                $sqlYears = "SELECT * FROM gibbonStudentEnrolment JOIN gibbonSchoolYear ON (gibbonStudentEnrolment.academic_year=gibbonSchoolYear.gibbonSchoolYearID) WHERE gibbonSchoolYear.status='Current' AND gibbonPersonID=:gibbonPersonID ORDER BY sequenceNumber DESC";
                 $resultYears = $connection2->prepare($sqlYears);
                 $resultYears->execute($dataYears);
             } catch (PDOException $e) {

@@ -123,7 +123,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Activities/activities_mana
                 $sql = "SELECT gibbonActivityStudent.*, surname, preferredName, gibbonRollGroup.nameShort as rollGroupNameShort
                         FROM gibbonActivityStudent
                         JOIN gibbonPerson ON (gibbonActivityStudent.gibbonPersonID=gibbonPerson.gibbonPersonID)
-                        LEFT JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.gibbonPersonID=gibbonPerson.gibbonPersonID AND gibbonStudentEnrolment.gibbonSchoolYearID=(SELECT gibbonSchoolYearID FROM gibbonSchoolYear WHERE status='Current'))
+                        LEFT JOIN gibbonStudentEnrolment ON (gibbonStudentEnrolment.gibbonPersonID=gibbonPerson.gibbonPersonID AND gibbonStudentEnrolment.academic_year=(SELECT gibbonSchoolYearID FROM gibbonSchoolYear WHERE status='Current'))
                         LEFT JOIN gibbonRollGroup ON (gibbonRollGroup.gibbonRollGroupID=gibbonStudentEnrolment.gibbonRollGroupID)
                         WHERE gibbonActivityID=:gibbonActivityID
                         AND NOT gibbonActivityStudent.status=:statusCheck

@@ -78,7 +78,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Timetable/studentEnrolment
                     FROM gibbonPerson
                     JOIN gibbonStudentEnrolment ON (gibbonPerson.gibbonPersonID=gibbonStudentEnrolment.gibbonPersonID)
                     JOIN gibbonRollGroup ON (gibbonStudentEnrolment.gibbonRollGroupID=gibbonRollGroup.gibbonRollGroupID)
-                    WHERE gibbonStudentEnrolment.gibbonSchoolYearID=:gibbonSchoolYearID AND gibbonPerson.status='Full'
+                    WHERE gibbonStudentEnrolment.academic_year=:gibbonSchoolYearID AND gibbonPerson.status='Full'
                     AND FIND_IN_SET(gibbonStudentEnrolment.gibbonYearGroupID, :gibbonYearGroupIDList)
                     ORDER BY rollGroupName, surname, preferredName";
             $result = $pdo->executeQuery($data, $sql);
