@@ -15,7 +15,6 @@
 
 namespace App\Form\Type;
 
-
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Kookaburra\SystemAdmin\Form\SettingCollectionType;
@@ -24,10 +23,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\Util\StringUtil;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Exception\MissingOptionsException;
@@ -110,12 +105,20 @@ class SettingsType extends AbstractType
         foreach($options['settings'] as $setting) {
             $setting = $this->configureSetting($setting);
             $name = str_replace(' ', '_', $setting['scope'].'__'.$setting['name']);
-            if ($setting['entry_type'] instanceof SettingCollectionType && empty($setting['setting']->getValue()))
-                $setting['data'] = [];
+            $data =  $setting['entry_type'] === ChoiceType::class && isset($setting['entry_options']['multiple']) && $setting['entry_options']['multiple'] ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue();
+
+            if ($setting['entry_type'] === 'Kookaburra\SystemAdmin\Form\SettingCollectionType' && empty($setting['setting']->getValue()))
+                $data = [];
+            if ($setting['entry_type'] === 'App\Form\Type\SimpleArrayType') {
+                if (empty($setting['setting']->getValue()))
+                    $data = [];
+                else
+                    $data = explode(',', $setting['setting']->getValue());
+            }
 
             $builder->add($name, $setting['entry_type'], array_merge(
                 [
-                    'data' => $setting['entry_type'] === ChoiceType::class && isset($setting['entry_options']['multiple']) && $setting['entry_options']['multiple'] ? explode(',',$setting['setting']->getValue()) : $setting['setting']->getValue(),
+                    'data' => $data,
                     'help' => $setting['setting']->getDescription(),
                     'label' => $setting['setting']->getNameDisplay(),
                     'required' => false,

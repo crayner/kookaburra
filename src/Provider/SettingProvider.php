@@ -223,6 +223,9 @@ class SettingProvider implements EntityProviderInterface
         if (false === $setting)
             throw new SettingNotFoundException($scope,$name);
 
+        $setting = $this->getRepository()->findOneBy(['scope' => $setting->getScope(), 'name' => $setting->getName()]);
+        $this->setEntity($setting);
+
         if (is_array($value))
             $value = implode(',',$value);
         if ($value instanceof \DateTimeImmutable)
@@ -230,6 +233,7 @@ class SettingProvider implements EntityProviderInterface
 
         $setting->setValue($value);
         $this->saveEntity();
+        $this->addSetting($setting);
         $this->writeSettingInSession($setting);
     }
 
@@ -310,8 +314,6 @@ class SettingProvider implements EntityProviderInterface
 
         if (null === $setting->getValue() || '' === $setting->getValue())
             return false;
-        else
-            return true;
 
         return true;
     }
@@ -357,13 +359,13 @@ class SettingProvider implements EntityProviderInterface
             $this->saveSettings($form, $content, $translator);
             if (count($this->getErrors()) === 0) {
                 $data['status'] = 'success';
-                return $this->addError(['class' => 'success', 'message' => $translator->trans('Your request was completed successfully.')])->getErrors();
+                return $this->addError(['class' => 'success', 'message' => $translator->trans('return.success.0', [], 'messages')])->getErrors();
             }
             else
                 return $this->getErrors();
         }
 
-        return  $this->addError(['class' => 'error', 'message' => $translator->trans('Your request failed because your inputs were invalid.')])->getErrors();
+        return  $this->addError(['class' => 'error', 'message' => $translator->trans('return.error.0', [], 'messages')])->getErrors();
     }
 
     /**
