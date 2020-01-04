@@ -39,8 +39,8 @@ class ActivitySlot
     private $activity;
 
     /**
-     * @var Space|null
-     * @ORM\ManyToOne(targetEntity="Space")
+     * @var Facility|null
+     * @ORM\ManyToOne(targetEntity="Facility")
      * @ORM\JoinColumn(name="gibbonSpaceID",referencedColumnName="gibbonSpaceID",nullable=true)
      */
     private $space;
@@ -107,18 +107,18 @@ class ActivitySlot
     }
 
     /**
-     * @return Space|null
+     * @return Facility|null
      */
-    public function getSpace(): ?Space
+    public function getSpace(): ?Facility
     {
         return $this->space;
     }
 
     /**
-     * @param Space|null $space
+     * @param Facility|null $space
      * @return ActivitySlot
      */
-    public function setSpace(?Space $space): ActivitySlot
+    public function setSpace(?Facility $space): ActivitySlot
     {
         $this->space = $space;
         return $this;

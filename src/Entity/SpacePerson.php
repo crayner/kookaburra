@@ -32,8 +32,8 @@ class SpacePerson
     private $id;
 
     /**
-     * @var Space|null
-     * @ORM\ManyToOne(targetEntity="Space")
+     * @var Facility|null
+     * @ORM\ManyToOne(targetEntity="Facility")
      * @ORM\JoinColumn(name="gibbonSpaceID", referencedColumnName="gibbonSpaceID", nullable=false)
      */
     private $space;
@@ -75,18 +75,18 @@ class SpacePerson
     }
 
     /**
-     * @return Space|null
+     * @return Facility|null
      */
-    public function getSpace(): ?Space
+    public function getSpace(): ?Facility
     {
         return $this->space;
     }
 
     /**
-     * @param Space|null $space
+     * @param Facility|null $space
      * @return SpacePerson
      */
-    public function setSpace(?Space $space): SpacePerson
+    public function setSpace(?Facility $space): SpacePerson
     {
         $this->space = $space;
         return $this;

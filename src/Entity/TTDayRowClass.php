@@ -15,12 +15,18 @@ namespace App\Entity;
 use App\Manager\EntityInterface;
 use App\Util\EntityHelper;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\Facility;
 
 /**
  * Class TTDayRowClass
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\TTDayRowClassRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="TTDayRowClass", indexes={@ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}), @ORM\Index(name="gibbonSpaceID", columns={"gibbonSpaceID"}), @ORM\Index(name="gibbonTTColumnRowID", columns={"gibbonTTColumnRowID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="TTDayRowClass", indexes={
+ *     @ORM\Index(name="gibbonCourseClassID", columns={"gibbonCourseClassID"}),
+ *     @ORM\Index(name="facility", columns={"facility"}),
+ *     @ORM\Index(name="gibbonTTColumnRowID", columns={"gibbonTTColumnRowID"}),
+ *     @ORM\Index(name="gibbonTTDayID", columns={"gibbonTTDayID"})
+ * })
  * @ORM\HasLifecycleCallbacks()
  */
 class TTDayRowClass implements EntityInterface
@@ -55,11 +61,11 @@ class TTDayRowClass implements EntityInterface
     private $courseClass;
 
     /**
-     * @var Space|null
-     * @ORM\ManyToOne(targetEntity="Space")
-     * @ORM\JoinColumn(name="gibbonSpaceID", referencedColumnName="gibbonSpaceID")
+     * @var Facility|null
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\Facility")
+     * @ORM\JoinColumn(name="facility", referencedColumnName="id")
      */
-    private $space;
+    private $facility;
 
     /**
      * @return int|null
@@ -134,20 +140,22 @@ class TTDayRowClass implements EntityInterface
     }
 
     /**
-     * @return Space|null
+     * @return Facility|null
      */
-    public function getSpace(): ?Space
+    public function getFacility(): ?Facility
     {
-        return $this->space;
+        return $this->facility;
     }
 
     /**
-     * @param Space|null $space
+     * Facility.
+     *
+     * @param Facility|null $facility
      * @return TTDayRowClass
      */
-    public function setSpace(?Space $space): TTDayRowClass
+    public function setFacility(?Facility $facility): TTDayRowClass
     {
-        $this->space = $space;
+        $this->facility = $facility;
         return $this;
     }
 

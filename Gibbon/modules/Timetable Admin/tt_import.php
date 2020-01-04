@@ -130,7 +130,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Timetable Admin/tt_delete.
 							echo '<li>'.__('Day Name - as used in the target timetable').'</li>';
 							echo '<li>'.__('Row Long Name - as used in the target timetable').'</li>';
 							echo '<li>'.__('Teacher Username - comma-separated list of Gibbon usernames for teacher(s) of the lesson. Alternatively, give each teacher their own row.').'</li>';
-							echo '<li>'.__('Space Name - the Gibbon name for the room the lesson takes place in.').'</li>';
+							echo '<li>'.__('Facility Name - the Gibbon name for the room the lesson takes place in.').'</li>';
 						echo '</ol>';
 					echo '</li>';
 					echo '<li>'.__('Do not include a header row in the CSV files.').'</li>';
@@ -303,7 +303,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Timetable Admin/tt_delete.
                     //SPACE CHECK
                     if ($proceed == true) {
                         echo '<h4>';
-                        echo 'Space Check';
+                        echo 'Facility Check';
                         echo '</h4>';
                         $spaceCheckFail = false;
                         //Get list of spaces from import
@@ -337,7 +337,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Timetable Admin/tt_delete.
                         }
                         if ($spaceCheckFail == true) {
                             echo "<div class='error'>";
-                            echo sprintf(__('Space check failed. The following spaces were in the import file but could not be found in Gibbon: %1$s. Add the spaces into Gibbon and then try the import again.'), substr($errorList, 0, -2));
+                            echo sprintf(__('Facility check failed. The following spaces were in the import file but could not be found in Gibbon: %1$s. Add the spaces into Gibbon and then try the import again.'), substr($errorList, 0, -2));
                             echo '</div>';
                         } elseif ($spaceCheckFail == false) {
                             echo "<div class='success'>";

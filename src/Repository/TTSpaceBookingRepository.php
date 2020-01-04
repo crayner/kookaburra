@@ -12,14 +12,12 @@
  */
 namespace App\Repository;
 
-use App\Entity\LibraryItem;
+use Kookaburra\Library\Entity\LibraryItem;
+use Kookaburra\SchoolAdmin\Entity\Facility;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\Space;
 use App\Entity\TTSpaceBooking;
-use App\Provider\SettingProvider;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use PhpParser\Node\Stmt\Else_;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -67,7 +65,7 @@ class TTSpaceBookingRepository extends ServiceEntityRepository
                 $spaces[] = $entity->getForeignKeyID();
             else
                 $libraryItems[] = $entity->getForeignKeyID();
-        $spaces = $this->getEntityManager()->getRepository(Space::class)->findAllIn($spaces);
+        $spaces = $this->getEntityManager()->getRepository(Facility::class)->findAllIn($spaces);
         $libraryItems = $this->getEntityManager()->getRepository(LibraryItem::class)->findAllIn($libraryItems);
         foreach($result AS $booking)
             if ($entity->getForeignKey() === 'gibbonSpaceID')

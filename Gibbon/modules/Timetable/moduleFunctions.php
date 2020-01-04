@@ -896,7 +896,7 @@ function renderTT($guid, $connection2, $gibbonPersonID, $gibbonTTID, $title = ''
             }
             $output .= '</tr>';
 
-            //Space for all day events
+            //Facility for all day events
             if (($eventsSchool == true or $eventsPersonal == true) and $allDay == true and $eventsCombined != null) {
                 $output .= "<tr style='height: ".((31 * $maxAllDays) + 5)."px'>";
                 $output .= "<td style='vertical-align: top; width: 70px; text-align: center; border-top: 1px solid #888; border-bottom: 1px solid #888'>";
@@ -1353,7 +1353,7 @@ function renderTTDay($guid, $connection2, $gibbonTTID, $schoolOpen, $startDaySta
                                 if ($spaceChanges[$rowPeriods['gibbonTTDayRowClassID']][0] != '') {
                                     $output .= "<span style='border: 1px solid #c00; padding: 0 2px'>".$spaceChanges[$rowPeriods['gibbonTTDayRowClassID']][0].'</span>';
                                 } else {
-                                    $output .= "<span style='border: 1px solid #c00; padding: 0 2px'><i>".__('No Space Allocated').'</span>';
+                                    $output .= "<span style='border: 1px solid #c00; padding: 0 2px'><i>".__('No Facility Allocated').'</span>';
                                 }
                             }
                         } else {

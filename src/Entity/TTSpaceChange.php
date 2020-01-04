@@ -40,8 +40,8 @@ class TTSpaceChange  implements EntityInterface
     private $TTDayRowClass;
 
     /**
-     * @var Space|null
-     * @ORM\ManyToOne(targetEntity="Space")
+     * @var Facility|null
+     * @ORM\ManyToOne(targetEntity="Facility")
      * @ORM\JoinColumn(name="gibbonSpaceID",referencedColumnName="gibbonSpaceID")
      */
     private $space;
@@ -96,18 +96,18 @@ class TTSpaceChange  implements EntityInterface
     }
 
     /**
-     * @return Space|null
+     * @return Facility|null
      */
-    public function getSpace(): ?Space
+    public function getSpace(): ?Facility
     {
         return $this->space;
     }
 
     /**
-     * @param Space|null $space
+     * @param Facility|null $space
      * @return TTSpaceChange
      */
-    public function setSpace(?Space $space): TTSpaceChange
+    public function setSpace(?Facility $space): TTSpaceChange
     {
         $this->space = $space;
         return $this;

@@ -75,7 +75,7 @@ class TTSpaceBooking  implements EntityInterface
     private $timeEnd;
 
     /**
-     * @var Space|null
+     * @var Facility|null
      */
     private $space;
 
@@ -214,18 +214,18 @@ class TTSpaceBooking  implements EntityInterface
     }
 
     /**
-     * @return Space|null
+     * @return Facility|null
      */
-    public function getSpace(): ?Space
+    public function getSpace(): ?Facility
     {
         return $this->space;
     }
 
     /**
-     * @param Space|null $space
+     * @param Facility|null $space
      * @return TTSpaceBooking
      */
-    public function setSpace(?Space $space): TTSpaceBooking
+    public function setSpace(?Facility $space): TTSpaceBooking
     {
         $this->space = $space;
         return $this;
@@ -237,7 +237,7 @@ class TTSpaceBooking  implements EntityInterface
      */
     public function getName(): ?string
     {
-        if ($this->getForeignKey() === 'gibbonSpaceID' && $this->getSpace() instanceof Space)
+        if ($this->getForeignKey() === 'gibbonSpaceID' && $this->getSpace() instanceof Facility)
             return $this->getSpace()->getName();
         return null;
 
