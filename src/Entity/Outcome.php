@@ -15,6 +15,7 @@ namespace App\Entity;
 use App\Manager\Traits\BooleanList;
 use App\Validator as Correct;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\Departments\Entity\Department;
 use Kookaburra\UserAdmin\Entity\Person;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Outcome
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\OutcomeRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Outcome", uniqueConstraints={@ORM\UniqueConstraint(name="nameDepartment", columns={"name","gibbonDepartmentID"}),@ORM\UniqueConstraint(name="nameShortDescription", columns={"nameShort","gibbonDepartmentID"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="Outcome",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="nameDepartment", columns={"name","gibbonDepartmentID"}),@ORM\UniqueConstraint(name="nameShortDescription", columns={"nameShort","gibbonDepartmentID"})},
+ *     indexes={@ORM\Index(name="department",columns={"department"})})
  * @UniqueEntity({"name","department"})
  * @UniqueEntity({"nameShort","department"})
  */
@@ -88,8 +91,8 @@ class Outcome
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="Department")
-     * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="gibbonDepartmentID")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\Departments\Entity\Department")
+     * @ORM\JoinColumn(name="department", referencedColumnName="id")
      */
     private $department;
 
