@@ -17,6 +17,7 @@ namespace App\Twig\Extension;
 
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
+use Kookaburra\UserAdmin\Entity\Person;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -29,13 +30,14 @@ class SettingExtension extends AbstractExtension
 
     /**
      * getFunctions
-     * @return array|\Twig_Function[]
+     * @return array|TwigFunction[]
      */
     public function getFunctions()
     {
         return [
             new TwigFunction('getSettingByScope', [$this, 'getSettingByScope']),
             new TwigFunction('hasSettingByScope', [$this, 'hasSettingByScope']),
+            new TwigFunction('getPersonFromSetting', [$this, 'getPersonFromSetting']),
         ];
     }
 
@@ -58,5 +60,20 @@ class SettingExtension extends AbstractExtension
     public function hasSettingByScope(string $scope, string $name): bool
     {
         return ProviderFactory::create(Setting::class)->hasSettingByScope($scope, $name);
+    }
+
+    /**
+     * getPersonFromSetting
+     * @param string $scope
+     * @param string $name
+     * @param string|null $detail
+     */
+    public function getPersonFromSetting(string $scope, string $name, ?string $method = null)
+    {
+        $person = ProviderFactory::getRepository(Person::class)->find(ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger($scope, $name));
+        if (!$person instanceof Person || null === $method || !method_exists($person, $method))
+            return $person;
+
+        return $person->$method();
     }
 }

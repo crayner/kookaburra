@@ -212,7 +212,7 @@ class StaffDashboard implements OutputableInterface
         $count = 0;
         try {
             $dataRollGroups = array('gibbonPersonIDTutor' => $_SESSION[$guid]['gibbonPersonID'], 'gibbonPersonIDTutor2' => $_SESSION[$guid]['gibbonPersonID'], 'gibbonPersonIDTutor3' => $_SESSION[$guid]['gibbonPersonID'], 'academicYearID' => $_SESSION[$guid]['AcademicYearID']);
-            $sqlRollGroups = 'SELECT * FROM gibbonRollGroup WHERE (gibbonPersonIDTutor=:gibbonPersonIDTutor OR gibbonPersonIDTutor2=:gibbonPersonIDTutor2 OR gibbonPersonIDTutor3=:gibbonPersonIDTutor3) AND academic_year=:academicYearID';
+            $sqlRollGroups = 'SELECT * FROM gibbonRollGroup WHERE (tutor1=:gibbonPersonIDTutor OR tutor2=:gibbonPersonIDTutor2 OR tutor3=:gibbonPersonIDTutor3) AND academic_year=:academicYearID';
             $resultRollGroups = $connection2->prepare($sqlRollGroups);
             $resultRollGroups->execute($dataRollGroups);
         } catch (PDOException $e) {

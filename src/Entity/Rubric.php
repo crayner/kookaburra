@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\Departments\Entity\Department;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
@@ -71,8 +72,8 @@ class Rubric
 
     /**
      * @var Department|null
-     * @ORM\ManyToOne(targetEntity="Department")
-     * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="gibbonDepartmentID")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\Departments\Entity\Department")
+     * @ORM\JoinColumn(name="gibbonDepartmentID", referencedColumnName="id")
      */
     private $department;
 

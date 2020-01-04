@@ -13,6 +13,7 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\RollGroups\Entity\RollGroup;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\SchoolAdmin\Entity\YearGroup;
 use Kookaburra\UserAdmin\Entity\Person;
@@ -57,8 +58,8 @@ class StudentEnrolment
 
     /**
      * @var RollGroup|null
-     * @ORM\ManyToOne(targetEntity="RollGroup", inversedBy="studentEnrolments")
-     * @ORM\JoinColumn(name="gibbonRollGroupID", referencedColumnName="gibbonRollGroupID", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Kookaburra\RollGroups\Entity\RollGroup", inversedBy="studentEnrolments")
+     * @ORM\JoinColumn(name="gibbonRollGroupID",referencedColumnName="id",nullable=false)
      */
     private $rollGroup;
 

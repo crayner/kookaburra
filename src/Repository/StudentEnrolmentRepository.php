@@ -18,7 +18,7 @@ use Doctrine\ORM\NoResultException;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\SchoolAdmin\Entity\YearGroup;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\RollGroup;
+use Kookaburra\RollGroups\Entity\RollGroup;
 use App\Entity\StudentEnrolment;
 use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

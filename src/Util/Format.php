@@ -101,7 +101,8 @@ class Format
     public static function nameList(array $list, string $roleCategory = 'Staff', bool $reverse = false, bool $informal = false, ?string $separator = '<br/>')
     {
         $listFormatted = array_map(function ($person) use ($roleCategory, $reverse, $informal) {
-            return static::name($person->getTitle(), $person->getPreferredName(), $person->getSurname(), $roleCategory, $reverse, $informal);
+            return $person->formatName();
+            return static::formatName($person->getTitle(), $person->getPreferredName(), $person->getSurname(), $roleCategory, $reverse, $informal);
         }, $list);
 
         if (null === $separator)
