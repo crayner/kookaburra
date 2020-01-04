@@ -68,7 +68,6 @@ class SettingProvider implements EntityProviderInterface
             return $setting;
         }
 
-
         return $setting->getValue();
     }
 
@@ -239,9 +238,16 @@ class SettingProvider implements EntityProviderInterface
      */
     public function getSettings(): ArrayCollection
     {
-        if (null === $this->settings)
-            $this->settings = new ArrayCollection();
-
+        if (null === $this->settings) {
+            if (null === $this->getSession())
+                $this->settings = new ArrayCollection();
+            else {
+                if ($this->getSession()->has('settings'))
+                    $this->settings = $this->getSession()->get('settings');
+                if (!$this->settings instanceof ArrayCollection)
+                    $this->settings = new ArrayCollection();
+            }
+        }
         return $this->settings;
     }
 
@@ -430,6 +436,7 @@ class SettingProvider implements EntityProviderInterface
         if (null === $this->getSession())
             return;
 
+        $this->getSession()->set('settings', $this->getSettings());
         if (isset($this->sessionSettings[$setting->getScope()][$setting->getName()]))
             $this->getSession()->set($this->sessionSettings[$setting->getScope()][$setting->getName()], $setting->getValue());
 
