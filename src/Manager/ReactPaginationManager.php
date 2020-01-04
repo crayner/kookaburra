@@ -98,6 +98,8 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      */
     public function getPageMax(): int
     {
+        if (null === $this->pageMax)
+            $this->pageMax = ProviderFactory::create(Setting::class)->getSettingByScopeAsInteger('System', 'pagination');
         return $this->pageMax;
     }
 
