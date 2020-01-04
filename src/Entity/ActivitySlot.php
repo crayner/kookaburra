@@ -14,12 +14,15 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Kookaburra\SchoolAdmin\Entity\DaysOfWeek;
+use Kookaburra\SchoolAdmin\Entity\Facility;
 
 /**
  * Class ActivitySlot
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\ActivitySlotRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="ActivitySlot")
+ * @ORM\Table(options={"auto_increment": 1}, name="ActivitySlot",
+ *     indexes={@ORM\Index(name="facility",columns={"facility"})}
+ * )
  */
 class ActivitySlot
 {
@@ -40,10 +43,10 @@ class ActivitySlot
 
     /**
      * @var Facility|null
-     * @ORM\ManyToOne(targetEntity="Facility")
-     * @ORM\JoinColumn(name="gibbonSpaceID",referencedColumnName="gibbonSpaceID",nullable=true)
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\Facility")
+     * @ORM\JoinColumn(name="facility",referencedColumnName="id",nullable=true)
      */
-    private $space;
+    private $facility;
 
     /**
      * @var string|null
@@ -109,18 +112,20 @@ class ActivitySlot
     /**
      * @return Facility|null
      */
-    public function getSpace(): ?Facility
+    public function getFacility(): ?Facility
     {
-        return $this->space;
+        return $this->facility;
     }
 
     /**
-     * @param Facility|null $space
+     * Facility.
+     *
+     * @param Facility|null $facility
      * @return ActivitySlot
      */
-    public function setSpace(?Facility $space): ActivitySlot
+    public function setFacility(?Facility $facility): ActivitySlot
     {
-        $this->space = $space;
+        $this->facility = $facility;
         return $this;
     }
 
