@@ -22,8 +22,8 @@ use Kookaburra\SchoolAdmin\Entity\YearGroup;
  * @ORM\Entity(repositoryClass="App\Repository\CourseClassMapRepository")
  * @ORM\Table(options={"auto_increment": 1}, name="CourseClassMap",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="gibbonCourseClassID", columns={"gibbonCourseClassID"})},
- *     indexes={@ORM\Index(name="roll_group",columns{"roll_group"}),
- *     @ORM\Index(name="year_group",columns{"year_group"})}
+ *     indexes={@ORM\Index(name="roll_group",columns={"roll_group"}),
+ *     @ORM\Index(name="year_group",columns={"year_group"})}
  * )
  */
 class CourseClassMap
@@ -45,14 +45,14 @@ class CourseClassMap
 
     /**
      * @var RollGroup|null
-     * @ORM\ManyToOne(targetEntity="RollGroup")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\RollGroups\Entity\RollGroup")
      * @ORM\JoinColumn(name="roll_group",referencedColumnName="id",nullable=true)
      */
     private $rollGroup;
 
     /**
      * @var YearGroup|null
-     * @ORM\ManyToOne(targetEntity="YearGroup")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\YearGroup")
      * @ORM\JoinColumn(name="year_group",referencedColumnName="id",nullable=true)
      */
     private $yearGroup;
