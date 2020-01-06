@@ -153,7 +153,7 @@ trait EntityTrait
             $entity = $this->find($id);
         if (empty($entity))
         {
-            $this->getMessageManager()->add('warning', 'Your request failed because your inputs were invalid.', [], 'messages');
+            $this->getMessageManager()->add('warning', 'return.error.0', [], 'messages');
             return $entity;
         }
 
@@ -161,30 +161,32 @@ trait EntityTrait
             if ($this->canDelete($entity)) {
                 $this->getEntityManager()->remove($entity);
                 $this->getEntityManager()->flush();
-                $this->getMessageManager()->add('success', 'Your request was completed successfully.', [], 'messages');
+                $this->getMessageManager()->add('success', 'return.success.0', [], 'messages');
                 $this->entity = null;
                 return $entity;
-
+            } else {
+                $this->getMessageManager()->add('warning', 'return.warning.3', [], 'messages');
+                return $entity;
             }
         } elseif (method_exists($entity, 'canDelete')) {
             if ($entity->canDelete()) {
                 $this->getEntityManager()->remove($entity);
                 $this->getEntityManager()->flush();
-                $this->getMessageManager()->add('success', 'Your request was completed successfully.', [], 'messages');
+                $this->getMessageManager()->add('success', 'return.success.0', [], 'messages');
                 $this->entity = null;
+                return $entity;
+            } else {
+                $this->getMessageManager()->add('warning', 'return.warning.3', [], 'messages');
                 return $entity;
             }
         } else {
             $this->getEntityManager()->remove($entity);
             $this->getEntityManager()->flush();
-            $this->getMessageManager()->add('success', 'Your request was completed successfully.', [], 'messages');
+            $this->getMessageManager()->add('success', 'return.success.0', [], 'messages');
             $this->entity = null;
             return $entity;
 
         }
-        $this->getMessageManager()->add('warning', 'Your request failed because your inputs were invalid.', [], 'messages');
-
-        return $entity;
     }
 
     /**
