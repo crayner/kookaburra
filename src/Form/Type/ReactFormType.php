@@ -119,6 +119,7 @@ class ReactFormType extends AbstractType
          $this->addTranslation('Refresh List', [], 'messages');
          $this->addTranslation('Add Element to List', [], 'messages');
          $this->addTranslation('The list has been refreshed.', [], 'messages');
+         $this->addTranslation('All / None', [], 'messages');
 
          $view->vars['toArray'] = $vars;
      }
@@ -181,6 +182,12 @@ class ReactFormType extends AbstractType
             $vars['value'] = $view->vars['value']->getId();
         }
 
+        if ($vars['type'] === 'choice') {
+            $vars['auto_refresh'] = $view->vars['auto_refresh'];
+            $vars['auto_refresh_url'] = $view->vars['auto_refresh_url'];
+            $vars['add_url'] = $view->vars['add_url'];
+        }
+
         if ($vars['type'] === 'choice' && $view->vars['multiple']) {
             if (!is_array($view->vars['value']))
                 $view->vars['value'] = [$view->vars['value']];
@@ -190,13 +197,10 @@ class ReactFormType extends AbstractType
                 }
             }
             $vars['value'] = $view->vars['value'];
+            $vars['expanded'] = $view->vars['expanded'];
+            if ($vars['expanded'])
+                $vars['type'] = 'expanded_choice';
         }
-        if ($vars['type'] === 'choice') {
-            $vars['auto_refresh'] = $view->vars['auto_refresh'];
-            $vars['auto_refresh_url'] = $view->vars['auto_refresh_url'];
-            $vars['add_url'] = $view->vars['add_url'];
-        }
-
         if (empty($vars['value']) && !empty($view->vars['data'])) {
             $vars['value'] = $view->vars['data'];
         }

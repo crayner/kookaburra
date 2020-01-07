@@ -60,6 +60,7 @@ export default class ContainerApp extends Component {
             addElementToChoice: this.addElementToChoice.bind(this),
             removeSimpleArrayValue: this.removeSimpleArrayValue.bind(this),
             addSimpleArrayValue: this.addSimpleArrayValue.bind(this),
+            toggleExpandedAllNone: this.toggleExpandedAllNone.bind(this)
         }
         this.contentManager = this.contentManager.bind(this)
 
@@ -72,6 +73,7 @@ export default class ContainerApp extends Component {
         }
         this.formNames = {}
         this.submit = {}
+        this.expandedAllNoneChecked = {}
         this.singleForm = (Object.keys(props.forms).length === 1)
         this.contentLoaders = props.contentLoader
     }
@@ -218,8 +220,6 @@ export default class ContainerApp extends Component {
             }
             return
         }
-        if (form.type === 'simple_array')
-            console.log(form)
         let value = e.target.value
         if (form.type === 'choice' && form.multiple) {
             value = []
@@ -234,6 +234,15 @@ export default class ContainerApp extends Component {
         this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue({...parentForm},form,value)), this.singleForm))
         if (submitOnChange)
             this.submitForm({},form)
+    }
+
+    toggleExpandedAllNone(name,toggle)
+    {
+        if (typeof this.expandedAllNoneChecked[name] === 'undefined')
+            this.expandedAllNoneChecked[name] = false
+        if (toggle)
+            this.expandedAllNoneChecked[name] = !this.expandedAllNoneChecked[name];
+         return this.expandedAllNoneChecked[name]
     }
 
     submitForm(e,form) {

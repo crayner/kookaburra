@@ -40,17 +40,18 @@ export default function Panels(props) {
         if (panel.preContent !== null) {
             preContent = panel.preContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
-                    return renderExternalContent(externalContent[name])
+                    return renderExternalContent(externalContent[name], functions)
                 return ''
             })
         }
         if (panel.postContent !== null) {
             postContent = panel.postContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
-                    return renderExternalContent(externalContent[name])
+                    return renderExternalContent(externalContent[name], functions)
                 return ''
             })
         }
+
         return (
             <TabPanel key={name}>
                 {preContent}
@@ -116,13 +117,49 @@ function renderPanelContent(panel, props){
         form={form} />
 }
 
-function renderExternalContent(data){
+function renderExternalContent(data,functions){
     if (data.loader.type === 'pagination') {
-        return (<PaginationApp {...data.content} key={data.loader.target} />)
+        return (<PaginationApp key={data.loader.target} {...data.content} />)
     }
     if (data.loader.type === 'text') {
         return (<section key={data.loader.target}>{Parser(data.content)}</section>)
     }
+    if (data.loader.type === 'html') {
+        return (<section key={data.loader.target}>{renderExternalHTML(JSON.parse(data.content), 0, functions)}</section>)
+    }
     console.log(data)
+}
+
+function renderExternalHTML(content, key, functions) {
+    key = key + 1
+    return Object.keys(content).map(elementName => {
+        let children = []
+        let element = content[elementName]
+        if (typeof element.children === 'undefined')
+            element.children = {}
+        if (Object.keys(element.children).length > 0) {
+            children = renderExternalHTML(element.children, key, functions)
+        }
+        if (elementName === 'h3') {
+            key = key + 1
+            return (<h3 key={key} {...element.attr}>{children}{element.content}</h3>)
+        }
+        if (elementName === 'span') {
+            key = key + 1
+            return (<span key={key} {...element.attr}>{children}{element.content}</span>)
+        }
+        if (elementName === 'button') {
+            key = key + 1
+            if (typeof element.onClick === 'object' && functions[element.onClick.function])
+            {
+                if (element.onClick.function === 'openUrl') {
+                    element.attr.onClick = () => functions.openUrl(element.onClick.url, element.onClick.target)
+                }
+            }
+            return (<button key={key} {...element.attr}>{children}{element.content}</button>)
+        }
+        console.log(elementName,element)
+    })
+
 }
 

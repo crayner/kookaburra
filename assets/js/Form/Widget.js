@@ -10,6 +10,7 @@ import {isEmpty} from "../component/isEmpty"
 import FormSelect from "./FormSelect"
 import Parser from "react-html-parser"
 import SimpleArray from "./SimpleArray"
+import FormExpandedSelect from "./FormExpandedSelect"
 
 export default function Widget(props) {
     const {
@@ -205,7 +206,13 @@ export default function Widget(props) {
     if (form.type === 'choice') {
         if (typeof form.visibleByClass !== 'undefined')
             functions.toggleVisibleByClass(form.value, form)
-        return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr} errors={errors} functions={functions}/>)
+        return (<FormSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr} errors={errors} functions={functions} />)
+    }
+
+    if (form.type === 'expanded_choice') {
+        if (typeof form.visibleByClass !== 'undefined')
+            functions.toggleVisibleByClass(form.value, form)
+        return (<FormExpandedSelect form={form} wrapper_attr={wrapper_attr} widget_attr={widget_attr} errors={errors} functions={functions} />)
     }
 
     if (form.type === 'textarea') {

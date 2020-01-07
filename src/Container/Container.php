@@ -327,7 +327,7 @@ class Container
         $resolver->setAllowedTypes('route', 'string');
         $resolver->setAllowedTypes('target', 'string');
         $resolver->setAllowedTypes('timer', 'integer');
-        $resolver->setAllowedValues('type', ['text', 'pagination']);
+        $resolver->setAllowedValues('type', ['text', 'pagination', 'html']);
         foreach($contentLoader as $q=>$content)
             $contentLoader[$q] = $resolver->resolve($content);
         $this->contentLoader = $contentLoader;
