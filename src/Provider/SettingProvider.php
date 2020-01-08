@@ -217,11 +217,11 @@ class SettingProvider implements EntityProviderInterface
      * @param string $value
      * @throws SettingNotFoundException
      */
-    public function setSettingByScope(string $scope, string $name, $value)
+    public function setSettingByScope(string $scope, string $name, $value): self
     {
         $setting = $this->getSettingByScope($scope, $name, true);
         if (false === $setting)
-            throw new SettingNotFoundException($scope,$name);
+            throw new SettingNotFoundException($scope, $name);
 
         $setting = $this->getRepository()->findOneBy(['scope' => $setting->getScope(), 'name' => $setting->getName()]);
         $this->setEntity($setting);
@@ -235,6 +235,7 @@ class SettingProvider implements EntityProviderInterface
         $this->saveEntity();
         $this->addSetting($setting);
         $this->writeSettingInSession($setting);
+        return $this;
     }
 
     /**
