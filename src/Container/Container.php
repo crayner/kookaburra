@@ -70,7 +70,7 @@ class Container
      */
     public function getTarget(): string
     {
-        return $this->target;
+        return $this->target ?: 'formContent';
     }
 
     /**
