@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Kookaburra\SchoolAdmin\Entity\AcademicYearTerm;
+use Kookaburra\SchoolAdmin\Entity\Scale;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\ORM\Mapping as ORM;
@@ -128,8 +129,8 @@ class MarkbookColumn
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="Scale")
-     * @ORM\JoinColumn(name="gibbonScaleIDAttainment", referencedColumnName="gibbonScaleID")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\Scale")
+     * @ORM\JoinColumn(name="gibbonScaleIDAttainment", referencedColumnName="id")
      */
     private $scaleAttainment;
 
@@ -161,8 +162,8 @@ class MarkbookColumn
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="Scale")
-     * @ORM\JoinColumn(name="gibbonScaleIDEffort", referencedColumnName="gibbonScaleID")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\Scale")
+     * @ORM\JoinColumn(name="gibbonScaleIDEffort", referencedColumnName="id")
      */
     private $scaleEffort;
 

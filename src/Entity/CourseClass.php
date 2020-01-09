@@ -19,6 +19,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Kookaburra\SchoolAdmin\Entity\Scale;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -79,8 +80,8 @@ class CourseClass implements EntityInterface
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="Scale")
-     * @ORM\JoinColumn(name="gibbonScaleIDTarget", referencedColumnName="gibbonScaleID")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\Scale")
+     * @ORM\JoinColumn(name="gibbonScaleIDTarget", referencedColumnName="id")
      */
     private $scale;
 

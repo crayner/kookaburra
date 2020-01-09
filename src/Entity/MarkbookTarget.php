@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\ScaleGrade;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -48,8 +49,8 @@ class MarkbookTarget
 
     /**
      * @var ScaleGrade|null
-     * @ORM\ManyToOne(targetEntity="ScaleGrade")
-     * @ORM\JoinColumn(name="gibbonScaleGradeID", referencedColumnName="gibbonScaleGradeID")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\ScaleGrade")
+     * @ORM\JoinColumn(name="gibbonScaleGradeID", referencedColumnName="id")
      */
     private $scaleGrade;
 

@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use App\Manager\Traits\BooleanList;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\Scale;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
@@ -79,8 +80,8 @@ class InternalAssessmentColumn
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="Scale")
-     * @ORM\JoinColumn(name="gibbonScaleIDAttainment", referencedColumnName="gibbonScaleID", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\Scale")
+     * @ORM\JoinColumn(name="gibbonScaleIDAttainment", referencedColumnName="id", nullable=true)
      */
     private $scaleAttainment;
 
@@ -92,8 +93,8 @@ class InternalAssessmentColumn
 
     /**
      * @var Scale|null
-     * @ORM\ManyToOne(targetEntity="Scale")
-     * @ORM\JoinColumn(name="gibbonScaleIDEffort", referencedColumnName="gibbonScaleID", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\Scale")
+     * @ORM\JoinColumn(name="gibbonScaleIDEffort", referencedColumnName="id", nullable=true)
      */
     private $scaleEffort;
 
