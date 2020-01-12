@@ -1,3 +1,4 @@
 <script>
-    toggle_{{ id }}(false)
+    if (typeof toggle_{{ id }} === 'function')
+        toggle_{{ id }}(false)
 </script>
