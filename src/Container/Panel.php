@@ -68,6 +68,7 @@ class Panel
     /**
      * Panel constructor.
      * @param null|string $name
+     * @param string|null $translationDomain
      */
     public function __construct(?string $name = null, ?string $translationDomain = null)
     {
@@ -172,10 +173,14 @@ class Panel
      * Content.
      *
      * @param string $content
+     * @param string|null $contentLoaderTarget
      * @return Panel
      */
-    public function setContent(string $content): Panel
+    public function setContent(string $content, ?string $contentLoaderTarget = null): Panel
     {
+        if (is_string($contentLoaderTarget))
+            $this->setPreContent([$contentLoaderTarget]);
+
         $this->content = $content;
         return $this;
     }

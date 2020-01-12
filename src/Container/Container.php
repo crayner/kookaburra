@@ -322,12 +322,17 @@ class Container
             ]);
         $resolver->setDefaults([
             'timer' => 0,
+            'delay' => 50,
             'type' => 'text',
         ]);
         $resolver->setAllowedTypes('route', 'string');
         $resolver->setAllowedTypes('target', 'string');
         $resolver->setAllowedTypes('timer', 'integer');
+        $resolver->setAllowedTypes('delay', 'integer');
         $resolver->setAllowedValues('type', ['text', 'pagination', 'html']);
+        $resolver->setAllowedValues('delay', function($value) {
+            return $value >= 50;
+        });
         foreach($contentLoader as $q=>$content)
             $contentLoader[$q] = $resolver->resolve($content);
         $this->contentLoader = $contentLoader;
