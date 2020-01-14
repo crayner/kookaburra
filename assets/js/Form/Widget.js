@@ -179,6 +179,8 @@ export default function Widget(props) {
 
     if (form.type === 'text') {
         widget_attr.type = 'text'
+        if (form.value === null)
+            delete form.value
         return (
             <div {...wrapper_attr}>
                 <input {...widget_attr} value={form.value} />
