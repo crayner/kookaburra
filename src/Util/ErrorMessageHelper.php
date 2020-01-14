@@ -35,6 +35,7 @@ class ErrorMessageHelper
         $data['status'] = 'error';
         return $data;
     }
+
     /**
      * getInvalidInputsMessage
      * @param array $data
@@ -99,19 +100,19 @@ class ErrorMessageHelper
 
     /**
      *
-    $returns['success0'] = __('Your request was completed successfully.');
-    $returns['error0'] = __('Your request failed because you do not have access to this action.');
-    $returns['error1'] = __('Your request failed because your inputs were invalid.');
-    $returns['error2'] = __('Your request failed due to a database error.');
-    $returns['error3'] = __('Your request failed because your inputs were invalid.');
-    $returns['error4'] = __('Your request failed because your passwords did not match.');
-    $returns['error5'] = __('Your request failed because there are no records to show.');
-    $returns['error6'] = __('Your request was completed successfully, but there was a problem saving some uploaded files.');
-    $returns['error7'] = __('Your request failed because some required values were not unique.');
-    $returns['error8'] = __('Your request failed because some values are still in use within the data.');
-    $returns['warning0'] = __('Your optional extra data failed to save.');
-    $returns['warning1'] = __('Your request was successful, but some data was not properly saved.');
-    $returns['warning2'] = __('Your request was successful, but some data was not properly deleted.');
+    $returns['success0'] = __('Your request was completed successfully.'); return.success.0
+    $returns['error0'] = __('Your request failed because you do not have access to this action.'); return.error.0
+    $returns['error1'] = __('Your request failed because your inputs were invalid.'); return.error.1
+    $returns['error2'] = __('Your request failed due to a database error.'); return.error.2
+    $returns['error3'] = __('Your request failed because your inputs were invalid.'); return.error.3
+    $returns['error4'] = __('Your request failed because your passwords did not match.'); return.error.4
+    $returns['error5'] = __('Your request failed because there are no records to show.'); return.error.5
+    $returns['error6'] = __('Your request was completed successfully, but there was a problem saving some uploaded files.'); return.error.6
+    $returns['error7'] = __('Your request failed because some required values were not unique.'); return.error.7
+    $returns['error8'] = __('Your request failed because some values are still in use within the data.'); return.error.8
+    $returns['warning0'] = __('Your optional extra data failed to save.'); return.warning.0
+    $returns['warning1'] = __('Your request was successful, but some data was not properly saved.'); return.warning.1
+    $returns['warning2'] = __('Your request was successful, but some data was not properly deleted.'); return.warning.2
 
      */
 }
