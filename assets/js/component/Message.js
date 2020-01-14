@@ -14,10 +14,12 @@ export default function Message(props) {
         return (
             <div className={message.class}>
                 {message.message}
+                {message.close ?
                 <button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
                         title={translate('Close Message')} type='button'>
                     <span className={'fas fa-times-circle fa-fw ' + message.class}></span>
                 </button>
+                    : '' }
             </div>
         )
     }
@@ -26,10 +28,12 @@ export default function Message(props) {
         return (
             <div className={message.class}>
                 {message.message.message}<br/><span className={'small'}>{message.message.stack}</span>
+                {message.close ?
                 <button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
                         title={translate('Close Message')} type='button'>
                     <span className={'fas fa-times-circle fa-fw ' + message.class}></span>
                 </button>
+                    : '' }
             </div>
         )
     }
@@ -42,5 +46,5 @@ export default function Message(props) {
 Message.propTypes = {
     message: PropTypes.object.isRequired,
     cancelMessage: PropTypes.func.isRequired,
-    translate: PropTypes.func.isRequired
+    translate: PropTypes.func.isRequired,
 }

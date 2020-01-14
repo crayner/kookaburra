@@ -22,6 +22,8 @@ export default class Messages extends Component {
     render() {
         let cells = Object.keys(this.props.messages).map(key => {
             let message = this.props.messages[key]
+            if (typeof message.close === 'undefined')
+                message.close = true
             if (typeof message === 'undefined')
                 return ''
             if (typeof message === 'string') {
@@ -32,9 +34,11 @@ export default class Messages extends Component {
                 message = {...x}
             }
             message['id'] = key
+            console.log(message)
             return <Message
                 message={message}
                 translate={this.translate}
+                close={message.close}
                 key={'message_' + message.id}
                 cancelMessage={this.cancelMessage}
             />
