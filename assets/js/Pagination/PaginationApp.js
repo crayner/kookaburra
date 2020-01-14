@@ -10,7 +10,8 @@ import PaginationSearch from "./PaginationSearch"
 import AreYouSureDialog from "../component/AreYouSureDialog"
 import InformationDetail from "../component/InformationDetail"
 import {fetchJson} from "../component/fetchJson"
-import {buildState, getParentFormName, mergeParentForm} from "../Container/ContainerFunctions"
+import {buildState, getParentFormName, mergeParentForm, trans} from "../Container/ContainerFunctions"
+import Messages from "../component/Messages"
 
 export default class PaginationApp extends Component {
     constructor (props) {
@@ -25,8 +26,10 @@ export default class PaginationApp extends Component {
         this.contentLoader = props.contentLoader
         this.defaultFilter = props.row.defaultFilter
         this.initialFilter = props.initialFilter
+        this.draggableSort = props.draggableSort
         this.columnCount = 0
         this.storeFilterURL = props.storeFilterURL
+        this.draggableRoute = props.draggableRoute
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
@@ -39,9 +42,12 @@ export default class PaginationApp extends Component {
         this.changeFilter = this.changeFilter.bind(this)
         this.changeSearch = this.changeSearch.bind(this)
         this.clearSearch = this.clearSearch.bind(this)
+        this.translate = this.translate.bind(this)
+
         this.functions = {
             areYouSure: this.areYouSure.bind(this),
-            displayInformation: this.displayInformation.bind(this)
+            displayInformation: this.displayInformation.bind(this),
+            dropEvent: this.dropEvent.bind(this),
         }
         this.path = ''
 
@@ -57,6 +63,7 @@ export default class PaginationApp extends Component {
             filter: this.initialFilter,
             filterGroups: {},
             search: '',
+            messages: [],
         }
     }
 
@@ -76,6 +83,21 @@ export default class PaginationApp extends Component {
         }
 
         this.changeFilter(null)
+
+        if (this.draggableSort) {
+            let info = {}
+            info.class = 'info'
+            info.message = 'Items can be dragged into the correct position.'
+            info.close = false
+            this.setState({
+                messages: [info],
+            })
+        }
+
+    }
+
+    translate(id) {
+        return trans(this.messages, id)
     }
 
     loadContent() {
@@ -134,6 +156,30 @@ export default class PaginationApp extends Component {
         this.setState({
             confirm: false,
             information: false
+        })
+    }
+
+    dropEvent(ev) {
+        ev.preventDefault()
+        var data = ev.dataTransfer.getData("text")
+        let source = document.getElementById(data).id.replace('pagination', '')
+        let target = ev.target.parentNode.id.replace('pagination', '')
+        let route = this.draggableRoute.replace('__source__', source).replace('__target__',target)
+        fetchJson(route,
+            {},
+            false).then(data => {
+                if (data.status === 'success') {
+                    this.content = data.content
+                    let result = this.paginateContent(this.content,0, this.pageMax)
+                    this.setState({
+                        results: result,
+                        messages: data.errors,
+                    })
+                } else if (data.status === 'error') {
+                    this.setState({
+                        messages: data.errors,
+                    })
+                }
         })
     }
 
@@ -447,6 +493,7 @@ export default class PaginationApp extends Component {
         return (
             <div>
                 <div className={'text-xs text-gray-600 text-left'}>
+                    <Messages messages={this.state.messages} translate={this.translate} />
                     <span style={{float: 'left', clear: 'both'}}>{this.buildPageSizeControls()}</span>
                     <span style={{float: 'right'}}>{this.buildControl()}</span>
                 </div>
@@ -464,7 +511,7 @@ export default class PaginationApp extends Component {
                         </tr>
                         <HeaderRow row={this.row} sortColumn={this.sortColumn} sortColumnName={this.state.sortColumn} sortColumnDirection={this.state.sortDirection} />
                     </thead>
-                    <PaginationContent row={this.row} content={this.state.results} functions={this.functions} />
+                    <PaginationContent row={this.row} content={this.state.results} functions={this.functions} draggableSort={this.draggableSort} />
                 </table>
                 <AreYouSureDialog messages={this.messages} doit={() => this.deleteItem(this.path)} cancel={() => this.closeConfirm()} confirm={this.state.confirm} />
                 <InformationDetail messages={this.messages} cancel={() => this.closeConfirm()} information={this.state.information} />
@@ -479,4 +526,9 @@ PaginationApp.propTypes = {
     content: PropTypes.array.isRequired,
     translations: PropTypes.object.isRequired,
     storeFilterURL: PropTypes.string,
+    draggableRoute: PropTypes.string,
+}
+
+PaginationApp.defaultProps = {
+    draggableRoute: '',
 }

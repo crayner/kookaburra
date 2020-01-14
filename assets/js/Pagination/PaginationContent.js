@@ -10,6 +10,7 @@ export default function PaginationContent(props) {
         row,
         content,
         functions,
+        draggableSort,
     } = props
 
     if (content.length === 0)
@@ -105,9 +106,25 @@ export default function PaginationContent(props) {
             </td>)
         }
 
+        if (typeof rowContent.id === 'undefined') {
+            console.error('You must define an "id" in your pagination array.')
+        }
+
+        if (draggableSort) {
+            return (
+                <tr className={actions.columnClass} key={rowKey} id={'pagination' + rowContent.id} draggable="true" onDragStart={(e) => drag(e)} onDragOver={(e) => allowDrop(e)}>{columns}</tr>)
+        }
+
         return (<tr className={actions.columnClass} key={rowKey} id={'pagination' + rowContent.id}>{columns}</tr>)
 
     })
+
+    if (draggableSort) {
+        return (
+            <tbody onDrop={(e) => functions.dropEvent(e)}>
+            {rows}
+            </tbody>)
+    }
 
     return (<tbody>
         {rows}</tbody>)
@@ -118,4 +135,13 @@ PaginationContent.propTypes = {
     row: PropTypes.object.isRequired,
     content: PropTypes.array.isRequired,
     functions: PropTypes.object.isRequired,
+    draggableSort: PropTypes.bool.isRequired,
+}
+
+function allowDrop(e) {
+    e.preventDefault()
+}
+
+function drag(e) {
+    e.dataTransfer.setData('text', e.target.id)
 }
