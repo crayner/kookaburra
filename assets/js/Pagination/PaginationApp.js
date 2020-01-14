@@ -10,7 +10,7 @@ import PaginationSearch from "./PaginationSearch"
 import AreYouSureDialog from "../component/AreYouSureDialog"
 import InformationDetail from "../component/InformationDetail"
 import {fetchJson} from "../component/fetchJson"
-import {buildState, getParentFormName, mergeParentForm, trans} from "../Container/ContainerFunctions"
+import {buildState, getParentFormName, mergeParentForm, openUrl, trans} from "../Container/ContainerFunctions"
 import Messages from "../component/Messages"
 
 export default class PaginationApp extends Component {
@@ -26,6 +26,7 @@ export default class PaginationApp extends Component {
         this.contentLoader = props.contentLoader
         this.defaultFilter = props.row.defaultFilter
         this.initialFilter = props.initialFilter
+        this.addElementRoute = props.addElementRoute
         this.draggableSort = props.draggableSort
         this.columnCount = 0
         this.storeFilterURL = props.storeFilterURL
@@ -307,14 +308,20 @@ export default class PaginationApp extends Component {
     }
 
     buildControl() {
-        if (this.state.filteredContent.length === 0)
+        if (this.state.filteredContent.length === 0 && this.addElementRoute === '')
             return []
+
+        let control = []
+        if (this.addElementRoute !== '') {
+            control.push(<a href={'#'} key={'add'} onClick={() => openUrl(this.addElementRoute, '_self')} title={this.row.addElement}><span className={'text-gray-600 fas fa-plus-circle fa-fw'}/></a>)
+        }
+        if (this.state.filteredContent.length === 0)
+            return control
 
         let content = this.row.caption.replace('{start}', (this.state.offset + 1))
         content = content.replace('{end}', (this.state.results.length + this.state.offset))
         content = content.replace('{total}', this.state.filteredContent.length)
 
-        let control = []
         if (this.state.offset > 0) {
             control.push(<a href={'#'} key={'first'} onClick={() => this.firstPage()} title={this.row.firstPage}><span className={'text-gray-600 fas fa-angle-double-left fa-fw'}/></a>)
         }

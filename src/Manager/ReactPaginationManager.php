@@ -95,6 +95,11 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     private $draggableRoute = '';
 
     /**
+     * @var string
+     */
+    private $addElementRoute = '';
+
+    /**
      * ReactPaginationManager constructor.
      */
     public function __construct(ScriptManager $scriptManager)
@@ -239,6 +244,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         return [
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),
+            'addElementRoute' => $this->getAddElementRoute(),
             'sortList' => $this->isSortList(),
             'draggableSort' => $this->isDraggableSort(),
             'draggableRoute' => $this->isDraggableSort() ? UrlGeneratorHelper::getPath($this->getDraggableRoute(), ['target' => '__target__', 'source' => '__source__']) : '',
@@ -504,6 +510,26 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     public function setDraggableRoute(string $draggableRoute): ReactPaginationManager
     {
         $this->draggableRoute = $draggableRoute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddElementRoute(): string
+    {
+        return $this->addElementRoute;
+    }
+
+    /**
+     * AddElementRoute.
+     *
+     * @param string $addElementRoute
+     * @return ReactPaginationManager
+     */
+    public function setAddElementRoute(string $addElementRoute): ReactPaginationManager
+    {
+        $this->addElementRoute = $addElementRoute;
         return $this;
     }
 }
