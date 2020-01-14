@@ -308,33 +308,35 @@ export default class PaginationApp extends Component {
     }
 
     buildControl() {
-        if (this.state.filteredContent.length === 0 && this.addElementRoute === '')
-            return []
-
         let control = []
+        if (this.state.filteredContent.length > 0) {
+
+            let content = this.row.caption.replace('{start}', (this.state.offset + 1))
+            content = content.replace('{end}', (this.state.results.length + this.state.offset))
+            content = content.replace('{total}', this.state.filteredContent.length)
+
+            if (this.state.offset > 0) {
+                control.push(<a href={'#'} key={'first'} onClick={() => this.firstPage()}
+                                title={this.row.firstPage}><span
+                    className={'text-gray-600 fas fa-angle-double-left fa-fw'}/></a>)
+            }
+
+            if (this.state.filteredContent.length > this.state.pageMax && this.state.offset > 0) {
+                control.push(<a href={'#'} key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span
+                    className={'text-gray-600 fas fa-angle-left fa-fw'}/></a>)
+            }
+
+            control.push(<span key={'content'}>{content}</span>)
+
+            if (this.state.filteredContent.length > this.state.pageMax && this.state.pageMax + this.state.offset < this.state.filteredContent.length) {
+                control.push(<a href={'#'} key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span
+                    className={'text-gray-600 fas fa-angle-right fa-fw'}/></a>)
+                control.push(<a href={'#'} key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span
+                    className={'text-gray-600 fas fa-angle-double-right fa-fw'}/></a>)
+            }
+        }
         if (this.addElementRoute !== '') {
-            control.push(<a href={'#'} key={'add'} onClick={() => openUrl(this.addElementRoute, '_self')} title={this.row.addElement}><span className={'text-gray-600 fas fa-plus-circle fa-fw'}/></a>)
-        }
-        if (this.state.filteredContent.length === 0)
-            return control
-
-        let content = this.row.caption.replace('{start}', (this.state.offset + 1))
-        content = content.replace('{end}', (this.state.results.length + this.state.offset))
-        content = content.replace('{total}', this.state.filteredContent.length)
-
-        if (this.state.offset > 0) {
-            control.push(<a href={'#'} key={'first'} onClick={() => this.firstPage()} title={this.row.firstPage}><span className={'text-gray-600 fas fa-angle-double-left fa-fw'}/></a>)
-        }
-
-        if (this.state.filteredContent.length > this.state.pageMax && this.state.offset > 0) {
-            control.push(<a href={'#'} key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span className={'text-gray-600 fas fa-angle-left fa-fw'}/></a>)
-        }
-
-        control.push(<span key={'content'}>{content}</span>)
-
-        if (this.state.filteredContent.length > this.state.pageMax && this.state.pageMax + this.state.offset < this.state.filteredContent.length) {
-            control.push(<a href={'#'} key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span className={'text-gray-600 fas fa-angle-right fa-fw'}/></a>)
-            control.push(<a href={'#'} key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span className={'text-gray-600 fas fa-angle-double-right fa-fw'}/></a>)
+            control.push(<a href={'#'} key={'add'} style={{marginLeft: '15px'}} className={'close-button gray'} onClick={() => openUrl(this.addElementRoute, '_self')} title={this.row.addElement}><span className={'fas fa-plus-circle fa-fw'}/></a>)
         }
         return control
     }
