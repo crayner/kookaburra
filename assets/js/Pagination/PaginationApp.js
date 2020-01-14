@@ -87,7 +87,8 @@ export default class PaginationApp extends Component {
         if (this.draggableSort) {
             let info = {}
             info.class = 'info'
-            info.message = 'Items can be dragged into the correct position.'
+            info.message = 'Items rows can be dragged into the correct position.'
+            info.message = 'Items rows can be dragged into the correct position.'
             info.close = false
             this.setState({
                 messages: [info],
@@ -162,22 +163,26 @@ export default class PaginationApp extends Component {
     dropEvent(ev) {
         ev.preventDefault()
         var data = ev.dataTransfer.getData("text")
-        let source = document.getElementById(data).id.replace('pagination', '')
+        let source = data.replace('pagination', '')
         let target = ev.target.parentNode.id.replace('pagination', '')
         let route = this.draggableRoute.replace('__source__', source).replace('__target__',target)
         fetchJson(route,
             {},
             false).then(data => {
+                let errors = this.state.messages
+                data.errors.map(error => {
+                    errors.push(error)
+                })
                 if (data.status === 'success') {
                     this.content = data.content
-                    let result = this.paginateContent(this.content,0, this.pageMax)
+                    let result = this.paginateContent(this.content,0, this.state.pageMax)
                     this.setState({
                         results: result,
-                        messages: data.errors,
+                        messages: errors,
                     })
                 } else if (data.status === 'error') {
                     this.setState({
-                        messages: data.errors,
+                        messages: errors,
                     })
                 }
         })

@@ -13,6 +13,16 @@ export default function PaginationContent(props) {
         draggableSort,
     } = props
 
+
+    function dropItem(e) {
+        let parent = e.target.parentNode
+        parent.classList.remove('dropTarget')
+        let data = document.getElementById(e.dataTransfer.getData("text"))
+        data.classList.remove('dropTarget')
+
+        return functions.dropEvent(e)
+    }
+
     if (content.length === 0)
     {
         return (
@@ -112,7 +122,7 @@ export default function PaginationContent(props) {
 
         if (draggableSort) {
             return (
-                <tr className={actions.columnClass} key={rowKey} id={'pagination' + rowContent.id} draggable="true" onDragStart={(e) => drag(e)} onDragOver={(e) => allowDrop(e)}>{columns}</tr>)
+                <tr className={actions.columnClass} key={rowKey} id={'pagination' + rowContent.id} draggable="true" onDragStart={(e) => drag(e)} onDragOver={(e) => allowDrop(e)} onDragEnter={(e) => toggleColour(e, true)} onDragLeave={(e) => toggleColour(e,false)}>{columns}</tr>)
         }
 
         return (<tr className={actions.columnClass} key={rowKey} id={'pagination' + rowContent.id}>{columns}</tr>)
@@ -121,7 +131,7 @@ export default function PaginationContent(props) {
 
     if (draggableSort) {
         return (
-            <tbody onDrop={(e) => functions.dropEvent(e)}>
+            <tbody onDrop={(e) => dropItem(e)}>
             {rows}
             </tbody>)
     }
@@ -136,6 +146,16 @@ PaginationContent.propTypes = {
     content: PropTypes.array.isRequired,
     functions: PropTypes.object.isRequired,
     draggableSort: PropTypes.bool.isRequired,
+}
+
+function toggleColour(e, on) {
+    e.preventDefault()
+    if (on && e.target.parentNode.classList.contains('dropTarget'))
+        return
+    if (!on && !e.target.parentNode.classList.contains('dropTarget'))
+        return
+    e.target.parentNode.classList.toggle('dropTarget')
+
 }
 
 function allowDrop(e) {

@@ -34,7 +34,6 @@ export default class Messages extends Component {
                 message = {...x}
             }
             message['id'] = key
-            console.log(message)
             return <Message
                 message={message}
                 translate={this.translate}

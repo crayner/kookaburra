@@ -288,7 +288,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         TranslationsHelper::addTranslation('Loading Content...', [],'messages');
         TranslationsHelper::addTranslation('Default filtering is enforced.', [], 'messages');
         TranslationsHelper::addTranslation('Close Message', [], 'messages');
-        TranslationsHelper::addTranslation('Items can be dragged into the correct position.', [], 'messages');
+        TranslationsHelper::addTranslation('Items rows can be dragged into the correct position.', [], 'messages');
         return TranslationsHelper::getTranslations();
     }
 
