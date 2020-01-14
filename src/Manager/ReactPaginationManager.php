@@ -85,6 +85,16 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     private $sortList = false;
 
     /**
+     * @var boolean
+     */
+    private $draggableSort = false;
+
+    /**
+     * @var string
+     */
+    private $draggableRoute = '';
+
+    /**
      * ReactPaginationManager constructor.
      */
     public function __construct(ScriptManager $scriptManager)
@@ -230,6 +240,8 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),
             'sortList' => $this->isSortList(),
+            'draggableSort' => $this->isDraggableSort(),
+            'draggableRoute' => $this->isDraggableSort() ? UrlGeneratorHelper::getPath($this->getDraggableRoute(), ['target' => '__target__', 'source' => '__source__']) : '',
             'content' => $this->getContent(),
             'contentLoader' => $this->getContentLoader(),
             'translations' => $this->getTranslations(),
@@ -275,6 +287,8 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
         TranslationsHelper::addTranslation('There are no records to display.', [],'messages');
         TranslationsHelper::addTranslation('Loading Content...', [],'messages');
         TranslationsHelper::addTranslation('Default filtering is enforced.', [], 'messages');
+        TranslationsHelper::addTranslation('Close Message', [], 'messages');
+        TranslationsHelper::addTranslation('Items can be dragged into the correct position.', [], 'messages');
         return TranslationsHelper::getTranslations();
     }
 
@@ -450,6 +464,46 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     public function setSortList(bool $sortList): ReactPaginationManager
     {
         $this->sortList = $sortList;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDraggableSort(): bool
+    {
+        return $this->draggableSort;
+    }
+
+    /**
+     * DraggableSort.
+     *
+     * @param bool $draggableSort
+     * @return ReactPaginationManager
+     */
+    public function setDraggableSort(bool $draggableSort): ReactPaginationManager
+    {
+        $this->draggableSort = $draggableSort;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDraggableRoute(): string
+    {
+        return $this->draggableRoute;
+    }
+
+    /**
+     * DraggableRoute.
+     *
+     * @param string $draggableRoute
+     * @return ReactPaginationManager
+     */
+    public function setDraggableRoute(string $draggableRoute): ReactPaginationManager
+    {
+        $this->draggableRoute = $draggableRoute;
         return $this;
     }
 }
