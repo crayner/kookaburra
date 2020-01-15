@@ -26,6 +26,7 @@ use App\Manager\Traits\EntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Services\Format;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -369,9 +370,10 @@ class SettingProvider implements EntityProviderInterface
         }
         foreach($form->getErrors(true) as $error)
         {
-            $this->addError(['class' => 'error', 'message' => $error->getMessage()]);
+            $this->addError(['class' => 'error', 'message' => $error->getOrigin()->getName() . ': ' . $error->getMessage()]);
         }
-        return  $this->addError(['class' => 'error', 'message' => $translator->trans('return.error.1', [], 'messages')])->getErrors();
+
+        return $this->addError(['class' => 'error', 'message' => $translator->trans('return.error.1', [], 'messages')])->getErrors();
     }
 
     /**

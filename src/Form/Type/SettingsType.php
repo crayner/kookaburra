@@ -124,7 +124,8 @@ class SettingsType extends AbstractType
                     'required' => false,
                     'setting_form' => true,
                 ],
-                $setting['entry_options']));
+                $setting['entry_options'])
+            );
         }
     }
 }
