@@ -355,7 +355,7 @@ class SettingProvider implements EntityProviderInterface
     public function handleSettingsForm(FormInterface $form, Request $request, TranslatorInterface $translator): array
     {
         $content = json_decode($request->getContent(), true);
-dump($content,$form);
+
         $form->submit($content);
 
         if ($form->isValid()) {
@@ -367,7 +367,10 @@ dump($content,$form);
             else
                 return $this->getErrors();
         }
-
+        foreach($form->getErrors(true) as $error)
+        {
+            $this->addError(['class' => 'error', 'message' => $error->getMessage()]);
+        }
         return  $this->addError(['class' => 'error', 'message' => $translator->trans('return.error.1', [], 'messages')])->getErrors();
     }
 
