@@ -2,6 +2,7 @@
 
 import React from "react"
 import PropTypes from 'prop-types'
+import Parser from "react-html-parser"
 
 export default function Message(props) {
     const {
@@ -13,7 +14,7 @@ export default function Message(props) {
     if (typeof message.message === 'string') {
         return (
             <div className={message.class}>
-                {message.message}
+                {Parser(message.message)}
                 {message.close ?
                 <button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
                         title={translate('Close Message')} type='button'>
@@ -27,7 +28,7 @@ export default function Message(props) {
     if (typeof message.message === 'object') {
         return (
             <div className={message.class}>
-                {message.message.message}<br/><span className={'small'}>{message.message.stack}</span>
+                {Parser(message.message.message)}<br/><span className={'small'}>{Parser(message.message.stack)}</span>
                 {message.close ?
                 <button className={'button close ' + message.class} onClick={() => cancelMessage(message.id)}
                         title={translate('Close Message')} type='button'>

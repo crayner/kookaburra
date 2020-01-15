@@ -21,6 +21,8 @@ export default function Widget(props) {
     let wrapper_attr = wrapperAttr(form, 'flex-1 relative')
     let element = 'form element ' + form.type
     let widget_attr = widgetAttr(form, 'w-full', functions)
+    if (form.value === null)
+        delete form.value
 
     var errors = []
     if (form.errors.length > 0) {
@@ -179,8 +181,6 @@ export default function Widget(props) {
 
     if (form.type === 'text') {
         widget_attr.type = 'text'
-        if (form.value === null)
-            delete form.value
         return (
             <div {...wrapper_attr}>
                 <input {...widget_attr} value={form.value} />
@@ -193,7 +193,7 @@ export default function Widget(props) {
         widget_attr.type = 'text'
         return (
             <div {...wrapper_attr} style={{backgroundColor: form.value, padding: '0 0 0 50px'}}>
-               <input {...widget_attr} value={form.value} />
+               <input {...widget_attr} defaultValue={form.value} />
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>
         )
