@@ -42,8 +42,6 @@ class ColourValidator extends ConstraintValidator
             ->setParameter('{format}', $constraint->enforceType )
             ->setTranslationDomain($constraint->transDomain )
             ->addViolation();
-
-        return $colour;
     }
 
     /**
@@ -67,7 +65,7 @@ class ColourValidator extends ConstraintValidator
         if (in_array(strtolower($colour), $names) && in_array($enforceType, ['any', 'name']))
             return strtolower($colour);
 
-        $regex = "/^(#?([a-f\d]{3}|[a-f\d]{6}))$/";
+        $regex = "/^(\#?){0,1}([a-f0-9]{3}){1,2}$/i";
         if (preg_match($regex, $colour) && in_array($enforceType, ['any', 'hex'])) {
             if (strlen($colour) === 6)
                 $colour = '#'.$colour;
@@ -77,25 +75,22 @@ class ColourValidator extends ConstraintValidator
                     $x .= $colour[$i].$colour[$i];
                 $colour = $x;
             }
-            return $colour;
+            return strtoupper($colour);
         }
-        $regex = "/^rgb\((0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d),(0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d),(0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d)\)$/";
 
+        $regex = "/^rgb\((0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d),(0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d),(0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d)\)$/";
         if (preg_match($regex, $colour) && in_array($enforceType, ['any', 'rgb']))
             return $colour;
 
         $regex = "/^rgba\((0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d),(0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d),(0|255|25[0-4]|2[0-4]\d|1\d\d|0?\d?\d),(0?\.([\d]{1,2})|1(\.0)?)\)$/";
-
         if (preg_match($regex, $colour) && in_array($enforceType, ['any', 'rgba']))
             return $colour;
 
         $regex = "/^hsl\((0|360|35\d|3[0-4]\d|[12]\d\d|0?\d?\d),(0|100|\d{1,2})%,(0|100|\d{1,2})%\)$/";
-
         if (preg_match($regex, $colour) && in_array($enforceType, ['any', 'hsl']))
             return $colour;
 
         $regex = "/^hsla\((0|360|35\d|3[0-4]\d|[12]\d\d|0?\d?\d),(0|100|\d{1,2})%,(0|100|\d{1,2})%,(0?\.\d|1(\.0)?)\)$/";
-
         if (preg_match($regex, $colour) && in_array($enforceType, ['any', 'hsla']))
             return $colour;
 

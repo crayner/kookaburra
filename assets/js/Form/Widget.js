@@ -190,6 +190,9 @@ export default function Widget(props) {
     }
 
     if (form.type === 'color') {
+         if (/([0-9A-F]{3}){1,2}/i.test(form.value) && form.value.charAt(0) !== '#') {
+             form.value = '#' + form.value
+         }
         widget_attr.type = 'text'
         return (
             <div {...wrapper_attr} style={{backgroundColor: form.value, padding: '0 0 0 50px'}}>
