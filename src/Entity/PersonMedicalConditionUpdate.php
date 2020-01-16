@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\AlertLevel;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
@@ -60,8 +61,8 @@ class PersonMedicalConditionUpdate
 
     /**
      * @var AlertLevel|null
-     * @ORM\ManyToOne(targetEntity="AlertLevel")
-     * @ORM\JoinColumn(name="gibbonAlertLevelID",referencedColumnName="gibbonAlertLevelID")
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AlertLevel")
+     * @ORM\JoinColumn(name="gibbonAlertLevelID",referencedColumnName="id")
      */
     private $alertLevel;
 

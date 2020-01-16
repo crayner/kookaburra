@@ -13,6 +13,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\AlertLevel;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
@@ -47,8 +48,8 @@ class INPersonDescriptor
 
     /**
      * @var AlertLevel|null
-     * @ORM\ManyToOne(targetEntity="AlertLevel")
-     * @ORM\JoinColumn(name="gibbonAlertLevelID", referencedColumnName="gibbonAlertLevelID", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AlertLevel")
+     * @ORM\JoinColumn(name="gibbonAlertLevelID", referencedColumnName="id", nullable=false)
      */
     private $alertLevel;
 
