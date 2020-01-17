@@ -26,5 +26,10 @@ class RoleList extends Constraint
 {
     public $message = '{value} is not a valid Role ID';
     public $fieldName = 'id';
-    public $propertyPath = null;
+    public $propertyPath = 'roleList';
+
+    public function getRequiredOptions()
+    {
+        return ['propertyPath'];
+    }
 }

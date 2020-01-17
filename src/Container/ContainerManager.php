@@ -233,7 +233,7 @@ class ContainerManager
      * @param string $panelName
      * @return array
      */
-    public function getFormFromContainer(string $containerName, string $panelName): array
+    public function getFormFromContainer(string $containerName = 'formContent', string $panelName = 'single'): array
     {
         $container = $this->getContainers()->get($containerName);
         return $container['forms']->get($panelName);
