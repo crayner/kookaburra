@@ -33,6 +33,8 @@ export default function Widget(props) {
     }
 
     if (form.type === 'ckeditor') {
+        if (typeof form.value === 'undefined' || form.value === null)
+            form.value = ''
         return (
             <div {...wrapper_attr}>
                 <CKEditor editor={DocumentEditor} data={form.value} aria-describedby={form.id + '_help'} onChange={(event, editor) => functions.onCKEditorChange(event, editor, form)} />
