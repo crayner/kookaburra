@@ -57,7 +57,7 @@ class ActivitySlot
     /**
      * @var DaysOfWeek|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\DaysOfWeek")
-     * @ORM\JoinColumn(name="gibbonDaysOfWeekID",referencedColumnName="gibbonDaysOfWeekID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonDaysOfWeekID",referencedColumnName="id", nullable=false)
      */
     private $dayOfWeek;
 
