@@ -15,10 +15,12 @@
 
 namespace App\Controller;
 
+use App\Kernel;
 use App\Provider\ProviderFactory;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Yaml\Yaml;
 
@@ -33,7 +35,7 @@ class ModuleBuilderController extends AbstractController
      * @Route("/module/action/build/", name="module_action_build")
      * @IsGranted("ROLE_SYSTEM_ADMIN")
      */
-    public function build()
+    public function build(ParameterBagInterface $bag)
     {
         $module = ProviderFactory::create(Module::class)->find(1); //School Admin
         dump('Change the search detail here to map a module/actions/permissions. Currently ' . $module->getName());
@@ -47,7 +49,10 @@ class ModuleBuilderController extends AbstractController
         $x['version'] = $module->getVersion();
         $x['author'] = $module->getAuthor();
         $x['url'] = $module->getUrl();
+        $result['version'] = '0.0.00';
+        $result['name'] = $module->getName();;
         $result['module'] = $x;
+
         foreach($module->getActions() as $action)
         {
             $x = [];
@@ -74,6 +79,9 @@ class ModuleBuilderController extends AbstractController
 
             $result['module']['actions'][$action->getName()] = $x;
         }
+        $publicDir = $bag->get('kernel.public_dir');
+        file_put_contents($publicDir . '/' . $module->getName() . '.yaml', Yaml::dump($result, 8));
+
         dd(Yaml::dump($result, 8));
     }
 }

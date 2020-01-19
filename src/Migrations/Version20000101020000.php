@@ -31,31 +31,11 @@ final class Version20000101020000 extends SqlLoad implements ContainerAwareInter
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function up(Schema $schema) : void
     {
         $this->getSql('gibbon_base.sql');
-
-        $finder = new Finder();
-
-        $bundles = $finder->directories()->in(__DIR__ . '/../../vendor/kookaburra')->depth(0);
-
-        if ($finder->hasResults()) {
-            foreach($bundles as $bundle) {
-                if($bundle->getBasename() !== 'system-admin')
-                    if (realpath($bundle->getPathname().'/src/Resources/migration/installation.sql') !== false)
-                        $this->getSql($bundle->getPathname() . '/src/Resources/migration/installation.sql');
-            }
-        }
-
-        $em = $this->container->get('doctrine.orm.default_entity_manager');
-        foreach($em->getRepository(Module::class)->findAll() as $module)
-        {
-            $mu = new ModuleUpgrade();
-            $mu->setModule($module)->setVersion('Installation');
-            $em->persist($mu);
-        }
-        $em->flush();
     }
 
     public function down(Schema $schema) : void

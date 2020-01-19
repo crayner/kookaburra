@@ -45,7 +45,7 @@ class InternalAssessmentEntry
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDStudent", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDStudent", referencedColumnName="id", nullable=false)
      */
     private $student;
 
@@ -88,7 +88,7 @@ class InternalAssessmentEntry
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDLastEdit", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDLastEdit", referencedColumnName="id", nullable=false)
      */
     private $lastEdit;
 

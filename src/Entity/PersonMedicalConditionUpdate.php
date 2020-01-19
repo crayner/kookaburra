@@ -111,7 +111,7 @@ class PersonMedicalConditionUpdate
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDUpdater", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDUpdater", referencedColumnName="id", nullable=false)
      */
     private $personUpdater;
 

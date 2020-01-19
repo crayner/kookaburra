@@ -259,22 +259,13 @@ class InstallationManager
                 $input = new ArrayInput([
                     'command' => 'doctrine:migrations:migrate',
                     $name,
-                    // (optional) define the value of command arguments
-                    // 'fooArgument' => 'barValue',
-                    // (optional) pass options to the command
                     '--quiet' => '--quiet',
                     '--no-interaction' => '--no-interaction',
                 ]);
 
-                // You can use NullOutput() if you don't need the output
                 $output = new NullOutput();
                 $application->run($input, $output);
 
-                // return the output, don't use if you used NullOutput()
-                //$content = $output->fetch();
-
-                //if ('' !== $content)
-                    //return new Response($content);// if you used NullOutput()
                 sleep(2);
             }
         }

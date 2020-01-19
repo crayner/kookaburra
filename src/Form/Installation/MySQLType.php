@@ -16,6 +16,7 @@
 namespace App\Form\Installation;
 
 use App\Form\Entity\MySQLSettings;
+use App\Form\Type\ToggleType;
 use App\Validator\MySqlConnection;
 use Doctrine\DBAL\Driver\PDOMySql\Driver;
 use Symfony\Component\Form\AbstractType;
@@ -121,19 +122,11 @@ class MySQLType extends AbstractType
                     'translation_domain' => 'messages',
                 ]
             )
-            ->add('demo', ChoiceType::class,
+            ->add('demo', ToggleType::class,
                 [
                     'label' => 'Install Demo Data?',
-                    'choices' => [
-                        'No' => 'N',
-                        'Yes' => 'Y',
-                    ],
                     'attr' => [
                         'class' => 'w-full',
-                        'maxLength' => 50,
-                    ],
-                    'constraints' => [
-                        new NotBlank(),
                     ],
                 ]
             )

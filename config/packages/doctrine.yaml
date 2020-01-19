@@ -14,7 +14,7 @@ doctrine:
         dbname:     '%databaseName%'
         user:       '%databaseUsername%'
         password:   '%databasePassword%'
-        server_version: '5.7'
+        server_version: '8.0'
         charset: utf8
         default_table_options:
             charset: utf8

@@ -1,6 +1,6 @@
 {% trans_default_domain 'messages' %}
 <h2>{{ 'Building the Database'|trans }}</h2>
-<p>{{ 'Once the correct settings for your database are verified, the system will immediately build the database. This is a process that can take minutes to complete.  You patience is appreciated.'|trans }}</p>
+<p>{{ 'database_build_warning'|trans }}</p>
 {% if proceed %}
     <p class="right"><button class="btn btn-success" type="button" onclick="window.open('/install/installation/build/','_self')">{{ 'Proceed'|trans }}</button></p>
 {% endif %}

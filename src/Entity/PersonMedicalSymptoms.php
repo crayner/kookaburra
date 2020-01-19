@@ -35,7 +35,7 @@ class PersonMedicalSymptoms
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="id", nullable=false)
      */
     private $person;
 
@@ -60,7 +60,7 @@ class PersonMedicalSymptoms
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDTaker",referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDTaker",referencedColumnName="id", nullable=false)
      */
     private $personTaker;
 

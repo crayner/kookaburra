@@ -1373,7 +1373,7 @@ table.smallIntBorder td.noPadding {
     left: 3px;
     right: 3px ;
     bottom: 0;
-    background-color: #CCCCCC;
+    background-color: #CC3333;
     -webkit-transition: .4s;
     transition: .4s;
 }
@@ -1391,7 +1391,7 @@ table.smallIntBorder td.noPadding {
 }
 
 input[value="1"] + .slider, input[value="Y"] + .slider {
-    background-color: #444444;
+    background-color: #33CC33;
 }
 
 input:focus + .slider {

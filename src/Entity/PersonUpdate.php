@@ -54,7 +54,7 @@ class PersonUpdate
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="id", nullable=false)
      */
     private $person;
 
@@ -378,7 +378,7 @@ class PersonUpdate
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDUpdater", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDUpdater", referencedColumnName="id", nullable=false)
      */
     private $personUpdater;
 

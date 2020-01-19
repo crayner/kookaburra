@@ -53,7 +53,7 @@ class MessengerCannedResponse
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="id", nullable=false)
      */
     private $creator;
 

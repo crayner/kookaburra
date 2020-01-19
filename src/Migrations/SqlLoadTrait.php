@@ -47,7 +47,7 @@ trait SqlLoadTrait
 
         $this->count = 0;
 
-        $prefix = GlobalHelper::getParam('databasePrefix');
+        $prefix = $this->getPrefix();
 
         while(($line = $this->getSqlLine()) !== false)
             $this->addSql(str_replace('__prefix__', $prefix, $line));
@@ -95,5 +95,33 @@ trait SqlLoadTrait
     public function getCount(): int
     {
         return $this->count;
+    }
+
+    /**
+     * @var string
+     */
+    private $prefix;
+
+    /**
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        if (null === $this->prefix) {
+            $params = $this->connection->getParams();
+            $this->setPrefix($params['driverOptions']['prefix']);
+        }
+        return $this->prefix;
+    }
+
+    /**
+     * setPrefix
+     * @param string $prefix
+     * @return $this
+     */
+    public function setPrefix(string $prefix): self
+    {
+        $this->prefix = $prefix;
+        return $this;
     }
 }

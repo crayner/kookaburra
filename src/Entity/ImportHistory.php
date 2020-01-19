@@ -52,7 +52,7 @@ class ImportHistory implements EntityInterface
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="performed_by", referencedColumnName="gibbonPersonID")
+     * @ORM\JoinColumn(name="performed_by", referencedColumnName="id")
      */
     private $performedBy;
 

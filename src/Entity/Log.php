@@ -39,14 +39,14 @@ class Log implements EntityInterface
     /**
      * @var Module|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\SystemAdmin\Entity\Module")
-     * @ORM\JoinColumn(name="gibbonModuleID",referencedColumnName="gibbonModuleID")
+     * @ORM\JoinColumn(name="gibbonModuleID",referencedColumnName="id")
      */
     private $module;
 
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="gibbonPersonID")
+     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="id")
      */
     private $person;
 

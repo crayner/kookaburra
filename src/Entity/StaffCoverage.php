@@ -56,7 +56,7 @@ class StaffCoverage implements EntityInterface
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="id", nullable=false)
      */
     private $person;
 
@@ -85,7 +85,7 @@ class StaffCoverage implements EntityInterface
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDStatus", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDStatus", referencedColumnName="id", nullable=false)
      */
     private $statusChangedBy;
 
@@ -104,7 +104,7 @@ class StaffCoverage implements EntityInterface
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDCoverage", referencedColumnName="gibbonPersonID", nullable=true)
+     * @ORM\JoinColumn(name="gibbonPersonIDCoverage", referencedColumnName="id", nullable=true)
      */
     private $coverageChangedBy;
 

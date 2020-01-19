@@ -43,7 +43,7 @@ class StaffAbsence implements EntityInterface
     /**
      * @var StaffAbsenceType|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\StaffAbsenceType")
-     * @ORM\JoinColumn(name="gibbonStaffAbsenceTypeID", referencedColumnName="gibbonStaffAbsenceTypeID",nullable=false)
+     * @ORM\JoinColumn(name="gibbonStaffAbsenceTypeID", referencedColumnName="id",nullable=false)
      */
     private $staffAbsenceType;
 
@@ -57,7 +57,7 @@ class StaffAbsence implements EntityInterface
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID",nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="id",nullable=false)
      */
     private $person;
 
@@ -99,7 +99,7 @@ class StaffAbsence implements EntityInterface
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDApproval", referencedColumnName="gibbonPersonID", nullable=true)
+     * @ORM\JoinColumn(name="gibbonPersonIDApproval", referencedColumnName="id", nullable=true)
      */
     private $approvedBy;
 
@@ -118,7 +118,7 @@ class StaffAbsence implements EntityInterface
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="gibbonPersonID", nullable=true)
+     * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="id", nullable=true)
      */
     private $createdBy;
 

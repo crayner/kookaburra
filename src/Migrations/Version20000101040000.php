@@ -16,7 +16,7 @@ use Symfony\Component\Finder\Finder;
  * Class Version20000101020000
  * @package DoctrineMigrations
  */
-final class Version20000101030000 extends SqlLoad implements ContainerAwareInterface
+final class Version20000101040000 extends SqlLoad implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -37,25 +37,31 @@ final class Version20000101030000 extends SqlLoad implements ContainerAwareInter
         $finder = new Finder();
 
         $bundles = $finder->directories()->in(__DIR__ . '/../../vendor/kookaburra')->depth(0);
-
+        $this->addSql('SET FOREIGN_KEY_CHECKS = 0');
         if ($finder->hasResults()) {
             foreach($bundles as $bundle) {
                 if($bundle->getBasename() !== 'system-admin')
-                    if (realpath($bundle->getPathname().'/src/Resources/migration/foreign-constraint.sql') !== false)
-                        $this->getSql($bundle->getPathname() . '/src/Resources/migration/foreign-constraint.sql');
+                    if (realpath($bundle->getPathname().'/src/Resources/migration/core.sql') !== false)
+                        $this->getSql($bundle->getPathname() . '/src/Resources/migration/core.sql');
             }
         }
+        $this->addSql('SET FOREIGN_KEY_CHECKS = 1');
 
         $em = $this->container->get('doctrine.orm.default_entity_manager');
         foreach($em->getRepository(Module::class)->findAll() as $module)
         {
             $mu = new ModuleUpgrade();
-            $mu->setModule($module)->setVersion('Foreign Constraint');
+            $mu->setModule($module)->setVersion('Installation');
             $em->persist($mu);
         }
         $em->flush();
     }
 
+    /**
+     * down
+     * @param Schema $schema
+     * @throws \Exception
+     */
     public function down(Schema $schema) : void
     {
         $finder = new Finder();

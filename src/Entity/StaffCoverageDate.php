@@ -84,7 +84,7 @@ class StaffCoverageDate implements EntityInterface
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDUnavailable", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDUnavailable", referencedColumnName="id", nullable=false)
      */
     private $personUnavailable;
 

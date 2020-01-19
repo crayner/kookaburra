@@ -35,14 +35,14 @@ class StudentNote
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="id", nullable=false)
      */
     private $person;
 
     /**
      * @var StudentNoteCategory|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\StudentNoteCategory")
-     * @ORM\JoinColumn(name="gibbonStudentNoteCategoryID",referencedColumnName="gibbonStudentNoteCategoryID")
+     * @ORM\JoinColumn(name="gibbonStudentNoteCategoryID",referencedColumnName="id")
      */
     private $studentNoteCategory;
 
@@ -61,7 +61,7 @@ class StudentNote
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDCreator", referencedColumnName="id", nullable=false)
      */
     private $creator;
 

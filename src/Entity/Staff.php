@@ -40,7 +40,7 @@ class Staff implements EntityInterface
     /**
      * @var Person|null
      * @ORM\OneToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person", inversedBy="staff")
-     * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonID", referencedColumnName="id", nullable=false)
      */
     private $person;
 

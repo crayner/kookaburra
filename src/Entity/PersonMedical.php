@@ -41,7 +41,7 @@ class PersonMedical
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="gibbonPersonID",nullable=false,unique=true)
+     * @ORM\JoinColumn(name="gibbonPersonID",referencedColumnName="id",nullable=false,unique=true)
      */
     private $person;
 

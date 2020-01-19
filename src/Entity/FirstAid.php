@@ -36,7 +36,7 @@ class FirstAid
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDPatient", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDPatient", referencedColumnName="id", nullable=false)
      */
     private $patient;
 
@@ -50,7 +50,7 @@ class FirstAid
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="gibbonPersonIDFirstAider", referencedColumnName="gibbonPersonID", nullable=false)
+     * @ORM\JoinColumn(name="gibbonPersonIDFirstAider", referencedColumnName="id", nullable=false)
      */
     private $firstAider;
 

@@ -508,7 +508,7 @@ class ApplicationForm
     /**
      * @var Person|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Person")
-     * @ORM\JoinColumn(name="parent1gibbonPersonID",referencedColumnName="gibbonPersonID", nullable=true)
+     * @ORM\JoinColumn(name="parent1gibbonPersonID",referencedColumnName="id", nullable=true)
      */
     private $parent1;
 
@@ -828,7 +828,7 @@ class ApplicationForm
     /**
      * @var Family|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\UserAdmin\Entity\Family")
-     * @ORM\JoinColumn(name="gibbonFamilyID", referencedColumnName="gibbonFamilyID", nullable=true)
+     * @ORM\JoinColumn(name="gibbonFamilyID", referencedColumnName="id", nullable=true)
      */
     private $family;
 
