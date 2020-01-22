@@ -15,6 +15,7 @@
 
 namespace App\Manager;
 
+use App\Util\TranslationsHelper;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\SystemAdmin\Entity\Role;
 use App\Entity\Setting;
@@ -23,6 +24,7 @@ use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Util\GlobalHelper;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -55,14 +57,21 @@ class InstallationManager
     private $urlHelper;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * InstallationManager constructor.
      * @param Environment $twig
      * @param UrlHelper $urlHelper
+     * @param LoggerInterface $logger
      */
-    public function __construct(Environment $twig, UrlHelper $urlHelper)
+    public function __construct(Environment $twig, UrlHelper $urlHelper, LoggerInterface $logger)
     {
         $this->twig = $twig;
         $this->urlHelper = $urlHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -92,6 +101,7 @@ class InstallationManager
                 $config['parameters']['absoluteURL'] = str_replace('/install/installation/check/', '', $this->urlHelper->getAbsoluteUrl('/install/installation/check/'));
                 $config['parameters']['guid'] = str_replace(['{','-','}'], '', com_create_guid());
                 $this->writeKookaburraYaml($config);
+                $this->getLogger()->notice(TranslationsHelper::translate('The config file has been created.'));
             }
         }
 
@@ -141,18 +151,23 @@ class InstallationManager
         if (file_exists(__DIR__.'/../../config/packages/kookaburra.yaml') && !is_writable(__DIR__.'/../../config/packages/kookaburra.yaml')) {
                 $message['class'] = 'error';
                 $message['text'] = 'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.';
+            $this->getLogger()->error(TranslationsHelper::translate($message['text'] ));
         } else { //No config, so continue installer
             if (!is_writable(__DIR__.'/../../config/packages/')) { // Ensure that home directory is writable
                 $message['class'] = 'error';
                 $message['text'] = 'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.';
+                $this->getLogger()->error(TranslationsHelper::translate($message['text'] ));
             }
         }
 
         if (!$ready){
             $message['class'] = 'error';
             $message['text'] = 'One or more of the system requirements listed above is not configured correctly.';
+            $this->getLogger()->error(TranslationsHelper::translate($message['text'] ));
         }
 
+        if ($message['class'] === 'success')
+            $this->getLogger()->notice(TranslationsHelper::translate($message['text'] ));
 
         return new Response($this->twig->render('installation/check.html.twig',
             [
@@ -400,4 +415,11 @@ class InstallationManager
 
     }
 
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
 }

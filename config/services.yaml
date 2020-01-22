@@ -150,3 +150,7 @@ services:
 
     App\Router\KookaburraLoader:
         tags: [ routing.loader ]
+
+    App\Manager\InstallationManager:
+        arguments:
+            $logger: '@monolog.logger.installation'
