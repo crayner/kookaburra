@@ -1,0 +1,76 @@
+version: 0.0.00
+name: Rubrics
+module:
+    name: Rubrics
+    description: 'Allows users to create rubrics for assessment'
+    entryURL: rubrics.php
+    type: Core
+    active: 'Y'
+    category: Assess
+    version: v18.0.01
+    author: 'Ross Parker'
+    url: 'http://rossparker.org'
+    actions:
+        'Manage Rubrics_viewAllEditLearningArea':
+            name: 'Manage Rubrics_viewAllEditLearningArea'
+            precedence: 0
+            category: Rubrics
+            description: 'View all rubrics in the school, edit any from Learning Areas where you are Coordinator or Teacher (Curriculum)'
+            URLList: 'rubrics.php, rubrics_add.php, rubrics_edit.php, rubrics_delete.php, rubrics_edit_editRowsColumns.php, rubrics_duplicate.php'
+            entryURL: rubrics.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Teacher
+        'Manage Rubrics_viewEditAll':
+            name: 'Manage Rubrics_viewEditAll'
+            precedence: 1
+            category: Rubrics
+            description: 'Manage all rubrics in the school'
+            URLList: 'rubrics.php, rubrics_add.php, rubrics_edit.php, rubrics_delete.php, rubrics_edit_editRowsColumns.php, rubrics_duplicate.php'
+            entryURL: rubrics.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'View Rubrics':
+            name: 'View Rubrics'
+            precedence: 0
+            category: Rubrics
+            description: 'View all rubrics in the school, except students who can only view those for own year group.'
+            URLList: 'rubrics_view.php, rubrics_view_full.php'
+            entryURL: rubrics_view.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'Y'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Parent
+                - Student
+                - Teacher

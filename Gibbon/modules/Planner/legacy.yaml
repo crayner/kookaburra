@@ -1,0 +1,359 @@
+version: 0.0.00
+name: Planner
+module:
+    name: Planner
+    description: 'Supports lesson planning and information sharing for staff, student and parents'
+    entryURL: planner.php
+    type: Core
+    active: 'Y'
+    category: Learn
+    version: v18.0.01
+    author: 'Ross Parker'
+    url: 'http://rossparker.org'
+    actions:
+        'Lesson Planner_viewMyClasses':
+            name: 'Lesson Planner_viewMyClasses'
+            precedence: 1
+            category: Planning
+            description: 'View all planner information for classes user is in'
+            URLList: 'planner.php, planner_view_full.php, planner_deadlines.php, planner_view_full_post.php, planner_unitOverview.php'
+            entryURL: planner.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'Y'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Student
+        'Lesson Planner_viewAllEditMyClasses':
+            name: 'Lesson Planner_viewAllEditMyClasses'
+            precedence: 2
+            category: Planning
+            description: 'View all planner information and edit all planner information for classes user is in'
+            URLList: 'planner.php, planner_view_full.php, planner_add.php, planner_edit.php, planner_delete.php, planner_deadlines.php, planner_duplicate.php, planner_view_full_post.php, planner_view_full_submit_edit.php, planner_bump.php, planner_unitOverview.php'
+            entryURL: planner.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Teacher
+        'Lesson Planner_viewEditAllClasses':
+            name: 'Lesson Planner_viewEditAllClasses'
+            precedence: 3
+            category: Planning
+            description: 'View and edit all planner information for all classes'
+            URLList: 'planner.php, planner_view_full.php, planner_add.php, planner_edit.php, planner_delete.php, planner_deadlines.php, planner_duplicate.php, planner_view_full_post.php, planner_view_full_submit_edit.php, planner_bump.php, planner_unitOverview.php'
+            entryURL: planner.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Lesson Planner_viewMyChildrensClasses':
+            name: 'Lesson Planner_viewMyChildrensClasses'
+            precedence: 0
+            category: Planning
+            description: 'Allows parents to view their children''s classes'
+            URLList: 'planner.php, planner_view_full.php, planner_deadlines.php, planner_view_full_post.php, planner_unitOverview.php'
+            entryURL: planner.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'Y'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'N'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Parent
+        'Work Summary by Roll Group':
+            name: 'Work Summary by Roll Group'
+            precedence: 0
+            category: Reports
+            description: 'Print work summary statistical data by roll group'
+            URLList: report_workSummary_byRollGroup.php
+            entryURL: report_workSummary_byRollGroup.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - Teacher
+        'Manage Resources_all':
+            name: 'Manage Resources_all'
+            precedence: 1
+            category: Resources
+            description: 'Manage all resources'
+            URLList: 'resources_manage.php, resources_manage_add.php, resources_manage_edit.php, resources_manage_delete.php'
+            entryURL: resources_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Resources_my':
+            name: 'Manage Resources_my'
+            precedence: 0
+            category: Resources
+            description: 'Manage resources created by the user'
+            URLList: 'resources_manage.php, resources_manage_add.php, resources_manage_edit.php, resources_manage_delete.php'
+            entryURL: resources_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - 'Support Staff'
+                - Teacher
+        'View Resources':
+            name: 'View Resources'
+            precedence: 0
+            category: Resources
+            description: 'View resources'
+            URLList: 'resources_view.php,resources_view_details.php,resources_view_full.php'
+            entryURL: resources_view.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'Unit Planner_all':
+            name: 'Unit Planner_all'
+            precedence: 1
+            category: Planning
+            description: 'Manage all units within the school'
+            URLList: 'units.php, units_add.php, units_delete.php, units_edit.php, units_duplicate.php, units_edit_deploy.php, units_edit_working.php, units_edit_working_copyback.php, units_edit_working_add.php, units_edit_copyBack.php, units_edit_copyForward.php, units_dump.php,units_edit_smartBlockify.php'
+            entryURL: units.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Unit Planner_learningAreas':
+            name: 'Unit Planner_learningAreas'
+            precedence: 0
+            category: Planning
+            description: 'Manage all units within the learning areas I have appropriate permission'
+            URLList: 'units.php, units_add.php, units_delete.php, units_edit.php, units_duplicate.php, units_edit_deploy.php, units_edit_working.php, units_edit_working_copyback.php, units_edit_working_add.php, units_edit_copyBack.php, units_edit_copyForward.php, units_dump.php,units_edit_smartBlockify.php'
+            entryURL: units.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Teacher
+        'Manage Outcomes_viewAllEditLearningArea':
+            name: 'Manage Outcomes_viewAllEditLearningArea'
+            precedence: 1
+            category: Outcomes
+            description: 'View all outcomes in the school, edit any from Learning Areas where you are Coordinator or Teacher (Curriculum)'
+            URLList: 'outcomes.php, outcomes_add.php, outcomes_edit.php, outcomes_delete.php'
+            entryURL: outcomes.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Teacher
+        'Manage Outcomes_viewEditAll':
+            name: 'Manage Outcomes_viewEditAll'
+            precedence: 2
+            category: Outcomes
+            description: 'Manage all outcomes in the school'
+            URLList: 'outcomes.php, outcomes_add.php, outcomes_edit.php, outcomes_delete.php'
+            entryURL: outcomes.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Outcomes_viewAll':
+            name: 'Manage Outcomes_viewAll'
+            precedence: 0
+            category: Outcomes
+            description: 'View all outcomes in the school'
+            URLList: outcomes.php
+            entryURL: outcomes.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+        'Parent Weekly Email Summary':
+            name: 'Parent Weekly Email Summary'
+            precedence: 0
+            category: Reports
+            description: 'This report shows responses to the weekly summary email, organised by calendar week and role group.'
+            URLList: report_parentWeeklyEmailSummaryConfirmation.php
+            entryURL: report_parentWeeklyEmailSummaryConfirmation.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'Outcomes By Course':
+            name: 'Outcomes By Course'
+            precedence: 0
+            category: Outcomes
+            description: 'This view gives an overview of which whole school and learning area outcomes are covered by classes in a given course, allowing for curriculum mapping by outcome and course.'
+            URLList: curriculumMapping_outcomesByCourse.php
+            entryURL: curriculumMapping_outcomesByCourse.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'Scope & Sequence':
+            name: 'Scope & Sequence'
+            precedence: 0
+            category: 'Curriculum Overview'
+            description: 'Allows users to generate scope and sequence documentation for individual courses, based on the Unit Planner.'
+            URLList: scopeAndSequence.php
+            entryURL: scopeAndSequence.php
+            entrySidebar: 'N'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'Concept Explorer':
+            name: 'Concept Explorer'
+            precedence: 0
+            category: 'Curriculum Overview'
+            description: 'Allows users to browse and explore concepts and keywords, based on the Unit Planner.'
+            URLList: conceptExplorer.php
+            entryURL: conceptExplorer.php
+            entrySidebar: 'N'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher

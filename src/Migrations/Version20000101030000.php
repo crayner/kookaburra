@@ -40,9 +40,8 @@ final class Version20000101030000 extends SqlLoad implements ContainerAwareInter
 
         if ($finder->hasResults()) {
             foreach($bundles as $bundle) {
-                if($bundle->getBasename() !== 'system-admin')
-                    if (realpath($bundle->getPathname().'/src/Resources/migration/foreign-constraint.sql') !== false)
-                        $this->getSql($bundle->getPathname() . '/src/Resources/migration/foreign-constraint.sql');
+                if (realpath($bundle->getPathname().'/src/Resources/migration/foreign-constraint.sql') !== false)
+                    $this->getSql($bundle->getPathname() . '/src/Resources/migration/foreign-constraint.sql');
             }
         }
 

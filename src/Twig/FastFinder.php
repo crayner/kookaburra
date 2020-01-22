@@ -168,7 +168,7 @@ class FastFinder implements ContentInterface
      * @return mixed
      * @throws \Exception
      */
-    public function getFastFinderActions(int $roleID)
+    public function getFastFinderActions(?int $roleID): array
     {
         $actions = [];
         if (CacheHelper::isStale('fastFinderActions'))

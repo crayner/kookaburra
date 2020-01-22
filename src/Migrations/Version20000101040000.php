@@ -40,9 +40,8 @@ final class Version20000101040000 extends SqlLoad implements ContainerAwareInter
         $this->addSql('SET FOREIGN_KEY_CHECKS = 0');
         if ($finder->hasResults()) {
             foreach($bundles as $bundle) {
-                if($bundle->getBasename() !== 'system-admin')
-                    if (realpath($bundle->getPathname().'/src/Resources/migration/core.sql') !== false)
-                        $this->getSql($bundle->getPathname() . '/src/Resources/migration/core.sql');
+                if (realpath($bundle->getPathname().'/src/Resources/migration/core.sql') !== false)
+                    $this->getSql($bundle->getPathname() . '/src/Resources/migration/core.sql');
             }
         }
         $this->addSql('SET FOREIGN_KEY_CHECKS = 1');

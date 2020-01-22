@@ -410,13 +410,12 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
      * @since    v13
      * @param    string  $roleID
      */
-    public function cacheFastFinderActions($roleID) {
-
+    public function cacheFastFinderActions($roleID)
+    {
         // Get the accessible actions for the current user
         $result = ProviderFactory::create(Module::class)->selectModulesByRole($roleID, false);
-
+        $actions = [];
         if (count($result) > 0) {
-            $actions = [];
             // Translate the action names
             foreach($result as $row)
             {

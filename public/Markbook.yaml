@@ -1,0 +1,215 @@
+version: 0.0.00
+name: Markbook
+module:
+    name: Markbook
+    description: 'A system for keeping track of marks'
+    entryURL: markbook_view.php
+    type: Core
+    active: 'Y'
+    category: Assess
+    version: v18.0.01
+    author: 'Ross Parker'
+    url: 'http://rossparker.org'
+    actions:
+        'View Markbook_allClassesAllData':
+            name: 'View Markbook_allClassesAllData'
+            precedence: 4
+            category: Markbook
+            description: 'View all markbook information for all users'
+            URLList: 'markbook_view.php, markbook_view_full.php'
+            entryURL: markbook_view.php
+            entrySidebar: 'N'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'Edit Markbook_singleClass':
+            name: 'Edit Markbook_singleClass'
+            precedence: 0
+            category: Markbook
+            description: 'Edit columns and grades for a single class at a time.'
+            URLList: 'markbook_edit.php, markbook_edit_add.php, markbook_edit_edit.php, markbook_edit_delete.php,markbook_edit_data.php,markbook_edit_targets.php,markbook_edit_copy.php'
+            entryURL: markbook_edit.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - Teacher
+        'View Markbook_myMarks':
+            name: 'View Markbook_myMarks'
+            precedence: 2
+            category: Markbook
+            description: 'View your own marks'
+            URLList: markbook_view.php
+            entryURL: markbook_view.php
+            entrySidebar: 'N'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'Y'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Student
+        'View Markbook_viewMyChildrensClasses':
+            name: 'View Markbook_viewMyChildrensClasses'
+            precedence: 1
+            category: ''
+            description: 'Allows parents to view their children''s classes'
+            URLList: markbook_view.php
+            entryURL: markbook_view.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'Y'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'N'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Parent
+        'Edit Markbook_multipleClassesInDepartment':
+            name: 'Edit Markbook_multipleClassesInDepartment'
+            precedence: 1
+            category: Markbook
+            description: 'Edit columns and grades for a single class belonging to the user, or multiple classes within departments.'
+            URLList: 'markbook_edit.php, markbook_edit_add.php, markbook_edit_edit.php, markbook_edit_delete.php,markbook_edit_data.php,markbook_edit_targets.php,markbook_edit_copy.php,markbook_edit_addMulti.php'
+            entryURL: markbook_edit.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Teacher
+        'Edit Markbook_multipleClassesAcrossSchool':
+            name: 'Edit Markbook_multipleClassesAcrossSchool'
+            precedence: 2
+            category: Markbook
+            description: 'Edit columns and grades for a single class belonging to the user, or multiple classes across the whole school.'
+            URLList: 'markbook_edit.php, markbook_edit_add.php, markbook_edit_edit.php, markbook_edit_delete.php,markbook_edit_data.php,markbook_edit_targets.php,markbook_edit_copy.php,markbook_edit_addMulti.php'
+            entryURL: markbook_edit.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Edit Markbook_everything':
+            name: 'Edit Markbook_everything'
+            precedence: 4
+            category: Markbook
+            description: 'Allows editing of any column in any class.'
+            URLList: 'markbook_edit.php, markbook_edit_add.php, markbook_edit_edit.php, markbook_edit_delete.php,markbook_edit_data.php,markbook_edit_targets.php,markbook_edit_copy.php'
+            entryURL: markbook_edit.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Weightings_everything':
+            name: 'Manage Weightings_everything'
+            precedence: 1
+            category: Markbook
+            description: 'Manage markbook weightings for any class.'
+            URLList: 'weighting_manage.php,weighting_manage_add.php,weighting_manage_edit.php,weighting_manage_delete.php'
+            entryURL: weighting_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'N'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Weightings_singleClass':
+            name: 'Manage Weightings_singleClass'
+            precedence: 0
+            category: Markbook
+            description: 'Manage markbook weightings for a single class at a time.'
+            URLList: 'weighting_manage.php,weighting_manage_add.php,weighting_manage_edit.php,weighting_manage_delete.php'
+            entryURL: weighting_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'N'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'View Markbook_myClasses':
+            name: 'View Markbook_myClasses'
+            precedence: 3
+            category: Profiles
+            description: 'Allows teachers to view their own markbook information'
+            URLList: 'markbook_view.php, markbook_view_full.php'
+            entryURL: markbook_view.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'

@@ -66,6 +66,8 @@ class AddressModuleActionListener implements EventSubscriberInterface
         $request = $event->getRequest();
         if (strpos($request->get('_route'),'install__') === 0)
             return;
+        if ($request->get('_route') === 'module_action_build')
+            return;
         $this->format->setupFromSession($request->getSession());
         if ($request->query->has('q'))
             return;

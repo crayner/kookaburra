@@ -160,7 +160,10 @@ class InstallController extends AbstractController
     /**
      * installationComplete
      * @param InstallationManager $manager
+     * @param LanguageManager $languageManager
+     * @param KernelInterface $kernel
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      * @Route("/installation/complete/", name="installation_complete")
      */
     public function installationComplete(InstallationManager $manager, LanguageManager $languageManager, KernelInterface $kernel)
@@ -169,6 +172,7 @@ class InstallController extends AbstractController
         $languageManager->i18nFileInstall($i18n);
         $manager->moduleInstall($kernel);
         $manager->setInstallationStatus('complete');
+
         return $this->render('installation/complete.html.twig');
     }
 

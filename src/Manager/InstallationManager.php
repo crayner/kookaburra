@@ -57,6 +57,7 @@ class InstallationManager
     /**
      * InstallationManager constructor.
      * @param Environment $twig
+     * @param UrlHelper $urlHelper
      */
     public function __construct(Environment $twig, UrlHelper $urlHelper)
     {
@@ -66,7 +67,8 @@ class InstallationManager
 
     /**
      * check
-     * @param array $systmRequirements
+     * @param array $systemRequirements
+     * @param FormInterface $form
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
@@ -288,7 +290,7 @@ class InstallationManager
      */
     public function setAdministrator(FormInterface $form)
     {
-        $person = ProviderFactory::getRepository(Person::class)->findOneByUsername($form->get('username')->getData()) ?: new Person();
+        $person = ProviderFactory::getRepository(Person::class)->loadUserByUsernameOrEmail($form->get('username')->getData()) ?: new Person();
         $person->setTitle($form->get('title')->getData());
         $person->setSurname($form->get('surname')->getData());
         $person->setFirstName($form->get('firstName')->getData());
@@ -301,7 +303,7 @@ class InstallationManager
         $person->setPassword($password);
         $person->setStatus('Full');
         $person->setCanLogin('Y');
-        $person->setPrimaryRole(ProviderFactory::getRepository(Role::class)->find(1));
+        $person->setPrimaryRole(ProviderFactory::getRepository(Role::class)->findOneByName('Administrator'));
         $person->setEmail($form->get('email')->getData());
         $person->setViewCalendarSchool('Y');
         $person->setViewCalendarSpaceBooking('Y');
@@ -334,7 +336,8 @@ class InstallationManager
     {
         $settingProvider = ProviderFactory::create(Setting::class);
 
-        $settingProvider->setSettingByScope('System', 'absoluteURL', $form->get('baseUrl')->getData());
+        $baseUrl = str_replace('http:','https:', $form->get('baseUrl')->getData());
+        $settingProvider->setSettingByScope('System', 'absoluteURL', $baseUrl);
         $settingProvider->setSettingByScope('System', 'absolutePath', $form->get('basePath')->getData());
         $settingProvider->setSettingByScope('System', 'systemName', $form->get('systemName')->getData());
         $settingProvider->setSettingByScope('System', 'installType', $form->get('installType')->getData());
@@ -344,7 +347,7 @@ class InstallationManager
         $settingProvider->setSettingByScope('System', 'currency', $form->get('currency')->getData());
         $settingProvider->setSettingByScope('System', 'timezone', $form->get('timezone')->getData());
         $config = $this->readKookaburraYaml();
-        $config['parameters']['absoluteURL'] = $form->get('baseUrl')->getData();
+        $config['parameters']['absoluteURL'] = $baseUrl;
         $config['parameters']['timezone'] = $form->get('timezone')->getData();
         $config['parameters']['system_name'] = $form->get('systemName')->getData();
         $config['parameters']['organisation_name'] = $form->get('organisationName')->getData();
@@ -379,7 +382,7 @@ class InstallationManager
         $application->setAutoExit(false);
 
         $input = new ArrayInput([
-            'command' => 'module:install',
+            'command' => 'kookaburra:module:install',
             // (optional) define the value of command arguments
             // 'fooArgument' => 'barValue',
             // (optional) pass options to the command

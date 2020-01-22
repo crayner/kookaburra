@@ -15,10 +15,8 @@
 
 namespace App\Controller;
 
-use App\Kernel;
 use App\Provider\ProviderFactory;
 use Kookaburra\SystemAdmin\Entity\Module;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,11 +31,11 @@ class ModuleBuilderController extends AbstractController
     /**
      * Module Builder
      * @Route("/module/action/build/", name="module_action_build")
-     * @IsGranted("ROLE_SYSTEM_ADMIN")
+     * @param ParameterBagInterface $bag
      */
     public function build(ParameterBagInterface $bag)
     {
-        $module = ProviderFactory::create(Module::class)->find(1); //School Admin
+        $module = ProviderFactory::create(Module::class)->findOneBy(['name' => 'Library']); //School Admin
         dump('Change the search detail here to map a module/actions/permissions. Currently ' . $module->getName());
         $result = [];
         $x['name'] = $module->getName();

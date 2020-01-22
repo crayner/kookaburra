@@ -1,0 +1,792 @@
+version: 0.0.00
+name: Messenger
+module:
+    name: Messenger
+    description: 'Unified messenger for email, message wall and more.'
+    entryURL: messenger_manage.php
+    type: Core
+    active: 'Y'
+    category: Other
+    version: v18.0.01
+    author: 'Ross Parker'
+    url: 'http://rossparker.org'
+    actions:
+        'New Message_classes_my':
+            name: 'New Message_classes_my'
+            precedence: 1
+            category: 'Manage Messages'
+            description: 'Bulk email to any of my classes'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_classes_any':
+            name: 'New Message_classes_any'
+            precedence: 9
+            category: 'Manage Messages'
+            description: 'Bulk email to any class'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_classes_parents':
+            name: 'New Message_classes_parents'
+            precedence: 5
+            category: 'Manage Messages'
+            description: 'Include parents in messages posted to classes'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_courses_my':
+            name: 'New Message_courses_my'
+            precedence: 3
+            category: 'Manage Messages'
+            description: 'Bulk email to any of my courses'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_courses_any':
+            name: 'New Message_courses_any'
+            precedence: 11
+            category: 'Manage Messages'
+            description: 'Bulk email to any courses'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_courses_parents':
+            name: 'New Message_courses_parents'
+            precedence: 7
+            category: 'Manage Messages'
+            description: 'Include parents in messages posted to courses'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_rollGroups_my':
+            name: 'New Message_rollGroups_my'
+            precedence: 2
+            category: 'Manage Messages'
+            description: 'Bulk email to any of my roll groups'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_rollGroups_any':
+            name: 'New Message_rollGroups_any'
+            precedence: 10
+            category: 'Manage Messages'
+            description: 'Bulk email to any roll group'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_rollGroups_parents':
+            name: 'New Message_rollGroups_parents'
+            precedence: 6
+            category: 'Manage Messages'
+            description: 'Include parents in messages posted to parents'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_activities_my':
+            name: 'New Message_activities_my'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Bulk email to any of my activities'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_activities_any':
+            name: 'New Message_activities_any'
+            precedence: 8
+            category: 'Manage Messages'
+            description: 'Bulk email to any activity'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_activities_parents':
+            name: 'New Message_activities_parents'
+            precedence: 4
+            category: 'Manage Messages'
+            description: 'Include parents in messages posted to activities'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_yearGroups_any':
+            name: 'New Message_yearGroups_any'
+            precedence: 8
+            category: 'Manage Messages'
+            description: 'Bulk email to any year group'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_yearGroups_parents':
+            name: 'New Message_yearGroups_parents'
+            precedence: 4
+            category: 'Manage Messages'
+            description: 'Include parents in messages posted to year group'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_role':
+            name: 'New Message_role'
+            precedence: 8
+            category: 'Manage Messages'
+            description: 'Bulk email to a particular role'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Messages_my':
+            name: 'Manage Messages_my'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Edit all messages created by the user'
+            URLList: 'messenger_manage.php,messenger_manage_delete.php,messenger_manage_edit.php,messenger_manage_report.php'
+            entryURL: messenger_manage.php
+            entrySidebar: 'N'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Teacher
+        'Manage Messages_all':
+            name: 'Manage Messages_all'
+            precedence: 1
+            category: 'Manage Messages'
+            description: 'Edit all messages'
+            URLList: 'messenger_manage.php,messenger_manage_delete.php,messenger_manage_edit.php,messenger_manage_report.php'
+            entryURL: messenger_manage.php
+            entrySidebar: 'N'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_fromSchool':
+            name: 'New Message_fromSchool'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Bulk email from the school''s email address'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_applicants':
+            name: 'New Message_applicants'
+            precedence: 12
+            category: 'Manage Messages'
+            description: 'Bulk email to applicants by intended school year of entry'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_individuals':
+            name: 'New Message_individuals'
+            precedence: 13
+            category: 'Manage Messages'
+            description: 'Bulk email to indvidual users'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_houses_my':
+            name: 'New Message_houses_my'
+            precedence: 14
+            category: 'Manage Messages'
+            description: 'Bulk email to members of my house'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+        'New Message_houses_all':
+            name: 'New Message_houses_all'
+            precedence: 15
+            category: 'Manage Messages'
+            description: 'Bulk email to members of all houses'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_byEmail':
+            name: 'New Message_byEmail'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Send messages by email.'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_byMessageWall':
+            name: 'New Message_byMessageWall'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Send messages by message wall.'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'New Message_bySMS':
+            name: 'New Message_bySMS'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Send messages by SMS.'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'View Message Wall':
+            name: 'View Message Wall'
+            precedence: 0
+            category: 'View Messages'
+            description: 'Allows users to view all messages posted on their message wall.'
+            URLList: 'messageWall_view.php,messageWall_view_full.php'
+            entryURL: messageWall_view.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Parent
+                - Student
+                - Teacher
+                - 'Support Staff'
+                - Librarian
+        'New Quick Wall Message':
+            name: 'New Quick Wall Message'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Allows for the quick posting of a Message Wall message to all users.'
+            URLList: messenger_postQuickWall.php
+            entryURL: messenger_postQuickWall.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+                - 'Support Staff'
+                - Librarian
+        'New Message_transport_any':
+            name: 'New Message_transport_any'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Send messages users by transport field.'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_transport_parents':
+            name: 'New Message_transport_parents'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Send messages parents of users by transport field.'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Canned Response':
+            name: 'Canned Response'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Allows for the creation of message templates.'
+            URLList: 'cannedResponse_manage.php, cannedResponse_manage_add.php, cannedResponse_manage_edit.php, cannedResponse_manage_delete.php'
+            entryURL: cannedResponse_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_attendance':
+            name: 'New Message_attendance'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Bulk email by student attendance.'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_cannedResponse':
+            name: 'New Message_cannedResponse'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Allows user to use pre-defined Canned Responses.'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'New Message_readReceipts':
+            name: 'New Message_readReceipts'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Allows users to include read receipts in emails.'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Groups_all':
+            name: 'Manage Groups_all'
+            precedence: 1
+            category: Targets
+            description: 'Allows management of custom groups for message targetting'
+            URLList: 'groups_manage.php,groups_manage_add.php,groups_manage_edit.php,groups_manage_delete.php'
+            entryURL: groups_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+        'Manage Groups_my':
+            name: 'Manage Groups_my'
+            precedence: 0
+            category: Targets
+            description: 'Allows management of custom groups for message targetting'
+            URLList: 'groups_manage.php,groups_manage_add.php,groups_manage_edit.php,groups_manage_delete.php'
+            entryURL: groups_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Teacher
+        'New Message_groups_any':
+            name: 'New Message_groups_any'
+            precedence: 1
+            category: 'Manage Messages'
+            description: 'Bulk email to any group'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+        'New Message_groups_my':
+            name: 'New Message_groups_my'
+            precedence: 0
+            category: 'Manage Messages'
+            description: 'Bulk email to any group a user owns or is a member of'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Teacher
+        'New Message_groups_parents':
+            name: 'New Message_groups_parents'
+            precedence: 1
+            category: 'Manage Messages'
+            description: 'Include parents in messages posted to groups'
+            URLList: messenger_post.php
+            entryURL: messenger_post.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator

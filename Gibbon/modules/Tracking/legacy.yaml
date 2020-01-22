@@ -1,0 +1,53 @@
+version: 0.0.00
+name: Tracking
+module:
+    name: Tracking
+    description: 'Provides visual graphing of student progress, as recorded in the Markbook and Internal Assessment.'
+    entryURL: graphing.php
+    type: Core
+    active: 'Y'
+    category: Assess
+    version: v18.0.01
+    author: 'Ross Parker'
+    url: 'https://rossparker.org'
+    actions:
+        Graphing_all:
+            name: Graphing_all
+            precedence: 2
+            category: Visualise
+            description: 'Allows a user to see progress tracking graphs for all students in school.'
+            URLList: graphing.php
+            entryURL: graphing.php
+            entrySidebar: 'N'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Data Points':
+            name: 'Data Points'
+            precedence: 0
+            category: Analyse
+            description: 'Allows a user to export certain key assessment data points to a spreadsheet.'
+            URLList: dataPoints.php
+            entryURL: dataPoints.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator

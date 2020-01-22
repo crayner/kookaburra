@@ -1,0 +1,297 @@
+version: 0.0.00
+name: Timetable
+module:
+    name: Timetable
+    description: 'Allows users to view timetables'
+    entryURL: tt.php
+    type: Core
+    active: 'Y'
+    category: Learn
+    version: v18.0.01
+    author: 'Ross Parker'
+    url: 'http://rossparker.org'
+    actions:
+        'View Timetable by Person':
+            name: 'View Timetable by Person'
+            precedence: 2
+            category: 'View Timetables'
+            description: 'Allows users to view timetables'
+            URLList: 'tt.php, tt_view.php'
+            entryURL: tt.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'Y'
+            defaultPermissionParent: 'Y'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - Parent
+                - Student
+                - 'Support Staff'
+                - Teacher
+                - Librarian
+        'View Timetable by Facility':
+            name: 'View Timetable by Facility'
+            precedence: 0
+            category: 'View Timetables'
+            description: 'View space usage according to the timetable'
+            URLList: 'tt_space.php,tt_space_view.php'
+            entryURL: tt_space.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'View Available Facilities':
+            name: 'View Available Facilities'
+            precedence: 0
+            category: Reports
+            description: 'View unassigned rooms by timetable.'
+            URLList: report_viewAvailableSpaces.php
+            entryURL: report_viewAvailableSpaces.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+        'View Available Teachers':
+            name: 'View Available Teachers'
+            precedence: 0
+            category: Reports
+            description: 'View unassigned teachers by timetable.'
+            URLList: report_viewAvailableTeachers.php
+            entryURL: report_viewAvailableTeachers.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+        'Manage Facility Changes_allClasses':
+            name: 'Manage Facility Changes_allClasses'
+            precedence: 2
+            category: Facilities
+            description: 'Allows a user to create and manage one-off location changes for all classes within the timetable.'
+            URLList: 'spaceChange_manage.php,spaceChange_manage_add.php,spaceChange_manage_edit.php,spaceChange_manage_delete.php'
+            entryURL: spaceChange_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Facility Changes_myClasses':
+            name: 'Manage Facility Changes_myClasses'
+            precedence: 0
+            category: Facilities
+            description: 'Allows a user to create and manage one-off location changes for their own classes within the timetable.'
+            URLList: 'spaceChange_manage.php,spaceChange_manage_add.php,spaceChange_manage_edit.php,spaceChange_manage_delete.php'
+            entryURL: spaceChange_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Teacher
+        'Manage Facility Bookings_allBookings':
+            name: 'Manage Facility Bookings_allBookings'
+            precedence: 0
+            category: Facilities
+            description: 'Allows a user to book a room for on-off use, and manage bookings made by all other users.'
+            URLList: 'spaceBooking_manage.php,spaceBooking_manage_add.php,spaceBooking_manage_edit.php,spaceBooking_manage_delete.php'
+            entryURL: spaceBooking_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Facility Bookings_myBookings':
+            name: 'Manage Facility Bookings_myBookings'
+            precedence: 0
+            category: Facilities
+            description: 'Allows a user to book a room for on-off use, and manage their own bookings.'
+            URLList: 'spaceBooking_manage.php,spaceBooking_manage_add.php,spaceBooking_manage_edit.php,spaceBooking_manage_delete.php'
+            entryURL: spaceBooking_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Teacher
+        'View Timetable by Person_allYears':
+            name: 'View Timetable by Person_allYears'
+            precedence: 3
+            category: 'View Timetables'
+            description: 'Allows users to view timetables in all school years.'
+            URLList: 'tt.php, tt_view.php'
+            entryURL: tt.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Librarian
+        'View Master Timetable':
+            name: 'View Master Timetable'
+            precedence: 0
+            category: 'View Timetables'
+            description: 'Allows a user to see all days, periods, teachers and rooms in a timetable.'
+            URLList: tt_master.php
+            entryURL: tt_master.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Manage Student Enrolment':
+            name: 'Manage Student Enrolment'
+            precedence: 0
+            category: 'Edit Timetables'
+            description: 'Allows a departmental Coordinator or Assistant Coordinator to manage student enrolment within their department.'
+            URLList: 'studentEnrolment_manage.php, studentEnrolment_manage_edit.php, studentEnrolment_manage_edit_edit.php'
+            entryURL: studentEnrolment_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+        'Manage Facility Changes_myDepartment':
+            name: 'Manage Facility Changes_myDepartment'
+            precedence: 1
+            category: Facilities
+            description: 'Allows a department coordinator to manage changes for all classes in their department.'
+            URLList: 'spaceChange_manage.php,spaceChange_manage_add.php,spaceChange_manage_edit.php,spaceChange_manage_delete.php'
+            entryURL: spaceChange_manage.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+        'View Timetable by Person_my':
+            name: 'View Timetable by Person_my'
+            precedence: 1
+            category: 'View Timetables'
+            description: 'Allows users to view their own timetable'
+            URLList: 'tt.php, tt_view.php'
+            entryURL: tt.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'Y'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Student
+        'View Timetable by Person_myChildren':
+            name: 'View Timetable by Person_myChildren'
+            precedence: 0
+            category: 'View Timetables'
+            description: 'Allows parents to view their children''s timetable'
+            URLList: 'tt.php, tt_view.php'
+            entryURL: tt.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'Y'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'N'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Parent

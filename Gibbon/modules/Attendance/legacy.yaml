@@ -1,0 +1,370 @@
+version: 0.0.00
+name: Attendance
+module:
+    name: Attendance
+    description: 'School attendance taking'
+    entryURL: attendance.php
+    type: Core
+    active: 'Y'
+    category: People
+    version: v18.0.01
+    author: 'Ross Parker'
+    url: 'http://rossparker.org'
+    actions:
+        'Attendance By Person':
+            name: 'Attendance By Person'
+            precedence: 0
+            category: 'Take Attendance'
+            description: 'Take attendance, one person at a time'
+            URLList: attendance_take_byPerson.php
+            entryURL: attendance_take_byPerson.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'Attendance By Roll Group_all':
+            name: 'Attendance By Roll Group_all'
+            precedence: 1
+            category: 'Take Attendance'
+            description: 'Take attendance, one roll group at a time'
+            URLList: attendance_take_byRollGroup.php
+            entryURL: attendance_take_byRollGroup.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+                - Librarian
+        'Set Future Absence':
+            name: 'Set Future Absence'
+            precedence: 0
+            category: 'Future Information'
+            description: 'Set future absences one student at a time'
+            URLList: attendance_future_byPerson.php
+            entryURL: attendance_future_byPerson.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'Students Not Present':
+            name: 'Students Not Present'
+            precedence: 0
+            category: Reports
+            description: 'Print a report of students who are not present on a given day'
+            URLList: 'report_studentsNotPresent_byDate.php,report_studentsNotPresent_byDate_print.php'
+            entryURL: report_studentsNotPresent_byDate.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'Roll Groups Not Registered':
+            name: 'Roll Groups Not Registered'
+            precedence: 0
+            category: Reports
+            description: 'Print a report of roll groups who have not been registered on a given day'
+            URLList: 'report_rollGroupsNotRegistered_byDate.php,report_rollGroupsNotRegistered_byDate_print.php'
+            entryURL: report_rollGroupsNotRegistered_byDate.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'Student History_all':
+            name: 'Student History_all'
+            precedence: 2
+            category: Reports
+            description: 'Print a report of all attendance data in the current school year for a student'
+            URLList: 'report_studentHistory.php,report_studentHistory_print.php'
+            entryURL: report_studentHistory.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'Students Not Onsite':
+            name: 'Students Not Onsite'
+            precedence: 0
+            category: Reports
+            description: 'Print a report of students who are not physically on the school campus on a given day'
+            URLList: 'report_studentsNotOnsite_byDate.php,report_studentsNotOnsite_byDate_print.php'
+            entryURL: report_studentsNotOnsite_byDate.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - 'Support Staff'
+                - Teacher
+        'Student History_myChildren':
+            name: 'Student History_myChildren'
+            precedence: 0
+            category: Reports
+            description: 'Print a report of all attendance data in the current school yearfor my children'
+            URLList: report_studentHistory.php
+            entryURL: report_studentHistory.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'Y'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'N'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'Y'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Parent
+        'Attendance By Class':
+            name: 'Attendance By Class'
+            precedence: 0
+            category: 'Take Attendance'
+            description: 'Take attendance, one class at a time'
+            URLList: attendance_take_byCourseClass.php
+            entryURL: attendance_take_byCourseClass.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+                - Librarian
+        'View Daily Attendance':
+            name: 'View Daily Attendance'
+            precedence: 0
+            category: 'Take Attendance'
+            description: 'View attendance, by roll group and class'
+            URLList: attendance.php
+            entryURL: attendance.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+                - Teacher
+        'Classes Not Registered':
+            name: 'Classes Not Registered'
+            precedence: 0
+            category: Reports
+            description: 'Print a report of classes who have not been registered on a given day'
+            URLList: 'report_courseClassesNotRegistered_byDate.php,report_courseClassesNotRegistered_byDate_print.php'
+            entryURL: report_courseClassesNotRegistered_byDate.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - Teacher
+                - 'Support Staff'
+        'Manage Attendance Logs':
+            name: 'Manage Attendance Logs'
+            precedence: 0
+            category: 'Take Attendance'
+            description: 'Edit student attendance logs.'
+            URLList: 'attendance_take_byPerson_edit.php,attendance_take_byPerson_delete.php'
+            entryURL: attendance_take_byPerson_edit.php
+            entrySidebar: 'Y'
+            menuShow: 'N'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+            permissions:
+                - Administrator
+        'Attendance Summary by Date':
+            name: 'Attendance Summary by Date'
+            precedence: 0
+            category: Reports
+            description: 'Print a report of student attendace in a given date range'
+            URLList: 'report_summary_byDate.php,report_summary_byDate_print.php'
+            entryURL: report_summary_byDate.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'Y'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+                - Teacher
+        'Attendance Trends':
+            name: 'Attendance Trends'
+            precedence: 0
+            category: Reports
+            description: 'Display a graph of student attendance types over time'
+            URLList: report_graph_byType.php
+            entryURL: report_graph_byType.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'Y'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Administrator
+        'Student Self Registration':
+            name: 'Student Self Registration'
+            precedence: 0
+            category: 'Take Attendance'
+            description: 'Allows students to self register as Present, provided they are within a certain range of IP addresses.'
+            URLList: attendance_studentSelfRegister.php
+            entryURL: attendance_studentSelfRegister.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'N'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
+        'Attendance By Roll Group_myGroups':
+            name: 'Attendance By Roll Group_myGroups'
+            precedence: 0
+            category: 'Take Attendance'
+            description: 'Take attendance for a teacher''s own roll groups'
+            URLList: attendance_take_byRollGroup.php
+            entryURL: attendance_take_byRollGroup.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'Y'
+            categoryPermissionStaff: 'Y'
+            categoryPermissionStudent: 'N'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'Y'
+            permissions:
+                - Librarian
+        'Student History_my':
+            name: 'Student History_my'
+            precedence: 1
+            category: Reports
+            description: 'Allows a student to print a report of their attendance data in the current school year.'
+            URLList: report_studentHistory.php
+            entryURL: report_studentHistory.php
+            entrySidebar: 'Y'
+            menuShow: 'Y'
+            defaultPermissionAdmin: 'N'
+            defaultPermissionTeacher: 'N'
+            defaultPermissionStudent: 'N'
+            defaultPermissionParent: 'N'
+            defaultPermissionSupport: 'N'
+            categoryPermissionStaff: 'N'
+            categoryPermissionStudent: 'Y'
+            categoryPermissionParent: 'N'
+            categoryPermissionOther: 'N'
