@@ -6,6 +6,7 @@ monolog:
         - 'mailer'
         - 'importer'
         - 'notification'
+        - 'installation'
     handlers:
         security:
             # log all messages (since debug is the lowest level)
@@ -62,4 +63,10 @@ monolog:
             type:     rotating_file
             path:     '%kernel.logs_dir%/notification.%kernel.environment%.log'
             channels: [notification]
+            max_files: 14
+        installation:
+            level:    debug
+            type:     streem
+            path:     '%kernel.logs_dir%/installation.%kernel.environment%.log'
+            channels: [installation]
             max_files: 14
