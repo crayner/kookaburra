@@ -2,5 +2,12 @@
 <h2>{{ 'Building the Database'|trans }}</h2>
 <p>{{ 'database_build_warning'|trans }}</p>
 {% if proceed %}
-    <p class="right"><button class="btn btn-success" type="button" onclick="window.open('/install/installation/build/','_self')">{{ 'Proceed'|trans }}</button></p>
+    <p class="right"><button id="proceedButton" class="btn btn-success" type="button" onclick="window.open('/install/installation/build/','_self')">{{ 'Proceed'|trans }}</button></p>
+    <script>
+        let el = document.getElementById("proceedButton")
+        el.disabled = true
+        setTimeout(function(){
+            el.disabled = false
+        }, 5000)
+    </script>
 {% endif %}

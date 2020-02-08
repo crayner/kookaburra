@@ -15,7 +15,11 @@
 
 namespace App\Manager;
 
+use App\Entity\CourseClass;
+use App\Entity\CourseClassPerson;
 use App\Util\TranslationsHelper;
+use Doctrine\ORM\EntityManagerInterface;
+use Kookaburra\SystemAdmin\Manager\UpgradeManager;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\SystemAdmin\Entity\Role;
 use App\Entity\Setting;
@@ -28,14 +32,13 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Finder\Finder;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Intl\Currencies;
 use Symfony\Component\Security\Core\Encoder\NativePasswordEncoder;
 use Symfony\Component\Yaml\Yaml;
 use Twig\Environment;
@@ -62,16 +65,35 @@ class InstallationManager
     private $logger;
 
     /**
+     * @var ParameterBagInterface
+     */
+    private $bag;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    /**
+     * @var UpgradeManager
+     */
+    private $manager;
+
+    /**
      * InstallationManager constructor.
      * @param Environment $twig
      * @param UrlHelper $urlHelper
      * @param LoggerInterface $logger
+     * @param ParameterBagInterface $bag
      */
-    public function __construct(Environment $twig, UrlHelper $urlHelper, LoggerInterface $logger)
+    public function __construct(Environment $twig, UrlHelper $urlHelper, LoggerInterface $logger, ParameterBagInterface $bag, EntityManagerInterface $em, UpgradeManager $manager)
     {
         $this->twig = $twig;
         $this->urlHelper = $urlHelper;
         $this->logger = $logger;
+        $this->bag = $bag;
+        $this->em = $em;
+        $this->manager = $manager;
     }
 
     /**
@@ -149,8 +171,8 @@ class InstallationManager
         $message['text'] = 'The directory containing the configuration files is writable, so the installation may proceed.';
 
         if (file_exists(__DIR__.'/../../config/packages/kookaburra.yaml') && !is_writable(__DIR__.'/../../config/packages/kookaburra.yaml')) {
-                $message['class'] = 'error';
-                $message['text'] = 'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.';
+            $message['class'] = 'error';
+            $message['text'] = 'The directory containing the configuration files is not currently writable, or kookaburra.yaml is not writable, so the installer cannot proceed.';
             $this->getLogger()->error(TranslationsHelper::translate($message['text'] ));
         } else { //No config, so continue installer
             if (!is_writable(__DIR__.'/../../config/packages/')) { // Ensure that home directory is writable
@@ -196,6 +218,7 @@ class InstallationManager
     private function writeKookaburraYaml(array $config)
     {
         GlobalHelper::writeKookaburraYaml($config);
+        $this->getLogger()->notice(TranslationsHelper::translate('The config file was written.'));
     }
 
     /**
@@ -216,6 +239,7 @@ class InstallationManager
     {
         $config = $this->readKookaburraYaml();
         $config['parameters']['locale'] = $locale;
+        $this->getLogger()->notice(TranslationsHelper::translate('The locale was set to {locale}', ['{locale}' => $locale]), ['locale' => $locale]);
         $this->writeKookaburraYaml($config);
     }
 
@@ -245,6 +269,8 @@ class InstallationManager
         $message['class'] = 'success';
         $message['text'] = 'The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.';
 
+        $this->getLogger()->notice($message['text']);
+
         return new Response($this->twig->render('installation/mysql_settings.html.twig',
             [
                 'form' => $form->createView(),
@@ -259,34 +285,21 @@ class InstallationManager
     /**
      * buildDatabase
      * @param KernelInterface $kernel
+     * @param Request $request
      * @return Response
      * @throws \Exception
      */
     public function buildDatabase(KernelInterface $kernel, Request $request): Response
     {
+        $this->manager->setLogger($this->getLogger());
+        $this->manager->installation($kernel);
         $application = new Application($kernel);
         $application->setAutoExit(false);
+        $this->getLogger()->notice(TranslationsHelper::translate('Module Installation commenced.'));
 
-        $finder = new Finder();
-        $migrations = $finder->files()->in(__DIR__ . '/../Migrations')->depth('== 0')->name(['Version*.php'])->sort(function ($a, $b) { return strcmp($a->getRealpath(), $b->getRealpath()); });
-
-        if ($finder->hasResults()) {
-            foreach ($migrations as $migration) {
-                $name = str_replace(['Version', '.php'], '', $migration->getBasename());
-                $input = new ArrayInput([
-                    'command' => 'doctrine:migrations:migrate',
-                    $name,
-                    '--quiet' => '--quiet',
-                    '--no-interaction' => '--no-interaction',
-                ]);
-
-                $output = new NullOutput();
-                $application->run($input, $output);
-
-                sleep(2);
-            }
-        }
         $this->setInstallationStatus('system');
+        $this->getLogger()->notice(TranslationsHelper::translate('The database build was completed.'));
+
         return new RedirectResponse($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/system/');
     }
 
@@ -327,7 +340,7 @@ class InstallationManager
         $em->flush();
 
         if ($person->getId() > 1) {
-            $sql = 'UPDATE `gibbonPerson` SET `gibbonPersonID` = 1 WHERE `username` = :username';
+            $sql = 'UPDATE `gibbonPerson` SET `id` = 1 WHERE `username` = :username';
             $statement = $em->getConnection()->prepare($sql);
             $statement->bindValue('username', $form->get('username')->getData());
             $statement->execute();
@@ -340,7 +353,32 @@ class InstallationManager
             ->setPerson($person);
         $em->persist($staff);
         $em->flush();
-        $securityUser = new SecurityUser($person);
+        new SecurityUser($person);
+
+        if ($this->isDemo()) {
+            //Add admin to Course CLass
+            $ccp = new CourseClassPerson();
+            $ccp->setPerson($person)->setRole('Teacher')->setCourseClass(ProviderFactory::getRepository(CourseClass::class)->find(2426))->setReportable('Y');
+            $em->persist($ccp);
+
+            $ccp = new CourseClassPerson();
+            $ccp->setPerson($person)->setRole('Teacher')->setCourseClass(ProviderFactory::getRepository(CourseClass::class)->find(2425))->setReportable('Y');
+            $em->persist($ccp);
+
+            $ccp = new CourseClassPerson();
+            $ccp->setPerson($person)->setRole('Teacher')->setCourseClass(ProviderFactory::getRepository(CourseClass::class)->find(2424))->setReportable('Y');
+            $em->persist($ccp);
+
+            $ccp = new CourseClassPerson();
+            $ccp->setPerson($person)->setRole('Teacher')->setCourseClass(ProviderFactory::getRepository(CourseClass::class)->find(2548))->setReportable('Y');
+            $em->persist($ccp);
+
+            $ccp = new CourseClassPerson();
+            $ccp->setPerson($person)->setRole('Teacher')->setCourseClass(ProviderFactory::getRepository(CourseClass::class)->find(2327))->setReportable('Y');
+            $em->persist($ccp);
+            $em->flush();
+
+        }
     }
 
     /**
@@ -366,7 +404,7 @@ class InstallationManager
         $config['parameters']['timezone'] = $form->get('timezone')->getData();
         $config['parameters']['system_name'] = $form->get('systemName')->getData();
         $config['parameters']['organisation_name'] = $form->get('organisationName')->getData();
-        unset( $config['parameters']['installation']);
+        unset($config['parameters']['installation']);
         $this->writeKookaburraYaml($config);
     }
 
@@ -383,8 +421,8 @@ class InstallationManager
             unset($config['parameters']['installation']);
         }
         $this->writeKookaburraYaml($config);
+        $this->getLogger()->notice(TranslationsHelper::translate('The installation status was set to {status}.', ['{status}' => $status], 'messages'), ['status' => $status]);
     }
-
 
     /**
      * buildDatabase
@@ -421,5 +459,37 @@ class InstallationManager
     public function getLogger(): LoggerInterface
     {
         return $this->logger;
+    }
+
+    /**
+     * @return ParameterBagInterface
+     */
+    public function getBag(): ParameterBagInterface
+    {
+        return $this->bag;
+    }
+
+    /**
+     * @var boolean
+     */
+    private $demo;
+
+    /**
+     * isDemo
+     * @return bool
+     */
+    public function isDemo(): bool
+    {
+        if (null !== $this->demo)
+            return $this->demo;
+        if ($this->getBag()->has('installation')) {
+            $installation = $this->getBag()->get('installation');
+            if (isset($installation['demo']))
+                $this->demo = $installation['demo'];
+            else
+                return false;
+        } else
+            return false;
+        return $this->demo;
     }
 }

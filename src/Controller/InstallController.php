@@ -25,8 +25,12 @@ use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\MySQLSettingWarning;
 use App\Twig\SidebarContent;
 use App\Util\LocaleHelper;
+use App\Util\TranslationsHelper;
+use Doctrine\ORM\EntityManagerInterface;
 use Kookaburra\SystemAdmin\Form\Entity\SystemSettings;
 use Kookaburra\SystemAdmin\Manager\LanguageManager;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,12 +43,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @package App\Controller
  * @Route("/install", name="install__")
  */
-class InstallController extends AbstractController
+class InstallController extends AbstractController implements LoggerAwareInterface
 {
     /**
      * installationCheck
      *
      * @param Request $request
+     * @param InstallationManager $manager
+     * @param ValidatorInterface $validator
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      * @Route("/installation/check/", name="installation_check")
      */
     public function installationCheck(Request $request, InstallationManager $manager, ValidatorInterface $validator)
@@ -69,6 +79,7 @@ class InstallController extends AbstractController
      * installationMySQLSettings
      * @param Request $request
      * @param InstallationManager $manager
+     * @param SidebarContent $sidebar
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
@@ -118,8 +129,9 @@ class InstallController extends AbstractController
      * @throws \Exception
      * @Route("/installation/build/", name="installation_build")
      */
-    public function installationBuild(InstallationManager $manager, KernelInterface $kernel, Request $request)
+    public function installationBuild(InstallationManager $manager, KernelInterface $kernel, Request $request, EntityManagerInterface $em)
     {
+        $this->getLogger()->notice(TranslationsHelper::translate('The build of the database has commenced.'));
         return $manager->buildDatabase($kernel, $request);
     }
 
@@ -128,6 +140,7 @@ class InstallController extends AbstractController
      * @param Request $request
      * @param InstallationManager $manager
      * @Route("/installation/system/", name="installation_system")
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function installationSystem(Request $request, InstallationManager $manager)
     {
@@ -185,5 +198,27 @@ class InstallController extends AbstractController
      */
     public function update(){
 
+    }
+
+    /**
+     * @var
+     */
+    private $logger;
+
+    /**
+     * @return mixed
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
+     * setLogger
+     * @param LoggerInterface $logger
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 }

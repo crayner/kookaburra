@@ -154,3 +154,9 @@ services:
     App\Manager\InstallationManager:
         arguments:
             $logger: '@monolog.logger.installation'
+
+    App\Controller\InstallationController:
+        calls:
+            -   method: setLogger
+                arguments:
+                    - '@monolog.logger.installation'

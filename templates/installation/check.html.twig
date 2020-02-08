@@ -1,3 +1,5 @@
+{% trans_default_domain 'messages' %}
+
 {% extends 'kookaburra.html.twig' %}
 
 {% form_theme form
@@ -18,7 +20,7 @@
         {% for name,details in systemDisplay['System Requirements'] %}
            <tr>
                 <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
-                    <label for="phpVersionLabel" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'{name}': name}, 'kookaburra') }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans(details.comment_params|default({})) }}</span></label>
+                    <label for="phpVersionLabel" class="inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs">{{ details.name|trans({'{name}': name}) }}{% if details.comment is defined and details.comment is not same as('') %} <br><span class="text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0">{{ details.comment|trans(details.comment_params|default({})) }}</span></label>
                     {% endif %}
                 </td>
                 <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
@@ -46,7 +48,6 @@
                 {{ form_row(form.submit, {'attr': attr}) }}
             {% endif %}
             {{ form_row(form._token) }}
-
         </tbody>
     </table>
     {{ form_end(form) }}

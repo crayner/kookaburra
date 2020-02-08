@@ -1104,3 +1104,18 @@ Manage IN Settings: Manage IN Settings
 Alert Levels: Alert Levels
 File Extensions: File Extensions
 Attendance Settings: Attendance Settings
+'The installation status was set to {status}.': 'The installation status was set to {status}.'
+'The migration file {name} was actioned.': 'The migration file {name} was actioned.'
+'The locale was set to {locale}': 'The locale was set to {locale}'
+'Module Installation commenced.': 'Module Installation commenced.'
+'The migration file {name} commenced.': 'The migration file {name} commenced.'
+'The database build was completed.': 'The database build was completed.'
+'The database is not available. Check that the database settings are available and are valid!': 'The database is not available. Check that the database settings are available and are valid!'
+'Legacy Check:': 'Legacy Check:'
+'Checking legacy bundle "{name}".': 'Checking legacy bundle "{name}".'
+'Module Check:': 'Module Check:'
+'Checking bundle "{name}".': 'Checking bundle "{name}".'
+Installation: Installation
+Foreign Constraint: Foreign Constraint
+Core: Core
+'Installation completed and database created.': 'Installation completed and database created.'

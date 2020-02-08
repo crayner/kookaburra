@@ -5,6 +5,7 @@ monolog:
             action_level: error
             handler: nested
             excluded_http_codes: [404, 405]
+            channels: ["!installation"]
         nested:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
@@ -12,7 +13,7 @@ monolog:
         console:
             type: console
             process_psr_3_messages: false
-            channels: ["!event", "!doctrine"]
+            channels: ["!event", "!doctrine", "!installation"]
         deprecation:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.deprecations.log"

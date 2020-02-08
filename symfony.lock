@@ -162,6 +162,9 @@
     "kookaburra/user-admin": {
         "version": "dev-master"
     },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.0.1"
+    },
     "markbaker/complex": {
         "version": "1.4.7"
     },

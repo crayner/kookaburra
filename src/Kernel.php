@@ -79,8 +79,8 @@ class Kernel extends BaseKernel
     private function temporaryParameters(ContainerBuilder $container)
     {
         $url = 'https://server_name';
-        $url = str_replace('server_name', $_SERVER['SERVER_NAME'],  $url);
-        if ($_SERVER['SERVER_PORT'] !== '443')
+        $url = str_replace('server_name', isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'server_name',  $url);
+        if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] !== '443')
             $url .= ':'. $_SERVER['SERVER_PORT'];
 
         $container->setParameter('timezone', 'UTC');

@@ -32,16 +32,22 @@ trait SqlLoadTrait
     private $count;
 
     /**
+     * @var array
+     */
+    private $sqlContent = [];
+
+    /**
      * getSql
      * @param string $source
      * @throws \Exception
      */
     public function getSql(string $source): void
     {
-        if (file_exists(__DIR__. '/'. $source))
-            $this->handle = fopen(__DIR__. '/'. $source, "r");
-        elseif (file_exists($source))
+        if (is_file($source)) {
             $this->handle = fopen($source, "r");
+        } elseif (is_file(__DIR__. '/'. $source)) {
+            $this->handle = fopen(__DIR__ . '/' . $source, "r");
+        }
         if(null === $this->handle)
             throw new \Exception('File ' .$source . 'not found.');
 
@@ -49,9 +55,9 @@ trait SqlLoadTrait
 
         $prefix = $this->getPrefix();
 
-        while(($line = $this->getSqlLine()) !== false)
-            $this->addSql(str_replace('__prefix__', $prefix, $line));
-
+        while(($line = $this->getSqlLine()) !== false) {
+            $this->addSql($line);
+        }
     }
 
     /**
