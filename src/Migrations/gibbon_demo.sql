@@ -5936,15 +5936,15 @@ ALTER TABLE `gibbonOutcome` DISABLE KEYS;
 
 INSERT INTO `gibbonOutcome` (`gibbonOutcomeID`, `name`, `nameShort`, `category`, `description`, `active`, `scope`, `gibbonDepartmentID`, `gibbonYearGroupIDList`, `gibbonPersonIDCreator`)
 VALUES
-	(00000081,'Conducting Myself & Relating To Others','ATL-CM','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001),
-	(00000082,'Working With Other Students','ATL-WWOS','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001),
-	(00000083,'Working Independently','ATL-WI','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001),
-	(00000084,'Showing Initiative & Making Choices','ATL-SIMC','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001),
-	(00000085,'Organisation','ATL-Org','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001),
-	(00000086,'Attitude To Feedback & Advice','ATL-ATFA','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001),
-	(00000087,'Resilience & Motivation','ATL-RM','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001),
-	(00000088,'Attitude To Challenge','ATL-ATC','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001),
-	(00000240,'Contribution to Class','ATL-CTC','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',0000000001);
+	(81,'Conducting Myself & Relating To Others','ATL-CM','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857),
+	(82,'Working With Other Students','ATL-WWOS','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857),
+	(83,'Working Independently','ATL-WI','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857),
+	(84,'Showing Initiative & Making Choices','ATL-SIMC','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857),
+	(85,'Organisation','ATL-Org','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857),
+	(86,'Attitude To Feedback & Advice','ATL-ATFA','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857),
+	(87,'Resilience & Motivation','ATL-RM','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857),
+	(88,'Attitude To Challenge','ATL-ATC','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857),
+	(240,'Contribution to Class','ATL-CTC','Approach to Learning','','Y','School',NULL,'001,002,003,004,005,006,007',857);
 
 ALTER TABLE `gibbonOutcome` ENABLE KEYS;
 UNLOCK TABLES;
