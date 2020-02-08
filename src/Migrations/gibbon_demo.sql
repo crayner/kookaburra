@@ -6155,7 +6155,6 @@ ALTER TABLE `gibbonStaff` DISABLE KEYS;
 
 INSERT INTO `gibbonStaff` (`gibbonStaffID`, `gibbonPersonID`, `type`, `initials`, `jobTitle`, `smartWorkflowHelp`, `firstAidQualified`, `firstAidExpiry`, `countryOfOrigin`, `qualifications`, `biography`, `biographicalGrouping`, `biographicalGroupingPriority`)
 VALUES
-	(0000000001,0000000001,'Teaching',NULL,'','Y','',NULL,'','','','',0),
 	(0000000002,0000000136,'Support',NULL,'','Y','',NULL,'','','','',0),
 	(0000000003,0000000125,'Teaching',NULL,'','Y','',NULL,'','','','',0),
 	(0000000004,0000000132,'Teaching',NULL,'','Y','',NULL,'','','','',0),
