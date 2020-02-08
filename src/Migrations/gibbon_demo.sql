@@ -6034,7 +6034,7 @@ ALTER TABLE `gibbonRubric` DISABLE KEYS;
 
 INSERT INTO `gibbonRubric` (`gibbonRubricID`, `name`, `category`, `description`, `active`, `scope`, `gibbonDepartmentID`, `gibbonYearGroupIDList`, `gibbonScaleID`, `gibbonPersonIDCreator`)
 VALUES
-	(00000238,'Approaches to Learning Rubric v3','','','Y','School',NULL,'001,002,003,004,005,006,007',NULL,0000000001);
+	(00000238,'Approaches to Learning Rubric v3','','','Y','School',NULL,'001,002,003,004,005,006,007',NULL,857);
 
 ALTER TABLE `gibbonRubric` ENABLE KEYS;
 UNLOCK TABLES;
