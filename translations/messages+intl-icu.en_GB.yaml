@@ -963,7 +963,7 @@ colour:
 'Kookaburra Software is a fork of Gibbon.': 'Kookaburra Software is a fork of Gibbon.'
 'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.': 'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.'
 Building the Database: Building the Database
-database_build_warning: 'Once the correct settings for your database are verified, the database will be built one you press the "Proceed" button below. This is a process that can take minutes to complete.  You patience is appreciated.'
+database_build_warning: 'Once the correct settings for your database are verified, the database will be built one you click the "Proceed" button below. This is a process that can take minutes to complete.  Your patience is appreciated.'
 The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.: The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.
 Proceed: Proceed
 'Now that your system is installed, please check the {link}Full System Requirements{close} to ensure correct operation of your site.':
