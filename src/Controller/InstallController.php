@@ -131,7 +131,7 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
      */
     public function installationBuild(InstallationManager $manager, KernelInterface $kernel, Request $request, EntityManagerInterface $em)
     {
-        $this->getLogger()->notice(TranslationsHelper::translate('The build of the database has commenced.'));
+        $manager->getLogger()->notice(TranslationsHelper::translate('The build of the database has commenced.'));
         return $manager->buildDatabase($kernel, $request);
     }
 
@@ -184,6 +184,7 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
         $i18n = ProviderFactory::getRepository(I18n::class)->findOneByCode($manager->getLocale());
         $languageManager->i18nFileInstall($i18n);
         $manager->moduleInstall($kernel);
+        dd($manager);
         $manager->setInstallationStatus('complete');
 
         return $this->render('installation/complete.html.twig');
