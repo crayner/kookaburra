@@ -5958,7 +5958,7 @@ INSERT INTO `gibbonPlannerEntry` (`gibbonPlannerEntryID`, `gibbonCourseClassID`,
 VALUES
 	(1, 00002426,1, '2019-08-19', '13:10:00', '14:20:00', 'Epic Wallpaper 1', 'Want To Make Some Eye Candy?, Assessment, Getting Started With Acorn, Fi...', '', '', 'N', NULL, '', 'N', NULL, NULL, '', 'Optional', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'Y', 'Y', 857, 857),
 	(2, 00002426, 1, '2019-08-19', '14:20:00', '15:30:00', 'Epic Wallpaper 2', 'Why So Big?, Layers, Finding A Silhouette, Making A Cutout, Find A Backg...', '', '', 'N', NULL, '', 'N', NULL, NULL, '', 'Optional', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'Y', 'Y', 857, 857),
-	(3, 00002426, 15, '2019-08-26', '13:10:00', '14:20:00', 'Epic Wallpaper 3', 'Hong Kong Style, Apply Your Background, Playtime, Filters, Playtime', '', '', 'N', NULL, '', 'N', NULL, NULL, '', 'Optional', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'Y', 'Y', 857, 857),
+	(3, 00002426, 1, '2019-08-26', '13:10:00', '14:20:00', 'Epic Wallpaper 3', 'Hong Kong Style, Apply Your Background, Playtime, Filters, Playtime', '', '', 'N', NULL, '', 'N', NULL, NULL, '', 'Optional', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'Y', 'Y', 857, 857),
 	(4, 00002426, 1, '2019-08-27', '09:40:00', '10:50:00', 'Epic Wallpaper 4', 'Creative Commons License, Text Controls, Playtime', '', '', 'N', NULL, '', 'N', NULL, NULL, '', 'Optional', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'Y', 'Y', 857, 857),
 	(5, 00002426, 1, '2019-09-02', '13:10:00', '14:20:00', 'Epic Wallpaper 5', 'Finish, Export & Submit, Raster vs. Vector', '', '', 'N', NULL, '', 'N', NULL, NULL, '', 'Optional', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'Y', 'Y', 857, 857);
 
