@@ -50,7 +50,7 @@ class Course implements EntityInterface
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="AcademicYearID", referencedColumnName="id", nullable=false)
      */
     private $academicYear;
 

@@ -432,7 +432,6 @@ class InstallationManager
         if ($status === 'complete') {
             $config['parameters']['installed'] = true;
             unset($config['parameters']['installation']);
-
         }
         $this->writeKookaburraYaml($config);
         $this->getLogger()->notice(TranslationsHelper::translate('The installation status was set to {status}.', ['{status}' => $status], 'messages'), ['status' => $status]);
@@ -446,7 +445,7 @@ class InstallationManager
     public function moduleInstall(KernelInterface $kernel)
     {
         $application = new Application($kernel);
-        $application->setAutoExit(false);
+        $application->setAutoExit(true);
 
         $input = new ArrayInput([
             'command' => 'kookaburra:module:install',
@@ -463,8 +462,6 @@ class InstallationManager
 
         // return the output, don't use if you used NullOutput()
         // $content = $output->fetch();
-
-
     }
 
     /**

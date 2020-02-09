@@ -151,32 +151,6 @@ INSERT INTO `gibbonMedicalCondition` (`gibbonMedicalConditionID`, `name`) VALUES
 (25, 'Visual Impairment - Colour Blindness'),
 (24, 'Visual Impairment - Requiring Contact Lenses or Glasses');
 
-INSERT INTO `gibbonnotificationevent` (`gibbonNotificationEventID`, `event`, `moduleName`, `actionName`, `type`, `scopes`, `active`, `moduleID`, `actionID`) VALUES
-(1, 'Daily Behaviour Summary', 'Behaviour', 'Find Behaviour Patterns', 'CLI', 'All', 'Y', 0119, 0000719),
-(2, 'New Negative Record', 'Behaviour', 'View Behaviour Records_all', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0119, 0000608),
-(3, 'New Positive Record', 'Behaviour', 'View Behaviour Records_all', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0119, 0000608),
-(4, 'Family Data Updates', 'Data Updater', 'Family Data Updates', 'Core', 'All', 'Y', 0008, 0000766),
-(5, 'Finance Data Updates', 'Data Updater', 'Finance Data Updates', 'Core', 'All', 'Y', 0008, 0000775),
-(6, 'Medical Form Updates', 'Data Updater', 'Medical Form Updates', 'Core', 'All', 'Y', 0008, 0000065),
-(7, 'Personal Data Updates', 'Data Updater', 'Personal Data Updates', 'Core', 'All', 'Y', 0008, 0000063),
-(8, 'Login - Failed', 'User Admin', 'Manage Users', 'Core', 'All', 'Y', 0002, NULL),
-(9, 'New Public Registration', 'User Admin', 'Manage Users', 'Core', 'All', 'Y', 0002, NULL),
-(10, 'New Application Form', 'Students', 'View Student Profile_full', 'Core', 'All', 'Y', 0005, 0000024),
-(11, 'New Application Form', 'Staff', 'Manage Applications', 'Core', 'All', 'Y', 0136, 0000858),
-(12, 'Student Withdrawn', 'Activities', 'Manage Activities', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0015, 0000055),
-(13, 'New Activity Registration', 'Activities', 'Manage Activities', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0015, 0000055),
-(14, 'Updated Individual Needs', 'Individual Needs', 'Individual Needs Records_viewEdit', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0011, 0000046),
-(15, 'New Student Note', 'Students', 'View Student Profile_full', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0005, 0000024),
-(16, 'Updated Privacy Settings', 'Students', 'View Student Profile_full', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0005, 0000024),
-(17, 'Daily Attendance Summary', 'Attendance', 'Roll Groups Not Registered', 'CLI', 'All', 'Y', 0006, 0000030),
-(18, 'User Status Check and Fix', 'User Admin', 'Manage Users', 'CLI', 'All', 'Y', 0002, NULL),
-(20, 'Behaviour Letters', 'Behaviour', 'View Behaviour Records_all', 'CLI', 'All', 'Y', 0119, 0000608),
-(21, 'Parent Weekly Email Summary', 'Planner', 'Parent Weekly Email Summary', 'CLI', 'All', 'Y', 0009, 0000810),
-(22, 'Application Form Accepted', 'Students', 'View Student Profile_full', 'Core', 'All,gibbonYearGroupID', 'Y', 0005, 0000024),
-(23, 'Weekly Attendance Summary', 'Attendance', 'Attendance Summary by Date', 'CLI', 'All,gibbonYearGroupID', 'Y', 0006, 0000880),
-(24, 'Student Bumped', 'Activities', 'Manage Activities', 'Core', 'All', 'Y', 0015, 0000055),
-(25, 'Updated Behaviour Record', 'Behaviour', 'View Behaviour Records_all', 'Core', 'All,gibbonPersonIDStudent,gibbonYearGroupID', 'Y', 0119, 0000608);
-
 INSERT INTO `gibbonSetting` (`gibbonSettingID`, `scope`, `name`, `nameDisplay`, `description`, `value`) VALUES
 (1, 'System', 'absoluteURL', 'Base URL', 'The address at which the whole system resides.', ''),
 (2, 'System', 'organisationName', 'Organisation Name', '', ''),

@@ -944,11 +944,13 @@ function getHighestGroupedAction($guid, $address, $connection2)
  */
 function getRoleCategory($gibbonRoleID, $connection2)
 {
+    return \Kookaburra\SystemAdmin\Provider\RoleProvider::getRoleCategory($gibbonRoleID);
+
     $output = false;
 
     try {
         $data = array('gibbonRoleID' => $gibbonRoleID);
-        $sql = 'SELECT * FROM gibbonRole WHERE gibbonRoleID=:gibbonRoleID';
+        $sql = 'SELECT * FROM `gibbonRole` WHERE `id` = :gibbonRoleID';
         $result = $connection2->prepare($sql);
         $result->execute($data);
     } catch (PDOException $e) {

@@ -183,8 +183,6 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
     {
         $i18n = ProviderFactory::getRepository(I18n::class)->findOneByCode($manager->getLocale());
         $languageManager->i18nFileInstall($i18n);
-        $manager->moduleInstall($kernel);
-        dd($manager);
         $manager->setInstallationStatus('complete');
 
         return $this->render('installation/complete.html.twig');

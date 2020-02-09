@@ -133,6 +133,8 @@ class NotificationController extends AbstractController
     /**
      * ajax
      * @Route("/api/notifcations/refresh/legacy/", name="notifications_refresh_legacy"))
+     * @param NotificationTrayManager $manager
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function refreshLegacy(NotificationTrayManager $manager)
     {

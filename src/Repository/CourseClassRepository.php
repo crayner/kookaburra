@@ -54,10 +54,10 @@ class CourseClassRepository extends ServiceEntityRepository
 
     /**
      * findAccessibleClasses
-     * @param AcademicYear $schoolYear
+     * @param AcademicYear $academicYear
      * @return mixed
      */
-    public function findAccessibleClasses(AcademicYear $schoolYear, string $classTitle)
+    public function findAccessibleClasses(AcademicYear $academicYear, string $classTitle)
     {
         $result = $this->createQueryBuilder('cc')
             ->select([
@@ -67,7 +67,7 @@ class CourseClassRepository extends ServiceEntityRepository
             ])
             ->join('cc.course', 'c')
             ->where('c.academicYear = :academicYear')
-            ->setParameter('academicYear', $schoolYear)
+            ->setParameter('academicYear', $academicYear)
             ->orderBy('text')
             ->getQuery()
             ->getResult();
@@ -76,18 +76,18 @@ class CourseClassRepository extends ServiceEntityRepository
 
     /**
      * findByPersonSchoolYear
-     * @param AcademicYear $schoolYear
+     * @param AcademicYear$academicYear
      * @param Person $person
      * @return mixed
      */
-    public function findByPersonSchoolYear(AcademicYear $schoolYear, Person $person)
+    public function findByPersonSchoolYear(AcademicYear$academicYear, Person $person)
     {
         return $this->createQueryBuilder('cc')
             ->distinct()
             ->leftJoin('cc.course', 'c')
             ->leftjoin('cc.courseClassPeople', 'ccp', 'with', 'ccp.person = :person')
             ->where('c.academicYear = :academicYear')
-            ->setParameter('academicYear', $schoolYear)
+            ->setParameter('academicYear',$academicYear)
             ->setParameter('person', $person)
             ->andWhere('ccp.role NOT LIKE :role')
             ->setParameter('role', '% - Left%')
