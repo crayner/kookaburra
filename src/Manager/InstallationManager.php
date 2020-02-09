@@ -19,6 +19,8 @@ use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
 use App\Util\TranslationsHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Kookaburra\Departments\Entity\Department;
+use Kookaburra\Departments\Entity\DepartmentStaff;
 use Kookaburra\SystemAdmin\Manager\UpgradeManager;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\SystemAdmin\Entity\Role;
@@ -376,6 +378,16 @@ class InstallationManager
             $ccp = new CourseClassPerson();
             $ccp->setPerson($person)->setRole('Teacher')->setCourseClass(ProviderFactory::getRepository(CourseClass::class)->find(2327))->setReportable('Y');
             $em->persist($ccp);
+            $em->flush();
+
+            $entity = new DepartmentStaff();
+            $entity->setPerson($person)->setRole('Teacher (Curriculum)')->setDepartment(ProviderFactory::getRepository(Department::class)->findOneBy(['nameShort' => 'TA']));
+            $em->persist($entity);
+
+            $entity = new DepartmentStaff();
+            $entity->setPerson($person)->setRole('Teacher (Curriculum)')->setDepartment(ProviderFactory::getRepository(Department::class)->findOneBy(['nameShort' => 'HT']));
+            $em->persist($entity);
+
             $em->flush();
 
         }
