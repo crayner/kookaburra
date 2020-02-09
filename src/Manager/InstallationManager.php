@@ -347,6 +347,7 @@ class InstallationManager
             $statement->bindValue('username', $form->get('username')->getData());
             $statement->execute();
             $person = ProviderFactory::getRepository(Person::class)->find(1);
+            $em->refresh($person);
         }
 
         $staff = new Staff();
