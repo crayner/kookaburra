@@ -62,14 +62,19 @@ class FinderController extends AbstractController
     /**
      * loadFastFinderOptions
      * @Route("/api/finder/search/legacy/", name="api_finder_options_legacy")
+     * @param FastFinder $fastFinder
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
      */
     public function loadFastFinderOptions(FastFinder $fastFinder, Request $request)
     {
         $fastFinder->execute();
         $search = $request->query->get('q');
-        $content = $fastFinder->getScriptManager()->getAppProps();
+        $content = $fastFinder->getScriptManager()->getAppProps()->get('fastFinder')['contentList'][0];
+
         $results = [];
-        foreach($content['fastFinder']['fastFindChoices'] as $choice)
+        foreach($content['fastFindChoices'] as $choice)
         {
             foreach($choice['suggestions'] as $suggestion)
             {

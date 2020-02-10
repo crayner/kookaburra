@@ -90,16 +90,16 @@ class StudentEnrolmentRepository extends ServiceEntityRepository
      * @param integer|null $AcademicYearID
      * @return int
      */
-    public function getStudentEnrolmentCount(?int $schoolYearID = null): int
+    public function getStudentEnrolmentCount(?int $AcademicYearID = null): int
     {
         try {
             return intval($this->createQueryBuilder('se')
                 ->select('COUNT(p.id)')
                 ->join('se.person', 'p')
                 ->join('se.rollGroup', 'rg')
-                ->join('rg.academicYear', 'sy')
-                ->where('sy.id = :sy_id')
-                ->setParameter('sy_id', intval($schoolYearID))
+                ->join('rg.academicYear', 'ay')
+                ->where('ay.id = :ay_id')
+                ->setParameter('ay_id', intval($AcademicYearID))
                 ->getQuery()
                 ->getSingleScalarResult());
         } catch ( NoResultException | NonUniqueResultException $e) {
