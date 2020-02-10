@@ -1385,7 +1385,9 @@ function dateConvertBack($guid, $date)
  */
 function isActionAccessible($guid, $connection2, $address, $sub = '')
 {
+    return \Kookaburra\UserAdmin\Util\SecurityHelper::isActionAccessible($address, $sub);
     $output = false;
+
     //Check user is logged in
     if (isset($_SESSION[$guid]['username'])) {
         //Check user has a current role set
