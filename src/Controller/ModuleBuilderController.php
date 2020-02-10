@@ -35,7 +35,7 @@ class ModuleBuilderController extends AbstractController
      */
     public function build(ParameterBagInterface $bag)
     {
-        $module = ProviderFactory::create(Module::class)->findOneBy(['name' => 'Library']); //School Admin
+        $module = ProviderFactory::create(Module::class)->findOneBy(['name' => 'Activities']); //School Admin
         dump('Change the search detail here to map a module/actions/permissions. Currently ' . $module->getName());
         $result = [];
         $x['name'] = $module->getName();
@@ -72,9 +72,10 @@ class ModuleBuilderController extends AbstractController
             $x['categoryPermissionParent'] = $action->getCategoryPermissionParent();
             $x['categoryPermissionOther'] = $action->getCategoryPermissionOther();
 
-            foreach($action->getPermissions() as $permission)
-                $x['permissions'][] = $permission->getRole()->getName();
 
+            foreach($action->getPermissions() as $permission) {
+                $x['permissions'][] = $permission->getRole()->getName();
+            }
             $result['module']['actions'][$action->getName()] = $x;
         }
         $publicDir = $bag->get('kernel.public_dir');

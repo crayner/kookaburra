@@ -920,6 +920,7 @@ function getAge($guid, $stamp, $short = false, $yearsOnly = false)
  */
 function getHighestGroupedAction($guid, $address, $connection2)
 {
+    return \Kookaburra\UserAdmin\Util\SecurityHelper::getHighestGroupedAction($address);
     $output = false;
     $moduleID = checkModuleReady($address, $connection2);
 
