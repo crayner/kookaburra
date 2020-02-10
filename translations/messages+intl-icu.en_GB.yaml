@@ -172,10 +172,6 @@ Date of Birth: Date of Birth
 date_format: 'Format: %format%'
 Username: Username
 Must be unique: Must be unique
-'The password policy stipulates that passwords must:':  'The password policy stipulates that passwords must:'
-Contain at least one lowercase letter, and one uppercase letter.: Contain at least one lowercase letter, and one uppercase letter.
-Contain at least one number.: Contain at least one number.
-'Must be at least {oneString} characters in length.': 'Must be at least {oneString} characters in length.'
 Password: Password
 Privacy Statement: Privacy Statement
 Agreement: Agreement
