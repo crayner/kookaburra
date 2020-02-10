@@ -10,8 +10,10 @@
 ###< symfony/framework-bundle ###
 
 /public/uploads/
+/public/*.yaml
 /config/packages/kookaburra.yaml
 /config/packages/kookaburra_*.yaml
+/config/packages/*kookaburra.yaml
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
