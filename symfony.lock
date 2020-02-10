@@ -138,6 +138,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "kookaburra/activities": {
+        "version": "dev-master"
+    },
     "kookaburra/department": {
         "version": "dev-master"
     },

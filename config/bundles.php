@@ -21,4 +21,5 @@ return [
     Twig\Extra\TwigExtraBundle\TwigExtraBundle::class => ['all' => true],
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
     Kookaburra\SchoolAdmin\KookaburraSchoolAdminBundle::class => ['all' => true],
+    Kookaburra\Activities\KookaburraActivitiesBundle::class => ['all' => true],
 ];
