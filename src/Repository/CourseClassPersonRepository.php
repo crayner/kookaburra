@@ -36,11 +36,11 @@ class CourseClassPersonRepository extends ServiceEntityRepository
 
     /**
      * findAccessibleClasses
-     * @param AcademicYear $schoolYear
+     * @param AcademicYear $year
      * @param Person $person
      * @return mixed
      */
-    public function findAccessibleClasses(AcademicYear $schoolYear, Person $person, string $classTitle)
+    public function findAccessibleClasses(AcademicYear $year, Person $person, string $classTitle)
     {
         $result = $this->createQueryBuilder('ccp')
             ->select([
@@ -53,7 +53,7 @@ class CourseClassPersonRepository extends ServiceEntityRepository
             ->where('c.academicYear = :academicYear')
             ->andWhere('ccp.person = :person')
             ->orderBy('text')
-            ->setParameters(['academicYear' => $schoolYear, 'person' => $person])
+            ->setParameters(['academicYear' => $year, 'person' => $person])
             ->getQuery()
             ->getResult();
         return $result;

@@ -79,8 +79,7 @@ class ModuleMenu implements SidebarContentInterface
         if ($request->attributes->has('module') && false !== $request->attributes->get('module'))
         {
             $currentModule = $request->attributes->get('module');
-            if ($currentModule->getType() !== 'Core')
-                $this->setDomain($currentModule->getName());
+            $this->setDomain($currentModule->getName());
             $lastModule = $request->getSession()->get('menuModuleName', null);
 
             if (! $request->getSession()->has('menuModuleItems') || $currentModule->getName() !== $lastModule)

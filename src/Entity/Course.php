@@ -30,9 +30,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Course
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\CourseRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="Course",
- *     indexes={@ORM\Index(name="academic_year",columns={"academic_year"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="nameYear",columns={ "academic_year","name"}), @ORM\UniqueConstraint(name="nameShortYear",columns={"academic_year","nameShort"})})
+ * @ORM\Table(
+ *     options={"auto_increment": 1},
+ *     name="Course",
+ *     indexes={
+ *      @ORM\Index(name="academicYear",columns={"academic_year"})},
+ *     uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="nameYear",columns={"academic_year","name"}),
+ *      @ORM\UniqueConstraint(name="nameShortYear",columns={"academic_year","nameShort"})})
  * @UniqueEntity({"academicYear", "name"})
  * @UniqueEntity({"academicYear", "nameShort"})
  */
@@ -50,7 +55,7 @@ class Course implements EntityInterface
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="AcademicYearID", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="academic_year", referencedColumnName="id", nullable=false)
      */
     private $academicYear;
 
@@ -84,7 +89,7 @@ class Course implements EntityInterface
     /**
      * @var string|null
      * @ORM\Column(length=1, options={"comment": "Should this course be included in curriculum maps and other summaries?", "default": "Y"})
-     * @Assert\Choice({"Y", "N"})
+     * @Assert\Choice(callback="getBooleanList")
      */
     private $map = 'Y';
 

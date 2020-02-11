@@ -22,7 +22,7 @@ use Kookaburra\UserAdmin\Entity\Person;
  * Class StudentEnrolment
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\StudentEnrolmentRepository")
- * @ORM\Table(options={"auto_increment": 1}, name="StudentEnrolment", indexes={@ORM\Index(name="academic_year", columns={"academic_year"}), @ORM\Index(name="gibbonYearGroupID", columns={"gibbonYearGroupID"}), @ORM\Index(name="gibbonRollGroupID", columns={"gibbonRollGroupID"}), @ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID","academic_year"})})
+ * @ORM\Table(options={"auto_increment": 1}, name="StudentEnrolment", indexes={@ORM\Index(name="academicYear", columns={"gibbonSchoolYearID"}), @ORM\Index(name="gibbonYearGroupID", columns={"gibbonYearGroupID"}), @ORM\Index(name="gibbonRollGroupID", columns={"gibbonRollGroupID"}), @ORM\Index(name="gibbonPersonIndex", columns={"gibbonPersonID","gibbonSchoolYearID"})})
  */
 class StudentEnrolment
 {
@@ -44,7 +44,7 @@ class StudentEnrolment
     /**
      * @var AcademicYear|null
      * @ORM\ManyToOne(targetEntity="Kookaburra\SchoolAdmin\Entity\AcademicYear")
-     * @ORM\JoinColumn(name="AcademicYearID", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="gibbonSchoolYearID", referencedColumnName="id", nullable=false)
      *
      */
     private $academicYear;

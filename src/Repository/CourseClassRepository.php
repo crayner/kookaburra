@@ -55,6 +55,7 @@ class CourseClassRepository extends ServiceEntityRepository
     /**
      * findAccessibleClasses
      * @param AcademicYear $academicYear
+     * @param string $classTitle
      * @return mixed
      */
     public function findAccessibleClasses(AcademicYear $academicYear, string $classTitle)
