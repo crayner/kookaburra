@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9d79a1ed1599441d8a813e08b2b29a2",
+    "content-hash": "477e76c54e4b20e6de24aca0a709ecfd",
     "packages": [
         {
             "name": "aura/sqlquery",
@@ -1878,12 +1878,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-activities.git",
-                "reference": "78c00822146d9aa48b6fd749f66c82e6bb3fb52a"
+                "reference": "7fed3498dd335601fb30ac23c614bd9d38efdc3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-activities/zipball/78c00822146d9aa48b6fd749f66c82e6bb3fb52a",
-                "reference": "78c00822146d9aa48b6fd749f66c82e6bb3fb52a",
+                "url": "https://api.github.com/repos/crayner/kookaburra-activities/zipball/7fed3498dd335601fb30ac23c614bd9d38efdc3b",
+                "reference": "7fed3498dd335601fb30ac23c614bd9d38efdc3b",
                 "shasum": ""
             },
             "require": {
@@ -1912,7 +1912,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-10T22:08:36+00:00"
+            "time": "2020-02-10T23:01:19+00:00"
         },
         {
             "name": "kookaburra/departments",
@@ -1920,12 +1920,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-departments.git",
-                "reference": "54a8b645502d9704b7b2be5df93f3249a68e5e25"
+                "reference": "e0d0909778b7b2d94ad77136058fa724fcf1f108"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-departments/zipball/54a8b645502d9704b7b2be5df93f3249a68e5e25",
-                "reference": "54a8b645502d9704b7b2be5df93f3249a68e5e25",
+                "url": "https://api.github.com/repos/crayner/kookaburra-departments/zipball/e0d0909778b7b2d94ad77136058fa724fcf1f108",
+                "reference": "e0d0909778b7b2d94ad77136058fa724fcf1f108",
                 "shasum": ""
             },
             "require": {
@@ -1954,20 +1954,20 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-09T00:24:53+00:00"
+            "time": "2020-02-10T22:11:31+00:00"
         },
         {
             "name": "kookaburra/library",
-            "version": "1.0.00-RC4",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-library.git",
-                "reference": "0f4864922e0ac8637d9b550e5a3105b362ef7c55"
+                "reference": "5d6da51f4327f3a7943a2d3415eb831e4f28165b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-library/zipball/0f4864922e0ac8637d9b550e5a3105b362ef7c55",
-                "reference": "0f4864922e0ac8637d9b550e5a3105b362ef7c55",
+                "url": "https://api.github.com/repos/crayner/kookaburra-library/zipball/5d6da51f4327f3a7943a2d3415eb831e4f28165b",
+                "reference": "5d6da51f4327f3a7943a2d3415eb831e4f28165b",
                 "shasum": ""
             },
             "require": {
@@ -1996,7 +1996,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2019-12-07T00:05:27+00:00"
+            "time": "2020-02-10T05:48:17+00:00"
         },
         {
             "name": "kookaburra/roll-groups",
@@ -2088,12 +2088,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-system-admin.git",
-                "reference": "08142f1b05afde3116a742953dfc3c277dbee2af"
+                "reference": "9acfb9afa2590a81b920ba332d86609b767ea3c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-system-admin/zipball/08142f1b05afde3116a742953dfc3c277dbee2af",
-                "reference": "08142f1b05afde3116a742953dfc3c277dbee2af",
+                "url": "https://api.github.com/repos/crayner/kookaburra-system-admin/zipball/9acfb9afa2590a81b920ba332d86609b767ea3c6",
+                "reference": "9acfb9afa2590a81b920ba332d86609b767ea3c6",
                 "shasum": ""
             },
             "require": {
@@ -2122,7 +2122,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-10T01:40:15+00:00"
+            "time": "2020-02-10T22:11:30+00:00"
         },
         {
             "name": "kookaburra/user-admin",
@@ -2130,12 +2130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-user-admin.git",
-                "reference": "293db6059a930f5a97646a65399f86aacc52ec9a"
+                "reference": "1647e112732c9c08d179062412e164f1072a13fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-user-admin/zipball/293db6059a930f5a97646a65399f86aacc52ec9a",
-                "reference": "293db6059a930f5a97646a65399f86aacc52ec9a",
+                "url": "https://api.github.com/repos/crayner/kookaburra-user-admin/zipball/1647e112732c9c08d179062412e164f1072a13fd",
+                "reference": "1647e112732c9c08d179062412e164f1072a13fd",
                 "shasum": ""
             },
             "require": {
@@ -2164,7 +2164,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-09T23:24:06+00:00"
+            "time": "2020-02-10T22:11:32+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -5357,23 +5357,22 @@
         },
         {
             "name": "symfony/orm-pack",
-            "version": "v1.0.7",
+            "version": "v1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/orm-pack.git",
-                "reference": "c57f5e05232ca40626eb9fa52a32bc8565e9231c"
+                "reference": "c9bcc08102061f406dc908192c0f33524a675666"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/orm-pack/zipball/c57f5e05232ca40626eb9fa52a32bc8565e9231c",
-                "reference": "c57f5e05232ca40626eb9fa52a32bc8565e9231c",
+                "url": "https://api.github.com/repos/symfony/orm-pack/zipball/c9bcc08102061f406dc908192c0f33524a675666",
+                "reference": "c9bcc08102061f406dc908192c0f33524a675666",
                 "shasum": ""
             },
             "require": {
-                "doctrine/doctrine-bundle": "^1.6.10|^2.0",
-                "doctrine/doctrine-migrations-bundle": "^1.3|^2.0",
-                "doctrine/orm": "^2.5.11",
-                "php": "^7.0"
+                "doctrine/doctrine-bundle": "*",
+                "doctrine/doctrine-migrations-bundle": "*",
+                "doctrine/orm": "*"
             },
             "type": "symfony-pack",
             "notification-url": "https://packagist.org/downloads/",
@@ -5381,7 +5380,7 @@
                 "MIT"
             ],
             "description": "A pack for the Doctrine ORM",
-            "time": "2019-10-18T05:41:09+00:00"
+            "time": "2020-02-10T18:03:48+00:00"
         },
         {
             "name": "symfony/polyfill-intl-icu",
@@ -7936,7 +7935,7 @@
         "aura/sqlquery": 20,
         "kookaburra/activities": 20,
         "kookaburra/departments": 20,
-        "kookaburra/library": 5,
+        "kookaburra/library": 20,
         "kookaburra/roll-groups": 20,
         "kookaburra/school-admin": 20,
         "kookaburra/system-admin": 20,
