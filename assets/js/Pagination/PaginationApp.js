@@ -26,11 +26,14 @@ export default class PaginationApp extends Component {
         this.contentLoader = props.contentLoader
         this.defaultFilter = props.row.defaultFilter
         this.initialFilter = props.initialFilter
+        this.initialSearch = props.initialSearch
         this.addElementRoute = props.addElementRoute
         this.draggableSort = props.draggableSort
         this.columnCount = 0
         this.storeFilterURL = props.storeFilterURL
         this.draggableRoute = props.draggableRoute
+        this.storeFilterWait = false
+
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
@@ -61,7 +64,7 @@ export default class PaginationApp extends Component {
             confirm: false,
             information: false,
             filteredContent: this.content,
-            filter: this.initialFilter,
+            filter: [],
             filterGroups: {},
             search: '',
             messages: [],
@@ -89,17 +92,35 @@ export default class PaginationApp extends Component {
             let info = {}
             info.class = 'info'
             info.message = 'Items rows can be dragged into the correct position.'
-            info.message = 'Items rows can be dragged into the correct position.'
             info.close = false
             this.setState({
                 messages: [info],
             })
         }
 
+        this.setInitialFilter()
+
+        if (this.initialSearch !== '') {
+            let x = {}
+            x.target = {}
+            x.target.value = this.initialSearch
+            this.changeSearch(x)
+        }
     }
 
     translate(id) {
         return trans(this.messages, id)
+    }
+
+    setInitialFilter() {
+        if (this.initialFilter.length > 0) {
+            this.initialFilter.map(value => {
+                let data = {}
+                data.target = {}
+                data.target.value = value
+                this.changeFilter(data)
+            })
+        }
     }
 
     loadContent() {
@@ -495,11 +516,17 @@ export default class PaginationApp extends Component {
     {
         if (null === this.storeFilterURL)
             return
+        let data = {}
+        data.filter = this.state.filter
+        data.search = this.state.search
+        this.storeFilterWait = true
         fetchJson(
             this.storeFilterURL,
-            {method: 'POST', body: JSON.stringify(this.state.filter)},
+            {method: 'POST', body: JSON.stringify(data)},
             false
-        )
+        ).then(data => {
+            this.storeFilterWait = false
+        })
     }
 
     render () {

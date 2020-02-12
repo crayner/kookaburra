@@ -70,6 +70,11 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     private $initialFilter = [];
 
     /**
+     * @var string
+     */
+    private $initialSearch = '';
+
+    /**
      * @var RequestStack
      */
     private $stack;
@@ -101,6 +106,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
 
     /**
      * ReactPaginationManager constructor.
+     * @param ScriptManager $scriptManager
      */
     public function __construct(ScriptManager $scriptManager)
     {
@@ -254,6 +260,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
             'targetElement' => $this->getTargetElement(),
             'storeFilterURL' => $this->getStoreFilterURL(),
             'initialFilter' => $this->getInitialFilter(),
+            'initialSearch' => $this->getInitialSearch(),
         ];
     }
 
@@ -382,8 +389,27 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     }
 
     /**
+     * @return string
+     */
+    public function getInitialSearch(): string
+    {
+        return $this->initialSearch;
+    }
+
+    /**
+     * InitialSearch.
+     *
+     * @param string $initialSearch
+     * @return ReactPaginationManager
+     */
+    public function setInitialSearch(string $initialSearch): ReactPaginationManager
+    {
+        $this->initialSearch = $initialSearch;
+        return $this;
+    }
+
+    /**
      * @return RequestStack
-     * @throws MissingClassException
      */
     public function getStack(): RequestStack
     {
@@ -394,6 +420,13 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
 
     /**
      * Stack.
+     *
+     * Example in services.yaml:
+     *  Kookaburra\Library\Manager\CataloguePagination:
+     *      calls:
+     *          -   method: setStack
+     *      arguments:
+     *          - '@request_stack'
      *
      * @param RequestStack $stack
      * @return ReactPaginationManager
@@ -407,7 +440,6 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     /**
      * getRequest
      * @return Request|null
-     * @throws MissingClassException
      */
     private function getRequest(): Request
     {
@@ -417,7 +449,6 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     /**
      * getSession
      * @return SessionInterface
-     * @throws MissingClassException
      */
     private function getSession(): SessionInterface
     {
@@ -427,14 +458,16 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     /**
      * readInitialFilter
      * @return array
-     * @throws MissingClassException
      */
     public function readInitialFilter(): array
     {
         $session = $this->getSession();
         $name = StringHelper::toSnakeCase(basename(get_class($this)));
-        if ($session->has($name))
-            $this->setInitialFilter($session->get($name));
+        if ($session->has($name)) {
+            $data = $session->get($name);
+            $this->setInitialFilter(isset($data['filter']) ? $data['filter'] : []);
+            $this->setInitialSearch(isset($data['search']) ? $data['search'] : '');
+        }
         return $this->getInitialFilter();
     }
 

@@ -145,7 +145,7 @@ class PaginationColumn
      * @param bool $sort
      * @return PaginationColumn
      */
-    public function setSort(bool $sort): PaginationColumn
+    public function setSort(bool $sort = true): PaginationColumn
     {
         $this->sort = $sort;
         return $this;
@@ -245,9 +245,9 @@ class PaginationColumn
      * @param bool $search
      * @return PaginationColumn
      */
-    public function setSearch(bool $search): PaginationColumn
+    public function setSearch(bool $search = true): PaginationColumn
     {
-        $this->search = $search;
+        $this->search = $search ?: true;
         return $this;
     }
 
