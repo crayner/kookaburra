@@ -39,7 +39,7 @@ class PaginationAction
     /**
      * @var string
      */
-    private $aClass;
+    private $aClass = '';
 
     /**
      * @var string
@@ -60,6 +60,14 @@ class PaginationAction
      * @var null|string
      */
     private $displayWhen;
+
+    /**
+     * PaginationAction constructor.
+     */
+    public function __construct()
+    {
+        $this->setAClass('');
+    }
 
     /**
      * @return string
@@ -161,6 +169,10 @@ class PaginationAction
         return $this;
     }
 
+    /**
+     * toArray
+     * @return array
+     */
     public function toArray() {
        return [
            'spanClass' => $this->getSpanClass(),
