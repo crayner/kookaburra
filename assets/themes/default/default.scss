@@ -1523,17 +1523,13 @@ tr.break .h3 {
             width: $i * 5 * 1%;
         }
     }
+    @for $i from 1 through 2 {
+        .widthMax#{$i * 33} {
+            width: $i * 33 * 1%;
+        }
+    }
 }
 
-@include widthMax(90);
-@include widthMax(80);
-@include widthMax(75);
-@include widthMax(70);
-@include widthMax(60);
-@include widthMax(50);
-@include widthMax(40);
-@include widthMax(30);
-@include widthMax(25);
-@include widthMax(20);
-@include widthMax(10);
+@include widthMax(5)
+
 

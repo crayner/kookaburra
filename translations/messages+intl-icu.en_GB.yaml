@@ -1115,3 +1115,10 @@ Installation: Installation
 Foreign Constraint: Foreign Constraint
 Core: Core
 'Installation completed and database created.': 'Installation completed and database created.'
+Mon: Mon
+Tue: Tue
+Wed: Wed
+Thu: Thu
+Fri: Fri
+Sat: Sat
+Sun: Sun

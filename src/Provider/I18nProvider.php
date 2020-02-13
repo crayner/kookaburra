@@ -17,7 +17,9 @@ namespace App\Provider;
 
 use App\Entity\I18n;
 use App\Manager\Traits\EntityTrait;
+use App\Util\GlobalHelper;
 use Gibbon\Contracts\Services\Session;
+use Kookaburra\UserAdmin\Util\UserHelper;
 
 class I18nProvider implements EntityProviderInterface
 {
@@ -27,6 +29,11 @@ class I18nProvider implements EntityProviderInterface
      * @var string
      */
     private $entityName = I18n::class;
+
+    /**
+     * @var string|null
+     */
+    private $datePHPFormat;
 
     /**
      * setLanguageSession
@@ -71,5 +78,20 @@ class I18nProvider implements EntityProviderInterface
                 $result[$i18n->getName()] = $i18n->getId();
 
         return $result;
+    }
+
+    /**
+     * getDatePHPFormat
+     */
+    public function getDatePHPFormat()
+    {
+        if (null === $this->datePHPFormat)
+        {
+            $person = UserHelper::getCurrentUser();
+            $i18n = $person->getI18nPersonal() ?: $this->getRepository()->findOneBy(['code' => GlobalHelper::hasParam('locale') ? GlobalHelper::getParam('locale', 'en_GB') : 'en_GB']);
+            $this->datePHPFormat = $i18n ? $i18n->getDateFormatPHP() : $this->getRepository()->findOneBy(['code' => 'en_GB'])->getDateFormatPHP();
+        }
+
+        return $this->datePHPFormat ?: 'd M/Y';
     }
 }

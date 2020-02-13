@@ -331,7 +331,7 @@ input.button, a.button, button.button {
     background: #fff;
     border-radius: 5px;
     width: 700px;
-    height: 300px;
+    max-height: 500px;
     position: relative;
     transition: all 5s ease-in-out;
 }
