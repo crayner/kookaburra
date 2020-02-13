@@ -16,7 +16,6 @@
 namespace App\Manager;
 
 use App\Entity\Setting;
-use App\Exception\MissingClassException;
 use App\Manager\Entity\PaginationRow;
 use App\Provider\ProviderFactory;
 use App\Util\StringHelper;
@@ -29,10 +28,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
- * Class ReactPaginationManager
+ * Class AbstractPaginationManager
  * @package App\Manager
  */
-abstract class ReactPaginationManager implements ReactPaginationInterface
+abstract class AbstractPaginationManager implements PaginationInterface
 {
     /**
      * @var integer
@@ -105,7 +104,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     private $addElementRoute = '';
 
     /**
-     * ReactPaginationManager constructor.
+     * AbstractPaginationManager constructor.
      * @param ScriptManager $scriptManager
      */
     public function __construct(ScriptManager $scriptManager)
@@ -128,9 +127,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * PageMax.
      *
      * @param int $pageMax
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setPageMax(int $pageMax): ReactPaginationManager
+    public function setPageMax(int $pageMax): AbstractPaginationManager
     {
         $this->pageMax = $pageMax;
         return $this;
@@ -148,9 +147,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * Row.
      *
      * @param PaginationRow $row
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setRow(PaginationRow $row): ReactPaginationManager
+    public function setRow(PaginationRow $row): AbstractPaginationManager
     {
         $this->row = $row;
         return $this;
@@ -168,9 +167,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * Content.
      *
      * @param array $content
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setContent(array $content): ReactPaginationManager
+    public function setContent(array $content): AbstractPaginationManager
     {
         $this->content = $content;
         return $this->translateContent();
@@ -178,10 +177,10 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
 
     /**
      * translateContent
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      * @throws InvalidOptionsException
      */
-    private function translateContent(): ReactPaginationManager
+    private function translateContent(): AbstractPaginationManager
     {
         $this->execute();
         foreach($this->getContent() as $q=>$content) {
@@ -274,9 +273,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
 
     /**
      * setPaginationScript
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setPaginationScript(): ReactPaginationManager
+    public function setPaginationScript(): AbstractPaginationManager
     {
         $this->getScriptManager()->addAppProp('pagination', $this->toArray());
         return $this;
@@ -318,9 +317,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * TargetElement.
      *
      * @param string $targetElement
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setTargetElement(string $targetElement): ReactPaginationManager
+    public function setTargetElement(string $targetElement): AbstractPaginationManager
     {
         $this->targetElement = $targetElement;
         return $this;
@@ -339,7 +338,7 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      *
      * Url of the content loader
      * @param bool|string $contentLoader
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
     public function setContentLoader(string $contentLoader)
     {
@@ -359,9 +358,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * StoreFilterURL.
      *
      * @param string|null $storeFilterURL
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setStoreFilterURL(?string $storeFilterURL): ReactPaginationManager
+    public function setStoreFilterURL(?string $storeFilterURL): AbstractPaginationManager
     {
         $this->storeFilterURL = $storeFilterURL;
         $this->readInitialFilter();
@@ -381,9 +380,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * InitialFilter.
      *
      * @param array $initialFilter
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setInitialFilter(array $initialFilter): ReactPaginationManager
+    public function setInitialFilter(array $initialFilter): AbstractPaginationManager
     {
         $this->initialFilter = $initialFilter;
         return $this;
@@ -401,9 +400,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * InitialSearch.
      *
      * @param string $initialSearch
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setInitialSearch(string $initialSearch): ReactPaginationManager
+    public function setInitialSearch(string $initialSearch): AbstractPaginationManager
     {
         $this->initialSearch = $initialSearch;
         return $this;
@@ -430,9 +429,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      *          - '@request_stack'
      *
      * @param RequestStack $stack
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setStack(RequestStack $stack): ReactPaginationManager
+    public function setStack(RequestStack $stack): AbstractPaginationManager
     {
         $this->stack = $stack;
         return $this;
@@ -475,9 +474,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
     /**
      * writeInitialFilter
      * @param array $filter
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function writeInitialFilter(array $filter): ReactPaginationManager
+    public function writeInitialFilter(array $filter): AbstractPaginationManager
     {
         $session = $this->getSession();
         $name = StringHelper::toSnakeCase(basename(get_class($this)));
@@ -499,9 +498,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * SortList.
      *
      * @param bool $sortList
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setSortList(bool $sortList): ReactPaginationManager
+    public function setSortList(bool $sortList): AbstractPaginationManager
     {
         $this->sortList = $sortList;
         return $this;
@@ -519,9 +518,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * DraggableSort.
      *
      * @param bool $draggableSort
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setDraggableSort(bool $draggableSort): ReactPaginationManager
+    public function setDraggableSort(bool $draggableSort): AbstractPaginationManager
     {
         $this->draggableSort = $draggableSort;
         return $this;
@@ -539,9 +538,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * DraggableRoute.
      *
      * @param string $draggableRoute
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setDraggableRoute(string $draggableRoute): ReactPaginationManager
+    public function setDraggableRoute(string $draggableRoute): AbstractPaginationManager
     {
         $this->draggableRoute = $draggableRoute;
         return $this;
@@ -559,9 +558,9 @@ abstract class ReactPaginationManager implements ReactPaginationInterface
      * AddElementRoute.
      *
      * @param string $addElementRoute
-     * @return ReactPaginationManager
+     * @return AbstractPaginationManager
      */
-    public function setAddElementRoute(string $addElementRoute): ReactPaginationManager
+    public function setAddElementRoute(string $addElementRoute): AbstractPaginationManager
     {
         $this->addElementRoute = $addElementRoute;
         return $this;

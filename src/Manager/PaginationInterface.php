@@ -16,13 +16,13 @@
 namespace App\Manager;
 
 
-interface ReactPaginationInterface
+interface PaginationInterface
 {
     /**
      * execute
      *
      * Place all the logic to build your page here.
-     * @return ReactPaginationInterface
+     * @return PaginationInterface
      */
-    public function execute(): ReactPaginationInterface;
+    public function execute(): PaginationInterface;
 }
