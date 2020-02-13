@@ -20,7 +20,7 @@
         {{ sidebarContents|default('')|raw }}
     </div>
     {% endif %}
-    
+
     {% if menuModule is defined and menuModule|length > 0 %}
         <nav id="navigation" class="w-full hidden absolute top-0 z-40 mt-24 sm:mt-12 -ml-6 px-6{{ sidebar is not defined or not sidebar ? ' lg:block lg:static lg:p-0 lg:my-6 lg:mx-0' : '' }}">
 
