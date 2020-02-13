@@ -315,6 +315,7 @@ input.button, a.button, button.button {
     transition: opacity 500ms;
     visibility: hidden;
     opacity: 0;
+    z-index: 999;
 }
 .overlay:target {
     visibility: visible;
@@ -330,10 +331,11 @@ input.button, a.button, button.button {
     padding: 20px;
     background: #fff;
     border-radius: 5px;
-    width: 700px;
+    width: 640px;
     max-height: 500px;
     position: relative;
     transition: all 5s ease-in-out;
+    z-index: 1000;
 }
 .popup .close {
     position: absolute;

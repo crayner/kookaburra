@@ -127,6 +127,10 @@ div.sidebarExtra h2 {
     margin-bottom: 0;
 }
 
+#sidebar {
+    z-index: 50;
+}
+
 h3 {
     font-size: 13pt;
 }

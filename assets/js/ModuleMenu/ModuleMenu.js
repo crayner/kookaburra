@@ -72,6 +72,7 @@ export default class ModuleMenu extends Component {
     }
 
     render () {
+        console.log(this)
         return (<section>
             <button className={ this.state.buttonClass } onClick={this.toggleButton}>
                 <span className="text-gray-600 text-sm sm:text-xs font-bold uppercase" title={ this.props.trans_module_menu }>{ this.props.trans_module_menu }&nbsp;<span className="fas fa-bars fa-fw"></span></span>

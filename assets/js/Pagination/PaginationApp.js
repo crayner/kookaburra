@@ -156,6 +156,9 @@ export default class PaginationApp extends Component {
 
     displayInformation(path, content) {
         this.path = path
+        this.setState({
+            information: {header: this.translate('Loading') + '...', 'content': ''},
+        })
         fetchJson(
             path,
             {},
