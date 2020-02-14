@@ -184,7 +184,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
     {
         $this->execute();
         foreach($this->getContent() as $q=>$content) {
-            $this->content[$q] = gettype($content) === 'object' ? $content->toArray() : $content;
+            $this->content[$q] = gettype($content) === 'object' ? array_merge(['id' => $content->getId()], $content->toArray()) : $content;
             foreach($this->getRow()->getActions() as $action)
             {
                 $action->setTitle(TranslationsHelper::translate($action->getTitle()));
