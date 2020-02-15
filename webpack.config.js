@@ -20,6 +20,7 @@ Encore
     .addEntry('fastFinder', './assets/js/fastFinder.js')
     .addEntry('idleTimeout', './assets/js/idleTimeout.js')
     .addEntry('menuModule', './assets/js/menuModule.js')
+    .addEntry('headerMenu', './assets/js/headerMenu.js')
     .addEntry('notificationTray', './assets/js/notificationTray.js')
     .addEntry('app', './assets/js/app.js')
     .addEntry('default', './assets/themes/default/default.js')

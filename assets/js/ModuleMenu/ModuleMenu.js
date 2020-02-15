@@ -72,15 +72,17 @@ export default class ModuleMenu extends Component {
     }
 
     render () {
-        return (<section>
-            <button className={ this.state.buttonClass } onClick={this.toggleButton}>
-                <span className="text-gray-600 text-sm sm:text-xs font-bold uppercase" title={ this.props.trans_module_menu }>{ this.props.trans_module_menu }&nbsp;<span className="fas fa-bars fa-fw"></span></span>
-            </button>
+        return (
+            <section id={'react-navigation'}>
+                <button className={ this.state.buttonClass } onClick={this.toggleButton}>
+                    <span className="text-gray-600 text-sm sm:text-xs font-bold uppercase" title={ this.props.trans_module_menu }>{ this.props.trans_module_menu }&nbsp;<span className="fas fa-bars fa-fw"></span></span>
+                </button>
 
-            <nav id="navigation" className={ this.state.navigationClass }>
-                { this.menuGroups() }
-            </nav>
-        </section>)
+                <nav id="navigation" className={ this.state.navigationClass }>
+                    { this.menuGroups() }
+                </nav>
+            </section>
+        )
     }
 }
 

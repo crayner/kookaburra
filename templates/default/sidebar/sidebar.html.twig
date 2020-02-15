@@ -1,15 +1,17 @@
 {% if getSidebar().valid %}
     {% set sc = getSidebar().getContent(true) %}
     <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l{{ getSidebar().hidden ? ' hidden' : '' }}">
-        {% for position in getSidebar().positionList %}
-            {% if getSidebar().hasSectionContent(position) %}
-                <section>
-                    {% for section in getSidebar().getSectionContent(position) %}
-                        {{ section.render(sidebarOptions|default({}))|raw }}
-                    {% endfor %}
-                </section>
-            {% endif %}
-        {% endfor %}
+        <div id="sidebarContent">
+            {% for position in getSidebar().positionList %}
+                {% if getSidebar().hasSectionContent(position) %}
+                    <section>
+                        {% for section in getSidebar().getSectionContent(position) %}
+                            {{ section.render(sidebarOptions|default({}))|raw }}
+                        {% endfor %}
+                    </section>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
     <br style="clear: both">
 {% endif %}

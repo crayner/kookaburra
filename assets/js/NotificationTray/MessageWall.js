@@ -16,7 +16,7 @@ export default function MessageWall(props) {
 
     return (
         <div id="messageWall" className="relative">
-            <a href={'#'} title={messengerTitle} className={y === 0 ? 'inactive inline-block relative mr-4 fa-layers fa-fw fa-3x' : 'inline-block relative mr-4 fa-layers fa-fw fa-3x'} onClick={showMessenger}>
+            <a href={'#'} title={messengerTitle} className={y === 0 ? 'inactive inline-block relative mr-4 fa-layers fa-fw fa-2x' : 'inline-block relative mr-4 fa-layers fa-fw fa-3x'} onClick={showMessenger}>
                 {y === 0 ?
                     <span className={'far fa-comment-dots text-gray-500'}>
                     </span>

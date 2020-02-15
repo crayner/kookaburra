@@ -16,7 +16,7 @@ export default function Notifications(props) {
 
     return (
         <div id={'notifications'}>
-            <a className={y === 0 ? 'inactive inline-block relative mr-4 fa-layers fa-fw fa-3x' : 'inline-block relative mr-4 fa-layers fa-fw fa-3x'} title={notificationTitle} onClick={showNotifications} >
+            <a className={y === 0 ? 'inactive inline-block relative mr-4 fa-layers fa-fw fa-2x' : 'inline-block relative mr-4 fa-layers fa-fw fa-3x'} title={notificationTitle} onClick={showNotifications} >
                 {y === 0 ?
                     <span className={'far fa-sticky-note text-gray-500'}>
                     </span>
