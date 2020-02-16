@@ -17,6 +17,9 @@ namespace App\Twig\Sidebar;
 
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class Flash
@@ -53,9 +56,13 @@ class Flash implements SidebarContentInterface
      */
     public function render(array $options): string
     {
-        return $this->getTwig()->render('components/sidebar/flashes.html.twig', [
-            'close_message' => $this->isCloseMessage(),
-        ]);
+        try {
+            return $this->getTwig()->render('components/sidebar/flashes.html.twig', [
+                'close_message' => $this->isCloseMessage(),
+            ]);
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            return '';
+        }
     }
 
     /**
@@ -76,5 +83,14 @@ class Flash implements SidebarContentInterface
     {
         $this->closeMessage = $closeMessage;
         return $this;
+    }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return ['content' => $this->render([])];
     }
 }

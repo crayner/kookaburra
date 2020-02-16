@@ -94,4 +94,17 @@ class I18nProvider implements EntityProviderInterface
 
         return $this->datePHPFormat ?: 'd M/Y';
     }
+
+    /**
+     * getSelectedLanguages
+     * @return array
+     */
+    public function getSelectedLanguages(): array
+    {
+        $result = [];
+        foreach($this->getRepository()->findByActive() as $lang)
+            $result[$lang->getName()] = $lang->getId();
+        return $result;
+    }
+
 }

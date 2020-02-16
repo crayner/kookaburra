@@ -15,6 +15,7 @@
 
 namespace App\Twig;
 
+use App\Manager\ScriptManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Twig\Environment;
 
@@ -40,11 +41,6 @@ class SidebarContent
     private $noSidebar = false;
 
     /**
-     * @var bool
-     */
-    private $hidden = false;
-
-    /**
      * @var Environment
      */
     private $twig;
@@ -62,12 +58,18 @@ class SidebarContent
     ];
 
     /**
+     * @var ScriptManager
+     */
+    private $scriptManager;
+
+    /**
      * SidebarContent constructor.
      * @param Environment $twig
      */
-    public function __construct(Environment $twig)
+    public function __construct(Environment $twig, ScriptManager $scriptManager)
     {
         $this->twig = $twig;
+        $this->scriptManager = $scriptManager;
     }
 
     /**
@@ -79,13 +81,18 @@ class SidebarContent
     }
 
     /**
+     * getContent
+     * @param bool $refresh
      * @return ArrayCollection
      */
     public function getContent(bool $refresh = false): ArrayCollection
     {
         $this->content = $this->content ?: new ArrayCollection();
         if ($this->content->count() > 0 && (!$this->isContentSorted() || $refresh)) {
-            $iterator = $this->content->getIterator();
+            try {
+                $iterator = $this->content->getIterator();
+            } catch (\Exception $e) {
+            }
             $iterator->uasort(
                 function ($a, $b) {
                     $ap = str_pad(1000 - $a->getPriority(), 5, '0', STR_PAD_LEFT);
@@ -231,26 +238,6 @@ class SidebarContent
     }
 
     /**
-     * @return bool
-     */
-    public function isHidden(): bool
-    {
-        return $this->hidden;
-    }
-
-    /**
-     * Hidden.
-     *
-     * @param bool $hidden
-     * @return SidebarContent
-     */
-    public function setHidden(bool $hidden): SidebarContent
-    {
-        $this->hidden = $hidden;
-        return $this;
-    }
-
-    /**
      * getTwig
      * @return Environment
      */
@@ -280,5 +267,55 @@ class SidebarContent
         }
         $this->minimised = $minimised;
         return $this;
+    }
+
+    /**
+     * writeScript
+     */
+    public function writeScript()
+    {
+        $this->scriptManager->addAppProp('sideBar', $this->toArray());
+    }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $content = [];
+        $result = [];
+
+        foreach($this->sortContent()->toArray() as $name=>$element)
+        {
+            $content[$name] = array_merge($element->toArray(), $element->getCoreArray());
+        }
+        $result['content'] = $content;
+        $result['minimised'] = $this->isMinimised();
+        return $result;
+    }
+
+    /**
+     * sortContent
+     * @return ArrayCollection
+     */
+    private function sortContent(): ArrayCollection
+    {
+        if ($this->isContentSorted())
+            return $this->getContent();
+        try {
+            $iterator = $this->getContent()->getIterator();
+        } catch (\Exception $e) {
+            return $this->getContent();
+        }
+        $iterator->uasort(
+            function ($a, $b) {
+                return $a->sortResult() > $b->sortResult() ? -1 : 1;
+            }
+        );
+
+        $this->setContent(new ArrayCollection(iterator_to_array($iterator, false)));
+        $this->setContentSorted(true);
+        return $this->getContent();
     }
 }

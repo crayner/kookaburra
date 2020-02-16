@@ -259,4 +259,14 @@ class Photo implements SidebarContentInterface
             return false !== file_get_contents($url);
         }
     }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        dd($this);
+        return [];
+    }
 }

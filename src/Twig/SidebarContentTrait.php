@@ -29,6 +29,11 @@ trait SidebarContentTrait
     private $twig;
 
     /**
+     * @var array|string|null
+     */
+    private $content;
+
+    /**
      * @return Environment
      */
     public function getTwig(): Environment
@@ -119,5 +124,47 @@ trait SidebarContentTrait
             return $this->name;
 
         return basename(__CLASS__);
+    }
+
+    /**
+     * @return array|string|null
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Content.
+     *
+     * @param array|string|null $content
+     * @return SidebarContentTrait
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    /**
+     * getCoreArray
+     * @return array
+     */
+    public function getCoreArray(): array
+    {
+        return [
+            'position' => $this->getPosition(),
+            'priority' => $this->getPriority(),
+            'name' => $this->getName(),
+        ];
+    }
+
+    /**
+     * sortResult
+     * @return string
+     */
+    public function sortResult()
+    {
+        return $this->getPosition() . str_pad($this->getPriority(), 7, '0', STR_PAD_LEFT);
     }
 }

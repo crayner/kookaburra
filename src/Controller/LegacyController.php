@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Hook;
 use App\Entity\I18n;
+use App\Entity\Setting;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Flash;
+use App\Twig\Sidebar\Register;
 use App\Twig\SidebarContent;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
@@ -78,6 +80,9 @@ class LegacyController extends AbstractController
             $this->addFlash('warning', 'Your session expired, so you were automatically logged out of the system.');
 
         $sidebar->addContent(new Flash());
+
+        if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
+            $sidebar->addContent(new Register());
 
         return $this->render('default/welcome.html.twig',
             [

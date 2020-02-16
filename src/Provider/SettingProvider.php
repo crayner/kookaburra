@@ -26,7 +26,6 @@ use App\Manager\Traits\EntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Services\Format;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;

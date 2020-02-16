@@ -53,4 +53,14 @@ class MySQLSettingWarning implements SidebarContentInterface
     {
         return $this->getTwig()->render('installation/sql_setting_warning.html.twig', $options);
     }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        dd($this);
+        return [];
+    }
 }

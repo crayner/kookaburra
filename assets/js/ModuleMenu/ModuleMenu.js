@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react'
-import MenuItems from "./MenuItems"
+import MenuItems from "../SideBar/MenuItems"
 import PropTypes from 'prop-types'
 
 export default class ModuleMenu extends Component {

@@ -15,8 +15,19 @@
 
 namespace App\Twig\Sidebar;
 
+use App\Entity\I18n;
+use App\Entity\Setting;
+use App\Provider\ProviderFactory;
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
+use App\Util\ImageHelper;
+use App\Util\TranslationsHelper;
+use App\Util\UrlGeneratorHelper;
+use Kookaburra\SchoolAdmin\Entity\AcademicYear;
+use Kookaburra\SchoolAdmin\Util\AcademicYearHelper;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class Login
@@ -32,6 +43,53 @@ class Login implements SidebarContentInterface
 
     public function render(array $options): string
     {
-        return $this->getTwig()->render('default/sidebar/login.html.twig');
+        try {
+            return trim($this->getTwig()->render('default/sidebar/login.html.twig'));
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            return '';
+        }
+    }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $lang = ProviderFactory::create(I18n::class)->findOneBy(['systemDefault' => 'Y']);
+        return [
+            'googleOAuth' => $this->getGoogleOAuth(),
+            'login' => [
+                'resetPasswordURL' => UrlGeneratorHelper::getUrl('legacy', ['q' => 'passwordReset.php']),
+                'academicYears' => ProviderFactory::create(AcademicYear::class)->getSelectList(),
+                'academicYear' => AcademicYearHelper::getCurrentAcademicYear()->getId(),
+                'languages' => ProviderFactory::create(I18n::class)->getSelectedLanguages(),
+                'language' => $lang ? $lang->getId() : 0,
+            ],
+            'translations' => $this->getTranslations(),
+        ];
+    }
+
+    private function getGoogleOAuth(): array
+    {
+        return [
+            'on' => ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('System', 'googleOAuth'),
+            'login_img' => ImageHelper::getAbsoluteImageURL('File','/themes/' . ProviderFactory::create(Setting::class)->getSession()->get('gibbonThemeName','Default') .'/img/google-login.svg'),
+            'googleOAuthURL' => UrlGeneratorHelper::getUrl('google_oauth'),
+        ];
+    }
+
+    private function getTranslations(): array
+    {
+        return [
+            'Login' => TranslationsHelper::translate('Login', [], 'UserAdmin'),
+            'Username or email' => TranslationsHelper::translate('Username or email', [], 'UserAdmin'),
+            'Password' => TranslationsHelper::translate('Password', [], 'UserAdmin'),
+            'Options' => TranslationsHelper::translate('Options', [], 'UserAdmin'),
+            'Forgot Password' => TranslationsHelper::translate('Forgot Password', [], 'UserAdmin'),
+            'Login with Google' => TranslationsHelper::translate('Login with Google', [], 'UserAdmin'),
+            'Language' => TranslationsHelper::translate('Language', [], 'UserAdmin'),
+            'Academic Year' => TranslationsHelper::translate('Academic Year', [], 'SchoolAdmin'),
+        ];
     }
 }

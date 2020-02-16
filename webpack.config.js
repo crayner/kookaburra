@@ -19,7 +19,7 @@ Encore
      */
     .addEntry('fastFinder', './assets/js/fastFinder.js')
     .addEntry('idleTimeout', './assets/js/idleTimeout.js')
-    .addEntry('menuModule', './assets/js/menuModule.js')
+    .addEntry('sideBar', './assets/js/sideBar.js')
     .addEntry('headerMenu', './assets/js/headerMenu.js')
     .addEntry('notificationTray', './assets/js/notificationTray.js')
     .addEntry('app', './assets/js/app.js')

@@ -35,11 +35,6 @@ class ModuleMenu implements SidebarContentInterface
     use SidebarContentTrait;
 
     /**
-     * @var ScriptManager
-     */
-    private $scriptManager;
-
-    /**
      * @var TranslatorInterface
      */
     private $translator;
@@ -107,31 +102,11 @@ class ModuleMenu implements SidebarContentInterface
             $data = ['data' => $menuModuleItems];
             $data['showSidebar'] = $this->isShowSidebar();
             $data['trans_module_menu'] = $this->translate('Module Menu');
-            $this->getScriptManager()->addAppProp('menuModule', $data);
+            $this->setContent($data);
         } else {
             $request->getSession()->forget(['menuModuleItems', 'menuModuleName']);
         }
 
-        return $this;
-    }
-
-    /**
-     * @return ScriptManager
-     */
-    public function getScriptManager(): ScriptManager
-    {
-        return $this->scriptManager;
-    }
-
-    /**
-     * ScriptManager.
-     *
-     * @param ScriptManager $scriptManager
-     * @return ModuleMenu
-     */
-    public function setScriptManager(ScriptManager $scriptManager): ModuleMenu
-    {
-        $this->scriptManager = $scriptManager;
         return $this;
     }
 
@@ -363,5 +338,14 @@ class ModuleMenu implements SidebarContentInterface
     {
         $this->twig = $twig;
         return $this;
+    }
+
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->getContent();
     }
 }

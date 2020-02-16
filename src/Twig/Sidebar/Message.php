@@ -107,4 +107,13 @@ class Message implements SidebarContentInterface
         return $this;
     }
 
+    /**
+     * toArray
+     * @return array
+     */
+    public function toArray(): array
+    {
+        dd($this);
+        return [];
+    }
 }

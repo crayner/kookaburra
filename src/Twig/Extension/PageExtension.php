@@ -330,24 +330,6 @@ class PageExtension extends AbstractExtension
     }
 
     /**
-     * getAcademicYears
-     * @return array
-     */
-    public function getAcademicYears(): array
-    {
-        return ProviderFactory::getRepository(AcademicYear::class)->findBy([], ['firstDay' => 'ASC', 'lastDay' => 'ASC']);
-    }
-
-    /**
-     * getActiveLangauges
-     * @return array
-     */
-    public function getActiveLanguages(): array
-    {
-        return ProviderFactory::getRepository(I18n::class)->findByActive();
-    }
-
-    /**
      * getBackgroundImage
      * @param string $default
      * @return string

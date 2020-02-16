@@ -2,18 +2,19 @@
 /**
  * Created by PhpStorm.
  *
- * kookaburra
- * (c) 2019 Craig Rayner <craig@craigrayner.com>
+ * Kookaburra
+ * (c) 2020 Craig Rayner <craig@craigrayner.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
  * User: craig
- * Date: 8/11/2019
- * Time: 16:28
+ * Date: 16/02/2020
+ * Time: 16:06
  */
 
 namespace App\Twig\Sidebar;
+
 
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
@@ -21,11 +22,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-/**
- * Class Welcome
- * @package App\Twig
- */
-class Welcome implements SidebarContentInterface
+class Register implements SidebarContentInterface
 {
     use SidebarContentTrait;
 
@@ -36,12 +33,13 @@ class Welcome implements SidebarContentInterface
 
     /**
      * render
+     * @param array $options
      * @return string
      */
     public function render(array $options): string
     {
         try {
-            return $this->getTwig()->render('installation/welcome.html.twig', $options);
+            return $this->getTwig()->render('default/sidebar/register.html.twig');
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
             return '';
         }
@@ -53,7 +51,6 @@ class Welcome implements SidebarContentInterface
      */
     public function toArray(): array
     {
-        dd($this);
-        return [];
+        return ['content' => $this->render([])];
     }
 }
