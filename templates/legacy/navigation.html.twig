@@ -27,7 +27,7 @@
             <ul class="w-full bg-white border list-none column-1 sm:column-2 md:column-3 m-0 pt-6 px-6 shadow-lg{{ sidebar is not defined or not sidebar ? ' lg:bg-transparent lg:border-0 lg:column-1 lg:shadow-none lg:p-0' : '' }}">
 
                 {% for categoryName, items in menuModule %}
-                    <li class="w-full column-no-break p-0 ">
+                    <li class="column-no-break p-0 ">
                         <h5 class="m-0 mb-1 text-xs pb-0 ">{{ __(categoryName, (items|first).textDomain) }}</h5>
                         <ul class="list-none m-0 mb-6">
                         {% for item in items %}

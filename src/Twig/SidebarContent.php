@@ -220,13 +220,15 @@ class SidebarContent
         return $this;
     }
 
+    private $valid = false;
     /**
      * isValid
      * @return bool
      */
     public function isValid(): bool
     {
-        return ! $this->isNoSidebar() && $this->getContent()->count() > 0;
+        $this->valid = (! $this->isNoSidebar() && $this->getContent()->count() > 0);
+        return $this->valid;
     }
 
     /**

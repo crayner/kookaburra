@@ -141,6 +141,7 @@ class PageExtension extends AbstractExtension
             new TwigFunction('minorLinks', [$this, 'minorLinks']),
             new TwigFunction('notificationTray', [$this, 'notificationTray']),
             new TwigFunction('getSidebar', [$this, 'getSidebar']),
+            new TwigFunction('getSideBar', [$this, 'getSidebar']),
             new TwigFunction('getMainMenu', [$this, 'getMainMenu']),
             new TwigFunction('getModuleMenu', [$this, 'getModuleMenu']),
             new TwigFunction('content', [$this, 'content']),
@@ -324,7 +325,6 @@ class PageExtension extends AbstractExtension
      */
     public function pageManager(string $name)
     {
-        dump($name);
         if (property_exists($this, $name))
             return $this->$name;
         throw new MissingClassException(sprintf('The class "%s" was not available to the "%s" twig extension.', $name, get_class($this)));

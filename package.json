@@ -41,6 +41,7 @@
         "react-idle-timer": "^4.2.8",
         "react-image": "^2.2.1",
         "react-select": "^3.0.4",
+        "react-sidebar": "^3.0.2",
         "react-tabs": "^3.0.0",
         "serialize-javascript": "^2.1.1",
         "tailwindcss": "^1.0.5",

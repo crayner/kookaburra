@@ -70,6 +70,9 @@ class LegacyController extends AbstractController
 
     /**
      * @Route("/home/", name="home")
+     * @param Request $request
+     * @param SidebarContent $sidebar
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function home(Request $request, SidebarContent $sidebar)
     {

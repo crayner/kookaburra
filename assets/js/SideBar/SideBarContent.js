@@ -9,7 +9,6 @@ import ModuleMenu from "./ModuleMenuApp"
 export default function SideBarContent(props) {
     const {
         content,
-        showComponent
     } = props
 
     let result = []
@@ -20,7 +19,7 @@ export default function SideBarContent(props) {
             result.push(<Login login={item.login} googleOAuth={item.googleOAuth} translations={item.translations}
                                key={'Login'}/>)
         } else if (item.name === 'Module Menu') {
-            result.push(<ModuleMenu data={item.data} key={'Module Menu'} showComponent={showComponent} />)
+            result.push(<ModuleMenu data={item.data} key={'Module Menu'} />)
         } else if (item.name !== 'Module Menu' && item.content !== '') {
             let x = Parser(item.content)
             if (typeof x._owner === 'object') {
@@ -36,10 +35,9 @@ export default function SideBarContent(props) {
         }
     })
 
-    return (<div className={showComponent}>{result}</div>)
+    return (<div style={{maxWidth: '220px'}}>{result}</div>)
 }
 
 SideBarContent.propTypes = {
     content: PropTypes.object.isRequired,
-    showComponent: PropTypes.string.isRequired,
 }

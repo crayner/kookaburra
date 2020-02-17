@@ -7,7 +7,6 @@ import MenuItems from "./MenuItems"
 export default function ModuleMenu(props) {
     const {
         data,
-        showComponent
     } = props
 
     function menuGroups() {
@@ -15,9 +14,9 @@ export default function ModuleMenu(props) {
             const title = data[key][0].category
             let classList = 'w-full absolute bg-white border list-none column-1 sm:column-2 md:column-3 m-0 pt-6 px-6 shadow-lg  lg:bg-transparent lg:border-0 lg:column-1 lg:shadow-none lg:p-0'
             return (
-                <ul key={key} className={classList}>
-                    <li className="w-full column-no-break p-0 ">
-                        <h5 className="w-full column-no-break p-0 ">{ title }</h5>
+                <ul key={key} className={classList} style={{maxWidth: '220px', display: 'contents'}}>
+                    <li className="column-no-break p-0 ">
+                        <h5 className="column-no-break p-0 ">{ title }</h5>
                         <MenuItems
                             items={data[key]}
                         />
@@ -27,7 +26,7 @@ export default function ModuleMenu(props) {
         })
     }
 
-    return (<nav id="navigation" className={showComponent}>
+    return (<nav id="navigation">
             {menuGroups()}
         </nav>
     )
@@ -35,5 +34,4 @@ export default function ModuleMenu(props) {
 
 ModuleMenu.propTypes = {
     data: PropTypes.object.isRequired,
-    showComponent: PropTypes.string.isRequired,
 }

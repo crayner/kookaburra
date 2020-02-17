@@ -82,7 +82,7 @@ export default function LoginContent(props) {
                 </tr>
                 <tr className=" flex flex-col sm:flex-row justify-between content-center p-0">
                     <td className="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 right" colSpan="2">
-                        <span className="small">
+                        <span className="x-small">
                             <a className="show_hide" onClick={() => functions.showHideLogin()} href="#">{functions.translate('Options')}</a> . <a
                             href={login.resetPasswordURL}>{functions.translate('Forgot Password')}?</a></span>
                     </td>

@@ -1,8 +1,6 @@
-{% if getSidebar().valid and getSidebar().noSidebar is same as(false) and false %}
-    {% set sc = getSidebar().getContent(true) %}
-    <div id="sidebar-wrap">
-        <div id="sidebar" class="w-full lg:w-sidebar px-6 pb-6 lg:border-l{{ getSidebar().minimised ? ' hidden' : '' }}">
-        </div>
+{% dump(getSideBar()) %}
+{% if getSidebar().isValid() %}
+    {% set x = getSideBar().writeScript() %}
+    <div id="sideBarWrap">
     </div>
-    {% set x = getSidebar().writeScript() %}
 {% endif %}

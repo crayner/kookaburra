@@ -3,6 +3,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import SideBarContent from "./SideBarContent"
+import Sidebar from "react-sidebar"
+
+const mql = window.matchMedia(`(min-width: 1600px)`);
 
 export default class SideBar extends Component {
     constructor(props) {
@@ -11,70 +14,59 @@ export default class SideBar extends Component {
         this.content = props.content
         this.minimised = props.minimised
 
-        this.buttonClassShow = 'w-full flex justify-center items-center sm:w-48 bg-white border border-grey-600 border-solid p-2 mt-16 sm:mt-4 sm:absolute sm:top-0 sm:right-0 sm:mr-6 z-40 active'
-        this.buttonClassShow = this.buttonClassShow + (!this.minimised ? ' lg:hidden' : '')
-        this.sideBarClassShow = 'w-full absolute top-0 z-40 mt-24 sm:mt-12 -ml-6 px-6'
-        this.sideBarClassShow = this.sideBarClassShow + (!this.minimised ? ' lg:block lg:static lg:p-0 lg:my-6 lg:mx-0' : '')
-        this.buttonClass = 'w-full flex justify-center items-center sm:w-48 bg-white border border-grey-600 border-solid p-2 mt-16 sm:mt-4 sm:absolute sm:top-0 sm:right-0 sm:mr-6 z-40'
-        this.buttonClass = this.buttonClass + (!this.minimised ? ' lg:hidden' : '')
-        this.sideBarClass = 'w-full absolute top-0 z-40 mt-24 sm:mt-12 -ml-6 px-6 hidden lg:block lg:static lg:p-0 lg:my-6 lg:mx-0'
-
         this.state = {
-            minimised: this.minimised,
-            buttonClass: this.buttonClass,
-            sideBarClass: this.sideBarClass,
-        }
+            sidebarDocked: mql.matches,
+            sidebarOpen: false
+        };
+
+        this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
+        this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
     }
 
-    componentDidMount() {
-        if (this.state.minimised) {
-            this.setState({
-                minimised: false,
-                buttonClass: this.buttonClassShow,
-                sideBarClass: this.sideBarClassShow,
-            })
-        } else {
-            this.setState({
-                minimised: true,
-                buttonClass: this.buttonClass,
-                sideBarClass: this.sideBarClass,
-            })
-        }
+    componentWillMount() {
+        mql.addListener(this.mediaQueryChanged);
     }
 
-    toggleButton() {
-        if (!this.state.minimised) {
-            this.setState({
-                minimised: true,
-                buttonClass: this.buttonClass,
-                sideBarClass: this.sideBarClass,
-            })
-        } else {
-            this.setState({
-                minimised: false,
-                buttonClass: this.buttonClassShow,
-                sideBarClass: this.sideBarClassShow,
-            })
-        }
-        console.log(this)
+    componentWillUnmount() {
+        this.state.mql.removeListener(this.mediaQueryChanged);
     }
-    
-    getSideBarWidth()
-    {
 
-        if (this.state.minimised)
-            return 'widthZero'
-        return ''
+    onSetSidebarOpen(open) {
+        this.setState({ sidebarOpen: open });
+    }
+
+    mediaQueryChanged() {
+        this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
+    }
+
+    setButtonStyle() {
+        let x = {
+            float: 'right',
+            display: this.state.sidebarOpen || this.state.sidebarDocked ? 'none' : 'flex',
+        }
+
+        return x
     }
 
     render () {
         return (
-            <div id={'reactSideBar'}>
-                <button className={ this.state.buttonClass } onClick={() => this.toggleButton()}>
-                    <span className="text-gray-600 text-sm sm:text-xs font-bold uppercase" title={'Side Bar'}>{' Side Bar '}&nbsp;<span className="fas fa-bars fa-fw"></span></span>
-                </button>
-                <SideBarContent content={this.content} showComponent={this.state.sideBarClass}/>
-            </div>
+            <Sidebar
+                sidebar={<SideBarContent content={this.content}/>}
+                open={this.state.sidebarOpen}
+                docked={this.state.sidebarDocked}
+                onSetOpen={this.onSetSidebarOpen}
+                pullRight={true}
+                styles={{
+                    sidebar: {
+                        border: '0 solid #d2d0d0',
+                        backgroundColor: 'hsla(0,0%,100%,0.9)',
+                        width: '280px',
+                        paddingLeft: '30px',
+                    }
+                }}
+            ><button style={this.setButtonStyle()} onClick={() => this.onSetSidebarOpen(true)}>
+               <span className={'fas fa-bars fa-fw fa-2x'}/>
+            </button></Sidebar>
         )
     }
 }

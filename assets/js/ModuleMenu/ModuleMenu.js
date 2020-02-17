@@ -38,8 +38,8 @@ export default class Module__Menu extends Component {
             classList = classList + (this.showSidebar ? ' lg:bg-transparent lg:border-0 lg:column-1 lg:shadow-none lg:p-0' : '')
             return (
                 <ul key={key} className={classList}>
-                    <li className="w-full column-no-break p-0 ">
-                        <h5 className="w-full column-no-break p-0 ">{ title }</h5>
+                    <li className="column-no-break p-0 ">
+                        <h5 className="column-no-break p-0 ">{ title }</h5>
                         <MenuItems
                             items={this.props.data[key]}
                         />
