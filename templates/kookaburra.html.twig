@@ -17,9 +17,6 @@
         {% block wrapOuter %}
 
         <div id="wrapOuter" class="sm:px-6">
-            {% block sidebar %}
-                {% include 'default/sidebar/sidebar.html.twig' %}
-            {% endblock sidebar %}
             {% block wrap %}
             <div id="wrap" class="mx-auto max-w-6xl m-2 shadow-container rounded">
                 {% block minor_links %}
@@ -39,9 +36,12 @@
                 {% endblock header %}
 
                 <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
+                    {% block sidebar %}
+                        {% include 'default/sidebar/sidebar.html.twig' %}
+                    {% endblock sidebar %}
 
 
-                    <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
+                    <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto" style="min-height: 500px;">
                         {% if (not getSidebar().isValid() and getSidebar().isMinimised()) %}
                             <div id="sidebarNavigation"></div>
                         {% endif %}

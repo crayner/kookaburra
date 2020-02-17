@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import SideBarContent from "./SideBarContent"
 import Sidebar from "react-sidebar"
 
-const mql = window.matchMedia(`(min-width: 1600px)`);
+const mql = window.matchMedia(`(min-width: 1024px)`);
 
 export default class SideBar extends Component {
     constructor(props) {
@@ -16,7 +16,8 @@ export default class SideBar extends Component {
 
         this.state = {
             sidebarDocked: mql.matches,
-            sidebarOpen: false
+            sidebarOpen: false,
+            screenWidth: window.innerWidth,
         };
 
         this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
@@ -24,11 +25,11 @@ export default class SideBar extends Component {
     }
 
     componentWillMount() {
-        mql.addListener(this.mediaQueryChanged);
+        mql.addEventListener('change',this.mediaQueryChanged);
     }
 
     componentWillUnmount() {
-        this.state.mql.removeListener(this.mediaQueryChanged);
+        mql.removeEventListener('change', this.mediaQueryChanged);
     }
 
     onSetSidebarOpen(open) {
@@ -36,15 +37,38 @@ export default class SideBar extends Component {
     }
 
     mediaQueryChanged() {
-        this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
+        let state = {
+            sidebarDocked: mql.matches,
+            sidebarOpen: false,
+            screenWidth: window.innerWidth
+        }
+        this.setButtonStyle(state)
+        this.setState(state)
     }
 
-    setButtonStyle() {
+    setButtonStyle(state) {
+        console.log(state)
         let x = {
             float: 'right',
-            display: this.state.sidebarOpen || this.state.sidebarDocked ? 'none' : 'flex',
+            display: state.sidebarOpen ||state.sidebarDocked ? 'none' : 'flex',
         }
+        let e = document.getElementById('content')
+        console.log(e)
+        if (x.display === 'flex') {
+            e.style.paddingRight = '24px'
+        } else {
+            e.style.paddingRight = '274px'
+        }
+        return x
+    }
 
+    setSideBarStyle() {
+        let x = {
+            border: '0 solid #d2d0d0',
+            backgroundColor: 'hsla(0,0%,100%,0.9)',
+            width: '250px',
+            paddingLeft: '15px',
+        }
         return x
     }
 
@@ -57,14 +81,9 @@ export default class SideBar extends Component {
                 onSetOpen={this.onSetSidebarOpen}
                 pullRight={true}
                 styles={{
-                    sidebar: {
-                        border: '0 solid #d2d0d0',
-                        backgroundColor: 'hsla(0,0%,100%,0.9)',
-                        width: '280px',
-                        paddingLeft: '30px',
-                    }
+                    sidebar: this.setSideBarStyle()
                 }}
-            ><button style={this.setButtonStyle()} onClick={() => this.onSetSidebarOpen(true)}>
+            ><button style={this.setButtonStyle(this.state)} onClick={() => this.onSetSidebarOpen(true)}>
                <span className={'fas fa-bars fa-fw fa-2x'}/>
             </button></Sidebar>
         )

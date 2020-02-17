@@ -332,6 +332,20 @@ table.smallIntBorder td:last-child {
 .success {
     @apply bg-green-200 border-green-700 text-green-700;
 }
+.warning {
+    @apply bg-orange-300 border-orange-700 text-orange-700;
+}
+
+div.message, div.info, div.success, div.warning, div.error, div.exception, div.dull, div.secondary {
+    @apply shadow border-l-6 p-3 my-3 text-xs;
+}
+
+div.message a, div.info a, div.success a, div.warning a, div.error a, div.exception a, div.dull a, div.secondary a {
+    padding: 15px 10px;
+    margin: 10px 0;
+    color: inherit;
+}
+
 .text-xxs {
     font-size: 65%;
 }
@@ -415,4 +429,18 @@ li {
     line-height: 130%;
     padding-left: 5px;
     background: none;
+}
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+.text-center {
+     text-align: center;
+}
+#wrap {
+    text-align: left;
+    float: left;
+    position: relative;
 }
