@@ -1,10 +1,10 @@
 
-
 {% extends 'kookaburra.html.twig' %}
 
 {% set organisationName = getSettingByScope('System', 'organisationName') %}
 
 {% block content %}
+    <!-- welcome.html.twig -->
     <h2>{{ 'Welcome'|trans }}</h2>
     <p>{{ getSettingByScope('System', 'indexText')| raw }}</p>
 

@@ -13,15 +13,18 @@
 
     {% block body %}
     <body style="{{ bodyStyle }}">
-
-        {% block wrap %}
+        <!-- kookaburra.html.twig -->
+        {% block wrapOuter %}
 
         <div id="wrapOuter" class="sm:px-6">
-            {% block minor_links %}
-                {% include 'default/minor_links.html.twig' %}
-            {% endblock minor_links %}
-
+            {% block sidebar %}
+                {% include 'default/sidebar/sidebar.html.twig' %}
+            {% endblock sidebar %}
+            {% block wrap %}
             <div id="wrap" class="mx-auto max-w-6xl m-2 shadow-container rounded">
+                {% block minor_links %}
+                    {% include 'default/minor_links.html.twig' %}
+                {% endblock minor_links %}
                 {% block header %}
                     <div id="header" class="relative bg-white flex justify-between items-center rounded-t h-24 sm:h-32">
                         <a id="header-logo" class="block max-w-xs sm:max-w-full leading-none" href="{{ absoluteURL }}">
@@ -37,9 +40,6 @@
 
                 <div id="content-wrap" class="relative w-full min-h-1/2 flex content-start {{ app.request.attributes.has('sidebar') ? 'flex-wrap lg:flex-no-wrap' : 'flex-col' }} lg:flex-row-reverse bg-transparent-100 clearfix">
 
-                    {% block sidebar %}
-                        {% include 'default/sidebar/sidebar.html.twig' %}
-                    {% endblock sidebar %}
 
                     <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto">
                         {% if (not getSidebar().isValid() and getSidebar().isMinimised()) %}
@@ -119,6 +119,7 @@
             </div>
         </div>
         {% endblock wrap %}
+        {% endblock wrapOuter %}
         {% block popUpContent %}
             <div id="popupExample" class="overlay">
                 <div class="popup">
@@ -134,7 +135,7 @@
         <div id="idleTimeout"></div>
         {% block foot %}
             {{ encore_entry_script_tags('app') }}
-            {{ encore_entry_script_tags(getThemeName()) }}
+        {# {{ encore_entry_script_tags(getThemeName()) }} #}
             {% include 'default/scripts.html.twig' %}
         {% endblock foot %}
     </body>

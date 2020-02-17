@@ -2,6 +2,7 @@
 
 import React from "react"
 import PropTypes from 'prop-types'
+import ModuleMenu from "./ModuleMenuApp"
 
 export default function MenuItems(props) {
     const {

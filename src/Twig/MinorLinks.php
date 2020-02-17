@@ -15,6 +15,8 @@
 
 namespace App\Twig;
 
+use App\Entity\Setting;
+use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
 
 class MinorLinks implements ContentInterface
@@ -37,7 +39,7 @@ class MinorLinks implements ContentInterface
      */
     public function execute(): void
     {
-        $link = [];
+        $links = [];
         $languageLink = false;
         // Add a link to go back to the system/personal default language, if we're not using it
         if ($this->getSession()->has(['i18n','default','code']) && $this->getSession()->has(['i18n','code'])) {
@@ -60,10 +62,10 @@ class MinorLinks implements ContentInterface
             if ($languageLink)
                 $links[] = $languageLink;
 
-            if ($this->getSession()->get('webLink', '') !== '' || true) {
+            if (ProviderFactory::create(Setting::class)->hasSettingByScope('System', 'webLink')) {
                 $links[] = [
-                    'url' => $this->getSession()->get('webLink', 'http://www.craigrayner.com'),
-                    'text' => ['organisation_website', ['%name%' => $this->getSession()->get('organisationNameShort')]],
+                    'url' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'webLink', 'https:://www.craigrayner.com'),
+                    'text' => ['organisation_website', ['%name%' => ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationNameShort', 'Kookaburra')]],
                     'translation_domain' => 'messages',
                     'target' => '_blank',
                     'class' => 'link-white',

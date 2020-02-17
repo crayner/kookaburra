@@ -9,20 +9,36 @@ export default class SideBar extends Component {
         super(props)
 
         this.content = props.content
+        this.minimised = props.minimised
 
         this.buttonClassShow = 'w-full flex justify-center items-center sm:w-48 bg-white border border-grey-600 border-solid p-2 mt-16 sm:mt-4 sm:absolute sm:top-0 sm:right-0 sm:mr-6 z-40 active'
-        this.buttonClassShow = this.buttonClassShow + (!props.minimised ? ' lg:hidden' : '')
-        this.navigationClassShow = 'w-full absolute top-0 z-40 mt-24 sm:mt-12 -ml-6 px-6'
-        this.navigationClassShow = this.navigationClassShow + (!props.minimised ? ' lg:block lg:static lg:p-0 lg:my-6 lg:mx-0' : '')
+        this.buttonClassShow = this.buttonClassShow + (!this.minimised ? ' lg:hidden' : '')
+        this.sideBarClassShow = 'w-full absolute top-0 z-40 mt-24 sm:mt-12 -ml-6 px-6'
+        this.sideBarClassShow = this.sideBarClassShow + (!this.minimised ? ' lg:block lg:static lg:p-0 lg:my-6 lg:mx-0' : '')
         this.buttonClass = 'w-full flex justify-center items-center sm:w-48 bg-white border border-grey-600 border-solid p-2 mt-16 sm:mt-4 sm:absolute sm:top-0 sm:right-0 sm:mr-6 z-40'
-        this.buttonClass = this.buttonClass + (!props.minimised ? ' lg:hidden' : '')
-        this.navigationClass = 'w-full absolute top-0 z-40 mt-24 sm:mt-12 -ml-6 px-6 hidden'
-        this.navigationClass = this.navigationClass + (!props.minimised ? ' lg:block lg:static lg:p-0 lg:my-6 lg:mx-0' : '')
+        this.buttonClass = this.buttonClass + (!this.minimised ? ' lg:hidden' : '')
+        this.sideBarClass = 'w-full absolute top-0 z-40 mt-24 sm:mt-12 -ml-6 px-6 hidden lg:block lg:static lg:p-0 lg:my-6 lg:mx-0'
 
         this.state = {
-            minimised: props.minimised,
+            minimised: this.minimised,
             buttonClass: this.buttonClass,
-            navigationClass: this.navigationClass,
+            sideBarClass: this.sideBarClass,
+        }
+    }
+
+    componentDidMount() {
+        if (this.state.minimised) {
+            this.setState({
+                minimised: false,
+                buttonClass: this.buttonClassShow,
+                sideBarClass: this.sideBarClassShow,
+            })
+        } else {
+            this.setState({
+                minimised: true,
+                buttonClass: this.buttonClass,
+                sideBarClass: this.sideBarClass,
+            })
         }
     }
 
@@ -31,17 +47,18 @@ export default class SideBar extends Component {
             this.setState({
                 minimised: true,
                 buttonClass: this.buttonClass,
-                navigationClass: this.navigationClass,
+                sideBarClass: this.sideBarClass,
             })
         } else {
             this.setState({
                 minimised: false,
                 buttonClass: this.buttonClassShow,
-                navigationClass: this.navigationClassShow,
+                sideBarClass: this.sideBarClassShow,
             })
         }
+        console.log(this)
     }
-
+    
     getSideBarWidth()
     {
 
@@ -52,12 +69,12 @@ export default class SideBar extends Component {
 
     render () {
         return (
-            <section id={'reactSideBar'} className={this.getSideBarWidth()}>
+            <div id={'reactSideBar'}>
                 <button className={ this.state.buttonClass } onClick={() => this.toggleButton()}>
                     <span className="text-gray-600 text-sm sm:text-xs font-bold uppercase" title={'Side Bar'}>{' Side Bar '}&nbsp;<span className="fas fa-bars fa-fw"></span></span>
                 </button>
-                <SideBarContent content={this.content}/>
-            </section>
+                <SideBarContent content={this.content} showComponent={this.state.sideBarClass}/>
+            </div>
         )
     }
 }

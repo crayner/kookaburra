@@ -324,6 +324,7 @@ class PageExtension extends AbstractExtension
      */
     public function pageManager(string $name)
     {
+        dump($name);
         if (property_exists($this, $name))
             return $this->$name;
         throw new MissingClassException(sprintf('The class "%s" was not available to the "%s" twig extension.', $name, get_class($this)));

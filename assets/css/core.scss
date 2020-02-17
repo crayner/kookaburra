@@ -1,0 +1,130 @@
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+}
+
+*,
+:after,
+:before {
+    margin:0;
+    padding:0;
+    border: 0 solid hsl(0, 3%, 82%);
+    box-sizing: border-box;
+}
+
+html {
+  @apply h-full;
+}
+
+body {
+    @apply text-gray-900;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#content-wrap{
+    width: 100%;
+    background-color:rgba(255,255,255,.9);
+}
+h1, h2, h3, h4, h5, h6 {
+    margin: 20px 0 10px 0;
+    color: #444;
+    background: none;
+    text-align: left;
+    text-transform: uppercase;
+    padding: 0 0 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+h2 {
+    font-size: 20px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 15px;
+}
+p {
+    margin: 0px 0px 15px 0px;
+    text-align: justify;
+    font-size: 13px;
+}
+#hamburger {
+    float: left;
+    display: none;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 999;
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+.overlay.target {
+    visibility: visible;
+    opacity: 1;
+}
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    width: 640px;
+    max-height: 500px;
+    position: relative;
+    transition: all 5s ease-in-out;
+    z-index: 1000;
+}
+.popup .close {
+    position: absolute;
+    top: 35px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #f56565
+}
+.popup .close:hover {
+    color: #48bb78;
+}
+.popup .content {
+    max-height: 80%;
+    overflow: auto;
+}
+.bg-transparent-100 {
+    background-color: rgba(255,255,255,0.9);
+}
+
+.bg-transparent-600 {
+    background-color: rgba(50,50,50,0.6);
+}
+
+.bg-transparent-900 {
+    background-color: rgba(50,50,50,0.95);
+}
+a {
+    color: #c00;
+}
+a:not([class]) {
+    text-decoration: underline;
+}
+.link-white {
+    @apply text-white underline;
+}
+
+.link-white:hover {
+    @apply text-gray-400 underline;
+}

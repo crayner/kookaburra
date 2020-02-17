@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import MenuItems from "../SideBar/MenuItems"
 import PropTypes from 'prop-types'
 
-export default class ModuleMenu extends Component {
+export default class Module__Menu extends Component {
     constructor(props) {
         super(props)
 
@@ -86,7 +86,7 @@ export default class ModuleMenu extends Component {
     }
 }
 
-ModuleMenu.propTypes = {
+Module__Menu.propTypes = {
     showSidebar: PropTypes.bool.isRequired,
 }
 
