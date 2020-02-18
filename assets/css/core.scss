@@ -21,7 +21,20 @@ body {
     @apply text-gray-900;
     font-family: Helvetica, Arial, sans-serif;
 }
+/*
+ --------------------------------------------------------------------------
+  Typography
+ --------------------------------------------------------------------------
+*/
 
+@responsive {
+    .text-xxs {
+        font-size: 65%;
+    }
+}
+#content {
+    min-height: 600px;
+}
 #content-wrap{
     width: 100%;
     background-color:rgba(255,255,255,.9);
@@ -46,6 +59,10 @@ h4 {
 }
 h5 {
     font-size: 15px;
+}
+h5,h6 {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 p {
     margin: 0px 0px 15px 0px;
@@ -116,7 +133,9 @@ p {
     background-color: rgba(50,50,50,0.95);
 }
 a {
+    background: transparent;
     color: #c00;
+    text-decoration: inherit
 }
 a:not([class]) {
     text-decoration: underline;
@@ -308,7 +327,7 @@ textarea[disabled] {
     position: relative;
     max-height: 28px;
 }
-input.button, a.button, button.button {
+.button {
     @apply py-1 px-2 border border-gray-500 text-gray-700 text-xs font-bold leading-normal ;
 }
 .smallIntBorder {
@@ -344,10 +363,6 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     padding: 15px 10px;
     margin: 10px 0;
     color: inherit;
-}
-
-.text-xxs {
-    font-size: 65%;
 }
 .dd-wrapper {
     float: left;
@@ -419,6 +434,11 @@ ul {
 ol {
     margin: 5px 0px 5px 45px;
 }
+ul, ol {
+    margin: 0 0 1px;
+    text-align: justify;
+    font-size: 13px;
+}
 ol li {
     margin-left: 5px;
     padding-left: 0;
@@ -430,6 +450,12 @@ li {
     padding-left: 5px;
     background: none;
 }
+#navigation {
+    margin-top: 1.5rem;
+}
+#navigation ul {
+    margin-bottom: 1.0rem;
+}
 .text-left {
     text-align: left;
 }
@@ -439,8 +465,199 @@ li {
 .text-center {
      text-align: center;
 }
-#wrap {
+table, div.table {
+    color: #666;
+    font-size: 12px;
+    text-shadow: none;
+    background-color: #fafafa;
+    margin: 0px;
+    border: #ccc 1px solid;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border-spacing: 0px;
+}
+table th, div.table .th {
+    padding: 1rem 0.75rem;
+    border-bottom: 1px solid #ccc;
+    background-color: #ebebeb;
     text-align: left;
-    float: left;
+    width: auto;
+}
+table .heading td:not(:first-child), div.table .heading .td:not(:first-child) {
+    border-left: 0px;
+}
+.striped tbody tr:nth-of-type(even) {
+    background-color: #e0e0e0;
+}
+.striped tbody tr:hover {
+    background-color: #d0d0d0;
+}
+table tr, div.table div.tr {
+    text-align: center;
+}
+
+table td:first-child, div.table div.td:first-child {
+    text-align: left;
+    border-left: 0;
+}
+
+table td, div.table .td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #dfdfdf;
+    border-left: 1px solid #dfdfdf;
+}
+
+.odd,
+table.colorOddEven tr:not([class]) {
+    background-color: #fefefe;
+}
+.even,
+table.colorOddEven tr:nth-of-type(odd):not([class]) {
+    background-color: #f9f9f9;
+}
+
+table tr:last-child > td, div.table div.tr:last-child > div.td {
+    border-bottom: 0;
+}
+
+td.right, div.td.right {
+    vertical-align: middle !important;
+    text-align: right !important;
+    font-size: 11px !important;
+    padding: 3px !important ;
+}
+div.right {
+    text-align: right !important;
+}
+
+table tr:first-child th:first-child {
+    -moz-border-radius-topleft: 3px;
+    -webkit-border-top-left-radius: 3px;
+    border-top-left-radius: 3px;
+}
+table tr:first-child th:last-child {
+    -moz-border-radius-topright: 3px;
+    -webkit-border-top-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+table tr:last-child td:first-child {
+    -moz-border-radius-bottomleft: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+table tr:last-child td:last-child {
+    -moz-border-radius-bottomright: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+/* ALT TABLE STYLES */
+table.noIntBorder, div.noIntBorder {
+    background-color: #edf7ff;
+}
+table.noIntBorder td, div.noIntBorder div {
+    border: none !important ;
+    padding: 5px !important ;
+    background-color: #edf7ff;
+}
+table.noIntBorder td:last-child {
+    text-align: left;
+}
+table.smallIntBorder {
+    background-color: #fafafa;
+    margin: 5px 0px;
     position: relative;
 }
+div.smallIntBorder {
+    background-color: #fafafa;
+    margin: 5px 0px;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+
+table.smallIntBorder td, div.smallIntBorder div {
+    border-left: none !important ;
+    padding: 5px !important ;
+}
+table.smallIntBorder td:last-child {
+    text-align: left;
+}
+tr.break > td {
+    background-color: #eaebec;
+}
+tr.break h3,
+tr.break h4 {
+    margin-top: 10px !important;
+    padding: 0;
+}
+tr h3,
+tr h4 {
+    border: none !important;
+}
+table.mini td {
+    padding: 5px !important ;
+}
+table.mini tr.head th {
+    padding: 5px !important ;
+}
+
+table.blank,
+table.blank > tbody > tr {
+    border: none !important ;
+    padding: 0px !important ;
+    background: none !important ;
+    box-shadow: none !important;
+}
+table.blank > tbody > tr > td {
+    border: none !important ;
+    padding: 0px !important ;
+    background: none !important ;
+}
+.close-button {
+    font-size: 20px;
+    background-color: transparent;
+    color: #8B0000;
+    float: right;
+}
+.close-button.gray, .close-button.grey {
+    color: #696969;
+}
+.close-button:hover {
+    color: #006400;
+}
+@media (min-width: 1024px){
+    .lg:leading-tight {
+        line-height: 1.25;
+    }
+}
+
+@mixin max($size) {
+    .max#{$size} {
+        max-height: $size * 1px;
+        max-width: $size * 1px;
+    }
+}
+
+@include max(240);
+@include max(200);
+@include max(150);
+@include max(100);
+@include max(75);
+
+/* IMAGES */
+.user {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    padding: 4px;
+    box-shadow: 2px 2px 2px rgba(50, 50, 50, 0.35);
+}
+
+a img.resource,
+.resource {
+    background-color: #ffffff !important;
+    border: 1px solid #000000 !important;
+    padding: 4px !important;
+}
+

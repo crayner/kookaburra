@@ -1,7 +1,6 @@
 {% if pageManager('minorLinks').getContent()|length > 0 %}
         <div class="mx-auto max-w-6xl text-right text-white text-xs md:text-sm px-2 xl:px-0 {{ houseIDLogo() is same as('') ? 'mt-2' : 'mt-6' }}">
             {% set links = pageManager('minorLinks').getContent() %}
-            {% dump(links) %}
             {% for link in links %}
                 {% set url = link.url %}
                 {% if url is iterable %}

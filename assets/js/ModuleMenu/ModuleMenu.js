@@ -39,7 +39,7 @@ export default class Module__Menu extends Component {
             return (
                 <ul key={key} className={classList}>
                     <li className="column-no-break p-0 ">
-                        <h5 className="column-no-break p-0 ">{ title }</h5>
+                        <h5 className="m-0 mb-1 text-xs pb-0 ">{ title }</h5>
                         <MenuItems
                             items={this.props.data[key]}
                         />

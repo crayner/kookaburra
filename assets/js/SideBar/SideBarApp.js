@@ -15,31 +15,44 @@ export default class SideBar extends Component {
         this.minimised = props.minimised
 
         this.state = {
-            sidebarDocked: mql.matches,
+            sidebarDocked: mql.matches && ! this.minimised,
             sidebarOpen: false,
             screenWidth: window.innerWidth,
         };
 
         this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
     componentWillMount() {
         mql.addEventListener('change',this.mediaQueryChanged);
+        window.addEventListener('resize', this.updateWindowDimensions);
     }
 
     componentWillUnmount() {
         mql.removeEventListener('change', this.mediaQueryChanged);
+        window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
     onSetSidebarOpen(open) {
-        this.setState({ sidebarOpen: open });
+        this.setState({
+            sidebarOpen: open,
+            screenWidth: window.innerWidth
+        });
+    }
+
+    updateWindowDimensions() {
+        let state = {...this.state}
+        state.screenWidth = window.innerWidth
+        this.setButtonStyle(state)
+        this.setState(state)
     }
 
     mediaQueryChanged() {
         let state = {
-            sidebarDocked: mql.matches,
-            sidebarOpen: false,
+            sidebarDocked: mql.matches && !this.minimised,
+            sidebarOpen: this.state.sidebarOpen,
             screenWidth: window.innerWidth
         }
         this.setButtonStyle(state)
@@ -47,17 +60,19 @@ export default class SideBar extends Component {
     }
 
     setButtonStyle(state) {
-        console.log(state)
         let x = {
             float: 'right',
             display: state.sidebarOpen ||state.sidebarDocked ? 'none' : 'flex',
         }
         let e = document.getElementById('content')
-        console.log(e)
         if (x.display === 'flex') {
             e.style.paddingRight = '24px'
         } else {
-            e.style.paddingRight = '274px'
+            if (state.screenWidth > 800) {
+                e.style.paddingRight = '274px'
+            } else {
+                e.style.paddingRight = '24px'
+            }
         }
         return x
     }

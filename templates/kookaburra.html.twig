@@ -41,7 +41,7 @@
                     {% endblock sidebar %}
 
 
-                    <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto" style="min-height: 500px;">
+                    <div id="content" class="w-full {{ app.request.attributes.has('sidebar') ? 'lg:w-content' : 'pt-0 sm:pt-6' }} lg:max-w-full p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto" >
                         {% if (not getSidebar().isValid() and getSidebar().isMinimised()) %}
                             <div id="sidebarNavigation"></div>
                         {% endif %}

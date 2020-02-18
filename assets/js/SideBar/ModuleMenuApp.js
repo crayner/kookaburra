@@ -16,7 +16,7 @@ export default function ModuleMenu(props) {
             return (
                 <ul key={key} className={classList} style={{maxWidth: '220px', display: 'contents'}}>
                     <li className="column-no-break p-0 ">
-                        <h5 className="column-no-break p-0 ">{ title }</h5>
+                        <h5 className="m-0 mb-1 text-xs pb-0 ">{ title }</h5>
                         <MenuItems
                             items={data[key]}
                         />

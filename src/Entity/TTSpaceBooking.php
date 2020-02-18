@@ -14,6 +14,7 @@ namespace App\Entity;
 
 use App\Manager\EntityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Kookaburra\SchoolAdmin\Entity\Facility;
 use Kookaburra\UserAdmin\Entity\Person;
 
 /**
