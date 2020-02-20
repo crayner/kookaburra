@@ -2,8 +2,7 @@
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import SideBarContent from "./SideBarContent"
-import Sidebar from "react-sidebar"
+import SideBarControl from "./SidebarControl"
 
 const mql = window.matchMedia(`(min-width: 1024px)`);
 
@@ -20,22 +19,29 @@ export default class SideBar extends Component {
             screenWidth: window.innerWidth,
         };
 
+        this.functions = {
+            onSetSidebarOpen: this.onSetSidebarOpen.bind(this),
+        }
+
         this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
-        this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        this.handleClick = this.handleClick.bind(this)
     }
 
     componentWillMount() {
         mql.addEventListener('change',this.mediaQueryChanged);
         window.addEventListener('resize', this.updateWindowDimensions);
+        document.addEventListener('mousedown', this.handleClick, false)
     }
 
     componentWillUnmount() {
         mql.removeEventListener('change', this.mediaQueryChanged);
         window.removeEventListener('resize', this.updateWindowDimensions);
+        document.removeEventListener('mousedown', this.handleClick, false)
     }
 
     onSetSidebarOpen(open) {
+
         this.setState({
             sidebarOpen: open,
             screenWidth: window.innerWidth
@@ -45,7 +51,6 @@ export default class SideBar extends Component {
     updateWindowDimensions() {
         let state = {...this.state}
         state.screenWidth = window.innerWidth
-        this.setButtonStyle(state)
         this.setState(state)
     }
 
@@ -55,52 +60,21 @@ export default class SideBar extends Component {
             sidebarOpen: this.state.sidebarOpen,
             screenWidth: window.innerWidth
         }
-        this.setButtonStyle(state)
         this.setState(state)
     }
 
-    setButtonStyle(state) {
-        let x = {
-            float: 'right',
-            display: state.sidebarOpen ||state.sidebarDocked ? 'none' : 'flex',
-        }
-        let e = document.getElementById('content')
-        if (x.display === 'flex') {
-            e.style.paddingRight = '24px'
-        } else {
-            if (state.screenWidth > 800) {
-                e.style.paddingRight = '274px'
-            } else {
-                e.style.paddingRight = '24px'
-            }
-        }
-        return x
-    }
-
-    setSideBarStyle() {
-        let x = {
-            border: '0 solid #d2d0d0',
-            backgroundColor: 'hsla(0,0%,100%,0.9)',
-            width: '250px',
-            paddingLeft: '15px',
-        }
-        return x
+    handleClick(e)
+    {
+        if (this.node.contains(e.target))
+            return
+        this.onSetSidebarOpen(false)
     }
 
     render () {
         return (
-            <Sidebar
-                sidebar={<SideBarContent content={this.content}/>}
-                open={this.state.sidebarOpen}
-                docked={this.state.sidebarDocked}
-                onSetOpen={this.onSetSidebarOpen}
-                pullRight={true}
-                styles={{
-                    sidebar: this.setSideBarStyle()
-                }}
-            ><button style={this.setButtonStyle(this.state)} onClick={() => this.onSetSidebarOpen(true)}>
-               <span className={'fas fa-bars fa-fw fa-2x'}/>
-            </button></Sidebar>
+            <div ref={node => this.node = node}>
+                <SideBarControl content={this.content} state={this.state} functions={this.functions} />
+            </div>
         )
     }
 }

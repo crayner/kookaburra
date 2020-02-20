@@ -17,16 +17,17 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
-    .addEntry('fastFinder', './assets/js/fastFinder.js')
-    .addEntry('idleTimeout', './assets/js/idleTimeout.js')
-    .addEntry('sideBar', './assets/js/sideBar.js')
-    .addEntry('headerMenu', './assets/js/headerMenu.js')
-    .addEntry('notificationTray', './assets/js/notificationTray.js')
-    .addEntry('app', './assets/js/app.js')
+    .addEntry('page', './assets/js/page.js')
+//    .addEntry('fastFinder', './assets/js/fastFinder.js'
+//    .addEntry('idleTimeout', './assets/js/idleTimeout.js')
+//    .addEntry('sideBar', './assets/js/sideBar.js')
+//    .addEntry('headerMenu', './assets/js/headerMenu.js')
+//    .addEntry('notificationTray', './assets/js/notificationTray.js')
+//    .addEntry('app', './assets/js/app.js')
 //    .addEntry('default', './assets/themes/default/default.js')
-    .addEntry('container','./assets/js/container.js')
-    .addEntry('pagination','./assets/js/pagination.js')
-    .addEntry('photoLoader','./assets/js/photoLoader.js')
+//    .addEntry('container','./assets/js/container.js')
+//    .addEntry('pagination','./assets/js/pagination.js')
+//    .addEntry('photoLoader','./assets/js/photoLoader.js')
     .addStyleEntry('css/core', './assets/css/core.scss')
     .splitEntryChunks()
 
@@ -60,7 +61,7 @@ Encore
         }
     })
     .copyFiles([
-        {from: './assets/static', to: 'static/[path][name].[ext]', pattern: /\.(png|gif|jpg|jpeg)$/},
+        {from: './assets/static', to: 'static/[path][name].[ext]', pattern: /\.(png|gif|jpg|jpeg|svg)$/},
         {from: './node_modules/ckeditor/', to: 'ckeditor/[path][name].[ext]', pattern: /\.(js|css)$/, includeSubdirectories: false},
         {from: './node_modules/ckeditor/adapters', to: 'ckeditor/adapters/[path][name].[ext]'},
         {from: './node_modules/ckeditor/lang', to: 'ckeditor/lang/[path][name].[ext]'},

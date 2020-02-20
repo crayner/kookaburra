@@ -335,7 +335,7 @@ class I18n implements EntityInterface
      */
     public function isRtl(): ?bool
     {
-        return $this->getRtl() === 'Y' ? true : false;
+        return $this->getRtl() === 'Y';
     }
 
     /**

@@ -16,7 +16,6 @@ namespace App\Session;
 
 use App\Entity\I18n;
 use Kookaburra\SystemAdmin\Entity\Module;
-use Kookaburra\SystemAdmin\Entity\Role;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
@@ -31,6 +30,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 
+/**
+ * Class GibbonSession
+ * @package App\Session
+ * 
+ */
 class GibbonSession extends \Gibbon\Session implements SessionInterface, \IteratorAggregate, \Countable, Session
 {
     protected $storage;
@@ -92,10 +96,20 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
                 if (null === $this->getAttributeBag()->get($name, null))
                 {
                     $id = $this->getAttributeBag()->get('AcademicYearID', 0);
-                    $schoolYear = ProviderFactory::getRepository(AcademicYear::class)->find($id) ?: ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current');
-                    $this->set('academicYear', $schoolYear);
-                    $this->set('AcademicYearID', $schoolYear->getId());
+                    $academicYear = ProviderFactory::getRepository(AcademicYear::class)->find($id) ?: ProviderFactory::getRepository(AcademicYear::class)->findOneByStatus('Current');
+                    $this->set('academicYear', $academicYear);
+                    $this->set('AcademicYearID', $academicYear->getId());
+                    // legacy
+                    $this->set('gibbonSchoolYear', $academicYear);
+                    $this->set('gibbonSchoolYearID', $academicYear->getId());
                     return $this->getAttributeBag()->get($name, null);
+                }
+                break;
+            case 'organisationName':
+                if (!$this->has($name))
+                {
+                    $result = ProviderFactory::create(Setting::class)->getSettingByScope('System', $name);
+                    $this->set($name, $result);
                 }
                 break;
         }
@@ -112,8 +126,8 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
     {
         if ($name === 'AcademicYearID' && (null === $value || '' === $value || 0 === $value))
         {
-            $schoolYear = ProviderFactory::getRepository(AcademicYear::class)->findOneBy(['status' => 'Current']);
-            $value = $schoolYear ? $schoolYear->getId() : null;
+            $academicYear = ProviderFactory::getRepository(AcademicYear::class)->findOneBy(['status' => 'Current']);
+            $value = $academicYear ? $academicYear->getId() : null;
         }
         $this->getAttributeBag()->set($name, $value);
     }

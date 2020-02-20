@@ -22,9 +22,9 @@ export default class HeaderMenu extends Component {
         let result = []
 
         result.push(
-            <div className="dd-wrapper flex flex-wrap items-center m-0 px-2 border-t border-b" key={'Home'}>
-                <div className="dd-header pl-2 mt-1">
-                    <div className="dd-header-title"><a className={'block uppercase font-bold text-sm text-gray-800 hover:text-purple-500 no-underline px-2 py-3'} href={'/home/'} title={this.translate('Home')}>{this.translate('Home')}</a> </div>
+            <div className="flex flex-wrap items-center m-0 px-2 border-t border-b" key={'Home'}>
+                <div className="pl-2 mt-1">
+                    <div><a className={'block uppercase font-bold text-sm text-gray-800 hover:text-purple-500 no-underline px-2 py-3'} href={'/home/'} title={this.translate('Home')}>{this.translate('Home')}</a> </div>
                 </div>
             </div>
         )
@@ -35,9 +35,9 @@ export default class HeaderMenu extends Component {
         Object.keys(this.menu).map(key => {
             const menu = this.menu[key]
             result.push(
-                <div className="dd-wrapper flex flex-wrap items-center m-0 px-2 border-t border-b" key={key} onMouseEnter={() => this.onMouseHover(key)} onMouseLeave={() => this.onMouseLeave()}>
-                    <div className="dd-header pl-2 mt-1">
-                        <div className="dd-header-title"><a className={'block uppercase font-bold text-sm text-gray-800 hover:text-purple-500 no-underline px-2 py-3'}title={key}>{key}</a> </div>
+                <div className="flex flex-wrap items-center m-0 px-2 border-t border-b" key={key} onMouseEnter={() => this.onMouseHover(key)} onMouseLeave={() => this.onMouseLeave()}>
+                    <div className="pl-2 mt-1">
+                        <div><a className={'block uppercase font-bold text-sm text-gray-800 hover:text-purple-500 no-underline px-2 py-3'}title={key}>{key}</a> </div>
                     </div>
                     {this.generateMenuItems(key, menu)}
                 </div>
@@ -55,11 +55,11 @@ export default class HeaderMenu extends Component {
 
         menu.map((item,key) => {
             result.push(
-                <li className="dd-list-item hover:bg-purple-700" key={key}><a className={'block text-sm text-white focus:text-purple-200 text-left no-underline px-1 py-2 md:py-1 leading-normal'} href={item.href} title={item.name}>{item.name}</a></li>
+                <li className="hover:bg-purple-700" key={key}><a className={'block text-sm text-white focus:text-purple-200 text-left no-underline px-1 py-2 md:py-1 leading-normal'} href={item.href} title={item.name}>{item.name}</a></li>
             )
         })
 
-        let listClass = 'dd-list list-none flex flex-wrap items-center m-0 px-2 border-t border-b'
+        let listClass = 'list-none flex flex-wrap items-center m-0 px-2 border-t border-b'
         if (!this.state.showMenu.includes(name))
             listClass = listClass + ' hidden'
 
@@ -106,7 +106,7 @@ export default class HeaderMenu extends Component {
 
     render () {
         return (<div>
-            <a id={'hamburger'} onClick={() => this.toggleMenu()}><span className={'fas fa-bars fa-fw fa-2x text-gray-500'}/></a>
+            <a className={'float-left md:hidden flex pt-2'} id={'hamburger'} onClick={() => this.toggleMenu()}><span className={'fas fa-bars fa-fw fa-2x text-gray-500'}/></a>
             <div id={'top-menu'} data-status={'hidden'}>
                 {this.generateMenu()}
             </div>

@@ -173,8 +173,8 @@ class ImageHelper
 
     /**
      * getRelativePath
-     * Relative to the public path
-     * @param string $image
+     * @param string|null $image
+     * @return string
      */
     public static function getRelativePath(?string $image)
     {
@@ -197,5 +197,14 @@ class ImageHelper
 
         $file = self::getAbsoluteImagePath($file);
         return is_file($file);
+    }
+
+    /**
+     * getBackgroundImage
+     * @return string
+     */
+    public static function getBackgroundImage(): string
+    {
+        return self::getAbsoluteImageURL('File', '/themes/Default/img/backgroundPage.jpg');
     }
 }

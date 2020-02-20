@@ -97,7 +97,7 @@ export default class FastFinderApp extends Component {
 
     render () {
         return (
-            <div>
+            <div className={'flex-grow flex justify-end'}>
                 <button data-toggle="#fastFinder"
                         className="flex md:hidden items-center rounded bg-gray-300 mr-4 px-4 py-3 text-base active" onClick={this.toggleFastFinderClass}>
                     <span className="hidden sm:inline text-gray-600 text-xs font-bold uppercase pr-2">{ this.props.trans_fastFind } </span>

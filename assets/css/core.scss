@@ -32,21 +32,23 @@ body {
         font-size: 65%;
     }
 }
-#content {
-    min-height: 600px;
-}
-#content-wrap{
-    width: 100%;
-    background-color:rgba(255,255,255,.9);
-}
 h1, h2, h3, h4, h5, h6 {
     margin: 20px 0 10px 0;
+    position: relative;
     color: #444;
     background: none;
     text-align: left;
     text-transform: uppercase;
     padding: 0 0 5px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+h1:after, h2:after, h3:after, h4:after, h5:after, h6:after {
+    content: "";
+    background: black;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    width: 50%;
 }
 h2 {
     font-size: 20px;
@@ -68,10 +70,6 @@ p {
     margin: 0px 0px 15px 0px;
     text-align: justify;
     font-size: 13px;
-}
-#hamburger {
-    float: left;
-    display: none;
 }
 .overlay {
     position: fixed;
@@ -363,58 +361,6 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
     padding: 15px 10px;
     margin: 10px 0;
     color: inherit;
-}
-.dd-wrapper {
-    float: left;
-    max-width: 200px;
-    position: relative;
-    height: 43px;
-    display: inline-block;
-}
-.dd-header {
-    float: left;
-    max-width: 80px;
-}
-.dd-list {
-    background: #3c3c3c;
-    margin-top: -9px;
-    position: absolute;
-    width: 180px;
-    top: 50px;
-    left: 0px;
-    z-index: 1250;
-}
-.dd-list-item {
-    min-width: 100%;
-}
-#hamburger {
-    float: left;
-    display: none;
-}
-#top-menu {
-    display: inline-block;
-}
-@media screen and (max-width: 768px) {
-    #top-menu[data-status="hidden"] {
-        display: none;
-    }
-    #top-menu[data-status="show"] {
-        display: inline-block;
-    }
-    #hamburger {
-        display: inline-block;
-    }
-    .dd-wrapper {
-        display: block;
-        float: none;
-    }
-    .dd-list {
-        left: 80px;
-        top: 8px;
-    }
-    #header-menu {
-        max-height: 1000px!important;
-    }
 }
 .column-no-break {
     @apply table w-full pt-px;

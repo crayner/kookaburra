@@ -1,0 +1,37 @@
+{% trans_default_domain 'messages' %}
+
+{% block full_document %}
+    <!DOCTYPE html>
+    <html>
+        <head>
+            {% block meta %}
+                <title>{% block title %}Kookaburra{% endblock %}</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+                <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+                <meta http-equiv="content-language" content="{{ locale|default('en_GB') }}" data-react-helmet="true" />
+                <meta name="author" content="Craig Rayner, Hill Range Services"/>
+                <meta name="robots" content="none"/>
+                <meta name="Referrer‐Policy" value="no‐referrer | same‐origin"/>
+                <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+            {% endblock meta %}
+        </head>
+        <body>
+            <div id="wrapOuter" class="sm:px-6"></div>
+            <script type="application/javascript" lang="js">
+                {% set link = encore_entry_css_files('css/core') %}
+                {% for css in link %}
+                var newLink = document.createElement("link");
+                newLink.href = '{{ asset(css) }}'
+                newLink.rel = 'stylesheet'
+                newLink.type = 'text/css'
+                newLink.media = 'screen'
+                document.head.appendChild(newLink)
+                {% endfor %}
+                window.PAGE_PROPS = {{ page.writeProperties()|json_encode|raw }}
+            </script>
+
+            {% set x = page.writeProperties() %}
+            {{ encore_entry_script_tags('page') }}
+        </body>
+    </html>
+{% endblock full_document %}

@@ -27,6 +27,10 @@ class LocaleHelper
      * @var string
      */
     private static $locale;
+    /**
+     * @var I18n|null
+     */
+    private static $entity;
 
     /**
      * @var I18nProvider
@@ -47,7 +51,6 @@ class LocaleHelper
     /**
      * getCurrentLocale
      * @return string|null
-     * @throws \Exception
      */
     private static function getCurrentLocale()
     {
@@ -66,7 +69,6 @@ class LocaleHelper
      * getLocale
      * @param bool $refresh
      * @return string
-     * @throws \Exception
      */
     public static function getLocale(bool $refresh = false): string
     {
@@ -103,5 +105,25 @@ class LocaleHelper
     public static function getCountryName(string $code): string
     {
         return Countries::getName($code);
+    }
+
+    /**
+     * getRtl
+     * @param string $code
+     * @return bool
+     */
+    public static function getRtl(string $code): bool
+    {
+        return self::getEntity($code) ? self::getEntity($code)->isRtl() : false;
+    }
+
+    /**
+     * @return I18n|null
+     */
+    public static function getEntity(string $code): ?I18n
+    {
+        if (null === self::$entity)
+            self::$entity = self::$provider->getRepository()->findOneBy(['code' => $code]);
+        return self::$entity;
     }
 }

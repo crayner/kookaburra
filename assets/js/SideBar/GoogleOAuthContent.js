@@ -68,8 +68,7 @@ export default function GoogleOAuthContent(props) {
                             </tr>
                             <tr>
                                 <td className=" px-2 border-b-0 sm:border-b border-t-0 right" colSpan="2">
-                                    <span className="text-xxs"><a className="showGoogleOptions"
-                                                               onClick={() => functions.showHideGoogle()}>{functions.translate('Options')}</a></span>
+                                    <a className="showGoogleOptions" onClick={() => functions.showHideGoogle()}>{functions.translate('Options')}</a>
                                 </td>
                             </tr>
                         </tbody>
