@@ -17,20 +17,15 @@ export default function SideBarControl(props) {
     }
 
     let sideBarContentAttr = {
-        className: state.sidebarOpen || state.sidebarDocked ? 'open px-4' : 'close px-4',
+        className: 'md:column-2 lg:column-1',
         id: 'sideBarContent',
-        style: {
-            maxWidth: '14rem',
-        }
     }
 
-    console.log(state)
-    console.log(sideBarContentAttr)
-    return (<span>
+    return (<div>
         <button {...buttonAttr} onClick={() => functions.onSetSidebarOpen(true)}>
             <span className={'fas fa-bars fa-fw fa-2x'}/></button>
         <SideBarContent content={content} sidebarAttr={sideBarContentAttr} />
-    </span>)
+    </div>)
 }
 
 SideBarControl.propTypes = {

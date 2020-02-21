@@ -61,11 +61,15 @@ export default class Login extends Component {
         return this.translations[id]
     }
 
+    getLoginContent() {
+        let content = []
+        content.push(<GoogleOAuthContent login={this.googleOAuth} state={this.state} functions={this.functions} />)
+        content.push(<LoginContent login={this.login} functions={this.functions} state={this.state} />)
+        return content
+    }
+
     render () {
-        return (<section>
-            <GoogleOAuthContent login={this.googleOAuth} state={this.state} functions={this.functions} />
-            <LoginContent login={this.login} functions={this.functions} state={this.state} />
-        </section>)
+        return (this.getLoginContent())
     }
 }
 

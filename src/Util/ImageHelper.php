@@ -207,4 +207,13 @@ class ImageHelper
     {
         return self::getAbsoluteImageURL('File', '/themes/Default/img/backgroundPage.jpg');
     }
+
+    /**
+     * getLogoImage
+     * @return string
+     */
+    public static function getLogoImage(): string
+    {
+        return self::getAbsoluteImageURL('File', '/themes/Default/img/logo.png');
+    }
 }

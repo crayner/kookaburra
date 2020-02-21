@@ -16,6 +16,7 @@ use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -95,10 +96,10 @@ class LegacyController extends AbstractController
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
             $sidebar->addContent(new Register());
 
-        return $this->render('default/welcome.html.twig',
+        return new JsonResponse(array_merge(['content' => trim($this->renderView('default/welcome.html.twig',
             [
                 'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
             ]
-        );
+        ))], $sidebar->toArray()));
     }
 }

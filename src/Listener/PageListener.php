@@ -15,7 +15,6 @@
 
 namespace App\Listener;
 
-
 use App\Manager\ScriptManager;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Twig\FastFinder;
@@ -28,7 +27,6 @@ use App\Util\CacheHelper;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -72,8 +70,13 @@ class PageListener implements EventSubscriberInterface
      * @param MainMenu $mainMenu
      * @param ModuleMenu $moduleMenu
      * @param MinorLinks $minorLinks
+     * @param FastFinder $fastFinder
+     * @param IdleTimeout $idleTimeout
      * @param TranslatorInterface $trans
      * @param RouterInterface $router
+     * @param ScriptManager $scriptManager
+     * @param CacheHelper $cacheHelper
+     * @param TokenStorageInterface $token
      */
     public function __construct(
         SidebarContent $sideBar,

@@ -289,10 +289,9 @@ class SidebarContent
         $result = [];
 
         foreach($this->sortContent()->toArray() as $name=>$element)
-        {
             $content[$name] = array_merge($element->toArray(), $element->getCoreArray());
-        }
-        $result['content'] = $content;
+
+        $result['sidebar'] = $content;
         $result['minimised'] = $this->isMinimised();
         return $result;
     }
@@ -312,11 +311,11 @@ class SidebarContent
         }
         $iterator->uasort(
             function ($a, $b) {
-                return $a->sortResult() > $b->sortResult() ? -1 : 1;
+                return $a->sortResult() > $b->sortResult() ? 1 : -1;
             }
         );
 
-        $this->setContent(new ArrayCollection(iterator_to_array($iterator, false)));
+        $this->setContent(new ArrayCollection(iterator_to_array($iterator, true)));
         $this->setContentSorted(true);
         return $this->getContent();
     }

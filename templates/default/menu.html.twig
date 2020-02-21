@@ -5,7 +5,7 @@
         <a class="block uppercase font-bold text-sm text-gray-800 hover:text-purple-500 no-underline px-2 py-3" href="{{ path('home') }}">{{ 'Home'|trans }}</a>
     </li>
 
-{#
+
     {% if is_granted('IS_AUTHENTICATED_FULLY') and getMainMenu().valid and getMainMenu().hasAttribute('menuMainItems') %}
         {% for categoryName, items in getMainMenu().getAttribute('menuMainItems')|default({}) %}
             <li class="sm:relative group mt-1">
@@ -20,7 +20,7 @@
             </li>
         {% endfor %}
     {% endif %}
-#}
+
     <li class="notificationTray self-end flex-grow" id="notificationTray">
 
     </li>

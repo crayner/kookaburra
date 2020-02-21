@@ -72,7 +72,7 @@ export default class SideBar extends Component {
 
     render () {
         return (
-            <div ref={node => this.node = node}>
+            <div id={'sidebar'} ref={node => this.node = node} className={'w-full lg:w-sidebar px-6 pb-6 lg:border-l'}>
                 <SideBarControl content={this.content} state={this.state} functions={this.functions} />
             </div>
         )

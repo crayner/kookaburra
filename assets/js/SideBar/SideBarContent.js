@@ -12,6 +12,7 @@ export default function SideBarContent(props) {
         sidebarAttr
     } = props
 
+    console.log(sidebarAttr)
     let result = []
     Object.keys(content).map(name => {
         let item = content[name]
@@ -24,7 +25,7 @@ export default function SideBarContent(props) {
         } else if (item.name !== 'Module Menu' && item.content !== '') {
             let x = Parser(item.content)
             if (typeof x._owner === 'object') {
-                result.push(<div className={"w-full column-no-break"} key={item.name}>x</div>)
+                result.push(<div className={"column-no-break"} key={item.name}>x</div>)
                 return
             }
             let y = x.filter(item => {
@@ -32,7 +33,7 @@ export default function SideBarContent(props) {
                     return item
             })
 
-            result.push(<div className={"w-full column-no-break"} key={item.name}>{y}</div>)
+            result.push(<div className={"column-no-break"} key={item.name}>{y}</div>)
         }
     })
 

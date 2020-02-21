@@ -101,8 +101,12 @@ class PageExtension extends AbstractExtension
      * @param RequestStack $stack
      * @param RouterInterface $router
      * @param MainMenu $mainMenu
+     * @param ModuleMenu $moduleMenu
      * @param ScriptManager $scriptManager
      * @param ProviderFactory $providerFactory
+     * @param Format $format
+     * @param ImageHelper $imageHelper
+     * @param MinorLinks $minorLinks
      */
     public function __construct(
         SidebarContent $sidebar,
@@ -201,7 +205,7 @@ class PageExtension extends AbstractExtension
      */
     public function minorLinks(): ?string
     {
-        return null;
+        return $this->minorLinks;
     }
 
     /**
