@@ -1,8 +1,8 @@
 {{ encore_entry_link_tags('css/core') }} {#
 {{ encore_entry_link_tags('css/theme') }}
 {{ encore_entry_link_tags('css/app') }}
-{{ encore_entry_link_tags(getThemeName()) }} #}
-{{ encore_entry_link_tags('app') }}
+{{ encore_entry_link_tags(getThemeName()) }}
+{{ encore_entry_link_tags('app') }} #}
 {% for style in getPageStyles() %}
     {% include style %}
 {% endfor %}

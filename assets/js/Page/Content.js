@@ -1,64 +1,59 @@
 'use strict'
 
-import React, { Component } from "react"
+import React from "react"
 import PropTypes from 'prop-types'
-import {fetchJson} from "../component/fetchJson"
-import Parser from "html-react-parser"
 import Sidebar from "../SideBar/SideBarApp"
 
-export default class Content extends Component {
-    constructor (props) {
-        super(props)
-        this.action = props.action
-        this.url = props.url
+export default function Content(props) {
+    const {
+        contentWidth,
+        contentHeight,
+        sidebar,
+        minimised,
+        functions,
+        content,
+        sidebarOpen,
+        sidebarDocked,
+    } = props
 
-        this.state = {
-            content: [],
-            minimised: false,
-            sidebar: {},
+    let contentStyle = {}
+    if (sidebarDocked || sidebarOpen) {
+        contentStyle = {
+            minHeight: contentHeight + 'px',
+            width: (contentWidth - 286) + 'px',
         }
     }
 
-    componentDidMount() {
-        this.getContent()
+    if (minimised && !(sidebarDocked || sidebarOpen)) {
+        contentStyle = {
+            width: (contentWidth ) + 'px',
+        }
+
     }
 
-    getContent() {
-        fetchJson(
-            this.url,
-            [],
-            false
-        ).then(data => {
-            console.log(data)
-            this.setState({
-                content: Parser(data.content),
-                sidebar: data.sidebar,
-                minimised: data.minimised,
-            })
-        })
-    }
 
-    buildContent() {
-        let content = []
-        if (Object.keys(this.state.sidebar).length > 0)
-            content.push(<Sidebar key={'sidebar'} minimised={this.state.minimised} content={this.state.sidebar} />)
-        content.push(<div key={'content'} id="content" className="w-full lg:flex-1 p-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto min-h-full">
-            {this.state.content}
+
+    function buildContent() {
+        let result = []
+        if (Object.keys(sidebar).length > 0)
+            result.push(<Sidebar key={'sidebar'} minimised={minimised} content={sidebar} functions={functions} width={contentWidth} sidebarOpen={sidebarOpen} />)
+        result.push(<div key={'content'} id="content" className="w-full lg:flex-1 px-6 pb-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto min-h-full" style={contentStyle}>
+            {content}
             </div>)
-        return content
+        return result
     }
 
-    render () {
-        return (this.buildContent())
-    }
+    return (buildContent())
 }
 
 Content.propTypes = {
-    action: PropTypes.oneOfType([
-        PropTypes.object,
-        PropTypes.array,
-    ]),
-    url: PropTypes.string.isRequired,
+    contentWidth: PropTypes.number.isRequired,
+    contentHeight: PropTypes.number.isRequired,
+    minimised: PropTypes.bool.isRequired,
+    content: PropTypes.array.isRequired,
+    sidebar: PropTypes.object.isRequired,
+    sidebarOpen: PropTypes.bool.isRequired,
+    sidebarDocked: PropTypes.bool.isRequired,
 }
 
 Content.defaultProps = {

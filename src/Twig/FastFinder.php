@@ -97,8 +97,8 @@ class FastFinder implements ContentInterface
         $templateData['fastFindChoices'][] = ['title' => $this->translate('Staff'), 'suggestions' => $staff, 'prefix' => $this->translate('Staff')];
         $templateData['fastFindChoices'][] = ['title' => $this->translate('Students'), 'suggestions' => $students, 'prefix' => $this->translate('Student')];
 
-        $this->getScriptManager()->addAppProp('fastFinder', $templateData);
-        $this->getScriptManager()->addEncoreEntryCSSFile('fastFinder');
+ //       $this->getScriptManager()->addAppProp('fastFinder', $templateData);
+   //     $this->getScriptManager()->addEncoreEntryCSSFile('fastFinder');
     }
 
     /**

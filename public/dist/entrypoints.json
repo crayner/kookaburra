@@ -1,84 +1,10 @@
 {
   "entrypoints": {
-    "app": {
+    "page": {
       "js": [
         "/build/runtime.dca8fcdd.js",
-        "/build/5.67bcdc5b.js",
-        "/build/app.e65ee91b.js"
-      ],
-      "css": [
-        "/build/5.65ee5164.css"
-      ]
-    },
-    "fastFinder": {
-      "js": [
-        "/build/runtime.dca8fcdd.js",
-        "/build/0.5595af84.js",
-        "/build/3.01130905.js",
-        "/build/fastFinder.7d2c493a.js"
-      ],
-      "css": [
-        "/build/fastFinder.bc1db4b5.css"
-      ]
-    },
-    "sideBar": {
-      "js": [
-        "/build/runtime.dca8fcdd.js",
-        "/build/0.5595af84.js",
-        "/build/4.7d640f85.js",
-        "/build/sideBar.1cacc7c1.js"
-      ]
-    },
-    "headerMenu": {
-      "js": [
-        "/build/runtime.dca8fcdd.js",
-        "/build/0.5595af84.js",
-        "/build/headerMenu.5e1d061e.js"
-      ]
-    },
-    "notificationTray": {
-      "js": [
-        "/build/runtime.dca8fcdd.js",
-        "/build/0.5595af84.js",
-        "/build/1.fddda5d0.js",
-        "/build/notificationTray.0612b9c8.js"
-      ]
-    },
-    "idleTimeout": {
-      "js": [
-        "/build/runtime.dca8fcdd.js",
-        "/build/0.5595af84.js",
-        "/build/idleTimeout.bccf153a.js"
-      ]
-    },
-    "container": {
-      "js": [
-        "/build/runtime.dca8fcdd.js",
-        "/build/0.5595af84.js",
-        "/build/1.fddda5d0.js",
-        "/build/container.6764f6f0.js"
-      ],
-      "css": [
-        "/build/container.15569a13.css"
-      ]
-    },
-    "pagination": {
-      "js": [
-        "/build/runtime.dca8fcdd.js",
-        "/build/0.5595af84.js",
-        "/build/1.fddda5d0.js",
-        "/build/pagination.a062f2f4.js"
-      ]
-    },
-    "photoLoader": {
-      "js": [
-        "/build/runtime.dca8fcdd.js",
-        "/build/0.5595af84.js",
-        "/build/1.fddda5d0.js",
-        "/build/photoLoader.e17596af.js"
-      ],
-      "css": [
-        "/build/photoLoader.366b7ef5.css"
+        "/build/1.cdf056b7.js",
+        "/build/page.a9eebbe1.js"
       ]
     },
     "css/core": {
@@ -86,7 +12,7 @@
         "/build/runtime.dca8fcdd.js"
       ],
       "css": [
-        "/build/css/core.b352f342.css"
+        "/build/css/core.0376f52d.css"
       ]
     }
   }

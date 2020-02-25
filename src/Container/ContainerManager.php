@@ -174,8 +174,8 @@ class ContainerManager
             $containers[$target] = $container;
         }
 
-        $this->scriptManager->addAppProp('container', $containers);
-        $this->scriptManager->addEncoreEntryCSSFile('container');
+//        $this->scriptManager->addAppProp('container', $containers);
+//        $this->scriptManager->addEncoreEntryCSSFile('container');
         return $this;
     }
 

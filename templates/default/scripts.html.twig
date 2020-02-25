@@ -1,7 +1,7 @@
 {% for style in getEncoreEntryCSSFiles() %}
     <script type="application/javascript" lang="js">
         function cssLinks() {
-            {% set link = encore_entry_css_files(style) %}
+            {% set link = encore_entry_css_files(style)|default({}) %}
             {% for css in link %}
                 var newLink = document.createElement("link");
                 newLink.href = '{{ asset(css) }}'
@@ -26,7 +26,7 @@
         {% endfor %}
     </script>
     {% for tagName in tags %}
-        {{ encore_entry_script_tags(tagName) }}
+      {#  {{ encore_entry_script_tags(tagName) }} #}
     {% endfor %}
 {% endif %}
 

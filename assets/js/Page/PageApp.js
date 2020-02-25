@@ -7,7 +7,8 @@ import MinorLinks from "./MinorLinks"
 import Header from "./Header"
 import Content from "./Content"
 import Footer from "./Footer"
-import SideBar from "../SideBar/SideBarApp"
+import {fetchJson} from "../component/fetchJson"
+import Parser from "html-react-parser"
 
 export default class PageApp extends Component {
     constructor (props) {
@@ -22,8 +23,48 @@ export default class PageApp extends Component {
         this.route = props.route
         this.footer = props.footer
         this.minorLinks = props.minorLinks
+        this.functions = {
+            getContent: this.getContentFromServer.bind(this),
+            onSetSidebarOpen: this.onSetSidebarOpen.bind(this),
+        }
+        this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
+        this.handleClickOffSidebar = this.handleClickOffSidebar.bind(this)
+        this.getContentSize = this.getContentSize.bind(this)
 
-        console.log(this)
+        this.state = {
+            contentWidth: 0,
+            content: [],
+            sidebar: {},
+            minimised: false,
+            sidebarOpen: false,
+            sidebarDocked: false,
+            contentHeight: 0,
+        }
+
+    }
+
+    componentDidMount() {
+        this.getContentFromServer()
+        window.addEventListener('resize', this.getContentSize, false);
+        document.addEventListener('mousedown', this.handleClickOffSidebar, false)
+
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.getContentSize, false);
+        document.removeEventListener('mousedown', this.handleClickOffSideBar, false)
+    }
+
+    getContentSize() {
+        let width = document.getElementById('wrapOuter')
+        width = width ? width.offsetWidth : 0
+        let height = document.getElementById('sidebar')
+        height = height ? height.offsetHeight : 0
+        this.setState({
+            contentWidth: width + 17,
+            contentHeight: height,
+        })
+        return width.offsetWidth + 17
     }
 
     getTitle() {
@@ -40,6 +81,32 @@ export default class PageApp extends Component {
         return title
     }
 
+    setNode(e){
+        this.node = e
+    }
+
+    onSetSidebarOpen(open) {
+        this.setState({
+            sidebarOpen: open || this.state.contentWidth >= 1024,
+            contentHeight: 0,
+        });
+        if (open) {
+            setTimeout(this.getContentSize(), 50)
+        }
+    }
+
+    handleClickOffSidebar(e)
+    {
+        let node = document.getElementById('sidebar')
+        if (node && node.contains(e.target))
+            return
+
+        this.setState({
+            sidebarOpen: false,
+            contentHeight: 0,
+        });
+    }
+
     getContent() {
         let content = []
         content.push(<Helmet key={'helmet'}>
@@ -51,14 +118,31 @@ export default class PageApp extends Component {
         content.push(<MinorLinks links={this.minorLinks} key={'minorLinks'} />)
         content.push(<div id={'wrap'} className={'max-w-6xl mx-auto m-2 shadow rounded min-h-screen'} key={'wrap'}>
             <Header details={this.headerDetails} />
-            <div id={'content-wrap'} className={'relative w-full min-h-1/2 flex content-start flex-wrap lg:flex-no-wrap lg:flex-row-reverse bg-transparent-100 clearfix min-h-full'}>
-                <Content action={this.action} url={this.url} />
+            <div id={'content-wrap'} ref={e => (this.contentRef = e)} className={'relative w-full min-h-1/2 flex content-start flex-wrap lg:flex-no-wrap lg:flex-row-reverse bg-transparent-100 clearfix min-h-full'}>
+                <Content action={this.action} url={this.url} functions={this.functions} {...this.state} />
             </div>
             <Footer details={this.footer} />
         </div>)
 
         return content
     }
+
+    getContentFromServer() {
+        fetchJson(
+            this.url,
+            [],
+            false
+        ).then(data => {
+            this.setState({
+                content: Parser(data.content),
+                sidebar: data.sidebar,
+                minimised: data.minimised,
+                sidebarDocked: typeof data.sidebarDocked === 'boolean' ? data.sidebarDocked : false,
+            })
+            setTimeout(this.getContentSize(),50)
+        })
+    }
+
 
     render () {
         return (this.getContent())

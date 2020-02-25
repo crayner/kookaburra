@@ -12,7 +12,6 @@ export default function SideBarContent(props) {
         sidebarAttr
     } = props
 
-    console.log(sidebarAttr)
     let result = []
     Object.keys(content).map(name => {
         let item = content[name]

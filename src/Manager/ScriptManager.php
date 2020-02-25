@@ -83,6 +83,7 @@ class ScriptManager
      */
     public function addEncoreEntryCSSFile(string $name): ScriptManager
     {
+        dd($this, debug_backtrace());
         if ($this->getEncoreEntryCSSFiles()->contains($name))
             return $this;
 
