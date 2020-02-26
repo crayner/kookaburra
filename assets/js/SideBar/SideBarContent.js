@@ -9,7 +9,10 @@ import ModuleMenu from "./ModuleMenuApp"
 export default function SideBarContent(props) {
     const {
         content,
-        sidebarAttr
+        sidebarContentAttr,
+        functions,
+        height,
+        sidebarOpen
     } = props
 
     let result = []
@@ -35,11 +38,17 @@ export default function SideBarContent(props) {
             result.push(<div className={"column-no-break"} key={item.name}>{y}</div>)
         }
     })
-
-    return (<div {...sidebarAttr}>{result}</div>)
+    if (height <= 50 && sidebarOpen)
+        setTimeout(functions.getContentSize, 50)
+    return (
+        <div {...sidebarContentAttr}>{result}</div>
+    )
 }
 
 SideBarContent.propTypes = {
     content: PropTypes.object.isRequired,
-    sidebarAttr: PropTypes.object.isRequired,
+    sidebarContentAttr: PropTypes.object.isRequired,
+    functions: PropTypes.object.isRequired,
+    height: PropTypes.number.isRequired,
+    sidebarOpen: PropTypes.bool.isRequired,
 }

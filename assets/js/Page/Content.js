@@ -9,54 +9,90 @@ export default function Content(props) {
         contentWidth,
         contentHeight,
         sidebar,
-        minimised,
         functions,
         content,
-        sidebarOpen,
-        sidebarDocked,
+        sidebarOpen
     } = props
 
-    let contentStyle = {}
-    if (sidebarDocked || sidebarOpen) {
-        contentStyle = {
-            minHeight: contentHeight + 'px',
-            width: (contentWidth - 286) + 'px',
-        }
-    }
-
-    if (minimised && !(sidebarDocked || sidebarOpen)) {
-        contentStyle = {
-            width: (contentWidth ) + 'px',
-        }
-
-    }
-
-
-
+    const state = contentState({
+        height: contentHeight,
+        width: contentWidth,
+        sidebarOpen: sidebarOpen,
+        content: typeof sidebar.content !== 'undefined' ? sidebar.content : {},
+        docked: typeof sidebar.docked === 'boolean' ? sidebar.docked: false,
+        minimised: typeof sidebar.minimised === 'boolean' ? sidebar.minimised : false,
+    })
+    
     function buildContent() {
         let result = []
-        if (Object.keys(sidebar).length > 0)
-            result.push(<Sidebar key={'sidebar'} minimised={minimised} content={sidebar} functions={functions} width={contentWidth} sidebarOpen={sidebarOpen} />)
-        result.push(<div key={'content'} id="content" className="w-full lg:flex-1 px-6 pb-6 lg:pt-0 overflow-x-scroll sm:overflow-x-auto min-h-full" style={contentStyle}>
+        result.push(<Sidebar key={'sidebar'} functions={functions} {...state} />)
+        result.push(<div {...state.contentAttr} key={'content'}>
             {content}
             </div>)
         return result
     }
 
     return (buildContent())
+
+    function contentState(state) {
+        state.contentAttr = {
+            id: 'content',
+            className: 'px-6 pb-6 pt-0 float-left',
+        }
+
+        let showSidebar = false
+        if (state.docked && state.sidebarOpen === '') showSidebar = true
+        if (!state.minimised && state.width > 975) showSidebar = true
+        if (state.sidebarOpen === 'open') showSidebar = true
+
+        if (state.minimised && state.sidebarOpen === '') showSidebar = false
+
+        if (typeof state.content !== 'undefined') {
+            state.contentAttr.style = {
+                width: (state.width - 250) + 'px',
+                minHeight: (24 + state.height) + 'px'
+            }
+        } else {
+            state.contentAttr = {
+                id: 'content',
+                key: 'content',
+                className: 'w-full px-6 pb-6 pt-0 float-left',
+                style: {
+                    minHeight: (24 + state.height) + 'px',
+                },
+            }
+        }
+
+        if (showSidebar) {
+            state.contentAttr.style = {
+                width: (state.width - 250) + 'px',
+                minHeight: (24 + state.height) + 'px'
+            }
+            if (state.width < 976) {
+                state.contentAttr.style = {
+                    width: (state.width - 226) + 'px',
+                    minHeight: (24 + state.height) + 'px'
+                }
+            }
+        } else {
+            state.contentAttr = {
+                className: 'w-full px-6 pb-6 pt-0 float-left',
+            }
+        }
+
+        state.sidebarOpen = showSidebar
+        return state
+    }
 }
 
 Content.propTypes = {
+    sidebarOpen: PropTypes.string.isRequired,
     contentWidth: PropTypes.number.isRequired,
     contentHeight: PropTypes.number.isRequired,
-    minimised: PropTypes.bool.isRequired,
     content: PropTypes.array.isRequired,
     sidebar: PropTypes.object.isRequired,
-    sidebarOpen: PropTypes.bool.isRequired,
-    sidebarDocked: PropTypes.bool.isRequired,
 }
 
 Content.defaultProps = {
     action: {},
 }
-

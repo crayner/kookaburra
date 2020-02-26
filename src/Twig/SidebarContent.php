@@ -51,6 +51,11 @@ class SidebarContent
     private $minimised = false;
 
     /**
+     * @var bool
+     */
+    private $docked = false;
+
+    /**
      * @var array
      */
     private static $positionList = [
@@ -259,10 +264,13 @@ class SidebarContent
     /**
      * Minimised.
      *
+     * On a large screen, allow the user to close the dock.
+     * Initial display of sidebar is minimised.
+     * This setting overrides the docked setting.
      * @param bool $minimised
      * @return SidebarContent
      */
-    public function setMinimised(bool $minimised): SidebarContent
+    public function setMinimised(bool $minimised = true): SidebarContent
     {
         if ($this->hasContentMember('Module Menu')) {
             $this->getContentMember('Module Menu')->setShowSidebar(!$minimised);
@@ -291,9 +299,12 @@ class SidebarContent
         foreach($this->sortContent()->toArray() as $name=>$element)
             $content[$name] = array_merge($element->toArray(), $element->getCoreArray());
 
-        $result['sidebar'] = $content;
+        $result['content'] = $content;
         $result['minimised'] = $this->isMinimised();
-        return $result;
+        $result['docked'] = $this->isDocked();
+        $content = [];
+        $content['sidebar'] = $result;
+        return $content;
     }
 
     /**
@@ -318,5 +329,28 @@ class SidebarContent
         $this->setContent(new ArrayCollection(iterator_to_array($iterator, true)));
         $this->setContentSorted(true);
         return $this->getContent();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDocked(): bool
+    {
+        return $this->docked;
+    }
+
+    /**
+     * Docked.
+     *
+     * Sidebar remains open when the screen changes from large to small width. <br/>
+     * Does NOT inhibit ability of user to close sidebar when small screen.
+     * This setting is overridden by the minimised setting.
+     * @param bool $docked
+     * @return SidebarContent
+     */
+    public function setDocked(bool $docked = true): SidebarContent
+    {
+        $this->docked = $docked;
+        return $this;
     }
 }

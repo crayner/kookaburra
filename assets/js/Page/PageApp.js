@@ -23,21 +23,23 @@ export default class PageApp extends Component {
         this.route = props.route
         this.footer = props.footer
         this.minorLinks = props.minorLinks
+        this.height = null
+        this.references = {
+            sideBarContentRef: React.createRef('sideBarContent'),
+        }
         this.functions = {
             getContent: this.getContentFromServer.bind(this),
             onSetSidebarOpen: this.onSetSidebarOpen.bind(this),
+            getContentSize: this.getContentSize.bind(this)
         }
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
         this.handleClickOffSidebar = this.handleClickOffSidebar.bind(this)
-        this.getContentSize = this.getContentSize.bind(this)
 
         this.state = {
             contentWidth: 0,
             content: [],
             sidebar: {},
-            minimised: false,
-            sidebarOpen: false,
-            sidebarDocked: false,
+            sidebarOpen: '',
             contentHeight: 0,
         }
 
@@ -45,26 +47,24 @@ export default class PageApp extends Component {
 
     componentDidMount() {
         this.getContentFromServer()
-        window.addEventListener('resize', this.getContentSize, false);
+        window.addEventListener('resize', this.functions.getContentSize, false);
         document.addEventListener('mousedown', this.handleClickOffSidebar, false)
 
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.getContentSize, false);
+        window.removeEventListener('resize', this.functions.getContentSize, false);
         document.removeEventListener('mousedown', this.handleClickOffSideBar, false)
     }
 
     getContentSize() {
-        let width = document.getElementById('wrapOuter')
+        let width = document.getElementById('content-wrap')
         width = width ? width.offsetWidth : 0
-        let height = document.getElementById('sidebar')
-        height = height ? height.offsetHeight : 0
+        this.height = document.getElementById('sideBarContent')
         this.setState({
-            contentWidth: width + 17,
-            contentHeight: height,
+            contentWidth: width,
+            contentHeight: this.height ? this.height.offsetHeight : 0,
         })
-        return width.offsetWidth + 17
     }
 
     getTitle() {
@@ -87,12 +87,9 @@ export default class PageApp extends Component {
 
     onSetSidebarOpen(open) {
         this.setState({
-            sidebarOpen: open || this.state.contentWidth >= 1024,
-            contentHeight: 0,
+            sidebarOpen: open,
         });
-        if (open) {
-            setTimeout(this.getContentSize(), 50)
-        }
+        setTimeout(this.functions.getContentSize, 50)
     }
 
     handleClickOffSidebar(e)
@@ -102,7 +99,7 @@ export default class PageApp extends Component {
             return
 
         this.setState({
-            sidebarOpen: false,
+            sidebarOpen: 'closed',
             contentHeight: 0,
         });
     }
@@ -116,10 +113,10 @@ export default class PageApp extends Component {
             <body style={"background: url('" + this.bodyImage + "') repeat fixed center top olivedrab!important"}></body>
         </Helmet>)
         content.push(<MinorLinks links={this.minorLinks} key={'minorLinks'} />)
-        content.push(<div id={'wrap'} className={'max-w-6xl mx-auto m-2 shadow rounded min-h-screen'} key={'wrap'}>
+        content.push(<div id={'wrap'} className={'max-w-6xl mx-auto m-2 shadow rounded'} key={'wrap'}>
             <Header details={this.headerDetails} />
-            <div id={'content-wrap'} ref={e => (this.contentRef = e)} className={'relative w-full min-h-1/2 flex content-start flex-wrap lg:flex-no-wrap lg:flex-row-reverse bg-transparent-100 clearfix min-h-full'}>
-                <Content action={this.action} url={this.url} functions={this.functions} {...this.state} />
+            <div id={'content-wrap'} ref={e => (this.contentRef = e)} className={'relative w-full block content-start flex-wrap lg:flex-no-wrap lg:flex-row-reverse bg-transparent-100 clearfix'}>
+                <Content action={this.action} url={this.url} functions={this.functions} {...this.state} references={this.references} />
             </div>
             <Footer details={this.footer} />
         </div>)
@@ -136,10 +133,8 @@ export default class PageApp extends Component {
             this.setState({
                 content: Parser(data.content),
                 sidebar: data.sidebar,
-                minimised: data.minimised,
-                sidebarDocked: typeof data.sidebarDocked === 'boolean' ? data.sidebarDocked : false,
             })
-            setTimeout(this.getContentSize(),50)
+            setTimeout(this.functions.getContentSize,50)
         })
     }
 
