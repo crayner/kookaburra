@@ -56,7 +56,7 @@ class UrlGeneratorHelper
      */
     public static function getUrl($name, $parameters = [], $schemeRelative = false)
     {
-        return self::$generator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        return self::$generator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::ABSOLUTE_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
 }
