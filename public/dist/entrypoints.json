@@ -3,8 +3,16 @@
     "page": {
       "js": [
         "/build/runtime.dca8fcdd.js",
-        "/build/1.cdf056b7.js",
-        "/build/page.c32f8ac4.js"
+        "/build/0.33cc499d.js",
+        "/build/2.1499e21c.js",
+        "/build/page.15219929.js"
+      ]
+    },
+    "pagination": {
+      "js": [
+        "/build/runtime.dca8fcdd.js",
+        "/build/0.33cc499d.js",
+        "/build/pagination.f7fb9ddd.js"
       ]
     },
     "css/core": {
@@ -12,7 +20,7 @@
         "/build/runtime.dca8fcdd.js"
       ],
       "css": [
-        "/build/css/core.0376f52d.css"
+        "/build/css/core.eead74a8.css"
       ]
     }
   }
