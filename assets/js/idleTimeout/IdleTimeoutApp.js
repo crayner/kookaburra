@@ -50,7 +50,7 @@ export default class IdleTimeoutApp extends Component {
 
     render () {
         return (
-            <div>
+            <section>
                 <IdleTimer
                     ref={ref => { this.idleTimer = ref }}
                     onActive={this.onActive}
@@ -60,26 +60,19 @@ export default class IdleTimeoutApp extends Component {
                     startOnLoad
                 />
                 { this.state.display ?
-                    <div style={{position: 'absolute', width: '100%', top: 0, left: 0, height: '100%', background: 'rgba(230, 230, 255, 0.5)', zIndex: 99999 }}>
-                        <div style={{position: 'relative', width: '100%', top: 0, left: 0, height: '100%' }}>
-                            <div className="" style={{background: "peachpuff", maxWidth: '325px', position: 'absolute',top: '50%', left: '50%', transform: 'translate(-50%,-50%)', borderRadius: "5px" }}>
-                                <div className={'w-full'} style={{padding: '2rem'}}>
-                                    <div className={''} style={{borderRadius: "5px"}}>
-                                        <img style={{float: 'right', marginTop: '-40px'}} src={'/build/static/kookaburra.png'} height={50} />
-                                        <h3>Kookaburra</h3>
-                                        <span className={'warning'}>{ this.props.trans_sessionExpire }</span>
-                                    </div>
-                                </div>
-                                <div className={'w-full'} style={{paddingBottom: '2rem'}}>
-                                    <div className={'w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 content-centre'}>
-                                        <input className={'btn-gibbon'} type={'button'} onClick={() => this.reset} value={ this.props.trans_stayConnected } />&nbsp;&nbsp;
-                                    </div>
+                    <div className={'absolute w-full top-0 left-0 min-h-full bg-gray-900'} style={{zIndex: 99999 }}>
+                        <div className={'absolute w-full top-0 left-0 min-h-screen'}>
+                            <div className={'bg-orange-700 absolute border-color-white border-4 rounded-lg h-40 w-64'} style={{transform: 'translate(-50%,-35%)', top: '35%', left: '50%'}}>
+                                <div className={'w-full p-2'}>
+                                    <img className={'float-right'} src={'/build/static/kookaburra.png'} height={75} />
+                                    <h3 className={'absolute top-0 left-0 pt-10 px-2 m-0 ml-1 border-color-white border-b-2'}>Kookaburra</h3>
+                                    <span className={'float-left'}>{ this.props.trans_sessionExpire }</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     :  '' }
-            </div>
+            </section>
         )
     }
 

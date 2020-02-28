@@ -18,6 +18,7 @@
         </head>
         <body>
             <div id="wrapOuter" class="sm:px-6"></div>
+            <div id="idleTimeout"></div>
             <script type="application/javascript" lang="js">
                 {% set link = encore_entry_css_files('css/core') %}
                 {% for css in link %}
@@ -29,10 +30,16 @@
                 document.head.appendChild(newLink)
                 {% endfor %}
                 window.PAGE_PROPS = {{ page.writeProperties()|json_encode|raw }}
+                {% if app.user %}
+                    window.IDLETIMEOUT_PROPS = {{ page.writeIdleTimeout()|json_encode|raw }}
+                {% endif %}
             </script>
 
             {% set x = page.writeProperties() %}
             {{ encore_entry_script_tags('page') }}
+            {% if app.user %}
+                {{ encore_entry_script_tags('idleTimeout') }}
+            {% endif %}
         </body>
     </html>
 {% endblock full_document %}

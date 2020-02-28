@@ -95,7 +95,7 @@ class LegacyController extends AbstractController
         $sidebar->addContent(new Flash());
 
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
-            $sidebar->addContent(new Register());
+            $sidebar->addContent(new Register())->setDocked();
 
 
         return $pageManager->createResponse(['content' => trim($this->renderView('default/welcome.html.twig',

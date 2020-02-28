@@ -18,8 +18,8 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('page', './assets/js/page.js')
-//    .addEntry('fastFinder', './assets/js/fastFinder.js'
-//    .addEntry('idleTimeout', './assets/js/idleTimeout.js')
+    .addEntry('fastFinder', './assets/js/fastFinder.js')
+    .addEntry('idleTimeout', './assets/js/idleTimeout.js')
 //    .addEntry('sideBar', './assets/js/sideBar.js')
 //    .addEntry('headerMenu', './assets/js/headerMenu.js')
 //    .addEntry('notificationTray', './assets/js/notificationTray.js')

@@ -55,6 +55,8 @@ class SidebarListener implements EventSubscriberInterface
      * SidebarListener constructor.
      * @param RequestStack $stack
      * @param SidebarContent $sidebar
+     * @param ParameterBagInterface $params
+     * @param ModuleMenu $moduleMenu
      */
     public function __construct(RequestStack $stack, SidebarContent $sidebar, ParameterBagInterface $params, ModuleMenu $moduleMenu)
     {

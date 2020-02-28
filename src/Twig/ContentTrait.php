@@ -142,7 +142,7 @@ trait ContentTrait
      */
     public function isValid(): bool
     {
-        return $this->valid && $this->getAttributes()->count() > 0;
+        return $this->getValid() && $this->getAttributes()->count() > 0;
     }
 
     /**

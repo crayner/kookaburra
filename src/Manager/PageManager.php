@@ -17,6 +17,7 @@ namespace App\Manager;
 
 use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
+use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\SidebarContent;
@@ -89,6 +90,11 @@ class PageManager
     private $twig;
 
     /**
+     * @var IdleTimeout
+     */
+    private $idleTimeout;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -96,9 +102,20 @@ class PageManager
      * @param AuthorizationCheckerInterface $checker
      * @param SidebarContent $sidebar
      * @param BreadCrumbs $breadCrumbs
+     * @param Environment $twig
+     * @param IdleTimeout $idleTimeout
+     * @throws \Exception
      */
-    public function __construct(RequestStack $stack, MinorLinks $minorLinks, MainMenu $mainMenu, AuthorizationCheckerInterface $checker, SidebarContent $sidebar, BreadCrumbs $breadCrumbs, Environment $twig)
-    {
+    public function __construct(
+        RequestStack $stack,
+        MinorLinks $minorLinks,
+        MainMenu $mainMenu,
+        AuthorizationCheckerInterface $checker,
+        SidebarContent $sidebar,
+        BreadCrumbs $breadCrumbs,
+        Environment $twig,
+        IdleTimeout $idleTimeout
+    ) {
         $this->stack = $stack;
         $this->minorLinks = $minorLinks;
         $this->mainMenu = $mainMenu;
@@ -107,6 +124,7 @@ class PageManager
         $this->breadCrumbs = $breadCrumbs;
         $this->twig = $twig;
         $this->minorLinks->execute();
+        $this->idleTimeout =  $idleTimeout;
     }
 
     /**
@@ -279,5 +297,30 @@ class PageManager
     private function getBreadCrumbs(): array
     {
         return ['breadCrumbs' => ($this->hasBreadCrumbs() ? $this->twig->render('components/bread_crumbs.html.twig', ['breadCrumbs' => $this->breadCrumbs]) : '')];
+    }
+
+    /**
+     * writeIdleTimeout
+     * @return array
+     */
+    public function writeIdleTimeout(): array
+    {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY'))
+            return [];
+
+        $this->idleTimeout->execute();
+        return $this->idleTimeout->getAttributes()->toArray();
+    }
+
+    /**
+     * Checks if the attributes are granted against the current authentication token and optionally supplied subject.
+     *
+     * @param $attributes
+     * @param null $subject
+     * @return bool
+     */
+    protected function isGranted($attributes, $subject = null): bool
+    {
+        return $this->checker->isGranted($attributes, $subject);
     }
 }

@@ -36,16 +36,17 @@ body {
     }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1:not([class]), h2:not([class]), h3:not([class]), h4:not([class]), h5:not([class]), h6:not([class]) {
     margin: 20px 0 10px 0;
     position: relative;
     color: #444;
     background: none;
     text-align: left;
     text-transform: uppercase;
+    border-bottom: 1px solid black;
     padding: 0 0 5px;
 }
-h1:after, h2:after, h3:after, h4:after, h5:after, h6:after {
+.half-underline:after {
     content: "";
     background: black;
     position: absolute;
@@ -616,4 +617,11 @@ a.active {
 }
 .fa-1-5x {
     font-size: 1.5em;
+}
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
 }
