@@ -29,9 +29,19 @@
                 newLink.media = 'screen'
                 document.head.appendChild(newLink)
                 {% endfor %}
+                {% set link = encore_entry_css_files('css/fastFinder') %}
+                {% for css in link %}
+                newLink = document.createElement("link");
+                newLink.href = '{{ asset(css) }}'
+                newLink.rel = 'stylesheet'
+                newLink.type = 'text/css'
+                newLink.media = 'screen'
+                document.head.appendChild(newLink)
+                {% endfor %}
                 window.PAGE_PROPS = {{ page.writeProperties()|json_encode|raw }}
                 {% if app.user %}
                     window.IDLETIMEOUT_PROPS = {{ page.writeIdleTimeout()|json_encode|raw }}
+                    window.FASTFINDER_PROPS = {{ page.writeFastFinder()|json_encode|raw }}
                 {% endif %}
             </script>
 
@@ -39,6 +49,8 @@
             {{ encore_entry_script_tags('page') }}
             {% if app.user %}
                 {{ encore_entry_script_tags('idleTimeout') }}
+                {{ encore_entry_script_tags('fastFinder') }}
+                {{ encore_entry_script_tags('notificationTray') }}
             {% endif %}
         </body>
     </html>

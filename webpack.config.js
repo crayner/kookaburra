@@ -22,13 +22,14 @@ Encore
     .addEntry('idleTimeout', './assets/js/idleTimeout.js')
 //    .addEntry('sideBar', './assets/js/sideBar.js')
 //    .addEntry('headerMenu', './assets/js/headerMenu.js')
-//    .addEntry('notificationTray', './assets/js/notificationTray.js')
+    .addEntry('notificationTray', './assets/js/notificationTray.js')
 //    .addEntry('app', './assets/js/app.js')
 //    .addEntry('default', './assets/themes/default/default.js')
 //    .addEntry('container','./assets/js/container.js')
     .addEntry('pagination','./assets/js/pagination.js')
 //    .addEntry('photoLoader','./assets/js/photoLoader.js')
     .addStyleEntry('css/core', './assets/css/core.scss')
+    .addStyleEntry('css/fastFinder', './assets/css/fastFinder/fastFinder.css')
     .splitEntryChunks()
 
     /*

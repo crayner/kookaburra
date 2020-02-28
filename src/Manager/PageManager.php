@@ -17,6 +17,7 @@ namespace App\Manager;
 
 use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
+use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
@@ -95,6 +96,11 @@ class PageManager
     private $idleTimeout;
 
     /**
+     * @var FastFinder
+     */
+    private $fastFinder;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -104,6 +110,7 @@ class PageManager
      * @param BreadCrumbs $breadCrumbs
      * @param Environment $twig
      * @param IdleTimeout $idleTimeout
+     * @param FastFinder $fastFinder
      * @throws \Exception
      */
     public function __construct(
@@ -114,7 +121,8 @@ class PageManager
         SidebarContent $sidebar,
         BreadCrumbs $breadCrumbs,
         Environment $twig,
-        IdleTimeout $idleTimeout
+        IdleTimeout $idleTimeout,
+        FastFinder $fastFinder
     ) {
         $this->stack = $stack;
         $this->minorLinks = $minorLinks;
@@ -125,6 +133,7 @@ class PageManager
         $this->twig = $twig;
         $this->minorLinks->execute();
         $this->idleTimeout =  $idleTimeout;
+        $this->fastFinder = $fastFinder;
     }
 
     /**
@@ -322,5 +331,19 @@ class PageManager
     protected function isGranted($attributes, $subject = null): bool
     {
         return $this->checker->isGranted($attributes, $subject);
+    }
+
+    /**
+     * writeFastFinder
+     * @return array
+     * @throws \Exception
+     */
+    public function writeFastFinder(): array
+    {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY'))
+            return [];
+
+        $this->fastFinder->execute();
+        return $this->fastFinder->getAttributes()->toArray();
     }
 }

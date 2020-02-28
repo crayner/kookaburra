@@ -17,20 +17,17 @@ namespace App\Twig;
 
 use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
+use App\Util\TranslationsHelper;
 use Kookaburra\UserAdmin\Entity\FamilyAdult;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\SystemAdmin\Entity\Role;
 use App\Entity\StudentEnrolment;
-use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
 use Kookaburra\SystemAdmin\Provider\RoleProvider;
-use Kookaburra\UserAdmin\Manager\SecurityUser;
 use App\Util\CacheHelper;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class FastFinder
@@ -39,21 +36,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class FastFinder implements ContentInterface
 {
     use ContentTrait;
-
-    /**
-     * @var ScriptManager
-     */
-    private $scriptManager;
-
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
 
     /**
      * @var TokenStorageInterface
@@ -66,24 +48,22 @@ class FastFinder implements ContentInterface
      */
     public function execute(): void
     {
-        if (!$this->getToken()->getToken() || !$this->getToken()->getToken()->getUser() instanceof SecurityUser || !$this->getToken()->getToken()->getUser()->getPerson())
+        if (!SecurityHelper::isGranted('IS_AUTHENTICATED_FULLY'))
             return;
 
         $highestActionClass = SecurityHelper::getHighestGroupedAction('/modules/Planner/planner.php');
 
-        $templateData = [
-            'roleCategory'          => RoleProvider::getRoleCategory($this->getSession()->get('gibbonRoleIDCurrent')),
-        ];
+        $this->addAttribute('roleCategory', RoleProvider::getRoleCategory($this->getSession()->get('gibbonRoleIDCurrent')));
 
-        $templateData['trans_fastFind'] = $this->getTranslator()->trans('Fast Finder', [], 'messages');
-        $templateData['trans_fastFindActions'] = $this->getTranslator()->trans('Actions', [], 'messages');
-        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses' ? ', '.$this->getTranslator()->trans('Classes', [], 'messages') : '';
-        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/students/student_view.php') ? ', '.$this->getTranslator()->trans('Students', [], 'messages') : '';
-        $templateData['trans_fastFindActions'] .= SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php') ? ', '.$this->getTranslator()->trans('Staff', [], 'messages') : '';
-        $templateData['trans_enrolmentCount'] = $templateData['roleCategory'] === 'Staff' ? $this->getTranslator()->trans('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '';
-        $templateData['themeName'] = $this->getSession()->get('gibbonThemeName');
-        $templateData['trans_placeholder'] = $this->getTranslator()->trans('Start typing a name...', [], 'messages');
-        $templateData['trans_close'] = $this->getTranslator()->trans('Close', [], 'messages');
+        $this->addAttribute('trans_fastFind', $this->translate('Fast Finder', [], 'messages'));
+        $this->addAttribute('trans_fastFindActions', $this->translate('Actions', [], 'messages')
+            .(SecurityHelper::isActionAccessible('/modules/Planner/planner.php') && $highestActionClass !== 'Lesson Planner_viewMyChildrensClasses' ? ', ' . $this->translate('Classes', [], 'messages') : '')
+            .(SecurityHelper::isActionAccessible('/modules/students/student_view.php') ? ', '.$this->translate('Students', [], 'messages') : '')
+            .(SecurityHelper::isActionAccessible('/modules/Staff/staff_view.php') ? ', '.$this->translate('Staff', [], 'messages') : ''));
+        $this->addAttribute('trans_enrolmentCount', $this->getAttribute('roleCategory') === 'Staff' ? $this->translate('Total Student Enrolment:', [], 'messages') . ' ' .ProviderFactory::getRepository(StudentEnrolment::class)->getStudentEnrolmentCount($this->getSession()->get('AcademicYearID')) : '');
+        $this->addAttribute('themeName', $this->getSession()->get('gibbonThemeName'));
+        $this->addAttribute('trans_placeholder', $this->translate('Start typing a name...', [], 'messages'));
+        $this->addAttribute('trans_close', $this->translate('Close', [], 'messages'));
 
         $actions = $this->getFastFinderActions($this->getSession()->get('gibbonRoleIDCurrent'));
 
@@ -91,74 +71,12 @@ class FastFinder implements ContentInterface
 
         $staff = $this->accessibleStaff();
         $students = $this->accessibleStudents();
-        $templateData['fastFindChoices'] = [];
-        $templateData['fastFindChoices'][] = ['title' => $this->translate('Actions'), 'suggestions' => $actions, 'prefix' => $this->translate('Action')];
-        $templateData['fastFindChoices'][] = ['title' => $this->translate('Classes'), 'suggestions' => $classes, 'prefix' => $this->translate('Class')];
-        $templateData['fastFindChoices'][] = ['title' => $this->translate('Staff'), 'suggestions' => $staff, 'prefix' => $this->translate('Staff')];
-        $templateData['fastFindChoices'][] = ['title' => $this->translate('Students'), 'suggestions' => $students, 'prefix' => $this->translate('Student')];
-
- //       $this->getScriptManager()->addAppProp('fastFinder', $templateData);
-   //     $this->getScriptManager()->addEncoreEntryCSSFile('fastFinder');
-    }
-
-    /**
-     * @return ScriptManager
-     */
-    public function getScriptManager(): ScriptManager
-    {
-        return $this->scriptManager;
-    }
-
-    /**
-     * ScriptManager.
-     *
-     * @param ScriptManager $scriptManager
-     * @return FastFinder
-     */
-    public function setScriptManager(ScriptManager $scriptManager): FastFinder
-    {
-        $this->scriptManager = $scriptManager;
-        return $this;
-    }
-
-    /**
-     * @return RouterInterface
-     */
-    public function getRouter(): RouterInterface
-    {
-        return $this->router;
-    }
-
-    /**
-     * Router.
-     *
-     * @param RouterInterface $router
-     * @return FastFinder
-     */
-    public function setRouter(RouterInterface $router): FastFinder
-    {
-        $this->router = $router;
-        return $this;
-    }
-
-    /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator(): TranslatorInterface
-    {
-        return $this->translator;
-    }
-
-    /**
-     * Translator.
-     *
-     * @param TranslatorInterface $translator
-     * @return FastFinder
-     */
-    public function setTranslator(TranslatorInterface $translator): FastFinder
-    {
-        $this->translator = $translator;
-        return $this;
+        $fastFindChoices = [];
+        $fastFindChoices[] = ['title' => $this->translate('Actions'), 'suggestions' => $actions, 'prefix' => $this->translate('Action')];
+        $fastFindChoices[] = ['title' => $this->translate('Classes'), 'suggestions' => $classes, 'prefix' => $this->translate('Class')];
+        $fastFindChoices[] = ['title' => $this->translate('Staff'), 'suggestions' => $staff, 'prefix' => $this->translate('Staff')];
+        $fastFindChoices[] = ['title' => $this->translate('Students'), 'suggestions' => $students, 'prefix' => $this->translate('Student')];
+        $this->addAttribute('fastFindChoices', $fastFindChoices);
     }
 
     /**
@@ -171,6 +89,7 @@ class FastFinder implements ContentInterface
     public function getFastFinderActions(?int $roleID): array
     {
         $actions = [];
+        CacheHelper::setSession($this->getSession());
         if (CacheHelper::isStale('fastFinderActions'))
         {
             // Get the accessible actions for the current user
@@ -209,26 +128,6 @@ class FastFinder implements ContentInterface
             $classes = CacheHelper::getCacheValue('fastFinderClasses');
         }
         return $classes;
-    }
-
-    /**
-     * @return TokenStorageInterface
-     */
-    public function getToken(): TokenStorageInterface
-    {
-        return $this->token;
-    }
-
-    /**
-     * Token.
-     *
-     * @param TokenStorageInterface $token
-     * @return FastFinder
-     */
-    public function setToken(TokenStorageInterface $token): FastFinder
-    {
-        $this->token = $token;
-        return $this;
     }
 
     /**
@@ -304,6 +203,6 @@ class FastFinder implements ContentInterface
      */
     private function translate(string $key, ?array $params = [], ?string $domain = 'messages'): string
     {
-        return $this->getTranslator()->trans($key, $params, $domain);
+        return TranslationsHelper::translate($key, $params, $domain);
     }
 }

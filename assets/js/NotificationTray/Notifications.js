@@ -16,16 +16,15 @@ export default function Notifications(props) {
 
     return (
         <div id={'notifications'}>
-            <a className={y === 0 ? 'inactive inline-block relative mr-4 fa-layers fa-fw fa-2x' : 'inline-block relative mr-4 fa-layers fa-fw fa-3x'} title={notificationTitle} onClick={showNotifications} >
+            <a className={y === 0 ? 'inactive inline-block relative mr-4 fa-layers fa-fw fa-3x' : 'inline-block relative mr-4 fa-layers fa-fw fa-3x'} title={notificationTitle} onClick={() => showNotifications()} >
                 {y === 0 ?
-                    <span className={'far fa-sticky-note text-gray-500'}>
+                    <span className={'far fa-sticky-note text-gray-500 ignore-mouse-down'}>
                     </span>
                     :
-                    <span className={'fas fa-sticky-note text-yellow-500'}>
-                    <span className={'fa-layers-counter'} style={{
+                    <span className={'fas fa-sticky-note text-yellow-500 hover:text-orange-500 ignore-mouse-down'}>
+                    <span className={'fa-layers-counter absolute'} style={{
                         color: colour,
                         fontSize: '0.8rem',
-                        position: 'absolute',
                         top: '22px',
                         left: '9px'
                     }}>{y}</span>

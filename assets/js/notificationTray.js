@@ -10,6 +10,6 @@ if (tray === null)
     render(<div>&nbsp;</div>, document.getElementById('dumpStuff'))
 else
     render(
-        <TrayApp  />,
+        <TrayApp />,
         tray
     )
