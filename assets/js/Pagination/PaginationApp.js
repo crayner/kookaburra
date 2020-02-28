@@ -47,6 +47,7 @@ export default class PaginationApp extends Component {
         this.changeSearch = this.changeSearch.bind(this)
         this.clearSearch = this.clearSearch.bind(this)
         this.translate = this.translate.bind(this)
+        this.handleAddClick = this.handleAddClick.bind(this)
 
         this.functions = {
             areYouSure: this.areYouSure.bind(this),
@@ -283,6 +284,11 @@ export default class PaginationApp extends Component {
         this.checkOffset(this.state.filteredContent, offset, this.state.pageMax)
     }
 
+    handleAddClick(e, file, target) {
+        e.preventDefault()
+        openUrl(file,target)
+    }
+
     checkOffset(filteredContent, offset, pageMax = 0) {
         if (pageMax === 0)
             pageMax = this.state.pageMax
@@ -360,7 +366,7 @@ export default class PaginationApp extends Component {
             }
         }
         if (this.addElementRoute !== '') {
-            control.push(<a href={'#'} key={'add'} style={{marginLeft: '15px'}} className={'close-button gray'} onClick={() => openUrl(this.addElementRoute, '_self')} title={this.row.addElement}><span className={'fas fa-plus-circle fa-fw'}/></a>)
+            control.push(<a href={'#'} key={'add'} className={'close-button gray ml-3'} onClick={(e) => this.handleAddClick(e, this.addElementRoute, '_self')} title={this.row.addElement}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-purple-600'}/></a>)
         }
         return control
     }

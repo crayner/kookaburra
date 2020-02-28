@@ -16,9 +16,9 @@
 namespace App\Twig;
 
 use App\Util\GlobalHelper;
+use App\Util\TranslationsHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Kookaburra\SystemAdmin\Entity\Module;
-use App\Manager\ScriptManager;
 use App\Provider\ProviderFactory;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,11 +33,6 @@ use Twig\Environment;
 class ModuleMenu implements SidebarContentInterface
 {
     use SidebarContentTrait;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
 
     /**
      * @var string
@@ -84,6 +79,7 @@ class ModuleMenu implements SidebarContentInterface
                 $menuModuleItems = $request->getSession()->get('menuModuleItems');
             }
 
+
             foreach ($menuModuleItems as $category => &$items) {
                 foreach ($items as &$item) {
                     $item['category'] = $this->translate($item['category']);
@@ -111,26 +107,6 @@ class ModuleMenu implements SidebarContentInterface
     }
 
     /**
-     * @return TranslatorInterface
-     */
-    public function getTranslator(): TranslatorInterface
-    {
-        return $this->translator;
-    }
-
-    /**
-     * Translator.
-     *
-     * @param TranslatorInterface $translator
-     * @return ModuleMenu
-     */
-    public function setTranslator(TranslatorInterface $translator): ModuleMenu
-    {
-        $this->translator = $translator;
-        return $this;
-    }
-
-    /**
      * translate
      * @param string $key
      * @param array|null $params
@@ -139,7 +115,7 @@ class ModuleMenu implements SidebarContentInterface
      */
     private function translate(string $key, ?array $params = [], ?string $domain = null): string
     {
-        return $this->getTranslator()->trans($key, $params, $domain ?: $this->getDomain());
+        return TranslationsHelper::translate($key, $params, $domain ?: $this->getDomain());
     }
 
     /**

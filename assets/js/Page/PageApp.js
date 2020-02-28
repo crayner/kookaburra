@@ -23,7 +23,7 @@ export default class PageApp extends Component {
         this.route = props.route
         this.footer = props.footer
         this.minorLinks = props.minorLinks
-        this.height = null
+        this.height = 0
         this.references = {
             sideBarContentRef: React.createRef('sideBarContent'),
         }
@@ -42,7 +42,6 @@ export default class PageApp extends Component {
             sidebarOpen: '',
             contentHeight: 0,
         }
-
     }
 
     componentDidMount() {
@@ -60,10 +59,16 @@ export default class PageApp extends Component {
     getContentSize() {
         let width = document.getElementById('content-wrap')
         width = width ? width.offsetWidth : 0
-        this.height = document.getElementById('sideBarContent')
+        let el = document.getElementById('sideBarContent')
+        let height = el ? el.offsetHeight + 42 : 0
+        let x = 0
+        while (height > 800 && x < 10) {
+            height = el ? el.offsetHeight + 42 : 0
+            x++
+        }
         this.setState({
             contentWidth: width,
-            contentHeight: this.height ? this.height.offsetHeight : 0,
+            contentHeight: height
         })
     }
 
@@ -89,18 +94,17 @@ export default class PageApp extends Component {
         this.setState({
             sidebarOpen: open,
         });
-        setTimeout(this.functions.getContentSize, 50)
+        setTimeout(this.functions.getContentSize, 100)
     }
 
     handleClickOffSidebar(e)
     {
         let node = document.getElementById('sidebar')
-        if (node && node.contains(e.target))
+        if (node && node.contains(e.target) || e.target.classList.contains('ignore-mouse-down') || e.target.classList.contains('fa-fw'))
             return
 
         this.setState({
             sidebarOpen: 'closed',
-            contentHeight: 0,
         });
     }
 
@@ -132,7 +136,9 @@ export default class PageApp extends Component {
         ).then(data => {
             this.setState({
                 content: Parser(data.content),
+                pagination: data.pagination,
                 sidebar: data.sidebar,
+                breadCrumbs: Parser(data.breadCrumbs),
             })
             setTimeout(this.functions.getContentSize,50)
         })
@@ -140,6 +146,11 @@ export default class PageApp extends Component {
 
 
     render () {
+        if (this.state.height !== this.height) {
+            this.height = this.state.height
+            setTimeout(this.functions.getContentSize, 50)
+        }
+
         return (this.getContent())
     }
 }

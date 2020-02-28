@@ -38,11 +38,8 @@ export default function SideBar(props) {
 
         let hidden = state.sidebarOpen
         state.buttonAttr = {
-            className: 'text-gray-600 float-right',
+            className: 'text-gray-600 absolute top-0 right-0',
             id: 'sideBarButton',
-            style: {
-                marginRight: '-1.5rem'
-            },
         }
 
 
@@ -52,6 +49,7 @@ export default function SideBar(props) {
             state.sidebarContentAttr.className = 'invisible'
             state.sidebarAttr.style = {
                 width: '35px',
+                height: '35px',
             }
         }
 

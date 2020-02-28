@@ -3,6 +3,7 @@
 import React from "react"
 import PropTypes from 'prop-types'
 import Sidebar from "../SideBar/SideBarApp"
+import PaginationApp from "../Pagination/PaginationApp"
 
 export default function Content(props) {
     const {
@@ -11,7 +12,9 @@ export default function Content(props) {
         sidebar,
         functions,
         content,
-        sidebarOpen
+        sidebarOpen,
+        pagination,
+        breadCrumbs
     } = props
 
     const state = contentState({
@@ -25,9 +28,21 @@ export default function Content(props) {
     
     function buildContent() {
         let result = []
+        let x = []
+        breadCrumbs.map(stuff => {
+            x.push(stuff)
+        })
+        content.map(stuff => {
+            x.push(stuff)
+        })
+
+        if (Object.keys(pagination).length > 0) {
+            x.push(<PaginationApp {...pagination} key={pagination.name} />)
+        }
+
         result.push(<Sidebar key={'sidebar'} functions={functions} {...state} />)
         result.push(<div {...state.contentAttr} key={'content'}>
-            {content}
+            {x}
             </div>)
         return result
     }
@@ -68,7 +83,7 @@ export default function Content(props) {
                 width: (state.width - 250) + 'px',
                 minHeight: (24 + state.height) + 'px'
             }
-            if (state.width < 976) {
+            if (state.width < 959) {
                 state.contentAttr.style = {
                     width: (state.width - 226) + 'px',
                     minHeight: (24 + state.height) + 'px'
@@ -90,9 +105,17 @@ Content.propTypes = {
     contentWidth: PropTypes.number.isRequired,
     contentHeight: PropTypes.number.isRequired,
     content: PropTypes.array.isRequired,
+    breadCrumbs: PropTypes.array.isRequired,
     sidebar: PropTypes.object.isRequired,
+    pagination: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]).isRequired,
 }
 
 Content.defaultProps = {
     action: {},
+    pagination: {},
+    content: [],
+    breadCrumbs: [],
 }

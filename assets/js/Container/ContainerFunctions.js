@@ -29,7 +29,6 @@ export function trans(translations,id){
     return translations[id]
 }
 
-
 export function downloadFile(form) {
     const file = form.value
     let route = '/resource/' + btoa(file) + '/' + this.actionRoute + '/download/'
@@ -50,7 +49,6 @@ export function openUrl(file, target) {
     }
     window.open(file,target,options)
 }
-
 
 export function buildState(forms,singleForm){
     let panelErrors = {}

@@ -35,11 +35,6 @@ class MainMenu implements ContentInterface
     use ContentTrait;
 
     /**
-     * @var ScriptManager|null
-     */
-    private $scriptManager;
-
-    /**
      * execute
      */
     public function execute(): void 
@@ -82,27 +77,5 @@ class MainMenu implements ContentInterface
             }
             $this->addAttribute('menuMainItems', $menuMainItems);
         }
-        $this->getScriptManager()->addAppProp('headerMenu', ['menu' => $menuMainItems, 'translations' => ['Home' => TranslationsHelper::translate('Home')]]);
     }
-
-    /**
-     * @return ScriptManager|null
-     */
-    public function getScriptManager(): ?ScriptManager
-    {
-        return $this->scriptManager;
-    }
-
-    /**
-     * ScriptManager.
-     *
-     * @param ScriptManager|null $scriptManager
-     * @return MainMenu
-     */
-    public function setScriptManager(?ScriptManager $scriptManager): MainMenu
-    {
-        $this->scriptManager = $scriptManager;
-        return $this;
-    }
-
 }

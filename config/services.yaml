@@ -161,8 +161,3 @@ services:
                 arguments:
                     - '@monolog.logger.installation'
 
-    App\Twig\MainMenu:
-        calls:
-            -   method: setScriptManager
-                arguments:
-                    - '@App\Manager\ScriptManager'

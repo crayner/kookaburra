@@ -135,7 +135,8 @@ class BreadCrumbs
 
     /**
      * add
-     * @param string $title
+     * @param array $module
+     * @return BreadCrumbItem[]|ArrayCollection
      */
     public function create(array $module)
     {
@@ -144,6 +145,7 @@ class BreadCrumbs
             'baseURL',
             'crumbs',
             'title',
+            'module',
         ]);
         $resolver->setDefaults([
             'trans_params' => [],
@@ -155,12 +157,16 @@ class BreadCrumbs
 
         $this->setItems(new ArrayCollection());
         $item = new BreadCrumbItem();
-        $item->setName('Home')->setUri('home');
+        $item->setName('Home')->setUri('home')->setDomain('messages');
         $this->addItem($item);
         $this->setTitle($module['title']);
         $this->setTransParams($module['trans_params']);
         $this->setBaseURL($module['baseURL']);
         $this->setDomain($module['domain']);
+
+        $item = new BreadCrumbItem();
+        $item->setName($module['module'])->setUri($module['baseURL'] . '__default')->setDomain($module['domain']);
+        $this->addItem($item);
 
         foreach($module['crumbs'] as $crumb) {
             if (false === strpos($crumb['uri'], '__'))
@@ -331,5 +337,25 @@ class BreadCrumbs
     {
         $this->domain = $domain;
         return $this;
+    }
+
+    /**
+     * isValid
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        if ($this->isLegacy())
+            return false;
+        if ($this->getItems()->count() === 0)
+            return false;
+        if (empty($this->getTitle()))
+            return false;
+        return true;
+    }
+
+    public function toArray(): array
+    {
+
     }
 }

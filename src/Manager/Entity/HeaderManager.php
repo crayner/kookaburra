@@ -67,8 +67,8 @@ class HeaderManager
             'homeURL' => UrlGeneratorHelper::getUrl('home'),
             'organisationName' => $this->getRequest()->getSession()->get('organisationName', 'Kookaburra'),
             'organisationLogo' => ImageHelper::getLogoImage(),
-            'translations' => TranslationsHelper::getTranslations(),
             'menu' => $this->getMainMenu(),
+            'translations' => TranslationsHelper::getTranslations(),
         ];
     }
 
@@ -100,6 +100,7 @@ class HeaderManager
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY'))
             return [];
+        $this->mainMenu->execute();
         if ($this->mainMenu->isValid() && $this->mainMenu->hasAttribute('menuMainItems'))
         {
             $result = $this->mainMenu->getAttribute('menuMainItems');
@@ -108,8 +109,9 @@ class HeaderManager
                 TranslationsHelper::addTranslation($catName);
                 foreach($items as $q=>$item)
                 {
-                    TranslationsHelper::addTranslation($item['name']);
-                    $result[$catName][$q]['url'] = UrlGeneratorHelper::getUrl($item['route'], []);
+                    TranslationsHelper::addTranslation($item['name'], [], 'messages');
+                    if ($item['route'] !== false)
+                        $result[$catName][$q]['url'] = UrlGeneratorHelper::getUrl($item['route'], []);
                 }
             }
             return $result;

@@ -73,10 +73,10 @@ class LegacyController extends AbstractController
     /**
      * @Route("/home/", name="home")
      * @param Request $request
-     * @param SidebarContent $sidebar
+     * @param PageManager $pageManager
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function home(Request $request, SidebarContent $sidebar, PageManager $pageManager)
+    public function home(Request $request, PageManager $pageManager)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY'))
             return $this->redirectToRoute('legacy');
@@ -91,15 +91,17 @@ class LegacyController extends AbstractController
         if ($request->query->get('timeout') === 'true')
             $this->addFlash('warning', 'Your session expired, so you were automatically logged out of the system.');
 
+        $sidebar = $pageManager->getSidebar();
         $sidebar->addContent(new Flash());
 
         if (ProviderFactory::create(Setting::class)->getSettingByScopeAsBoolean('User Admin', 'enablePublicRegistration'))
             $sidebar->addContent(new Register());
 
-        return new JsonResponse(array_merge(['content' => trim($this->renderView('default/welcome.html.twig',
+
+        return $pageManager->createResponse(['content' => trim($this->renderView('default/welcome.html.twig',
             [
                 'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
             ]
-        ))], $sidebar->toArray()));
+        ))]);
     }
 }

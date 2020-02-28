@@ -17,6 +17,8 @@ namespace App\Twig;
 
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
+use App\Util\TranslationsHelper;
+use App\Util\UrlGeneratorHelper;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
 
 class MinorLinks implements ContentInterface
@@ -90,7 +92,6 @@ class MinorLinks implements ContentInterface
             if (is_string($name)){
                 $name = [
                     'text' => $name,
-                    'translation_domain' => false,
                     'url' => '',
                 ];
             }
@@ -98,21 +99,18 @@ class MinorLinks implements ContentInterface
 
             $links[] = [
                 'class' => 'link-white',
-                'text' => 'Logout',
-                'translation_domain' => 'messages',
-                'url' => ['route' => 'logout'],
+                'text' => TranslationsHelper::translate('Logout', [], 'messages'),
+                'url' => UrlGeneratorHelper::getUrl('logout'),
             ];
             $links[] = [
                 'class' => 'link-white',
-                'text' => 'Preferences',
-                'translation_domain' => 'messages',
-                'url' => ['route' => 'user_admin__preferences'],
+                'text' => TranslationsHelper::translate('Preferences', [], 'messages'),
+                'url' => UrlGeneratorHelper::getUrl('user_admin__preferences'),
             ];
             if ($this->getSession()->get('emailLink', '') !== '') {
                 $links[] = [
                     'class' => 'link-white',
-                    'text' => 'Email',
-                    'translation_domain' => 'messages',
+                    'text' => TranslationsHelper::translate('Email'),
                     'url' => $this->getSession()->get('emailLink'),
                     'target' => '_blank',
                     'wrapper' => ['type' => 'span', 'class' => 'hidden sm:inline'],

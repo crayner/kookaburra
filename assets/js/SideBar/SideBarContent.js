@@ -38,8 +38,6 @@ export default function SideBarContent(props) {
             result.push(<div className={"column-no-break"} key={item.name}>{y}</div>)
         }
     })
-    if (height <= 50 && sidebarOpen)
-        setTimeout(functions.getContentSize, 50)
     return (
         <div {...sidebarContentAttr}>{result}</div>
     )

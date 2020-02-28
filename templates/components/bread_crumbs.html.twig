@@ -1,0 +1,13 @@
+<div id="breadCrumbs" class="sm:pt-10 lg:pt-0">
+    <div class="absolute lg:static top-0 my-6 text-xs text-blue-700">
+        {% for crumb in breadCrumbs.getItems() %}
+            {% if loop.last %}
+                <span class="trailEnd">{{ crumb.name|trans(crumb.transParams, crumb.domain) }}</span>
+            {% elseif loop.revindex > 5 and loop.index != 1 %}
+                <a href="{{ path(crumb.uri, crumb.uriParams) }}" class="text-blue-700 underline">...</a> >
+            {% else %}
+                <a href="{{ path(crumb.uri, crumb.uriParams) }}" class="text-blue-700 underline">{{ crumb.name|trans(crumb.transParams, crumb.domain) }}</a> >
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

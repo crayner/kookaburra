@@ -15,6 +15,7 @@
 
 namespace App\Manager;
 
+use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
@@ -24,9 +25,12 @@ use App\Util\LocaleHelper;
 use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Environment;
 
 /**
  * Class PageManager
@@ -52,7 +56,7 @@ class PageManager
     /**
      * @var MainMenu
      */
-    private $MainMenu;
+    private $mainMenu;
 
     /**
      * @var array
@@ -75,17 +79,34 @@ class PageManager
     private $sidebar;
 
     /**
+     * @var BreadCrumbs
+     */
+    private $breadCrumbs;
+
+    /**
+     * @var Environment
+     */
+    private $twig;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
+     * @param MainMenu $mainMenu
+     * @param AuthorizationCheckerInterface $checker
+     * @param SidebarContent $sidebar
+     * @param BreadCrumbs $breadCrumbs
      */
-    public function __construct(RequestStack $stack, MinorLinks $minorLinks, MainMenu $mainMenu, AuthorizationCheckerInterface $checker, SidebarContent $sidebar)
+    public function __construct(RequestStack $stack, MinorLinks $minorLinks, MainMenu $mainMenu, AuthorizationCheckerInterface $checker, SidebarContent $sidebar, BreadCrumbs $breadCrumbs, Environment $twig)
     {
         $this->stack = $stack;
         $this->minorLinks = $minorLinks;
         $this->mainMenu = $mainMenu;
         $this->checker = $checker;
         $this->sidebar = $sidebar;
+        $this->breadCrumbs = $breadCrumbs;
+        $this->twig = $twig;
+        $this->minorLinks->execute();
     }
 
     /**
@@ -127,9 +148,9 @@ class PageManager
             'bodyImage' => ImageHelper::getBackgroundImage(),
             'minorLinks' => $this->minorLinks->getContent(),
             'headerDetails' => $this->getHeaderDetails(),
+            'route' => $this->getRoute(),
             'action' => $this->getRoute() !== 'home' ? $this->getAction() : [],
             'module' => $this->getRoute() !== 'home' ? $this->getModule() : [],
-            'route' => $this->getRoute(),
             'url' => UrlGeneratorHelper::getUrl($this->getRoute(), $this->getRequest()->get('_route_params') ?: []),
             'footer' => $this->getFooter(),
         ];
@@ -191,5 +212,72 @@ class PageManager
             'footerThemeAuthor' => TranslationsHelper::translate('Theme {name} by {person}', ['{person}' => 'Craig Rayner', '{name}' => 'Default']),
             'year' => date('Y'),
         ];
+    }
+
+    /**
+     * createResponse
+     * @param array $options
+     * @return JsonResponse
+     */
+    public function createResponse(array $options): JsonResponse
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults(
+            [
+                'content' => '',
+                'pagination' => [],
+                'breadCrumbs' => '',
+                'sidebar' => [],
+            ]
+        );
+
+        return new JsonResponse(array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs()));
+    }
+
+    /**
+     * @return SidebarContent
+     */
+    public function getSidebar(): SidebarContent
+    {
+        return $this->sidebar;
+    }
+
+    /**
+     * createBreadcrumbs
+     * @param string $title
+     * @param array $crumbs
+     */
+    public function createBreadcrumbs(string $title, array $crumbs)
+    {
+        $result = [];
+        $result['title'] = TranslationsHelper::translate($title);
+        $result['crumbs'] = [];
+        $moduleName = $this->getModule()['name'];
+        $domain = str_replace(' ','',$moduleName);
+        foreach($crumbs as $item)
+            $item['name'] = TranslationsHelper::translate($item['name'],[],$domain);
+
+        $result['baseURL'] = strtolower(str_replace(' ','_',$moduleName));
+        $result['domain'] = $domain;
+        $result['module'] = $moduleName;
+        $this->breadCrumbs->create($result);
+    }
+
+    /**
+     * hasBreadCrumbs
+     * @return bool
+     */
+    private function hasBreadCrumbs(): bool
+    {
+        return $this->breadCrumbs->isValid();
+    }
+
+    /**
+     * getBreadCrumbs
+     * @return array
+     */
+    private function getBreadCrumbs(): array
+    {
+        return ['breadCrumbs' => ($this->hasBreadCrumbs() ? $this->twig->render('components/bread_crumbs.html.twig', ['breadCrumbs' => $this->breadCrumbs]) : '')];
     }
 }

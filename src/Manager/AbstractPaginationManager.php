@@ -260,6 +260,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
             'storeFilterURL' => $this->getStoreFilterURL(),
             'initialFilter' => $this->getInitialFilter(),
             'initialSearch' => $this->getInitialSearch(),
+            'name' => $this->getPaginationName(),
         ];
     }
 
@@ -564,5 +565,14 @@ abstract class AbstractPaginationManager implements PaginationInterface
     {
         $this->addElementRoute = $addElementRoute;
         return $this;
+    }
+
+    /**
+     * getPaginationName
+     * @return string
+     */
+    private function getPaginationName(): string
+    {
+        return basename(get_class($this));
     }
 }
