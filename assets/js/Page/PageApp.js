@@ -103,8 +103,10 @@ export default class PageApp extends Component {
         if (node && node.contains(e.target) || e.target.classList.contains('ignore-mouse-down') || e.target.classList.contains('fa-fw'))
             return
 
-        console.log(e.target.classList)
+        if (e.target.tagName === 'HTML')
+            return
 
+        console.log(e.target)
         this.setState({
             sidebarOpen: 'closed',
         });
