@@ -29,11 +29,13 @@ export default class PageApp extends Component {
         }
         this.functions = {
             getContent: this.getContentFromServer.bind(this),
+            handleAddClick: this.getContentFromServer.bind(this),
             onSetSidebarOpen: this.onSetSidebarOpen.bind(this),
             getContentSize: this.getContentSize.bind(this)
         }
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
         this.handleClickOffSidebar = this.handleClickOffSidebar.bind(this)
+        this.getContentFromServer = this.getContentFromServer.bind(this)
 
         this.state = {
             contentWidth: 0,
@@ -45,7 +47,7 @@ export default class PageApp extends Component {
     }
 
     componentDidMount() {
-        this.getContentFromServer()
+        this.getContentFromServer(this.url)
         window.addEventListener('resize', this.functions.getContentSize, false);
         document.addEventListener('mousedown', this.handleClickOffSidebar, false)
 
@@ -106,7 +108,9 @@ export default class PageApp extends Component {
         if (e.target.tagName === 'HTML')
             return
 
-        console.log(e.target)
+        if (e.target.type === 'button')
+            return
+        console.log(e.target.type)
         this.setState({
             sidebarOpen: 'closed',
         });
@@ -132,18 +136,27 @@ export default class PageApp extends Component {
         return content
     }
 
-    getContentFromServer() {
+    getContentFromServer(url, options) {
+        if (typeof options !== 'object')
+            options = {}
+        this.setState({
+            content: [],
+            pagination: {},
+            containers: {},
+        })
         fetchJson(
-            this.url,
-            [],
+            url,
+            options,
             false
         ).then(data => {
             this.setState({
                 content: Parser(data.content),
                 pagination: data.pagination,
                 sidebar: data.sidebar,
-                breadCrumbs: Parser(data.breadCrumbs),
+                breadCrumbs: data.breadCrumbs,
+                containers: data.containers,
             })
+            window.history.pushState('page2', 'Title', url);
             setTimeout(this.functions.getContentSize,50)
         })
     }

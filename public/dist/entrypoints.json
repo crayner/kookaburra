@@ -5,7 +5,10 @@
         "/build/runtime.dca8fcdd.js",
         "/build/0.9ba90662.js",
         "/build/1.fddda5d0.js",
-        "/build/page.7441c8aa.js"
+        "/build/page.07c35d14.js"
+      ],
+      "css": [
+        "/build/page.89ab67bb.css"
       ]
     },
     "fastFinder": {
@@ -13,10 +16,10 @@
         "/build/runtime.dca8fcdd.js",
         "/build/0.9ba90662.js",
         "/build/3.01130905.js",
-        "/build/fastFinder.3d458c1a.js"
+        "/build/fastFinder.81110cd6.js"
       ],
       "css": [
-        "/build/fastFinder.bc1db4b5.css"
+        "/build/fastFinder.36938a3f.css"
       ]
     },
     "idleTimeout": {
@@ -34,12 +37,23 @@
         "/build/notificationTray.85b6320d.js"
       ]
     },
+    "container": {
+      "js": [
+        "/build/runtime.dca8fcdd.js",
+        "/build/0.9ba90662.js",
+        "/build/1.fddda5d0.js",
+        "/build/container.8543f229.js"
+      ],
+      "css": [
+        "/build/container.89ab67bb.css"
+      ]
+    },
     "pagination": {
       "js": [
         "/build/runtime.dca8fcdd.js",
         "/build/0.9ba90662.js",
         "/build/1.fddda5d0.js",
-        "/build/pagination.265f1ee7.js"
+        "/build/pagination.0188c691.js"
       ]
     },
     "css/core": {
@@ -47,7 +61,7 @@
         "/build/runtime.dca8fcdd.js"
       ],
       "css": [
-        "/build/css/core.05dca3d7.css"
+        "/build/css/core.0c8a0e83.css"
       ]
     },
     "css/fastFinder": {
@@ -55,7 +69,7 @@
         "/build/runtime.dca8fcdd.js"
       ],
       "css": [
-        "/build/css/fastFinder.bc1db4b5.css"
+        "/build/css/fastFinder.36938a3f.css"
       ]
     }
   }

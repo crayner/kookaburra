@@ -62,6 +62,11 @@ class PaginationAction
     private $displayWhen;
 
     /**
+     * @var array|string|null
+     */
+    private $options;
+
+    /**
      * PaginationAction constructor.
      */
     public function __construct()
@@ -181,6 +186,7 @@ class PaginationAction
            'columnClass' => $this->getColumnClass(),
            'onClick' => $this->getOnClick(),
            'displayWhen' => $this->getDisplayWhen(),
+           'options' => $this->getOptions(),
        ];
     }
 
@@ -241,6 +247,26 @@ class PaginationAction
     public function setDisplayWhen(?string $displayWhen): PaginationAction
     {
         $this->displayWhen = $displayWhen;
+        return $this;
+    }
+
+    /**
+     * @return array|string|null
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Options.
+     *
+     * @param array|string|null $options
+     * @return PaginationAction
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
         return $this;
     }
 }

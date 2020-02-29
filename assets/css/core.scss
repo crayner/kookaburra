@@ -625,3 +625,66 @@ a.active {
         display: none !important;
     }
 }
+.alert {
+    @apply shadow border-l-6 p-3 my-3 text-xs;
+    @apply bg-gray-100 border-gray-600 text-gray-600;
+}
+
+.info, .message {
+    @apply bg-blue-200 border-blue-700 text-blue-700;
+}
+
+.current,
+.success {
+    @apply bg-green-200 border-green-700 text-green-700;
+}
+
+.warning {
+    @apply bg-orange-300 border-orange-700 text-orange-700;
+}
+
+.past,
+.error {
+    @apply bg-red-200 border-red-700 text-red-700;
+}
+
+.exception {
+    @apply bg-gray-100 border-gray-800 text-gray-800;
+}
+
+.dull, .secondary {
+    @apply bg-gray-300 text-gray-600;
+}
+
+.selected {
+    @apply bg-purple-200 border-purple-700 text-purple-700;
+}
+
+div.message, div.info, div.success, div.warning, div.error, div.exception, div.dull, div.secondary {
+    @apply shadow border-l-6 p-3 my-3 text-xs;
+}
+
+div.message a, div.info a, div.success a, div.warning a, div.error a, div.exception a, div.dull a, div.secondary a {
+    padding: 15px 10px;
+    margin: 10px 0;
+    color: inherit;
+}
+.close {
+    margin-top: -7px;
+    border: none;
+    float: right;
+}
+.close > span {
+    font-size: 20px;
+}
+.errors  {
+    border: 1px solid red;
+}
+.errors ul {
+    margin: 0;
+}
+.errors li {
+    color: red;
+    list-style: none;
+    font-size: 0.65rem;
+}

@@ -104,6 +104,11 @@ abstract class AbstractPaginationManager implements PaginationInterface
     private $addElementRoute = '';
 
     /**
+     * @var string
+     */
+    private $returnRoute = '';
+
+    /**
      * AbstractPaginationManager constructor.
      * @param ScriptManager $scriptManager
      */
@@ -250,6 +255,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
             'pageMax' => $this->getPageMax(),
             'row' => $this->getRow()->toArray(),
             'addElementRoute' => $this->getAddElementRoute(),
+            'returnRoute' => $this->getReturnRoute(),
             'sortList' => $this->isSortList(),
             'draggableSort' => $this->isDraggableSort(),
             'draggableRoute' => $this->isDraggableSort() ? UrlGeneratorHelper::getPath($this->getDraggableRoute(), ['target' => '__target__', 'source' => '__source__']) : '',
@@ -574,5 +580,25 @@ abstract class AbstractPaginationManager implements PaginationInterface
     private function getPaginationName(): string
     {
         return basename(get_class($this));
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnRoute(): string
+    {
+        return $this->returnRoute;
+    }
+
+    /**
+     * ReturnRoute.
+     *
+     * @param string $returnRoute
+     * @return AbstractPaginationManager
+     */
+    public function setReturnRoute(string $returnRoute): AbstractPaginationManager
+    {
+        $this->returnRoute = $returnRoute;
+        return $this;
     }
 }

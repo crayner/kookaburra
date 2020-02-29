@@ -28,12 +28,18 @@ export default class PaginationApp extends Component {
         this.initialFilter = props.initialFilter
         this.initialSearch = props.initialSearch
         this.addElementRoute = props.addElementRoute
+        this.returnRoute = props.returnRoute
         this.draggableSort = props.draggableSort
         this.columnCount = 0
         this.storeFilterURL = props.storeFilterURL
         this.draggableRoute = props.draggableRoute
         this.storeFilterWait = false
-
+        this.functions = props.functions
+        this.functions.handleAddClick = typeof this.functions.handleAddClick === 'function' ? this.functions.handleAddClick : this.handleAddClick.bind(this)
+        this.functions.areYouSure = this.areYouSure.bind(this)
+        this.functions.loadNewPage = this.loadNewPage.bind(this)
+        this.functions.displayInformation = this.displayInformation.bind(this)
+        this.functions.dropEvent = this.dropEvent.bind(this)
 
         this.sortColumn = this.sortColumn.bind(this)
         this.firstPage = this.firstPage.bind(this)
@@ -49,11 +55,6 @@ export default class PaginationApp extends Component {
         this.translate = this.translate.bind(this)
         this.handleAddClick = this.handleAddClick.bind(this)
 
-        this.functions = {
-            areYouSure: this.areYouSure.bind(this),
-            displayInformation: this.displayInformation.bind(this),
-            dropEvent: this.dropEvent.bind(this),
-        }
         this.path = ''
 
         this.state = {
@@ -155,6 +156,12 @@ export default class PaginationApp extends Component {
         })
     }
 
+    loadNewPage(path, options) {
+        if (typeof options.options !== 'string')
+            options.options = '_self'
+        window.open(path, options.options)
+    }
+
     displayInformation(path, content) {
         this.path = path
         this.setState({
@@ -175,7 +182,7 @@ export default class PaginationApp extends Component {
         this.setState({
             confirm: false
         })
-        window.open(path,'_self')
+        this.functions.getContent(path,'_self')
     }
 
     closeConfirm(){
@@ -285,7 +292,6 @@ export default class PaginationApp extends Component {
     }
 
     handleAddClick(e, file, target) {
-        e.preventDefault()
         openUrl(file,target)
     }
 
@@ -324,15 +330,15 @@ export default class PaginationApp extends Component {
         let control = []
 
         if (this.state.filteredContent.length > 10) {
-            control.push(<a href={'#'} key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600' : 'text-gray-600')}>10</a>)
-            control.push(<a href={'#'} key={'25'} onClick={() => this.adjustPageSize(25)} className={(this.state.pageMax === 25 ? 'text-blue-600' : 'text-gray-600')}>,25</a>)
+            control.push(<a key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600' : 'text-gray-600')}>10</a>)
+            control.push(<a key={'25'} onClick={() => this.adjustPageSize(25)} className={(this.state.pageMax === 25 ? 'text-blue-600' : 'text-gray-600')}>,25</a>)
         }
         if (this.state.filteredContent.length > 25)
-            control.push(<a href={'#'} key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600' : 'text-gray-600')}>,50</a>)
+            control.push(<a key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600' : 'text-gray-600')}>,50</a>)
         if (this.state.filteredContent.length > 50)
-            control.push(<a href={'#'} key={'100'} onClick={() => this.adjustPageSize(100)} className={(this.state.pageMax === 100 ? 'text-blue-600' : 'text-gray-600')}>,100</a>)
+            control.push(<a key={'100'} onClick={() => this.adjustPageSize(100)} className={(this.state.pageMax === 100 ? 'text-blue-600' : 'text-gray-600')}>,100</a>)
         if (this.state.filteredContent.length > 100)
-            control.push(<a href={'#'} key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600' : 'text-gray-600')}>,{this.messages['All']}</a>)
+            control.push(<a key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600' : 'text-gray-600')}>,{this.messages['All']}</a>)
 
         return control
     }
@@ -346,27 +352,30 @@ export default class PaginationApp extends Component {
             content = content.replace('{total}', this.state.filteredContent.length)
 
             if (this.state.offset > 0) {
-                control.push(<a href={'#'} key={'first'} onClick={() => this.firstPage()}
+                control.push(<a key={'first'} onClick={() => this.firstPage()}
                                 title={this.row.firstPage}><span
                     className={'text-gray-600 fas fa-angle-double-left fa-fw'}/></a>)
             }
 
             if (this.state.filteredContent.length > this.state.pageMax && this.state.offset > 0) {
-                control.push(<a href={'#'} key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span
+                control.push(<a key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span
                     className={'text-gray-600 fas fa-angle-left fa-fw'}/></a>)
             }
 
-            control.push(<span key={'content'}>{content}</span>)
+            control.push(<div className={'float-left pt-1 pb-2'} key={'content'}>{content}</div>)
 
             if (this.state.filteredContent.length > this.state.pageMax && this.state.pageMax + this.state.offset < this.state.filteredContent.length) {
-                control.push(<a href={'#'} key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span
+                control.push(<a key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span
                     className={'text-gray-600 fas fa-angle-right fa-fw'}/></a>)
-                control.push(<a href={'#'} key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span
+                control.push(<a key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span
                     className={'text-gray-600 fas fa-angle-double-right fa-fw'}/></a>)
             }
         }
+        if (this.returnRoute !== '') {
+            control.push(<a key={'remove'} className={'close-button gray ml-3'} onClick={(e) => this.functions.handleAddClick(this.returnRoute, '_self')} title={this.row.returnPrompt}><span className={'fas fa-reply fa-fw text-gray-800 hover:text-purple-600'}/></a>)
+        }
         if (this.addElementRoute !== '') {
-            control.push(<a href={'#'} key={'add'} className={'close-button gray ml-3'} onClick={(e) => this.handleAddClick(e, this.addElementRoute, '_self')} title={this.row.addElement}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-purple-600'}/></a>)
+            control.push(<a key={'add'} className={'close-button gray ml-3'} onClick={(e) => this.functions.handleAddClick(this.addElementRoute, '_self')} title={this.row.addElement}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-purple-600'}/></a>)
         }
         return control
     }
@@ -523,7 +532,7 @@ export default class PaginationApp extends Component {
 
     storeFilter()
     {
-        if (null === this.storeFilterURL)
+        if ('' === this.storeFilterURL || null === this.storeFilterURL)
             return
         let data = {}
         data.filter = this.state.filter
@@ -544,8 +553,8 @@ export default class PaginationApp extends Component {
             <div>
                 <div className={'text-xs text-gray-600 text-left'}>
                     <Messages messages={this.state.messages} translate={this.translate} />
-                    <span style={{float: 'left', clear: 'both'}}>{this.buildPageSizeControls()}</span>
-                    <span style={{float: 'right'}}>{this.buildControl()}</span>
+                    <span className={'float-left clear-both'}>{this.buildPageSizeControls()}</span>
+                    <span className={'float-right'}>{this.buildControl()}</span>
                 </div>
                 <table className={'w-full striped'}>
                     <thead>
@@ -577,8 +586,11 @@ PaginationApp.propTypes = {
     translations: PropTypes.object.isRequired,
     storeFilterURL: PropTypes.string,
     draggableRoute: PropTypes.string,
+    functions: PropTypes.object,
 }
 
 PaginationApp.defaultProps = {
     draggableRoute: '',
+    storeFilterURL: '',
+    functions: {},
 }

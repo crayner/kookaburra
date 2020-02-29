@@ -16,9 +16,11 @@
 namespace App\Manager\Entity;
 
 
+use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Serializer\Serializer;
 
 class BreadCrumbs
 {
@@ -165,7 +167,7 @@ class BreadCrumbs
         $this->setDomain($module['domain']);
 
         $item = new BreadCrumbItem();
-        $item->setName($module['module'])->setUri($module['baseURL'] . '__default')->setDomain($module['domain']);
+        $item->setName($module['module'])->setUri($this->getBaseURL() . '__default')->setDomain($this->getDomain());
         $this->addItem($item);
 
         foreach($module['crumbs'] as $crumb) {
@@ -177,7 +179,7 @@ class BreadCrumbs
         }
 
         $item = new BreadCrumbItem();
-        $item->setName($module['title'])->setUri(null)->setTransParams($module['trans_params'])->setDomain($this->getDomain());
+        $item->setName($this->getTitle())->setUri(null)->setTransParams($this->getTransParams())->setDomain($this->getDomain());
         $this->addItem($item);
 
         return $this->getItems();
@@ -354,8 +356,20 @@ class BreadCrumbs
         return true;
     }
 
+    /**
+     * toArray
+     * @return array
+     */
     public function toArray(): array
     {
+        $result = [];
+        foreach($this->getItems() as $item) {
+            $crumb = [];
+            $crumb['name'] = TranslationsHelper::translate($item->getName(), $item->getTransParams(), $item->getDomain());
 
+            $crumb['url'] = $item->getUri() ? UrlGeneratorHelper::getUrl($item->getUri(), $item->getUriParams(), true) : '';
+            $result[$item->getName()] = $crumb;
+        }
+        return $result;
     }
 }

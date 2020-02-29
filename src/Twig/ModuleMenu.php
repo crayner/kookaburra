@@ -23,7 +23,6 @@ use App\Provider\ProviderFactory;
 use App\Util\UrlGeneratorHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**
@@ -322,6 +321,7 @@ class ModuleMenu implements SidebarContentInterface
      */
     public function toArray(): array
     {
-        return $this->getContent();
+        $this->execute();
+        return $this->getContent() ?: [];
     }
 }

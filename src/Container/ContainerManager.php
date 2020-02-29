@@ -15,8 +15,6 @@
 
 namespace App\Container;
 
-
-use App\Manager\ScriptManager;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationsHelper;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,13 +23,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Class ContainerManager
+ * @package App\Container
+ */
 class ContainerManager
 {
-    /**
-     * @var ScriptManager
-     */
-    private $scriptManager;
-
     /**
      * @var TranslatorInterface
      */
@@ -54,11 +51,11 @@ class ContainerManager
 
     /**
      * ContainerManager constructor.
-     * @param ScriptManager $scriptManager
+     * @param TranslatorInterface $translator
+     * @param RequestStack $stack
      */
-    public function __construct(ScriptManager $scriptManager, TranslatorInterface $translator, RequestStack $stack)
+    public function __construct(TranslatorInterface $translator, RequestStack $stack)
     {
-        $this->scriptManager = $scriptManager;
         $this->translator = $translator;
         $this->stack = $stack;
 
@@ -153,6 +150,33 @@ class ContainerManager
     }
 
     /**
+     * @var array|null
+     */
+    private $builtContainers;
+
+    /**
+     * @return array|null
+     */
+    public function getBuiltContainers(): ?array
+    {
+        if (null === $this->builtContainers || [] === $this->builtContainers)
+            $this->buildContainers();
+        return $this->builtContainers;
+    }
+
+    /**
+     * BuildContainers.
+     *
+     * @param array $builtContainers
+     * @return ContainerManager
+     */
+    public function setBuiltContainers(array $builtContainers): ContainerManager
+    {
+        $this->builtContainers = $builtContainers;
+        return $this;
+    }
+
+    /**
      * buildContainers
      * @return ContainerManager
      */
@@ -174,8 +198,8 @@ class ContainerManager
             $containers[$target] = $container;
         }
 
-//        $this->scriptManager->addAppProp('container', $containers);
-//        $this->scriptManager->addEncoreEntryCSSFile('container');
+        $this->setBuiltContainers($containers);
+
         return $this;
     }
 

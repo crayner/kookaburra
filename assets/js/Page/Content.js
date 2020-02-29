@@ -4,6 +4,7 @@ import React from "react"
 import PropTypes from 'prop-types'
 import Sidebar from "../SideBar/SideBarApp"
 import PaginationApp from "../Pagination/PaginationApp"
+import ContainerApp from "../Container/ContainerApp"
 
 export default function Content(props) {
     const {
@@ -14,6 +15,7 @@ export default function Content(props) {
         content,
         sidebarOpen,
         pagination,
+        containers,
         breadCrumbs
     } = props
 
@@ -29,15 +31,50 @@ export default function Content(props) {
     function buildContent() {
         let result = []
         let x = []
-        breadCrumbs.map(stuff => {
-            x.push(stuff)
+        let loop = 0
+        let crumbs = Object.keys(breadCrumbs).map(name => {
+            let crumb = breadCrumbs[name]
+
+            if (loop + 1 === Object.keys(breadCrumbs).length) {
+                loop++
+                return (<span key={name} className="trailEnd">{crumb.name}</span>)
+            } else if (loop > 4) {
+                loop++
+                return (<span key={name}><a href={'#'} onClick={() => functions.getContent(crumb.url)} className="text-blue-700 underline">...</a> . </span>)
+            } else {
+                loop++
+                return (<span key={name}><a href={'#'} onClick={() => functions.getContent(crumb.url)} className="text-blue-700 underline">{crumb.name}</a> . </span>)
+            }
         })
+        if (crumbs.length > 0)
+            x.push(
+                <div id="breadCrumbs" className="sm:pt-10 lg:pt-0" key={'breadcrumbs'}>
+                    <div className="absolute lg:static top-0 my-6 text-xs text-blue-700">
+                        {crumbs}
+                    </div>
+                </div>
+            )
         content.map(stuff => {
             x.push(stuff)
         })
 
         if (Object.keys(pagination).length > 0) {
-            x.push(<PaginationApp {...pagination} key={pagination.name} />)
+            x.push(<PaginationApp {...pagination} functions={functions} key={pagination.name} />)
+        }
+
+        if (Object.keys(containers).length > 0) {
+            Object.keys(containers).map(name => {
+                const container = containers[name]
+                x.push(<ContainerApp                     content={container.content}
+                                                         panels={container.panels}
+                                                         selectedPanel={container.selectedPanel}
+                                                         actionRoute={container.actionRoute}
+                                                         translations={container.translations}
+                                                         forms={container.forms}
+                                                         showSubmitButton={container.showSubmitButton}
+                                                         contentLoader={container.contentLoader}
+                                                         functions={functions} key={name} />)
+            })
         }
 
         result.push(<Sidebar key={'sidebar'} functions={functions} {...state} />)
@@ -105,9 +142,13 @@ Content.propTypes = {
     contentWidth: PropTypes.number.isRequired,
     contentHeight: PropTypes.number.isRequired,
     content: PropTypes.array.isRequired,
-    breadCrumbs: PropTypes.array.isRequired,
+    breadCrumbs: PropTypes.object.isRequired,
     sidebar: PropTypes.object.isRequired,
     pagination: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]).isRequired,
+    containers: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.array,
     ]).isRequired,
@@ -116,6 +157,7 @@ Content.propTypes = {
 Content.defaultProps = {
     action: {},
     pagination: {},
+    containers: {},
     content: [],
-    breadCrumbs: [],
+    breadCrumbs: {},
 }

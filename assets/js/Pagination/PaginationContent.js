@@ -97,9 +97,10 @@ export default function PaginationContent(props) {
         // add Actions column
         let actions = Object.keys(row.actions).map(actionKey => {
             let action = row.actions[actionKey]
+            rowContent.options = action.options
             if (action.displayWhen === '' || rowContent[action.displayWhen]) {
                 if (action.onClick === '')
-                    return (<a href={rowContent.actions[actionKey]} className={action.aClass} key={actionKey}
+                    return (<a onClick={() => functions.getContent(rowContent.actions[actionKey])} className={action.aClass} key={actionKey}
                                title={action.title}><span className={action.spanClass}></span></a>)
 
                 return (<a onClick={() => functions[action.onClick](rowContent.actions[actionKey],rowContent)}

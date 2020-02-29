@@ -15,7 +15,6 @@
 
 namespace App\Twig;
 
-use App\Manager\ScriptManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Twig\Environment;
 
@@ -63,18 +62,12 @@ class SidebarContent
     ];
 
     /**
-     * @var ScriptManager
-     */
-    private $scriptManager;
-
-    /**
      * SidebarContent constructor.
      * @param Environment $twig
      */
-    public function __construct(Environment $twig, ScriptManager $scriptManager)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
-        $this->scriptManager = $scriptManager;
     }
 
     /**
@@ -277,14 +270,6 @@ class SidebarContent
         }
         $this->minimised = $minimised;
         return $this;
-    }
-
-    /**
-     * writeScript
-     */
-    public function writeScript()
-    {
-        $this->scriptManager->addAppProp('sideBar', $this->toArray());
     }
 
     /**

@@ -17,19 +17,25 @@ namespace App\Manager;
 
 use App\Manager\Entity\BreadCrumbs;
 use App\Manager\Entity\HeaderManager;
+use App\Provider\ProviderFactory;
 use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\SidebarContent;
+use App\Util\Format;
+use App\Util\GlobalHelper;
 use App\Util\ImageHelper;
 use App\Util\LocaleHelper;
 use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
+use Kookaburra\SystemAdmin\Entity\Action;
+use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
@@ -99,6 +105,11 @@ class PageManager
      * @var FastFinder
      */
     private $fastFinder;
+    
+    /**
+     * @var Format
+     */
+    private $format;
 
     /**
      * PageManager constructor.
@@ -111,6 +122,8 @@ class PageManager
      * @param Environment $twig
      * @param IdleTimeout $idleTimeout
      * @param FastFinder $fastFinder
+     * @param GlobalHelper $helper
+     * @param Format $format
      * @throws \Exception
      */
     public function __construct(
@@ -122,7 +135,9 @@ class PageManager
         BreadCrumbs $breadCrumbs,
         Environment $twig,
         IdleTimeout $idleTimeout,
-        FastFinder $fastFinder
+        FastFinder $fastFinder,
+        GlobalHelper $helper,
+        Format $format
     ) {
         $this->stack = $stack;
         $this->minorLinks = $minorLinks;
@@ -134,6 +149,9 @@ class PageManager
         $this->minorLinks->execute();
         $this->idleTimeout =  $idleTimeout;
         $this->fastFinder = $fastFinder;
+        $this->format = $format;
+        
+        $this->configurePage();
     }
 
     /**
@@ -152,6 +170,22 @@ class PageManager
         if (null === $this->request)
             $this->request = $this->getStack()->getCurrentRequest();
         return $this->request;
+    }
+
+    /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
+     * getSession
+     * @return SessionInterface
+     */
+    public function getSession(): ?SessionInterface
+    {
+        if (null === $this->session && $this->getRequest() && $this->getRequest()->hasSession())
+            return $this->session = $this->getRequest()->getSession();
+        return $this->session;
     }
 
     /**
@@ -255,6 +289,7 @@ class PageManager
                 'pagination' => [],
                 'breadCrumbs' => '',
                 'sidebar' => [],
+                'containers' => [],
             ]
         );
 
@@ -278,15 +313,13 @@ class PageManager
     {
         $result = [];
         $result['title'] = TranslationsHelper::translate($title);
-        $result['crumbs'] = [];
         $moduleName = $this->getModule()['name'];
         $domain = str_replace(' ','',$moduleName);
-        foreach($crumbs as $item)
-            $item['name'] = TranslationsHelper::translate($item['name'],[],$domain);
-
+        $result['crumbs'] = $crumbs;
         $result['baseURL'] = strtolower(str_replace(' ','_',$moduleName));
         $result['domain'] = $domain;
         $result['module'] = $moduleName;
+
         $this->breadCrumbs->create($result);
     }
 
@@ -303,9 +336,9 @@ class PageManager
      * getBreadCrumbs
      * @return array
      */
-    private function getBreadCrumbs(): array
+    public function getBreadCrumbs(): array
     {
-        return ['breadCrumbs' => ($this->hasBreadCrumbs() ? $this->twig->render('components/bread_crumbs.html.twig', ['breadCrumbs' => $this->breadCrumbs]) : '')];
+        return ['breadCrumbs' => ($this->hasBreadCrumbs() ? $this->breadCrumbs->toArray() : '')];
     }
 
     /**
@@ -345,5 +378,68 @@ class PageManager
 
         $this->fastFinder->execute();
         return $this->fastFinder->getAttributes()->toArray();
+    }
+
+    /**
+     * configurePage
+     */
+    public function configurePage(): void
+    {
+        $this->format->setupFromSession($this->getSession());
+        $this->setAddress();
+    }
+
+    /**
+     * setAddress
+     * @param bool $useAddress
+     */
+    private function setAddress(): void
+    {
+        $this->getRequest()->attributes->set('address', false);
+        $this->getRequest()->attributes->set('module', false);
+        $this->getRequest()->attributes->set('action', false);
+        // Legacy Settings
+        $this->getSession()->set('address', '');
+        $this->getSession()->set('module', '');
+        $this->getSession()->set('action', '');
+        $route = $this->getRequest()->attributes->get('_route');
+        if (false === strpos($route, '_ignore_address') && null !== $route) {
+            $this->getRequest()->attributes->set('address', $route);
+            $this->setModule($route, $this->getRequest());
+            $this->getSession()->set('address', $route);
+        }
+    }
+
+    /**
+     * setModule
+     * @param string $address
+     */
+    private function setModule(string $address)
+    {
+        if (substr($address, -4) === '.php')
+        {
+            $moduleName = SecurityHelper::getModuleName($address);
+        } else {
+            $moduleName = explode('__', $address)[0];
+            $moduleName = ucwords(str_replace('_', ' ', $moduleName));
+        }
+        $module = ProviderFactory::getRepository(Module::class)->findOneByName($moduleName);
+        $this->getRequest()->attributes->set('module', $module ?: false);
+        $this->getSession()->set('module', $module ? $module->getName() : '');
+        if (null !== $module)
+            $this->setAction($address, $module);
+    }
+
+    /**
+     * setAction
+     * @param string $address
+     * @param Module $module
+     */
+    private function setAction(string $address, Module $module)
+    {
+        $address = strpos($address, '__') !== false ? explode('__', $address)[1] : basename($address);
+        $action = ProviderFactory::getRepository(Action::class)->findOneByModuleContainsURL($module, $address);
+        $this->getRequest()->attributes->set('action', $action);
+        $this->getSession()->set('action', $action ? $address : '');
     }
 }
