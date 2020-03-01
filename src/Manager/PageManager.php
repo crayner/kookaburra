@@ -301,7 +301,7 @@ class PageManager
                 'breadCrumbs' => '',
                 'sidebar' => [],
                 'containers' => [],
-                'title' => $this->getRoute() !== 'home' ? $this->getAction()['name'] : '',
+                'title' => $this->getRoute() !== 'home' ? TranslationsHelper::translate($this->getAction()['name'], [], str_replace(' ', '', $this->getModule()['name'])) : '',
             ]
         );
 
