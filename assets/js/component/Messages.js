@@ -45,7 +45,7 @@ export default class Messages extends Component {
         if (cells.length === 0)
             return null
 
-        return (<div>{cells}</div>)
+        return (<div className={'clear-both'}>{cells}</div>)
     }
 }
 

@@ -35,10 +35,14 @@ use Kookaburra\UserAdmin\Util\SecurityHelper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class PageManager
@@ -105,11 +109,16 @@ class PageManager
      * @var FastFinder
      */
     private $fastFinder;
-    
+
     /**
      * @var Format
      */
     private $format;
+
+    /**
+     * @var array
+     */
+    private $translations = [];
 
     /**
      * PageManager constructor.
@@ -203,6 +212,7 @@ class PageManager
      */
     public function writeProperties(): array
     {
+        $this->addTranslation('Loading');
         return [
             'locale' => $this->getLocale(),
             'rtl' => LocaleHelper::getRtl($this->getLocale()),
@@ -214,6 +224,7 @@ class PageManager
             'module' => $this->getRoute() !== 'home' ? $this->getModule() : [],
             'url' => UrlGeneratorHelper::getUrl($this->getRoute(), $this->getRequest()->get('_route_params') ?: []),
             'footer' => $this->getFooter(),
+            'translations' => $this->getTranslations(),
         ];
     }
 
@@ -441,5 +452,55 @@ class PageManager
         $action = ProviderFactory::getRepository(Action::class)->findOneByModuleContainsURL($module, $address);
         $this->getRequest()->attributes->set('action', $action);
         $this->getSession()->set('action', $action ? $address : '');
+    }
+
+    /**
+     * isNotReadyForJSON
+     * @param bool $testing
+     * @return bool
+     */
+    public function isNotReadyForJSON(bool $testing = true)
+    {
+        return $this->getRequest()->getContentType() !== 'json' && $testing;
+    }
+
+    /**
+     * getBaseResponse
+     * @return Response
+     */
+    public function getBaseResponse() {
+
+        try {
+            $content = $this->twig->render('react_base.html.twig',
+                [
+                    'page' => $this,
+                ]
+            );
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            $content = '<h1>Failed!</h1>';
+        }
+        return new Response($content);
+    }
+
+    /**
+     * @return array
+     */
+    public function getTranslations(): array
+    {
+        return $this->translations;
+    }
+
+    /**
+     * Translations.
+     *
+     * @param string $id
+     * @param array $options
+     * @param string $domain
+     * @return PageManager
+     */
+    public function addTranslation(string $id, array $options = [], string $domain = 'messages'): PageManager
+    {
+        $this->translations[$id] = TranslationsHelper::translate($id,$options,$domain);
+        return $this;
     }
 }

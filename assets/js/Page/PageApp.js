@@ -24,9 +24,8 @@ export default class PageApp extends Component {
         this.footer = props.footer
         this.minorLinks = props.minorLinks
         this.height = 0
-        this.references = {
-            sideBarContentRef: React.createRef('sideBarContent'),
-        }
+        this.translations = props.translations
+
         this.functions = {
             getContent: this.getContentFromServer.bind(this),
             handleAddClick: this.getContentFromServer.bind(this),
@@ -144,8 +143,10 @@ export default class PageApp extends Component {
     getContentFromServer(url, options) {
         if (typeof options !== 'object')
             options = {}
+        let content = []
+        content.push(<div key={'loading'} className={'w-full min-h-full'}><img src={'/build/static/ajax-loader.gif'} className={'object-none object-center bg-transparent w-full h-40'}/><h4 className={'text-center'} style={{marginTop: '-60px'}}>{this.translations.Loading + '...'}</h4> </div> )
         this.setState({
-            content: [],
+            content: content,
             pagination: {},
             containers: {},
         })
