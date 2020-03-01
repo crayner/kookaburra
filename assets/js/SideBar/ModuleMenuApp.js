@@ -7,6 +7,7 @@ import MenuItems from "./MenuItems"
 export default function ModuleMenu(props) {
     const {
         data,
+        getContent
     } = props
 
     function menuGroups() {
@@ -20,6 +21,7 @@ export default function ModuleMenu(props) {
                         <h5 className="m-0 mb-1 text-xs pb-0 ">{ title }</h5>
                         <MenuItems
                             items={data[key]}
+                            getContent={getContent}
                         />
                     </li>
                 </ul>
@@ -35,4 +37,5 @@ export default function ModuleMenu(props) {
 
 ModuleMenu.propTypes = {
     data: PropTypes.object.isRequired,
+    getContent: PropTypes.func.isRequired,
 }

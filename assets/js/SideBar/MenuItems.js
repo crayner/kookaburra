@@ -7,11 +7,12 @@ import ModuleMenu from "./ModuleMenuApp"
 export default function MenuItems(props) {
     const {
         items,
+        getContent
     } = props
 
     const itemsReturn = items.map((item, key) => {
         return (<li className="p-0 leading-normal lg:leading-tight" key={key}>
-            <a href={ item.url } className={item.active ? 'active' : '' }>{ item.name }</a>
+            <a onClick={() => getContent(item.url)} className={item.active ? 'active pointer-hover' : 'pointer-hover' }>{ item.name }</a>
         </li>)
     })
     return (<ul className="list-none m-0 mb-6">
@@ -21,4 +22,5 @@ export default function MenuItems(props) {
 
 MenuItems.propTypes = {
     items: PropTypes.array.isRequired,
+    getContent: PropTypes.func.isRequired,
 }

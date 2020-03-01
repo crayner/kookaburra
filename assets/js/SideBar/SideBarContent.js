@@ -23,7 +23,7 @@ export default function SideBarContent(props) {
             result.push(<Login login={item.login} googleOAuth={item.googleOAuth} translations={item.translations}
                                key={'Login'}/>)
         } else if (item.name === 'Module Menu') {
-            result.push(<ModuleMenu data={item.data} key={'Module Menu'} />)
+            result.push(<ModuleMenu data={item.data} getContent={functions.getContent} key={'Module Menu'} />)
         } else if (item.name !== 'Module Menu' && item.content !== '') {
             let x = Parser(item.content)
             if (typeof x._owner === 'object') {
