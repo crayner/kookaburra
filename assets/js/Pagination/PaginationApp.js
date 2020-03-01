@@ -586,11 +586,10 @@ PaginationApp.propTypes = {
     translations: PropTypes.object.isRequired,
     storeFilterURL: PropTypes.string,
     draggableRoute: PropTypes.string,
-    functions: PropTypes.object,
+    functions: PropTypes.object.isRequired,
 }
 
 PaginationApp.defaultProps = {
     draggableRoute: '',
     storeFilterURL: '',
-    functions: {},
 }

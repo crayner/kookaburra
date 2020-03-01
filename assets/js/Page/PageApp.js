@@ -42,6 +42,7 @@ export default class PageApp extends Component {
             sidebar: {},
             sidebarOpen: '',
             contentHeight: 0,
+            title: this.action.name
         }
     }
 
@@ -80,7 +81,7 @@ export default class PageApp extends Component {
             title += ' - ' + this.headerDetails.organisationName
             if (Object.keys(this.action).length > 0)
             {
-                title += ' - ' + this.action.name
+                title += ' - ' + this.state.title
             }
         }
 
@@ -161,6 +162,7 @@ export default class PageApp extends Component {
                 sidebar: data.sidebar,
                 breadCrumbs: data.breadCrumbs,
                 containers: data.containers,
+                title: data.title
             })
             window.history.pushState('page2', 'Title', url);
             setTimeout(this.functions.getContentSize,50)

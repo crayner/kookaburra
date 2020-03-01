@@ -35,13 +35,13 @@ export default function FormApp(props) {
         let preFormContent = []
         if (typeof form.preFormContent === 'object') {
             if (form.preFormContent.targetElement === 'pagination')
-                preFormContent.push(<PaginationApp {...form.preFormContent} key={'pagination'} />)
+                preFormContent.push(<PaginationApp {...form.preFormContent} key={'pagination'} functions={functions} />)
         }
 
         let postFormContent = []
         if (typeof form.postFormContent === 'object') {
             if (form.postFormContent.targetElement === 'pagination')
-                postFormContent.push(<PaginationApp {...form.postFormContent} key={'pagination'} />)
+                postFormContent.push(<PaginationApp {...form.postFormContent} key={'pagination'} functions={functions} />)
         }
 
         if (singleForm) {

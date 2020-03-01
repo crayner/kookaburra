@@ -98,7 +98,7 @@ class LegacyController extends AbstractController
             $sidebar->addContent(new Register())->setDocked();
 
 
-        return $pageManager->createResponse(['content' => trim($this->renderView('default/welcome.html.twig',
+        return $pageManager->render(['content' => trim($this->renderView('default/welcome.html.twig',
             [
                 'hooks' => ProviderFactory::getRepository(Hook::class)->findBy(['type' => 'Public Home Page'],['name' => 'ASC']),
             ]

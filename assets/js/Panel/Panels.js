@@ -119,7 +119,7 @@ function renderPanelContent(panel, props){
 
 function renderExternalContent(data,functions){
     if (data.loader.type === 'pagination') {
-        return (<PaginationApp key={data.loader.target} {...data.content} />)
+        return (<PaginationApp key={data.loader.target} {...data.content} functions={functions} />)
     }
     if (data.loader.type === 'text') {
         return (<section key={data.loader.target}>{Parser(data.content)}</section>)

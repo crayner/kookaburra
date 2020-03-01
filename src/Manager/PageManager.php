@@ -287,11 +287,11 @@ class PageManager
     }
 
     /**
-     * createResponse
+     * render
      * @param array $options
      * @return JsonResponse
      */
-    public function createResponse(array $options): JsonResponse
+    public function render(array $options): JsonResponse
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults(
@@ -301,6 +301,7 @@ class PageManager
                 'breadCrumbs' => '',
                 'sidebar' => [],
                 'containers' => [],
+                'title' => $this->getRoute() !== 'home' ? $this->getAction()['name'] : '',
             ]
         );
 
@@ -319,8 +320,9 @@ class PageManager
      * createBreadcrumbs
      * @param string $title
      * @param array $crumbs
+     * @return PageManager
      */
-    public function createBreadcrumbs(string $title, array $crumbs)
+    public function createBreadcrumbs(string $title, array $crumbs): PageManager
     {
         $result = [];
         $result['title'] = TranslationsHelper::translate($title);
@@ -332,6 +334,7 @@ class PageManager
         $result['module'] = $moduleName;
 
         $this->breadCrumbs->create($result);
+        return $this;
     }
 
     /**

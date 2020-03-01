@@ -42,7 +42,7 @@ export default function PaginationFilter(props) {
         activeFilters = Object.keys(filterGroups).map(q => {
             const name = filterGroups[q]
             const value = filters[name]
-            return (<span onClick={() => changeFilter(value)} className={'primary button-like pointer-hover'} key={q}>{name}&nbsp;<span className={'far fa-times-circle fa-fw'}></span></span>)
+            return (<span onClick={() => changeFilter(value)} className={'primary button-like pointer-hover ml-1'} key={q}>{name}&nbsp;<span className={'far fa-times-circle fa-fw'}></span></span>)
         })
     }
 
