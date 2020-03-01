@@ -65,14 +65,7 @@ export default function Content(props) {
         if (Object.keys(containers).length > 0) {
             Object.keys(containers).map(name => {
                 const container = containers[name]
-                x.push(<ContainerApp                     content={container.content}
-                                                         panels={container.panels}
-                                                         selectedPanel={container.selectedPanel}
-                                                         actionRoute={container.actionRoute}
-                                                         translations={container.translations}
-                                                         forms={container.forms}
-                                                         showSubmitButton={container.showSubmitButton}
-                                                         contentLoader={container.contentLoader}
+                x.push(<ContainerApp                     {...container}
                                                          functions={functions} key={name} />)
             })
         }

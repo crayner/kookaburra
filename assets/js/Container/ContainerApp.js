@@ -23,7 +23,8 @@ import {
     isSubmit,
     checkHiddenRows,
     toggleRowsOnValue,
-    initialContentLoaders
+    initialContentLoaders,
+    getControlButtons
 } from "./ContainerFunctions"
 import {isEmpty} from "../component/isEmpty"
 
@@ -32,6 +33,8 @@ export default class ContainerApp extends Component {
         super(props)
         this.panels = props.panels ? props.panels : {}
         this.content = props.content ? props.content : null
+        this.returnRoute = props.returnRoute
+        this.addElementRoute = props.addElementRoute
         this.translations = props.translations
         this.actionRoute = props.actionRoute
         this.showSubmitButton = props.showSubmitButton ? props.showSubmitButton : false
@@ -60,7 +63,9 @@ export default class ContainerApp extends Component {
             addElementToChoice: this.addElementToChoice.bind(this),
             removeSimpleArrayValue: this.removeSimpleArrayValue.bind(this),
             addSimpleArrayValue: this.addSimpleArrayValue.bind(this),
-            toggleExpandedAllNone: this.toggleExpandedAllNone.bind(this)
+            toggleExpandedAllNone: this.toggleExpandedAllNone.bind(this),
+            handleAddClick: props.functions.handleAddClick,
+            getContent: props.functions.getContent
         }
         this.contentManager = this.contentManager.bind(this)
 
@@ -263,7 +268,7 @@ export default class ContainerApp extends Component {
             false)
             .then(data => {
                 if (data.status === 'redirect') {
-                    window.open(data.redirect,'_self');
+                    this.functions.getContent(data.redirect)
                 } else {
                     let errors = parentForm.errors
                     errors = errors.concat(data.errors)
@@ -431,6 +436,7 @@ export default class ContainerApp extends Component {
         return (
             <section>
                 {this.state.submit ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
+                {getControlButtons(this.returnRoute,this.addElementRoute,this.functions)}
                 <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} />
             </section>
         )
@@ -444,11 +450,14 @@ ContainerApp.propTypes = {
     content: PropTypes.string,
     actionRoute: PropTypes.string,
     selectedPanel: PropTypes.string,
+    returnRoute: PropTypes.string,
+    addElementRoute: PropTypes.string,
 }
 
 ContainerApp.defaultProps = {
     functions: {},
     translations: {},
     forms: {},
+    returnRoute: '',
+    addElementRoute: '',
 }
-

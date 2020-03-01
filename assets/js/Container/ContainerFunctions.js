@@ -1,5 +1,6 @@
 'use strict';
 
+import React from 'react'
 import {isEmpty} from "../component/isEmpty"
 import {openPage} from "../component/openPage"
 import {fetchJson} from "../component/fetchJson"
@@ -19,6 +20,17 @@ export function setPanelErrors(form, panelErrors)
         }
     })
     return panelErrors
+}
+
+export function getControlButtons(returnRoute, addRoute, functions) {
+    let control = []
+    if (returnRoute !== '') {
+        control.push(<a key={'remove'} className={'close-button gray ml-3'} onClick={(e) => functions.handleAddClick(returnRoute, '_self')} title={functions.translate('Return')}><span className={'fas fa-reply fa-fw text-gray-800 hover:text-purple-600'}/></a>)
+    }
+    if (addRoute !== '') {
+        control.push(<a key={'add'} className={'close-button gray ml-3'} onClick={(e) => functions.handleAddClick(addRoute, '_self')} title={functions.translate('Add')}><span className={'fas fa-plus-circle fa-fw text-gray-800 hover:text-purple-600'}/></a>)
+    }
+    return control
 }
 
 export function trans(translations,id){

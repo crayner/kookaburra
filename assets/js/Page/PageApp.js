@@ -108,9 +108,14 @@ export default class PageApp extends Component {
         if (e.target.tagName === 'HTML')
             return
 
+        if (e.target.tagName === 'A')
+            return
+
         if (e.target.type === 'button')
             return
-        console.log(e.target.type)
+        if (e.target.id === 'filter_select')
+            return
+        console.log(e.target)
         this.setState({
             sidebarOpen: 'closed',
         });
@@ -160,7 +165,6 @@ export default class PageApp extends Component {
             setTimeout(this.functions.getContentSize,50)
         })
     }
-
 
     render () {
         if (this.state.height !== this.height) {

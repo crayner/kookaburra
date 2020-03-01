@@ -656,16 +656,19 @@ a.active {
 .dull, .secondary {
     @apply bg-gray-300 text-gray-600;
 }
+.primary {
+    @apply bg-blue-700 border-blue-900 text-white;
+}
 
 .selected {
     @apply bg-purple-200 border-purple-700 text-purple-700;
 }
 
-div.message, div.info, div.success, div.warning, div.error, div.exception, div.dull, div.secondary {
+div.message, div.info, div.success, div.warning, div.error, div.exception, div.dull, div.secondary, div.primary {
     @apply shadow border-l-6 p-3 my-3 text-xs;
 }
 
-div.message a, div.info a, div.success a, div.warning a, div.error a, div.exception a, div.dull a, div.secondary a {
+div.message a, div.info a, div.success a, div.warning a, div.error a, div.exception a, div.dull a, div.secondary a, div.primary a {
     padding: 15px 10px;
     margin: 10px 0;
     color: inherit;
@@ -698,4 +701,7 @@ div.message a, div.info a, div.success a, div.warning a, div.error a, div.except
 }
 .hiddenSlider.close {
     max-height: 0;
+}
+.pointer-hover:hover {
+    cursor: pointer;
 }

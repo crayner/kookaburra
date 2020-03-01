@@ -50,6 +50,16 @@ class ContainerManager
     private $showSubmitButton = false;
 
     /**
+     * @var string
+     */
+    private $addElementRoute = '';
+
+    /**
+     * @var string
+     */
+    private $returnRoute = '';
+
+    /**
      * ContainerManager constructor.
      * @param TranslatorInterface $translator
      * @param RequestStack $stack
@@ -61,6 +71,8 @@ class ContainerManager
 
         TranslationsHelper::addTranslation('Errors on Tab', [], 'messages');
         TranslationsHelper::addTranslation('All fields on all panels are saved together.', [], 'messages');
+        TranslationsHelper::addTranslation('Return', [], 'messages');
+        TranslationsHelper::addTranslation('Add', [], 'messages');
     }
 
     /**
@@ -194,7 +206,9 @@ class ContainerManager
             $container['showSubmitButton'] = $this->isShowSubmitButton();
             $container['actionRoute'] = $this->stack->getCurrentRequest()->attributes->get('_route');
             $container['extras'] = ReactFormHelper::getExtras();
-            $container['contentLoader'] = $container['contentLoader'];
+            $container['returnRoute'] = $this->getReturnRoute();
+            $container['addElementRoute'] = $this->getAddElementRoute();
+
             $containers[$target] = $container;
         }
 
@@ -280,6 +294,46 @@ class ContainerManager
     public function setShowSubmitButton(bool $showSubmitButton): ContainerManager
     {
         $this->showSubmitButton = $showSubmitButton;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddElementRoute(): string
+    {
+        return $this->addElementRoute;
+    }
+
+    /**
+     * AddElementRoute.
+     *
+     * @param string $addElementRoute
+     * @return ContainerManager
+     */
+    public function setAddElementRoute(string $addElementRoute): ContainerManager
+    {
+        $this->addElementRoute = $addElementRoute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnRoute(): string
+    {
+        return $this->returnRoute;
+    }
+
+    /**
+     * ReturnRoute.
+     *
+     * @param string $returnRoute
+     * @return ContainerManager
+     */
+    public function setReturnRoute(string $returnRoute): ContainerManager
+    {
+        $this->returnRoute = $returnRoute;
         return $this;
     }
 }
