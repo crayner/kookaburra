@@ -33,7 +33,6 @@ class URLOrFileValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        dump($value);
         if (null === $value)
             return;
 

@@ -330,15 +330,15 @@ export default class PaginationApp extends Component {
         let control = []
 
         if (this.state.filteredContent.length > 10) {
-            control.push(<a key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600' : 'text-gray-600')}>10</a>)
-            control.push(<a key={'25'} onClick={() => this.adjustPageSize(25)} className={(this.state.pageMax === 25 ? 'text-blue-600' : 'text-gray-600')}>,25</a>)
+            control.push(<a key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>10</a>)
+            control.push(<a key={'25'} onClick={() => this.adjustPageSize(25)} className={(this.state.pageMax === 25 ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>,25</a>)
         }
         if (this.state.filteredContent.length > 25)
-            control.push(<a key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600' : 'text-gray-600')}>,50</a>)
+            control.push(<a key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>,50</a>)
         if (this.state.filteredContent.length > 50)
-            control.push(<a key={'100'} onClick={() => this.adjustPageSize(100)} className={(this.state.pageMax === 100 ? 'text-blue-600' : 'text-gray-600')}>,100</a>)
+            control.push(<a key={'100'} onClick={() => this.adjustPageSize(100)} className={(this.state.pageMax === 100 ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>,100</a>)
         if (this.state.filteredContent.length > 100)
-            control.push(<a key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600' : 'text-gray-600')}>,{this.messages['All']}</a>)
+            control.push(<a key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>,{this.messages['All']}</a>)
 
         return control
     }
@@ -354,21 +354,21 @@ export default class PaginationApp extends Component {
             if (this.state.offset > 0) {
                 control.push(<a key={'first'} onClick={() => this.firstPage()}
                                 title={this.row.firstPage}><span
-                    className={'text-gray-600 fas fa-angle-double-left fa-fw'}/></a>)
+                    className={'text-gray-600 fas fa-angle-double-left fa-fw pointer-hover pt-1 pb-2 pl-1 hover:text-blue-600'}/></a>)
             }
 
             if (this.state.filteredContent.length > this.state.pageMax && this.state.offset > 0) {
                 control.push(<a key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span
-                    className={'text-gray-600 fas fa-angle-left fa-fw'}/></a>)
+                    className={'text-gray-600 fas fa-angle-left fa-fw pointer-hover pt-1 pb-2 pl-1 hover:text-blue-600'}/></a>)
             }
 
-            control.push(<div className={'float-left pt-1 pb-2'} key={'content'}>{content}</div>)
+            control.push(<div className={'float-left pt-1 pb-2 pr-2'} key={'content'}>{content}</div>)
 
             if (this.state.filteredContent.length > this.state.pageMax && this.state.pageMax + this.state.offset < this.state.filteredContent.length) {
                 control.push(<a key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span
-                    className={'text-gray-600 fas fa-angle-right fa-fw'}/></a>)
+                    className={'text-gray-600 fas fa-angle-right fa-fw pointer-hover pt-1 pb-2 pl-1 hover:text-blue-600'}/></a>)
                 control.push(<a key={'last'} onClick={() => this.lastPage()} title={this.row.lastPage}><span
-                    className={'text-gray-600 fas fa-angle-double-right fa-fw'}/></a>)
+                    className={'text-gray-600 fas fa-angle-double-right fa-fw pointer-hover pt-1 pb-2 pl-1 hover:text-blue-600'}/></a>)
             }
         }
         if (this.returnRoute !== '') {

@@ -23,7 +23,8 @@ export default class PageApp extends Component {
         this.route = props.route
         this.footer = props.footer
         this.minorLinks = props.minorLinks
-        this.height = 0
+        this.height = -3
+        this.width = -3
         this.translations = props.translations
 
         this.functions = {
@@ -102,7 +103,7 @@ export default class PageApp extends Component {
         this.setState({
             sidebarOpen: open,
         });
-        setTimeout(this.functions.getContentSize, 100)
+        setTimeout(this.functions.getContentSize, 150)
     }
 
     handleClickOffSidebar(e)
@@ -172,14 +173,19 @@ export default class PageApp extends Component {
                 messages: this.state.messages.concat(data.messages),
             })
             window.history.pushState('', data.title, data.url ? data.url : url);
-            setTimeout(this.functions.getContentSize,50)
+            setTimeout(this.functions.getContentSize,100)
         })
     }
 
     render () {
-        if (this.state.height !== this.height) {
-            this.height = this.state.height
-            setTimeout(this.functions.getContentSize, 50)
+        if (this.state.contentHeight !== this.height) {
+            this.height = this.state.contentHeight
+            setTimeout(this.functions.getContentSize, 150)
+        }
+
+        if (this.state.contentWidth !== this.width) {
+            this.width = this.state.contentWidth
+            setTimeout(this.functions.getContentSize, 150)
         }
 
         return (this.getContent())
