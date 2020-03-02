@@ -96,7 +96,7 @@ class ModuleMenu implements SidebarContentInterface
             $request->getSession()->set('menuModuleName', $currentModule->getName());
             $data = ['data' => $menuModuleItems];
             $data['showSidebar'] = $this->isShowSidebar();
-            $data['trans_module_menu'] = $this->translate('Module Menu');
+            $data['trans_module_menu'] = $this->translate('Module Menu', [], 'messages');
             $this->setContent($data);
         } else {
             $request->getSession()->forget(['menuModuleItems', 'menuModuleName']);

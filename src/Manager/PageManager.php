@@ -325,9 +325,9 @@ class PageManager
     public function createBreadcrumbs(string $title, array $crumbs): PageManager
     {
         $result = [];
-        $result['title'] = TranslationsHelper::translate($title);
         $moduleName = $this->getModule()['name'];
         $domain = str_replace(' ','',$moduleName);
+        $result['title'] = TranslationsHelper::translate($title, [], $domain);
         $result['crumbs'] = $crumbs;
         $result['baseURL'] = strtolower(str_replace(' ','_',$moduleName));
         $result['domain'] = $domain;

@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class='linkTop'>
-        <a class="text-gray-600" onclick='return confirm({{ "Are you sure you want to delete these records."|trans({}, 'kookaburra') }}' href={{ path('notifications_delete_all') }}>{{ 'Delete All Notifications'|trans }}&nbsp;<span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
+        <a class="text-gray-600" onclick='return confirm({{ "Are you sure you want to delete these records."|trans }}' href={{ path('notifications_delete_all') }}>{{ 'Delete All Notifications'|trans }}&nbsp;<span class="fas fa-trash-alt fa-fw fa-lg"></span></a>
     </div>
 
     <h2>

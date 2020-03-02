@@ -73,7 +73,7 @@ class ResourceController extends AbstractController
             } else {
                 $data['errors'][] = ['class' => 'warning', 'message' => $translator->trans('Your request was successful, but some data was not properly deleted.')];
             }
-            $data['errors'][] = ['class' => 'info', 'message' => $translator->trans('You must submit the form to save this empty value.', [], 'kookaburra')];
+            $data['errors'][] = ['class' => 'info', 'message' => $translator->trans('You must submit the form to save this empty value.', [], 'messages')];
             $data['status'] = 'success';
         } else {
             $data['errors'][] = ['class' => 'error', 'message' => $translator->trans('Your request failed because you do not have access to this action.')];

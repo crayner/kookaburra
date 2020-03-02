@@ -161,3 +161,8 @@ services:
                 arguments:
                     - '@monolog.logger.installation'
 
+    App\Translation\Logger:
+        arguments:
+            $stream: '%kernel.logs_dir%/translation.%kernel.environment%.log'
+            $level:    'warning'
+            $bubble:   false

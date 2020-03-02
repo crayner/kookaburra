@@ -182,3 +182,13 @@ return:
     success0: 'Your request was completed successfully.'
     success:
         0: 'Your request was completed successfully.'
+Notifications: Notifications
+Planner Settings: Planner Settings
+Activity Settings: Activity Settings
+Module Menu: Module Menu
+Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.: Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.
+Learn With Us: Learn With Us
+We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.: We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.
+Name: Name
+Must be unique: Must be unique
+

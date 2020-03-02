@@ -7,6 +7,7 @@ monolog:
         - 'importer'
         - 'notification'
         - 'installation'
+        - 'translation'
     handlers:
         security:
             # log all messages (since debug is the lowest level)
@@ -70,3 +71,7 @@ monolog:
             path:     '%kernel.logs_dir%/installation.%kernel.environment%.log'
             channels: [installation]
             max_files: 14
+        translation:
+            type:     service
+            id:       App\Translation\Logger
+            channels: [translation]

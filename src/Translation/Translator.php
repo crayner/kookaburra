@@ -21,6 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Intl\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -176,15 +177,16 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
     /**
      * Translates the given choice message by choosing a translations according to a number.
      *
-     * @param string      $id         The message id (may also be an object that can be cast to string)
-     * @param int         $number     The number to use to find the indice of the message
-     * @param array       $parameters An array of parameters for the message
-     * @param string|null $domain     The domain for the message or null to use the default
-     * @param string|null $locale     The locale or null to use the default
+     * @param string $id The message id (may also be an object that can be cast to string)
+     * @param int $number The number to use to find the indice of the message
+     * @param array $parameters An array of parameters for the message
+     * @param string|null $domain The domain for the message or null to use the default
+     * @param string|null $locale The locale or null to use the default
      *
      * @return string The translated string
      *
      * @throws InvalidArgumentException If the locale contains invalid characters
+     * @throws \Exception
      * @deprecated Since Symfony 4.2  Use trans with a %count%
      */
     public function transChoice($id, $number, array $parameters = [], $domain = null, $locale = null)
@@ -229,7 +231,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
      *
      * @throws InvalidArgumentException If the locale contains invalid characters
      */
-    public function getCatalogue($locale = null)
+    public function getCatalogue(string $locale = null)
     {
         return $this->translator->getCatalogue($locale);
     }

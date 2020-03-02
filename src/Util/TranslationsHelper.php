@@ -104,7 +104,7 @@ class TranslationsHelper
     {
         if (null === self::$translator || null === $id)
             return $id;
-        return self::$translator->trans($id, $params, $domain ?: self::getDomain());
+        return self::$translator->trans($id, $params, str_replace(' ', '', $domain ?: self::getDomain()));
     }
 
     /**
