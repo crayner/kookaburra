@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import Sidebar from "../SideBar/SideBarApp"
 import PaginationApp from "../Pagination/PaginationApp"
 import ContainerApp from "../Container/ContainerApp"
+import Messages from "../component/Messages"
 
 export default function Content(props) {
     const {
@@ -16,7 +17,8 @@ export default function Content(props) {
         sidebarOpen,
         pagination,
         containers,
-        breadCrumbs
+        breadCrumbs,
+        messages
     } = props
 
     const state = contentState({
@@ -54,6 +56,11 @@ export default function Content(props) {
                     </div>
                 </div>
             )
+
+        if (messages.length > 0) {
+            x.push(<Messages messages={messages} translate={functions.translate} key={'messages'} />)
+        }
+
         content.map(stuff => {
             x.push(stuff)
         })
@@ -145,6 +152,10 @@ Content.propTypes = {
         PropTypes.object,
         PropTypes.array,
     ]).isRequired,
+    messages: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]).isRequired,
 }
 
 Content.defaultProps = {
@@ -152,5 +163,5 @@ Content.defaultProps = {
     pagination: {},
     containers: {},
     content: [],
-    breadCrumbs: {},
+    breadCrumbs: {}
 }

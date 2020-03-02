@@ -30,7 +30,8 @@ export default class PageApp extends Component {
             getContent: this.getContentFromServer.bind(this),
             handleAddClick: this.getContentFromServer.bind(this),
             onSetSidebarOpen: this.onSetSidebarOpen.bind(this),
-            getContentSize: this.getContentSize.bind(this)
+            getContentSize: this.getContentSize.bind(this),
+            translate: this.translate.bind(this)
         }
         this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this)
         this.handleClickOffSidebar = this.handleClickOffSidebar.bind(this)
@@ -42,7 +43,8 @@ export default class PageApp extends Component {
             sidebar: {},
             sidebarOpen: '',
             contentHeight: 0,
-            title: this.action.name
+            title: this.action.name,
+            messages: []
         }
     }
 
@@ -56,6 +58,10 @@ export default class PageApp extends Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.functions.getContentSize, false);
         document.removeEventListener('mousedown', this.handleClickOffSideBar, false)
+    }
+
+    translate(id) {
+        return id
     }
 
     getContentSize() {
@@ -133,7 +139,7 @@ export default class PageApp extends Component {
         content.push(<div id={'wrap'} className={'max-w-6xl mx-auto m-2 shadow rounded'} key={'wrap'}>
             <Header details={this.headerDetails} />
             <div id={'content-wrap'} ref={e => (this.contentRef = e)} className={'relative w-full block content-start flex-wrap lg:flex-no-wrap lg:flex-row-reverse bg-transparent-100 clearfix'}>
-                <Content action={this.action} url={this.url} functions={this.functions} {...this.state} references={this.references} />
+                <Content {...this.state} action={this.action} url={this.url} functions={this.functions} messages={this.state.messages} />
             </div>
             <Footer details={this.footer} />
         </div>)
@@ -162,9 +168,10 @@ export default class PageApp extends Component {
                 sidebar: data.sidebar,
                 breadCrumbs: data.breadCrumbs,
                 containers: data.containers,
-                title: data.title
+                title: data.title,
+                messages: this.state.messages.concat(data.messages),
             })
-            window.history.pushState('page2', 'Title', url);
+            window.history.pushState('', data.title, data.url ? data.url : url);
             setTimeout(this.functions.getContentSize,50)
         })
     }

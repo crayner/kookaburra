@@ -301,7 +301,9 @@ class PageManager
                 'breadCrumbs' => '',
                 'sidebar' => [],
                 'containers' => [],
+                'messages' => [],
                 'title' => $this->getRoute() !== 'home' ? TranslationsHelper::translate($this->getAction()['name'], [], str_replace(' ', '', $this->getModule()['name'])) : '',
+                'url' => null,
             ]
         );
 
@@ -322,9 +324,10 @@ class PageManager
      * @param array $crumbs
      * @return PageManager
      */
-    public function createBreadcrumbs(string $title, array $crumbs): PageManager
+    public function createBreadcrumbs(string $title, array $crumbs = []): PageManager
     {
         $result = [];
+        dump($this->getRoute(),$this->getAction(),$this->getModule());
         $moduleName = $this->getModule()['name'];
         $domain = str_replace(' ','',$moduleName);
         $result['title'] = TranslationsHelper::translate($title, [], $domain);
