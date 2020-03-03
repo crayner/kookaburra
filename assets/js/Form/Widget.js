@@ -192,6 +192,8 @@ export default function Widget(props) {
     }
 
     if (form.type === 'color') {
+        if (typeof form.value === 'undefined')
+            form.value = ''
          if (/([0-9A-F]{3}){1,2}/i.test(form.value) && form.value.charAt(0) !== '#') {
              form.value = '#' + form.value
          }
