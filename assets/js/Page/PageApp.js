@@ -42,6 +42,7 @@ export default class PageApp extends Component {
             contentWidth: 0,
             content: [],
             sidebar: {},
+            breadCrumbs: {},
             sidebarOpen: '',
             contentHeight: 0,
             title: this.action.name,
@@ -120,9 +121,21 @@ export default class PageApp extends Component {
 
         if (e.target.type === 'button')
             return
+
+        if (e.target.tagName === 'INPUT')
+            return
+
         if (e.target.id === 'filter_select')
             return
+
+        if (e.target.classList.contains('tab-span'))
+            return
+
+        if (e.target.classList.contains('react-tabs__tab'))
+            return
+
         console.log(e.target)
+        console.log(e.target.tagName)
         this.setState({
             sidebarOpen: 'closed',
         });

@@ -298,7 +298,7 @@ class PageManager
             [
                 'content' => '',
                 'pagination' => [],
-                'breadCrumbs' => '',
+                'breadCrumbs' => [],
                 'sidebar' => [],
                 'containers' => [],
                 'messages' => [],
@@ -354,7 +354,7 @@ class PageManager
      */
     public function getBreadCrumbs(): array
     {
-        return ['breadCrumbs' => ($this->hasBreadCrumbs() ? $this->breadCrumbs->toArray() : '')];
+        return ['breadCrumbs' => ($this->hasBreadCrumbs() ? $this->breadCrumbs->toArray() : [])];
     }
 
     /**

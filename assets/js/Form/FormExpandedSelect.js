@@ -54,6 +54,10 @@ export default function FormExpandedSelect(props) {
 
     let rr = '_' + Math.random().toString(36).substr(2, 9);
 
+
+    if (typeof form.children === 'undefined')
+        form.children = []
+
     let options = Object.keys(form.children).map(key => {
         const child = form.children[key]
         let name = child.full_name.replace('[]', '[' + child.name + ']')

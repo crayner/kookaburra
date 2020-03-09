@@ -26,6 +26,7 @@ export default function Message(props) {
     }
 
     if (typeof message.message === 'object') {
+        message.message.stack = message.message.stack.replace('<anonymous>', '&lt;anonymous&gt;')
         return (
             <div className={message.class}>
                 {Parser(message.message.message)}<br/><span className={'small'}>{Parser(message.message.stack)}</span>

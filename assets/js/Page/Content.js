@@ -142,7 +142,10 @@ Content.propTypes = {
     contentWidth: PropTypes.number.isRequired,
     contentHeight: PropTypes.number.isRequired,
     content: PropTypes.array.isRequired,
-    breadCrumbs: PropTypes.object.isRequired,
+    breadCrumbs: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]).isRequired,
     sidebar: PropTypes.object.isRequired,
     pagination: PropTypes.oneOfType([
         PropTypes.object,

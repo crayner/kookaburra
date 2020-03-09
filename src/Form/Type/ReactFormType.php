@@ -17,6 +17,7 @@ namespace App\Form\Type;
 
 use App\Manager\EntityInterface;
 use App\Manager\ScriptManager;
+use App\Util\GlobalHelper;
 use App\Util\ReactFormHelper;
 use App\Util\TranslationsHelper;
 use Symfony\Component\Form\AbstractType;
@@ -101,7 +102,7 @@ class ReactFormType extends AbstractType
          if ($form->isRoot()) {
              $this->setTranslationDomain($view->vars['translation_domain']);
              $vars = $this->buildTemplateView($view);
-             $vars['action'] = $options['action'];
+             $vars['action'] = empty($options['action']) ? GlobalHelper::getCurrentRoutePath() : $options['action'];
              $vars['method'] = $options['method'];
              $vars['preFormContent'] = $options['preFormContent'];
              $vars['postFormContent'] = $options['postFormContent'];
@@ -401,8 +402,11 @@ class ReactFormType extends AbstractType
             return 'transparent';
         if (in_array('time', $prefixes))
             return 'time';
+        if (in_array('checkbox', $prefixes))
+            return 'checkbox';
 
-//        dump($prefixes);
+
+        //dump($prefixes);
         return 'unknown';
     }
 

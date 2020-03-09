@@ -34,6 +34,8 @@ class CatchController extends AbstractController
     /**
      * container
      * @Route("/container/")
+     * @param ContainerManager $manager
+     * @return Response
      */
     public function container(ContainerManager $manager)
     {

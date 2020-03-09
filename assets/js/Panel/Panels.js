@@ -27,7 +27,7 @@ export default function Panels(props) {
             <Tab
                 key={tab.name}
                 disabled={tab.disabled}>
-                <span className={showError} title={title}>{tab.label}</span>
+                <span className={'tab-span ' + showError} title={title}>{tab.label}</span>
             </Tab>
         )
     })

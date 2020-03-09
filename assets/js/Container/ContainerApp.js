@@ -262,6 +262,13 @@ export default class ContainerApp extends Component {
         let data = buildFormData({}, parentForm)
         if (this.showSubmitButton)
             data['submit_clicked'] = pressed
+        if (isEmpty(parentForm.action)) {
+            console.error('The form does not have an action set')
+            this.setState({
+                submit: false
+            })
+            return
+        }
         fetchJson(
             parentForm.action,
             {method: parentForm.method, body: JSON.stringify(data)},

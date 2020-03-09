@@ -58,6 +58,10 @@ export default function FormApp(props) {
             </div>)
         }
 
+        if (form.attr.class !== 'undefined') {
+            form.attr.className = form.attr.class
+            delete form.attr.class
+        }
         return (<form
                     action={form.action}
                     id={form.id}

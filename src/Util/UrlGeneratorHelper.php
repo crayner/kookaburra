@@ -34,11 +34,11 @@ class UrlGeneratorHelper
     {
         self::$generator = $generator;
     }
-    
+
     /**
-     * @param string $name
-     * @param array  $parameters
-     * @param bool   $relative
+     * @param $route
+     * @param array $parameters
+     * @param bool $relative
      *
      * @return string
      */

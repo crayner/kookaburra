@@ -225,4 +225,14 @@ class GlobalHelper
     {
         return self::getParam($name, $default);
     }
+
+    /**
+     * getCurrentRoutePath
+     * @return string
+     */
+    public static function getCurrentRoutePath(): string
+    {
+        return UrlGeneratorHelper::getUrl(self::getRequest()->get('_route'), self::getRequest()->get('_route_params'), true);
+    }
+
 }
