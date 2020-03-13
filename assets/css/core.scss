@@ -440,10 +440,13 @@ table .heading td:not(:first-child), div.table .heading .td:not(:first-child) {
     border-left: 0px;
 }
 .striped tbody tr:nth-of-type(even) {
-    background-color: #e0e0e0;
+    @apply bg-gray-400;
 }
 .striped tbody tr:hover {
-    background-color: #d0d0d0;
+    @apply bg-gray-500
+}
+.striped tbody tr.dropTarget:nth-of-type(even) {
+    @apply bg-green-200;
 }
 table tr, div.table div.tr {
     text-align: center;

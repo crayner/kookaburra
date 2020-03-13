@@ -19,6 +19,11 @@ export default function PaginationContent(props) {
         parent.classList.remove('dropTarget')
         let data = document.getElementById(e.dataTransfer.getData("text"))
         data.classList.remove('dropTarget')
+        data.classList.remove('bg-green-200')
+        let x = document.getElementsByClassName('bg-green-200')
+        for (let i = 0; i < x.length; i++) {
+            x[i].classList.remove('bg-green-200')
+        }
 
         return functions.dropEvent(e)
     }
@@ -156,7 +161,7 @@ function toggleColour(e, on) {
     if (!on && !e.target.parentNode.classList.contains('dropTarget'))
         return
     e.target.parentNode.classList.toggle('dropTarget')
-
+    e.target.parentNode.classList.toggle('bg-green-200')
 }
 
 function allowDrop(e) {
