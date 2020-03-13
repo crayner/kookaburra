@@ -6,6 +6,7 @@
                 {% if url is iterable %}
                     {% set url = path(url.route, url.params|default({})) %}
                 {% endif %}
+                {% dump(link) %}
                 {% if link.text is iterable %}
                     {% set text = link.text[0]|trans(link.text[1], link.translation_domain) %}
                 {% elseif link.translation_domain is not same as(false) %}

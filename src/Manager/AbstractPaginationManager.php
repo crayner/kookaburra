@@ -109,6 +109,11 @@ abstract class AbstractPaginationManager implements PaginationInterface
     private $returnRoute = '';
 
     /**
+     * @var null|string
+     */
+    private $preContent;
+
+    /**
      * AbstractPaginationManager constructor.
      * @param ScriptManager $scriptManager
      */
@@ -267,6 +272,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
             'initialFilter' => $this->getInitialFilter(),
             'initialSearch' => $this->getInitialSearch(),
             'name' => $this->getPaginationName(),
+            'preContent' => $this->getPreContent(),
         ];
     }
 
@@ -599,6 +605,26 @@ abstract class AbstractPaginationManager implements PaginationInterface
     public function setReturnRoute(string $returnRoute): AbstractPaginationManager
     {
         $this->returnRoute = $returnRoute;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPreContent(): string
+    {
+        return $this->preContent ?: '';
+    }
+
+    /**
+     * PreContent.
+     *
+     * @param string|null $preContent
+     * @return AbstractPaginationManager
+     */
+    public function setPreContent(?string $preContent): AbstractPaginationManager
+    {
+        $this->preContent = $preContent;
         return $this;
     }
 }

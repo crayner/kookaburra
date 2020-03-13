@@ -187,6 +187,7 @@ class Container
                 'preContent' => null,
                 'postContent' => null,
                 'translationDomain' => 'messages',
+                'pagination' => [],
             ]
         );
 
@@ -197,6 +198,7 @@ class Container
         $resolver->setAllowedTypes('index', 'integer');
         $resolver->setAllowedTypes('preContent', ['array', 'null']);
         $resolver->setAllowedTypes('postContent', ['array', 'null']);
+        $resolver->setAllowedTypes('pagination', ['array', 'null']);
 
         $resolver->resolve($panel->toArray());
 

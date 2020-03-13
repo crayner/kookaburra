@@ -6,6 +6,7 @@ import Sidebar from "../SideBar/SideBarApp"
 import PaginationApp from "../Pagination/PaginationApp"
 import ContainerApp from "../Container/ContainerApp"
 import Messages from "../component/Messages"
+import PageHeader from "./PageHeader"
 
 export default function Content(props) {
     const {
@@ -18,7 +19,8 @@ export default function Content(props) {
         pagination,
         containers,
         breadCrumbs,
-        messages
+        messages,
+        pageHeader
     } = props
 
     const state = contentState({
@@ -56,6 +58,8 @@ export default function Content(props) {
                     </div>
                 </div>
             )
+
+        x.push(<PageHeader details={pageHeader} key={pageHeader} functions={functions} />)
 
         if (messages.length > 0) {
             x.push(<Messages messages={messages} translate={functions.translate} key={'messages'} />)
@@ -159,6 +163,10 @@ Content.propTypes = {
         PropTypes.object,
         PropTypes.array,
     ]).isRequired,
+    pageHeader: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]),
 }
 
 Content.defaultProps = {
@@ -166,5 +174,6 @@ Content.defaultProps = {
     pagination: {},
     containers: {},
     content: [],
+    pageHeader: null,
     breadCrumbs: {}
 }

@@ -1922,12 +1922,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-departments.git",
-                "reference": "d378cc0509e311b632cda386cb318787635b7c8b"
+                "reference": "7226a3beeea76c4183ffa64e1f70fe1105408650"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-departments/zipball/d378cc0509e311b632cda386cb318787635b7c8b",
-                "reference": "d378cc0509e311b632cda386cb318787635b7c8b",
+                "url": "https://api.github.com/repos/crayner/kookaburra-departments/zipball/7226a3beeea76c4183ffa64e1f70fe1105408650",
+                "reference": "7226a3beeea76c4183ffa64e1f70fe1105408650",
                 "shasum": ""
             },
             "require": {
@@ -1956,7 +1956,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-18T01:27:34+00:00"
+            "time": "2020-03-02T06:07:37+00:00"
         },
         {
             "name": "kookaburra/library",
@@ -1964,12 +1964,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-library.git",
-                "reference": "31f852b2156582c446b48b2a904f1f6a0bda2df6"
+                "reference": "c0f185ae4c99beb47be29eada27d784755089f2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-library/zipball/31f852b2156582c446b48b2a904f1f6a0bda2df6",
-                "reference": "31f852b2156582c446b48b2a904f1f6a0bda2df6",
+                "url": "https://api.github.com/repos/crayner/kookaburra-library/zipball/c0f185ae4c99beb47be29eada27d784755089f2f",
+                "reference": "c0f185ae4c99beb47be29eada27d784755089f2f",
                 "shasum": ""
             },
             "require": {
@@ -1998,7 +1998,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-15T01:06:53+00:00"
+            "time": "2020-03-02T06:07:41+00:00"
         },
         {
             "name": "kookaburra/roll-groups",
@@ -2048,12 +2048,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-school-admin.git",
-                "reference": "49c765e7c94a9ae8d8498ac8c0492717609fd2bb"
+                "reference": "57ae153547fbc3a56461a4465174194aec56884d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-school-admin/zipball/49c765e7c94a9ae8d8498ac8c0492717609fd2bb",
-                "reference": "49c765e7c94a9ae8d8498ac8c0492717609fd2bb",
+                "url": "https://api.github.com/repos/crayner/kookaburra-school-admin/zipball/57ae153547fbc3a56461a4465174194aec56884d",
+                "reference": "57ae153547fbc3a56461a4465174194aec56884d",
                 "shasum": ""
             },
             "require": {
@@ -2082,7 +2082,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-29T04:42:51+00:00"
+            "time": "2020-03-09T05:20:33+00:00"
         },
         {
             "name": "kookaburra/system-admin",
@@ -2090,12 +2090,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-system-admin.git",
-                "reference": "cd9b3341d2871d797b6753cb54a36325b7801f2d"
+                "reference": "c4d639ccfe5d4bc39f7f39f0768303eafecc1814"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-system-admin/zipball/cd9b3341d2871d797b6753cb54a36325b7801f2d",
-                "reference": "cd9b3341d2871d797b6753cb54a36325b7801f2d",
+                "url": "https://api.github.com/repos/crayner/kookaburra-system-admin/zipball/c4d639ccfe5d4bc39f7f39f0768303eafecc1814",
+                "reference": "c4d639ccfe5d4bc39f7f39f0768303eafecc1814",
                 "shasum": ""
             },
             "require": {
@@ -2124,7 +2124,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-28T02:26:23+00:00"
+            "time": "2020-03-02T06:07:32+00:00"
         },
         {
             "name": "kookaburra/user-admin",
@@ -2132,12 +2132,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/crayner/kookaburra-user-admin.git",
-                "reference": "ce743fc8d0b2c5fc0900d6382b4b8f9df66bc345"
+                "reference": "2d1848db21fdea5b474853d49cdf527b2ec3fc2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/crayner/kookaburra-user-admin/zipball/ce743fc8d0b2c5fc0900d6382b4b8f9df66bc345",
-                "reference": "ce743fc8d0b2c5fc0900d6382b4b8f9df66bc345",
+                "url": "https://api.github.com/repos/crayner/kookaburra-user-admin/zipball/2d1848db21fdea5b474853d49cdf527b2ec3fc2d",
+                "reference": "2d1848db21fdea5b474853d49cdf527b2ec3fc2d",
                 "shasum": ""
             },
             "require": {
@@ -2166,7 +2166,7 @@
             "keywords": [
                 "doctrine"
             ],
-            "time": "2020-02-28T02:26:27+00:00"
+            "time": "2020-03-09T05:26:08+00:00"
         },
         {
             "name": "laminas/laminas-code",
@@ -2967,16 +2967,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "1.10.1",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "1648dc9ebef6ebe0c5a172e16cf66732918416e0"
+                "reference": "c2a205e82f9cf1cc9fab86b79e808d86dd680470"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/1648dc9ebef6ebe0c5a172e16cf66732918416e0",
-                "reference": "1648dc9ebef6ebe0c5a172e16cf66732918416e0",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/c2a205e82f9cf1cc9fab86b79e808d86dd680470",
+                "reference": "c2a205e82f9cf1cc9fab86b79e808d86dd680470",
                 "shasum": ""
             },
             "require": {
@@ -3056,7 +3056,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2019-12-01T23:13:51+00:00"
+            "time": "2020-03-02T13:09:03+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -7640,16 +7640,16 @@
         },
         {
             "name": "symfony/maker-bundle",
-            "version": "v1.14.3",
+            "version": "v1.14.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/maker-bundle.git",
-                "reference": "c864e7f9b8d1e1f5f60acc3beda11299f637aded"
+                "reference": "bc4df88792fbaaeb275167101dc714218475db5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/c864e7f9b8d1e1f5f60acc3beda11299f637aded",
-                "reference": "c864e7f9b8d1e1f5f60acc3beda11299f637aded",
+                "url": "https://api.github.com/repos/symfony/maker-bundle/zipball/bc4df88792fbaaeb275167101dc714218475db5f",
+                "reference": "bc4df88792fbaaeb275167101dc714218475db5f",
                 "shasum": ""
             },
             "require": {
@@ -7704,7 +7704,7 @@
                 "scaffold",
                 "scaffolding"
             ],
-            "time": "2019-11-07T00:56:03+00:00"
+            "time": "2020-03-04T13:57:29+00:00"
         },
         {
             "name": "symfony/monolog-bridge",

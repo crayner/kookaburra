@@ -22,6 +22,7 @@ use App\Twig\FastFinder;
 use App\Twig\IdleTimeout;
 use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
+use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\GlobalHelper;
@@ -121,6 +122,11 @@ class PageManager
     private $translations = [];
 
     /**
+     * @var PageHeader|null
+     */
+    private $pageHeader;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -214,6 +220,7 @@ class PageManager
     {
         $this->addTranslation('Loading');
         return [
+            'pageHeader' => $this->getPageHeader(),
             'locale' => $this->getLocale(),
             'rtl' => LocaleHelper::getRtl($this->getLocale()),
             'bodyImage' => ImageHelper::getBackgroundImage(),
@@ -306,8 +313,7 @@ class PageManager
                 'url' => null,
             ]
         );
-
-        return new JsonResponse(array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs()));
+        return new JsonResponse(array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()]));
     }
 
     /**
@@ -320,16 +326,24 @@ class PageManager
 
     /**
      * createBreadcrumbs
-     * @param string $title
+     * @param string|array $title
      * @param array $crumbs
      * @return PageManager
      */
-    public function createBreadcrumbs(string $title, array $crumbs = []): PageManager
+    public function createBreadcrumbs($title, array $crumbs = []): PageManager
     {
         $result = [];
+        if (is_array($title))
+        {
+            $params = $title[1];
+            $title = $title[0];
+        } else {
+            $params = [];
+        }
+
         $moduleName = $this->getModule()['name'];
         $domain = str_replace(' ','',$moduleName);
-        $result['title'] = TranslationsHelper::translate($title, [], $domain);
+        $result['title'] = TranslationsHelper::translate($title, $params, $domain);
         $result['crumbs'] = $crumbs;
         $result['baseURL'] = strtolower(str_replace(' ','_',$moduleName));
         $result['domain'] = $domain;
@@ -506,6 +520,26 @@ class PageManager
     public function addTranslation(string $id, array $options = [], string $domain = 'messages'): PageManager
     {
         $this->translations[$id] = TranslationsHelper::translate($id,$options,$domain);
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPageHeader(): array
+    {
+        return $this->pageHeader ? $this->pageHeader->toArray() : [];
+    }
+
+    /**
+     * PageHeader.
+     *
+     * @param PageHeader|null $pageHeader
+     * @return PageManager
+     */
+    public function setPageHeader(?PageHeader $pageHeader): PageManager
+    {
+        $this->pageHeader = $pageHeader;
         return $this;
     }
 }

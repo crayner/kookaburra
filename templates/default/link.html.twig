@@ -11,7 +11,7 @@
     {% if absoluteURL in url or target|default('') is same as('_blank') %}
         {% set attr = attr ~ ' target="_blank"' %}
         {% set url = url|trim('./', 'left') %}
-        {% set url = url|replace(absoluteURL, '') %}
+        {% set url = url|replace({absoluteURL: ''}) %}
         <a href="{{ absoluteURL }}/{{ url }}" {{ attr|raw }}>{{ text }}</a>
     {% else %}
         <a href="{{ url }}" {{ attr|raw }}>{{ text }}</a>

@@ -15,9 +15,7 @@
 
 namespace App\Container;
 
-use Symfony\Component\Form\FormErrorIterator;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\File\File;
+use App\Manager\PaginationInterface;
 
 /**
  * Class Panel
@@ -64,6 +62,11 @@ class Panel
      * @var array|null
      */
     private $postContent;
+
+    /**
+     * @var PaginationInterface
+     */
+    private $pagination;
 
     /**
      * Panel constructor.
@@ -156,6 +159,7 @@ class Panel
             'translationDomain' => $this->getTranslationDomain(),
             'preContent' => $this->getPreContent(),
             'postContent' => $this->getPostContent(),
+            'pagination' => $this->getPagination() ? $this->getPagination()->toArray() : [],
         ];
 
         return $result;
@@ -262,6 +266,28 @@ class Panel
     public function setPostContent(?array $postContent): Panel
     {
         $this->postContent = $postContent;
+        return $this;
+    }
+
+    /**
+     * getPagination
+     * @return PaginationInterface|null
+     */
+    public function getPagination(): ?PaginationInterface
+    {
+        return $this->pagination;
+    }
+
+    /**
+     * Pagination.
+     *
+     * @param PaginationInterface $pagination
+     * @return Panel
+     */
+    public function setPagination(PaginationInterface $pagination): Panel
+    {
+        $this->content = null;
+        $this->pagination = $pagination;
         return $this;
     }
 }

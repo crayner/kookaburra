@@ -574,10 +574,10 @@ table.blank > tbody > tr > td {
     float: right;
 }
 .close-button.gray, .close-button.grey {
-    color: #696969;
+    @apply text-gray-800;
 }
 .close-button:hover {
-    color: #006400;
+    @apply text-purple-500
 }
 @media (min-width: 1024px){
     .lg:leading-tight {

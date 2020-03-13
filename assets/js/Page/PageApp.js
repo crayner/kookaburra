@@ -46,6 +46,7 @@ export default class PageApp extends Component {
             sidebarOpen: '',
             contentHeight: 0,
             title: this.action.name,
+            pageHeader: props.pageHeader,
             messages: []
         }
     }
@@ -177,13 +178,14 @@ export default class PageApp extends Component {
             false
         ).then(data => {
             this.setState({
-                content: Parser(data.content),
+                content: typeof Parser(data.content) === 'object' ? [Parser(data.content)] : Parser(data.content),
                 pagination: data.pagination,
                 sidebar: data.sidebar,
                 breadCrumbs: data.breadCrumbs,
                 containers: data.containers,
                 title: data.title,
                 messages: this.state.messages.concat(data.messages),
+                pageHeader: data.pageHeader
             })
             window.history.pushState('', data.title, data.url ? data.url : url);
             setTimeout(this.functions.getContentSize,100)

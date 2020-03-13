@@ -93,6 +93,7 @@ class MinorLinks implements ContentInterface
                 $name = [
                     'text' => $name,
                     'url' => '',
+                    'translation_domain' => false,
                 ];
             }
             $links[] = $name;
@@ -101,11 +102,13 @@ class MinorLinks implements ContentInterface
                 'class' => 'link-white',
                 'text' => TranslationsHelper::translate('Logout', [], 'messages'),
                 'url' => UrlGeneratorHelper::getUrl('logout'),
+                'translation_domain' => 'messages',
             ];
             $links[] = [
                 'class' => 'link-white',
                 'text' => TranslationsHelper::translate('Preferences', [], 'messages'),
                 'url' => UrlGeneratorHelper::getUrl('user_admin__preferences'),
+                'translation_domain' => 'messages',
             ];
             if ($this->getSession()->get('emailLink', '') !== '') {
                 $links[] = [

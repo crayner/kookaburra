@@ -208,7 +208,6 @@ class ContainerManager
             $container['extras'] = ReactFormHelper::getExtras();
             $container['returnRoute'] = $this->getReturnRoute();
             $container['addElementRoute'] = $this->getAddElementRoute();
-
             $containers[$target] = $container;
         }
 

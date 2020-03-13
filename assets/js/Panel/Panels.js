@@ -44,6 +44,7 @@ export default function Panels(props) {
                 return ''
             })
         }
+
         if (panel.postContent !== null) {
             postContent = panel.postContent.map(name => {
                 if (typeof externalContent[name] !== 'undefined')
@@ -103,6 +104,10 @@ Panels.propTypes = {
 }
 
 function renderPanelContent(panel, props){
+    if (Object.keys(panel.pagination).length > 0) {
+        return (<PaginationApp {...panel.pagination} functions={props.functions} />)
+    }
+
     if (null !== panel.content){
         return Parser(panel.content)
     }

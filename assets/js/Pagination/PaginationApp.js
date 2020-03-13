@@ -33,6 +33,7 @@ export default class PaginationApp extends Component {
         this.columnCount = 0
         this.storeFilterURL = props.storeFilterURL
         this.draggableRoute = props.draggableRoute
+        this.preContent = props.preContent
         this.storeFilterWait = false
         this.functions = props.functions
         this.functions.handleAddClick = typeof this.functions.handleAddClick === 'function' ? this.functions.handleAddClick : this.handleAddClick.bind(this)
@@ -551,6 +552,7 @@ export default class PaginationApp extends Component {
         this.storeFilter()
         return (
             <div>
+                {this.preContent}
                 <div className={'text-xs text-gray-600 text-left'}>
                     <Messages messages={this.state.messages} translate={this.translate} />
                     <span className={'float-left clear-both'}>{this.buildPageSizeControls()}</span>
