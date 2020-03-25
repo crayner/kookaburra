@@ -40,6 +40,7 @@ export default class ContainerApp extends Component {
         this.translations = props.translations
         this.actionRoute = props.actionRoute
         this.showSubmitButton = props.showSubmitButton ? props.showSubmitButton : false
+        this.hideSingleFormWarning = props.hideSingleFormWarning
 
         if (Object.keys(this.panels).length === 0 && this.content !== null) {
             this.panels['default'] = {}
@@ -454,7 +455,7 @@ export default class ContainerApp extends Component {
             <section>
                 {this.state.submit ? <div className={'waitOne info'}>{this.functions.translate('Let me ponder your request')}...</div> : ''}
                 {getControlButtons(this.returnRoute,this.addElementRoute,this.functions)}
-                <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} />
+                <PanelApp panels={this.panels} selectedPanel={this.state.selectedPanel} hideSingleFormWarning={this.hideSingleFormWarning} functions={this.functions} forms={this.state.forms} actionRoute={this.actionRoute} singleForm={this.singleForm} translations={this.translations} panelErrors={this.state.panelErrors} content={this.state.content} />
             </section>
         )
     }

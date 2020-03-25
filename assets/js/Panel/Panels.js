@@ -17,6 +17,7 @@ export default function Panels(props) {
         singleForm,
         translations,
         panelErrors,
+        hideSingleFormWarning,
     } = props
 
     const tabTags = Object.keys(panels).map(name => {
@@ -64,13 +65,17 @@ export default function Panels(props) {
 
     if (singleForm) {
         let form = props.forms[Object.keys(props.forms)[0]]
+        let warning = null
+        if (!hideSingleFormWarning) {
+            warning = <div className={'info clear-both'}>{translations['All fields on all panels are saved together.']}</div>
+        }
         return (
             <form
                 action={form.action}
                 id={form.id}
                 {...form.attr}
                 method={form.method !== undefined ? form.method : 'POST'}>
-                <div className={'info'}>{translations['All fields on all panels are saved together.']}</div>
+                {warning}
                 <Tabs selectedIndex={selectedIndex} onSelect={tabIndex => functions.onSelectTab(tabIndex)}>
                     <TabList>
                         {tabTags}
@@ -101,6 +106,7 @@ Panels.propTypes = {
     panelErrors: PropTypes.object.isRequired,
     selectedIndex: PropTypes.number.isRequired,
     singleForm: PropTypes.bool.isRequired,
+    hideSingleFormWarning: PropTypes.bool.isRequired,
 }
 
 function renderPanelContent(panel, props){

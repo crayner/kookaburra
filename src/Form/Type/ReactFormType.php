@@ -305,18 +305,18 @@ class ReactFormType extends AbstractType
             $vars['placeholder'] = $view->vars['placeholder'] ? $this->translate($view->vars['placeholder'], [], $this->getTranslationDomain($view->vars['translation_domain'])) : false;
 
         if (isset($view->vars['choices'])) {
-            if (false !== $view->vars['choice_translation_domain'])
-                foreach($view->vars['choices'] as $q=>$choice) {
+            if (false !== $view->vars['choice_translation_domain']) {
+                foreach ($view->vars['choices'] as $q => $choice) {
                     $choice->label = $this->translate($choice->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
                     if (isset($choice->choices)) {
-                        foreach($choice->choices as $w) {
+                        foreach ($choice->choices as $w) {
                             $w->label = $this->translate($w->label, [], $this->getTranslationDomain($view->vars['choice_translation_domain']));
                         }
                     }
                 }
+            }
 
             $vars['choice_translation_domain'] = false;
-
             // json_encode will sort if the index is not in order, so some work to do.
             $result = [];
             foreach($view->vars['choices'] as $q=>$choice) {

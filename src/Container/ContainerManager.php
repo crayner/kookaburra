@@ -60,6 +60,11 @@ class ContainerManager
     private $returnRoute = '';
 
     /**
+     * @var boolean
+     */
+    private $hideSingleFormWarning = false;
+
+    /**
      * ContainerManager constructor.
      * @param TranslatorInterface $translator
      * @param RequestStack $stack
@@ -208,6 +213,7 @@ class ContainerManager
             $container['extras'] = ReactFormHelper::getExtras();
             $container['returnRoute'] = $this->getReturnRoute();
             $container['addElementRoute'] = $this->getAddElementRoute();
+            $container['hideSingleFormWarning'] = $this->isHideSingleFormWarning();
             $containers[$target] = $container;
         }
 
@@ -333,6 +339,26 @@ class ContainerManager
     public function setReturnRoute(string $returnRoute): ContainerManager
     {
         $this->returnRoute = $returnRoute;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHideSingleFormWarning(): bool
+    {
+        return $this->hideSingleFormWarning;
+    }
+
+    /**
+     * HideSingleFormWarning.
+     *
+     * @param bool $hideSingleFormWarning
+     * @return ContainerManager
+     */
+    public function setHideSingleFormWarning(bool $hideSingleFormWarning): ContainerManager
+    {
+        $this->hideSingleFormWarning = $hideSingleFormWarning;
         return $this;
     }
 }

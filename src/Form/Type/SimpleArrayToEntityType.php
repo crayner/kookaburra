@@ -35,7 +35,6 @@ class SimpleArrayToEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-     //       ->addViewTransformer(new SimpleArrayToEntityTransform($options))
             ->addEventSubscriber(new SimpleArrayToEntitySubcriber($options));
     }
 

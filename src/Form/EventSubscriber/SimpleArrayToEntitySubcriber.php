@@ -15,13 +15,15 @@
 
 namespace App\Form\EventSubscriber;
 
-
 use App\Provider\ProviderFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Event\PreSetDataEvent;
-use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\FormEvents;
 
+/**
+ * Class SimpleArrayToEntitySubcriber
+ * @package App\Form\EventSubscriber
+ */
 class SimpleArrayToEntitySubcriber implements EventSubscriberInterface
 {
     /**
@@ -47,7 +49,6 @@ class SimpleArrayToEntitySubcriber implements EventSubscriberInterface
         // event and that the preSetData method should be called.
         return [
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT => ['preSubmit', 1024],
         ];
     }
 
@@ -68,14 +69,5 @@ class SimpleArrayToEntitySubcriber implements EventSubscriberInterface
         if ($transform)
             $data = ProviderFactory::getRepository($this->options['class'])->findAllInArray($data);
         $event->setData($data);
-    }
-
-    /**
-     * preSubmit
-     * @param PreSubmitEvent $event
-     */
-    public function preSubmit(PreSubmitEvent $event)
-    {
-
     }
 }

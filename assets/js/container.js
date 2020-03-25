@@ -25,6 +25,7 @@ if (window.CONTAINER_PROPS !== 'undefined') {
                 extras={container.extras}
                 showSubmitButton={container.showSubmitButton}
                 contentLoader={container.contentLoader}
+                hideSingleFormWarning={container.hideSingleFormWarning}
             />, target)
         } else if (target !== null) {
             render(
@@ -37,6 +38,7 @@ if (window.CONTAINER_PROPS !== 'undefined') {
                     forms={container.forms}
                     showSubmitButton={container.showSubmitButton}
                     contentLoader={container.contentLoader}
+                    hideSingleFormWarning={container.hideSingleFormWarning}
                 />,
                 target
             )
