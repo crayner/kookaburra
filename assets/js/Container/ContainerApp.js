@@ -24,7 +24,9 @@ import {
     checkHiddenRows,
     toggleRowsOnValue,
     initialContentLoaders,
-    getControlButtons
+    checkChainedElements,
+    getControlButtons,
+    setChainedSelect
 } from "./ContainerFunctions"
 import {isEmpty} from "../component/isEmpty"
 
@@ -95,6 +97,7 @@ export default class ContainerApp extends Component {
         }
         initialContentLoaders(this.contentLoaders, this.contentManager)
         let forms = checkHiddenRows({...this.state.forms})
+        forms = checkChainedElements(forms)
         this.setMyState(forms, panelErrors)
     }
 
@@ -236,7 +239,13 @@ export default class ContainerApp extends Component {
             }
         }
         form.value = value
-        this.setMyState(buildState(mergeParentForm(this.state.forms,parentName,changeFormValue({...parentForm},form,value)), this.singleForm))
+
+        let forms = mergeParentForm(this.state.forms,parentName,changeFormValue({...parentForm},form,value))
+        if (form.type === 'choice' && form.chained_child !== null) {
+            forms = setChainedSelect(form,forms)
+        }
+
+        this.setMyState(buildState(forms, this.singleForm))
         if (submitOnChange)
             this.submitForm({},form)
     }
@@ -283,6 +292,7 @@ export default class ContainerApp extends Component {
                     form.errors = errors
                     this.submit[parentName] = false
                     let forms = checkHiddenRows({...mergeParentForm(this.state.forms, parentName, {...form})})
+                    forms = checkChainedElements(forms)
                     this.setMyState(buildState(forms, this.singleForm), setPanelErrors({...form}, {}))
                 }
             }).catch(error => {

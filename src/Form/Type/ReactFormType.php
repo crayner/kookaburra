@@ -187,6 +187,13 @@ class ReactFormType extends AbstractType
             $vars['auto_refresh'] = $view->vars['auto_refresh'];
             $vars['auto_refresh_url'] = $view->vars['auto_refresh_url'];
             $vars['add_url'] = $view->vars['add_url'];
+            if ($view->vars['chained_child'] !== null) {
+                $vars['chained_child'] = str_replace('_' . $view->vars['name'], '_' . $view->vars['chained_child'], $view->vars['id']);
+                $vars['chained_values'] = $view->vars['chained_values'];
+            } else {
+                $vars['chained_child'] = null;
+                $vars['chained_values'] = [];
+            }
         }
 
         if ($vars['type'] === 'choice' && $view->vars['multiple']) {

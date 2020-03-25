@@ -26,12 +26,12 @@ export default function CollectionHeaderRow(props) {
                 <tr>{elements}</tr>
             </thead>
         )
-    }
-    if (typeof form.header_row === 'array') {
-        let elements = form.header_row.map((child,childKey) => {
+    } else if (typeof form.header_row === 'object') {
+        let elements = Object.keys(form.header_row).map(childKey => {
+            let child = form.header_row[childKey]
             if (typeof child.help === 'string')
-                return <th {...child.attr} key={child.name}>{child.label}<br/><span className={'text-gray-500 small'}>{child.help}</span></th>
-            return <th {...child.attr} key={child.name}>{child.label}</th>
+                return <th {...child.attr} key={childKey}>{child.label}<br/><span className={'text-gray-500 small'}>{child.help}</span></th>
+            return <th {...child.attr} key={childKey}>{child.label}</th>
         })
         return (
             <thead>

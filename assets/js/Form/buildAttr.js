@@ -75,6 +75,9 @@ export function widgetAttr(form, defaultClass, functions) {
         delete widget_attr.inputmode
     }
 
+    if (form.disabled === true)
+        widget_attr['disabled'] = 'disabled'
+
     widget_attr['aria-describedby'] = form.id + '_help'
 
     return widget_attr

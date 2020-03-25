@@ -48,15 +48,21 @@ class ReactChoiceTypeExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults(
             [
-                'auto_refresh'  => false,
-                'auto_refresh_url'   => null,
-                'add_url'   => null,
+                'auto_refresh'          => false,
+                'auto_refresh_url'      => null,
+                'add_url'               => null,
+                'chained_child'         => null,
+                'chained_values'        => [],
             ]
         );
 
         $resolver->setAllowedTypes('auto_refresh', ['boolean']);
         $resolver->setAllowedTypes('auto_refresh_url', ['null','string']);
         $resolver->setAllowedTypes('add_url', ['null','string','array']);
+        $resolver->setAllowedTypes('chained_child', ['null','string']);
+        $resolver->setAllowedTypes('chained_values', ['array']);
+
+
     }
 
     /**
@@ -70,5 +76,7 @@ class ReactChoiceTypeExtension extends AbstractTypeExtension
         $view->vars['auto_refresh'] = $options['auto_refresh'];
         $view->vars['auto_refresh_url'] = $options['auto_refresh_url'];
         $view->vars['add_url'] = $options['add_url'];
+        $view->vars['chained_child'] = $options['chained_child'];
+        $view->vars['chained_values'] = $options['chained_values'];
     }
 }

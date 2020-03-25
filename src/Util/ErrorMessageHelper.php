@@ -64,6 +64,19 @@ class ErrorMessageHelper
     }
 
     /**
+     * getInvalidInputsMessage
+     * @param array $data
+     * @return array
+     */
+    public static function getInvalidTokenMessage(array $data, bool $translate = false): array
+    {
+        $data['errors'][] = ['class' => 'error', 'message' => ($translate ? TranslationsHelper::translate('return.error.csrf', [], 'messages') : ['return.error.csrf', [], 'messages'])];
+        $data['status'] = 'error';
+        return $data;
+    }
+
+
+    /**
      * uniqueErrors
      * @param array $data
      * @param bool $translate

@@ -58,7 +58,9 @@ export default function FormApp(props) {
             </div>)
         }
 
-        if (form.attr.class !== 'undefined') {
+        if (typeof form.attr === 'undefined')
+            form.attr = {}
+        if (typeof form.attr.class !== 'undefined') {
             form.attr.className = form.attr.class
             delete form.attr.class
         }

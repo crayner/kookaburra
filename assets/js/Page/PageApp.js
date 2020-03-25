@@ -126,6 +126,9 @@ export default class PageApp extends Component {
         if (e.target.tagName === 'INPUT')
             return
 
+        if (e.target.tagName === 'SELECT')
+            return
+
         if (e.target.id === 'filter_select')
             return
 

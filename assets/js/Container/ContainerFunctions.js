@@ -333,3 +333,53 @@ export function contentLoader(loader, contentManager) {
                 setTimeout(contentLoader(loader,contentManager), loader.timer)
         })
 }
+
+export function checkChainedElements(forms)
+{
+    Object.keys(forms).map(key => {
+        forms[key] = checkChainedFormElement(forms[key], forms)
+    })
+
+    return {...forms}
+}
+
+function checkChainedFormElement(form, forms)
+{
+    if (typeof form.children !== 'undefined' && Object.keys(form.children).length > 0) {
+        Object.keys(form.children).map(key => {
+            form.children[key] = checkChainedFormElement(form.children[key], forms)
+        })
+    }
+    if (form.type === 'choice') {
+        if (typeof form.chained_child !== 'undefined' && form.chained_child !== null) {
+            forms = setChainedSelect(form, forms)
+        }
+    }
+
+    return {...form}
+}
+
+export function setChainedSelect(form, forms)
+{
+    let parent = {...getParentForm({...forms}, form)}
+    const parentName = form.full_name.substring(0, form.full_name.indexOf('['))
+    let child = findElementById(parent, form.chained_child, {})
+
+    const value = form.value
+    let choices = form.chained_values[value]
+    if (typeof choices !== 'object' || Object.keys(choices).length === 0 && parseInt(value) > 0) {
+        choices = form.chained_values["" + value]
+    }
+
+    if (typeof choices !== 'object' || Object.keys(choices).length === 0) {
+        child.disabled = true
+        child.choices = {}
+    } else {
+        child.disabled = false
+        child.choices = {...choices}
+    }
+
+    forms[parentName] = {...mergeParentForm(forms,parentName,child)}
+
+    return {...forms}
+}

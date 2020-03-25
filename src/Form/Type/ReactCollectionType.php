@@ -16,11 +16,13 @@
 namespace App\Form\Type;
 
 use App\Form\EventSubscriber\ReactCollectionSubscriber;
+use App\Util\TranslationsHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -89,11 +91,68 @@ class ReactCollectionType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        $options['name'] = $form->getName();
+        $child = clone $form;
+        while ($options['translation_domain'] === null && ! $child->isRoot()) {
+            $child = $child->getParent();
+            $options['translation_domain'] = $child->getConfig()->getOption('translation_domain');
+        }
+        if ($options['translation_domain'] === null)
+            $options['translation_domain'] = 'messages';
         $view->vars['allow_add'] = $options['allow_add'];
         $view->vars['allow_delete'] = $options['allow_delete'];
         $view->vars['element_delete_route'] = $options['element_delete_route'];
         $view->vars['element_delete_options'] = $options['element_delete_options'];
-        $view->vars['header_row'] = $options['header_row'];
+        $view->vars['header_row'] = $this->checkHeaderRow($options);
         $view->vars['label'] = $options['label'];
+    }
+
+    /**
+     * checkHeaderRow
+     * @param $headerRow
+     */
+    private function checkHeaderRow(array $options)
+    {
+        if (is_bool($options['header_row']))
+            return $options['header_row'];
+
+        if (empty($options['header_row']))
+            throw new OptionDefinitionException('The header row must not be empty when set as an array. It requires one row per column header.');
+
+        $headerRow = $options['header_row'];
+
+        foreach($headerRow as $q=>$w) {
+            $resolver = new OptionsResolver();
+            $resolver->setRequired(
+                [
+                    'label',
+                ]
+            );
+            $resolver->setDefaults(
+                [
+                    'help' => null,
+                    'attr' => [],
+                    'label_translation_parameters' => [],
+                    'help_translation_parameters' => [],
+                    'translation_domain' => null,
+                ]
+            );
+
+            $resolver->setAllowedTypes('label', 'string');
+            $resolver->setAllowedTypes('attr', 'array');
+            $resolver->setAllowedTypes('label_translation_parameters', 'array');
+            $resolver->setAllowedTypes('help_translation_parameters', 'array');
+            $resolver->setAllowedTypes('help', ['null','string']);
+            $resolver->setAllowedTypes('translation_domain', ['null','string']);
+
+            $w = $resolver->resolve($w);
+            $w['label'] = TranslationsHelper::translate($w['label'], $w['label_translation_parameters'], $w['translation_domain'] ?: $options['translation_domain']);
+            if ($w['help'] !== null)
+                $w['help'] = TranslationsHelper::translate($w['help'], $w['help_translation_parameters'], $w['translation_domain'] ?: $options['translation_domain']);
+            $headerRow[$q]['label'] = $w['label'];
+            $headerRow[$q]['attr'] = $w['attr'];
+            $headerRow[$q]['help'] = $w['help'];
+        }
+        return $headerRow;
     }
 }
