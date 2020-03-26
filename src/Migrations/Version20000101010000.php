@@ -442,7 +442,6 @@ final class Version20000101010000 extends AbstractMigration
         $this->addSql('DROP TABLE gibbonStaffCoverage');
         $this->addSql('DROP TABLE gibbonStaffCoverageDate');
         $this->addSql('DROP TABLE gibbonStaffJobOpening');
-        $this->addSql('DROP TABLE gibbonString');
         $this->addSql('DROP TABLE gibbonStudentEnrolment');
         $this->addSql('DROP TABLE gibbonStudentNote');
         $this->addSql('DROP TABLE gibbonStudentNoteCategory');

@@ -15,11 +15,11 @@
 
 namespace App\Translation;
 
-use App\Entity\StringReplacement;
 use App\Provider\ProviderFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Exception\TableNotFoundException;
+use Kookaburra\SystemAdmin\Entity\StringReplacement;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Intl\Exception\InvalidArgumentException;
 use Symfony\Component\Translation\TranslatorBagInterface;
@@ -151,7 +151,7 @@ class Translator implements TranslatorInterface, TranslatorBagInterface, LocaleA
             return $this->strings = $this->strings instanceof ArrayCollection ? $this->strings : new ArrayCollection();
 
         $sr = new StringReplacement();
-        $sr->setOriginal('Gibbon')->setReplacement('Kookaburra')->setMode('Partial')->setCaseSensitive('N');
+        $sr->setOriginal('Gibbon')->setReplacement('Kookaburra')->setMode('Whole')->setCaseSensitive('N')->setPriority(1);
         $this->strings->add($sr);
 
         $this->stack->getCurrentRequest()->getSession()->set('stringReplacement', $this->strings);

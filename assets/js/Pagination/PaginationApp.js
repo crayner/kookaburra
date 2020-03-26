@@ -180,6 +180,7 @@ export default class PaginationApp extends Component {
     }
 
     deleteItem(path) {
+        console.log(path)
         this.setState({
             confirm: false
         })

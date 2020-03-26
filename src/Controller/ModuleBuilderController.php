@@ -35,7 +35,7 @@ class ModuleBuilderController extends AbstractController
      */
     public function build(ParameterBagInterface $bag)
     {
-        $module = ProviderFactory::create(Module::class)->findOneBy(['name' => 'Activities']); //School Admin
+        $module = ProviderFactory::create(Module::class)->findOneBy(['name' => 'System Admin']); //School Admin
         dump('Change the search detail here to map a module/actions/permissions. Currently ' . $module->getName());
         $result = [];
         $x['name'] = $module->getName();
