@@ -16,10 +16,8 @@
 namespace App\Util;
 
 use App\Entity\Setting;
-use App\Manager\EntityInterface;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
-use Kookaburra\SystemAdmin\Manager\StringReplacementPagination;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
