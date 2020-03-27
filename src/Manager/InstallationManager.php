@@ -87,6 +87,8 @@ class InstallationManager
      * @param UrlHelper $urlHelper
      * @param LoggerInterface $logger
      * @param ParameterBagInterface $bag
+     * @param EntityManagerInterface $em
+     * @param UpgradeManager $manager
      */
     public function __construct(Environment $twig, UrlHelper $urlHelper, LoggerInterface $logger, ParameterBagInterface $bag, EntityManagerInterface $em, UpgradeManager $manager)
     {

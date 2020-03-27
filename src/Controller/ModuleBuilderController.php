@@ -17,6 +17,7 @@ namespace App\Controller;
 
 use App\Provider\ProviderFactory;
 use Kookaburra\SystemAdmin\Entity\Module;
+use Kookaburra\SystemAdmin\Entity\NotificationEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -79,6 +80,56 @@ class ModuleBuilderController extends AbstractController
             $result['module']['actions'][$action->getName()] = $x;
         }
         $publicDir = $bag->get('kernel.public_dir');
+
+
+        // Notifications
+        $provider = ProviderFactory::create(NotificationEvent::class);
+/*        $notificationEvents = $provider->getRepository()->findBy([], ['moduleName' => 'ASC', 'actionName' => 'ASC', 'event' => 'ASC']);
+
+        $connection = $provider->getEntityManager()->getConnection();
+        $connection->beginTransaction();
+
+        $connection->query('DELETE FROM `gibbonNotificationEvent`');
+        $connection->query('ALTER TABLE `gibbonNotificationEvent` AUTO_INCREMENT = 1');
+        $connection->commit();
+        $provider->getEntityManager()->clear();
+
+        foreach($notificationEvents as $q=>$event)
+        {
+            $mod = ProviderFactory::getRepository(Module::class)->findOneBy(['name' => $event->getModuleName()]);
+            $action = null;
+            foreach($mod->getActions()->toArray() as $w)
+            {
+                if ($w->getName() === $event->getActionName())
+                {
+                    $action = $w;
+                    break;
+                }
+            }
+            $event->setId(null)->setAction($action)->setModule($mod)->setModuleName(null)->setActionName(null);
+        }
+
+        foreach($notificationEvents as $event) {
+            $provider->getEntityManager()->persist($event);
+            $provider->getEntityManager()->flush();
+        }
+*/
+        $notificationEvents = $provider->getRepository()->findBy(['module' => $module], ['moduleName' => 'ASC', 'actionName' => 'ASC', 'event' => 'ASC']);
+
+        $events = [];
+        foreach($notificationEvents as $w)
+        {
+            $event = [];
+            $event['event'] = $w->getEvent();
+            $event['module'] = $w->getModuleName();
+            $event['action'] = $w->getActionName();
+            $event['scopes'] = $w->getScopes();
+            $event['active'] = $w->isActive() ? 'Y' : 'N';
+            $events[$w->getEvent()] = $event;
+        }
+
+        $result['events'] = $events;
+
         file_put_contents($publicDir . '/' . $module->getName() . '.yaml', Yaml::dump($result, 8));
 
         dd(Yaml::dump($result, 8));
