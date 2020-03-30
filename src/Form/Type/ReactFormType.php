@@ -194,6 +194,7 @@ class ReactFormType extends AbstractType
                 $vars['chained_child'] = null;
                 $vars['chained_values'] = [];
             }
+            $vars['data'] = $view->vars['data'];
         }
 
         if ($vars['type'] === 'choice' && $view->vars['multiple']) {

@@ -50,7 +50,7 @@ class EntityToStringTransformer implements DataTransformerInterface
             trigger_error(sprintf('The injection of the %s is deprecated in %s.  Use only the options.', EntityManager::class, __CLASS__), E_USER_DEPRECATED);
         } else {
 	        $this->om = ProviderFactory::getEntityManager();
-	        $options = $om;
+	        $options = $om ?: [];
         }
 
 		$resolver = new OptionsResolver();
