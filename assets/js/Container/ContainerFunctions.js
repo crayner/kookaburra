@@ -75,12 +75,14 @@ export function buildState(forms,singleForm){
     return state
 }
 
-export function getParentForm(forms,form) {
-    let formNames = {}
-    Object.keys(forms).map(key => {
-        const child = forms[key]
-        formNames[child.name] = key
-    })
+export function getParentForm(forms,form,formNames) {
+    if (typeof formNames === 'undefined') {
+        formNames = {}
+        Object.keys(forms).map(key => {
+            const child = forms[key]
+            formNames[child.name] = key
+        })
+    }
     return forms[getParentFormName(formNames,form)]
 }
 
@@ -90,7 +92,7 @@ export function getParentFormName(formNames,form) {
 
 export function mergeParentForm(forms, name, form){
     forms[name] = {...form}
-    return forms
+    return {...forms}
 }
 
 export function replaceFormElement(form, element) {
@@ -124,6 +126,8 @@ export function replaceName(element, id) {
     element.name = element.name.replace('__name__', id)
     element.id = element.id.replace('__name__', id)
     element.full_name = element.full_name.replace('__name__', id)
+    if (typeof element.chained_child === 'string')
+        element.chained_child = element.chained_child.replace('__name__', id)
     if (typeof element.label === 'string')
         element.label = element.label.replace('__name__', id)
     return element
@@ -334,37 +338,38 @@ export function contentLoader(loader, contentManager) {
         })
 }
 
-export function checkChainedElements(forms)
+export function checkChainedElements(forms, formNames)
 {
     Object.keys(forms).map(key => {
-        forms[key] = checkChainedFormElement(forms[key], forms)
+        forms[key] = checkChainedFormElement(forms[key], forms, formNames)
     })
 
     return {...forms}
 }
 
-function checkChainedFormElement(form, forms)
+function checkChainedFormElement(form, forms, formNames)
 {
     if (typeof form.children !== 'undefined' && Object.keys(form.children).length > 0) {
         Object.keys(form.children).map(key => {
-            form.children[key] = checkChainedFormElement(form.children[key], forms)
+            form.children[key] = checkChainedFormElement(form.children[key], forms, formNames)
         })
     }
     if (form.type === 'choice') {
         if (typeof form.chained_child !== 'undefined' && form.chained_child !== null) {
-            forms = setChainedSelect(form, forms)
+            forms = setChainedSelect(form, forms, formNames)
         }
     }
 
     return {...form}
 }
 
-export function setChainedSelect(form, forms)
+export function setChainedSelect(form, forms, formNames)
 {
-    let parent = {...getParentForm({...forms}, form)}
-    const parentName = form.full_name.substring(0, form.full_name.indexOf('['))
-    let child = findElementById(parent, form.chained_child, {})
+    forms = {...forms}
+    let parent = {...getParentForm(forms, form, formNames)}
+    const parentName = getParentFormName(formNames,form)
 
+    let child = findElementById(parent, form.chained_child, {})
     const value = form.value
     let choices = form.chained_values[value]
     if (typeof choices !== 'object' || Object.keys(choices).length === 0 && parseInt(value) > 0) {
@@ -377,9 +382,9 @@ export function setChainedSelect(form, forms)
     } else {
         child.disabled = false
         child.choices = {...choices}
+        if (Object.keys(child.choices).length === 0)
+            child.disabled = true
     }
-
-    forms[parentName] = {...mergeParentForm(forms,parentName,child)}
-
+    forms = {...mergeParentForm(forms,parentName,parent)}
     return {...forms}
 }

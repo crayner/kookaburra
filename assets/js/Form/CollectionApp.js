@@ -40,6 +40,9 @@ export default function CollectionApp(props) {
     if (form.allow_add || form.allow_delete)
         columnCount++
 
+    if (typeof form.header_row !== 'boolean')
+        columnCount = Object.keys(form.header_row).length
+
     return (<CollectionRows form={form} functions={functions} columnCount={columnCount} key={form.collection_key} />)
 }
 

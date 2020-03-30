@@ -35,15 +35,15 @@ export default function FormSelect(props) {
     let buttons = []
     if (form.auto_refresh)  {
         buttons.push(<button type="button" title={functions.translate('Refresh List')} key={'refresh'}
-                             className="button -ml-px button-right" onClick={() => functions.refreshChoiceList(form)}><span className={'fas fa-sync fa-fw'} /></button>)
+                             className="close-button grey" onClick={() => functions.refreshChoiceList(form)}><span className={'fas fa-sync fa-fw'} /></button>)
         if (form.add_url !== null)
-            buttons.push(<button type="button" title={functions.translate('Add Element to List')} key={'add'} onClick={() => functions.addElementToChoice(form)}
-                                 className="button -ml-px button-right" style={{marginRight: '32px'}}><span className={'fas fa-plus fa-fw'} /></button>)
+            buttons.push(<a title={functions.translate('Add Element to List')} key={'add'} onClick={() => functions.addElementToChoice(form)}
+                                 className="add-button" style={{marginRight: '32px'}}><span className={'fas fa-plus fa-fw'} /></a>)
     }
 
     return (
         <div {...wrapper_attr}>
-            <select multiple={form.multiple} {...widget_attr} value={form.value}>
+            <select multiple={form.multiple} {...widget_attr} value={form.value} data-value={form.value}>
                 {options}
             </select>
             {buttons}

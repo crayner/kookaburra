@@ -98,7 +98,7 @@ export default class ContainerApp extends Component {
         }
         initialContentLoaders(this.contentLoaders, this.contentManager)
         let forms = checkHiddenRows({...this.state.forms})
-        forms = checkChainedElements(forms)
+        forms = checkChainedElements(forms, this.formNames)
         this.setMyState(forms, panelErrors)
     }
 
@@ -208,11 +208,12 @@ export default class ContainerApp extends Component {
 
     onElementChange(e, form) {
         const submitOnChange = form.submit_on_change
-        let parentForm = getParentForm(this.state.forms,form)
+        let forms = {...this.state.forms}
+        let parentForm = getParentForm(forms,form,this.formNames)
         const parentName = getParentFormName(this.formNames,form)
         if (form.type === 'toggle') {
             let value = form.value === 'Y' ? 'N' : 'Y'
-            this.setMyState(buildState(mergeParentForm(this.state.forms,parentName, changeFormValue(parentForm,form,value)), this.singleForm))
+            this.setMyState(buildState(mergeParentForm(forms,parentName, changeFormValue(parentForm,form,value)), this.singleForm))
             return
         }
         if (form.type === 'file') {
@@ -221,11 +222,11 @@ export default class ContainerApp extends Component {
             readFile.readAsDataURL(value)
             readFile.onerror = (e) => {
                 parentForm.errors.push({'class': 'error', 'message': this.functions.translations('A problem occurred loading the file.')})
-                this.setMyState(buildState(mergeParentForm(this.state.forms,parentName, changeFormValue(parentForm,form,value)), this.singleForm))
+                this.setMyState(buildState(mergeParentForm(forms,parentName, changeFormValue(parentForm,form,value)), this.singleForm))
             }
             readFile.onload = (e) => {
                 value = e.target.result
-                this.setMyState(buildState(mergeParentForm(this.state.forms,parentName, changeFormValue(parentForm,form,value))))
+                this.setMyState(buildState(mergeParentForm(forms,parentName, changeFormValue(parentForm,form,value))))
             }
             return
         }
@@ -241,9 +242,10 @@ export default class ContainerApp extends Component {
         }
         form.value = value
 
-        let forms = mergeParentForm(this.state.forms,parentName,changeFormValue({...parentForm},form,value))
+        forms = {...mergeParentForm({...forms},parentName,changeFormValue(parentForm,form,value))}
+
         if (form.type === 'choice' && form.chained_child !== null) {
-            forms = setChainedSelect(form,forms)
+            forms = setChainedSelect(form,forms,this.formNames)
         }
 
         this.setMyState(buildState(forms, this.singleForm))
@@ -293,7 +295,7 @@ export default class ContainerApp extends Component {
                     form.errors = errors
                     this.submit[parentName] = false
                     let forms = checkHiddenRows({...mergeParentForm(this.state.forms, parentName, {...form})})
-                    forms = checkChainedElements(forms)
+                    forms = checkChainedElements(forms, this.formNames)
                     this.setMyState(buildState(forms, this.singleForm), setPanelErrors({...form}, {}))
                 }
             }).catch(error => {
@@ -324,12 +326,18 @@ export default class ContainerApp extends Component {
                 }
             })
             if (fetch === false) return
+            const parentName = getParentFormName(this.formNames,element)
+            this.submit[parentName] = true
+            this.setState({
+                submit: true,
+            })
 
             fetchJson(route, [], false)
                 .then((data) => {
                     let errors = parentForm.errors
                     errors = errors.concat(data.errors)
                     parentForm.errors = errors
+                    this.submit[parentName] = false
                     if (data.status === 'success') {
                         this.setMyState(
                             buildState(mergeParentForm(this.state.forms,getParentFormName(this.formNames,element), parentForm), this.singleForm)
@@ -340,6 +348,7 @@ export default class ContainerApp extends Component {
                         )
                     }
                 }).catch(error => {
+                    this.submit[parentName] = false
                     parentForm = {...restoreForm}
                     let errors = parentForm.errors
                     errors.push({'class': 'error', 'message': error})
@@ -354,8 +363,9 @@ export default class ContainerApp extends Component {
     addElement(form) {
         const uuidv4 = require('uuid/v4')
         let id = uuidv4()
+        let forms = {...this.state.forms}
         let element = {...replaceName({...form.prototype}, id)}
-        let parentForm = {...getParentForm(this.state.forms,form)}
+        let parentForm = {...getParentForm(forms,form)}
         let parentFormName = getParentFormName(this.formNames,form)
         element.children.id.value = id
         if (typeof form.children === 'object'){
@@ -374,7 +384,9 @@ export default class ContainerApp extends Component {
 
         parentForm = {...replaceFormElement(parentForm, form)}
 
-        this.setMyState(buildState({...mergeParentForm(this.state.forms,parentFormName,parentForm)}, this.singleForm))
+        forms = {...mergeParentForm(forms,parentFormName,parentForm)}
+        forms = checkChainedElements(forms,this.formNames)
+        this.setMyState(buildState(forms, this.singleForm))
     }
 
     refreshChoiceList(form) {
