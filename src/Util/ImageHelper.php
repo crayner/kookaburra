@@ -18,9 +18,12 @@ namespace App\Util;
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\Photo;
+use Kookaburra\UserAdmin\Entity\Person;
+use Kookaburra\UserAdmin\Util\UserHelper;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class ImageHelper
@@ -199,11 +202,35 @@ class ImageHelper
 
     /**
      * getBackgroundImage
+     * @param string $default
      * @return string
      */
-    public static function getBackgroundImage(): string
+    public static function getBackgroundImage(string $default = '/build/static/backgroundPage.jpg'): string
     {
-        return self::getAbsoluteImageURL('File', '/themes/Default/img/backgroundPage.jpg');
+        if (strpos(self::$stack->getCurrentRequest()->get('_route'), 'install__') === 0 )
+            return self::getAbsoluteImageURL('File', $default);
+
+        $session = self::$stack->getCurrentRequest()->getSession();
+
+        if ($session->has('backgroundImage'))
+            return $session->get('backgroundImage');
+
+        $user = UserHelper::getCurrentUser();
+        if ($user instanceof Person && self::isFileInPublic($user->getPersonalBackground())) {
+            $file = self::getAbsoluteImageURL('File',$user->getPersonalBackground());
+            $session->set('backGroundImage', $file);
+            return $file;
+        }
+
+        $background = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationBackground');
+        if (self::isFileInPublic($background)) {
+            $background = self::getAbsoluteImageURL('File',$background);
+            $session->set('backgroundImage', $background);
+            return $background;
+        }
+
+        $session->set('backgroundImage', self::getAbsoluteImageURL('File', $default));
+        return $default;
     }
 
     /**
@@ -213,5 +240,20 @@ class ImageHelper
     public static function getLogoImage(): string
     {
         return self::getAbsoluteImageURL('File', '/themes/Default/img/logo.png');
+    }
+
+    /**
+     * @var RequestStack
+     */
+    private static $stack;
+
+    /**
+     * setStack
+     * @param RequestStack|null $stack
+     * @return mixed
+     */
+    public static function setStack(RequestStack $stack = null)
+    {
+        self::$stack = $stack;
     }
 }

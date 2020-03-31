@@ -16,9 +16,7 @@
 namespace App\Twig\Extension;
 
 use App\Entity\I18n;
-use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\Setting;
 use App\Exception\MissingClassException;
 use App\Manager\EntityInterface;
 use App\Manager\ScriptManager;
@@ -31,7 +29,6 @@ use App\Twig\Sidebar\Photo;
 use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\ImageHelper;
-use Kookaburra\UserAdmin\Util\UserHelper;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -131,6 +128,7 @@ class PageExtension extends AbstractExtension
         $this->scriptManager = $scriptManager;
         $this->format = $format;
         $this->minorLinks = $minorLinks;
+        ImageHelper::setStack($stack);
     }
 
     /**
@@ -342,32 +340,7 @@ class PageExtension extends AbstractExtension
      */
     public function getBackgroundImage(string $default = '/build/static/backgroundPage.jpg'): string
     {
-        if (strpos($this->stack->getCurrentRequest()->get('_route'), 'install__') === 0 )
-            return $default;
-        $public = realpath(__DIR__ . '/../../../public') . DIRECTORY_SEPARATOR;
-        $result = false;
-        if ($this->session->has('backgroundImage') && is_file($this->session->get('backgroundImage')))
-            return $this->session->get('backgroundImage');
-        $user = UserHelper::getCurrentUser();
-        if ($user instanceof Person && $user->getPersonalBackground()) {
-            $file = realpath(is_file($user->getPersonalBackground()) ? $user->getPersonalBackground() : (is_file($public.$user->getPersonalBackground()) ? $public.$user->getPersonalBackground() : null));
-            if (is_file($file)) {
-                $file = str_replace([$public, "\\"], ['', '/'], $file);
-                $this->session->set('backgroundImage', $file);
-                return $file;
-            }
-        }
-
-        $background = ProviderFactory::create(Setting::class)->getSettingByScopeAsString('System', 'organisationBackground');
-        $background = realpath(is_file($background) ? $background : (is_file($public.$background) ? $public.$background : null));
-        if (is_file($background)) {
-            $background = str_replace([$public, "\\"], ['', '/'], $background);
-            $this->session->set('backgroundImage', $background);
-            return $background;
-        }
-
-        $this->session->set('backgroundImage',  $default);
-        return  $default;
+        return ImageHelper::getBackgroundImage();
     }
 
     /**
