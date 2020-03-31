@@ -114,9 +114,9 @@ export default function PaginationContent(props) {
             }
         })
         if (row.actions.length > 0) {
-            columns.push(<td key={'actions'}>
+            columns.push(<td key={'actions'} className={'text-right'}>
                 <div
-                    className="group-hover:flex sm:flex">
+                    className="group-hover:flex sm:flex float-right">
                     {actions}
                 </div>
             </td>)
