@@ -18,6 +18,10 @@ namespace App\Session;
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
 use Symfony\Component\Security\Core\Exception\SessionUnavailableException;
 
+/**
+ * Class GibbonAttributeBag
+ * @package App\Session
+ */
 class GibbonAttributeBag implements AttributeBagInterface, \IteratorAggregate, \Countable
 {
     private $name = 'gibbon_attributes';

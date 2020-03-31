@@ -46,20 +46,19 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
     private $guid;
 
     /**
-     * @param SessionStorageInterface $storage A SessionStorageInterface instance
-     * @param AttributeBagInterface $attributes An AttributeBagInterface instance, (defaults null for default AttributeBag)
-     * @param FlashBagInterface $flashes A FlashBagInterface instance (defaults null for default FlashBag)
+     * GibbonSession constructor.
+     * @param SessionStorageInterface|null $storage
+     * @param AttributeBagInterface|null $attributes
      */
-    public function __construct(SessionStorageInterface $storage = null, AttributeBagInterface $attributes = null, FlashBagInterface $flashes = null)
+    public function __construct(SessionStorageInterface $storage = null, AttributeBagInterface $attributes = null)
     {
         $this->storage = $storage ?: new NativeSessionStorage();
 
         $attributes = $attributes ?: new GibbonAttributeBag($this->guid());
-        $flashes = $flashes ?: new FlashBag();
-
         $this->attributeName = $attributes->getName();
         $this->registerBag($attributes);
 
+        $flashes =new FlashBag();
         $this->flashName = $flashes->getName();
         $this->registerBag($flashes);
 
