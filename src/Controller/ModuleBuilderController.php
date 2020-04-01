@@ -17,8 +17,10 @@ namespace App\Controller;
 
 use App\Provider\ProviderFactory;
 use App\Util\StringHelper;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\SystemAdmin\Entity\NotificationEvent;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Finder\Finder;
@@ -142,10 +144,23 @@ class ModuleBuilderController extends AbstractController
     /**
      * Module Builder
      * @Route("/translation/install/", name="translation_install")
+     * @IsGranted("ROLE_SYSTEM_ADMIN")
+     */
+    public function translationsMerge()
+    {
+        foreach(ProviderFactory::getRepository(I18n::class)->findBy(['active' => 'Y']) as $i18n)
+            $this->translationBuild($i18n->getCode());
+        dd($this);
+    }
+
+    /**
+     * translationBuild
      * @param string $targetCode
      */
-    public function translationBuild(string $targetCode = 'fr_FR')
+    public function translationBuild(string $targetCode)
     {
+        if ($targetCode === 'en_GB')
+            return ;
         $gitHubURL = 'https://github.com/GibbonEdu/i18n/blob/master/'.$targetCode.'/LC_MESSAGES/gibbon.mo?raw=true';
         $content = file_get_contents($gitHubURL);
 
@@ -212,8 +227,7 @@ class ModuleBuilderController extends AbstractController
         foreach($bundles as $bundle) {
             unlink($bundle->getPathName());
         }
-
-        dd($bundles);
+        dump($targetCode);
     }
 
     /**

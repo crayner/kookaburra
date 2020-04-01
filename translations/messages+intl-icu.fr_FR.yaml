@@ -15,6 +15,7 @@ Add: Ajouter
 'Are you sure you want to delete this record?': 'Voulez-vous vraiment supprimer cet enregistrement ?'
 'This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!': 'Cette opération ne peut pas être annulée, et peut conduire à une perte de données vitales dans votre système. PROCEDEZ AVEC PRECAUTION !'
 'Yes': Oui
+'Roll Groups': 'Groupes de liste'
 Filter: Filtrer
 All: Tout
 Clear: Clair

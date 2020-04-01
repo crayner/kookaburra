@@ -1,0 +1,199 @@
+'Fast Finder': 'Fast Finder'
+Actions: 行動
+Classes: 班級
+Students: 學生
+Staff: 員工
+'Total Student Enrolment:': '總招生:'
+'Start typing a name...': 'Start typing a name...'
+Close: 關
+Action: 行動
+Class: 班
+Student: 學生
+'Your session is about to expire: you will be logged out shortly.': '你的會期很快有過期，短時間後會自動登出。'
+'Stay Connected': 'Stay Connected'
+Add: '增加'
+'Are you sure you want to delete this record?': '你確定你要刪除這個記錄嗎?'
+'This operation cannot be undone, and may lead to loss of vital data in your system. PROCEED WITH CAUTION!': '不能撤銷這個行動, 並可導致重要數據在系統中的損失. 慎重地繼續!'
+'Yes': 是
+'Roll Groups': 班級
+Filter: 過濾
+All: 全部
+Clear: Clear
+'Search for': 'Search for'
+'Filter Select': 'Filter Select'
+'There are no records to display.': 沒有要顯示的記錄
+'Loading Content...': 'Loading Content...'
+'Default filtering is enforced.': 'Default filtering is enforced.'
+'Close Message': 'Close Message'
+'Items rows can be dragged into the correct position.': 'Items rows can be dragged into the correct position.'
+'No': 否
+'Please select...': 請選擇...
+Loading: 載入中
+'School Admin': '學校'
+Logout: 登出
+Preferences: 設定
+Home: '主頁'
+Admin: 管理
+'System Admin': 系統管理員
+'Timetable Admin': 時間表管理員
+'User Admin': 用戶管理員
+Assess: 評估
+'Crowd Assessment': 群眾評估
+'Formal Assessment': 正式評估
+Markbook: 成績表
+Rubrics: 評分表
+Tracking: Tracking
+Learn: 學習
+Activities: 活動
+Departments: 部門
+'Individual Needs': 個人需要
+Planner: 計劃表
+Timetable: 時間表
+People: 人士
+Attendance: 出席表
+Behaviour: 行為
+'Data Updater': 更新資料
+Other: 其他
+Finance: 財經
+Messenger: 信息
+'Powered by': 搭載
+Kookaburra: Kookaburra
+'Created under the': 創建之下
+'from a fork of': 'from a fork of'
+'Errors on Tab': 'Errors on Tab'
+'All fields on all panels are saved together.': 'All fields on all panels are saved together.'
+'System Settings': 系統設置
+'Base URL': '基本網頁'
+'The address at which the whole system resides.': 整個系統的地址
+'Base Path': 基本路徑
+'The local FS path to the system': 本地進入系統的FS路線
+'System Name': 系統名稱
+'Index Page Text': '指數頁的正文'
+'Text displayed in system''s welcome page.': '在系統歡迎頁顯示的文字。'
+'Install Type': 安裝類型
+'The purpose of this installation of Kookaburra': 'The purpose of this installation of Kookaburra'
+Production: Production
+Testing: 測試
+Development: Development
+'* denotes a required field': '* denotes a required field'
+Submit: 提交
+'File Download': 'File Download'
+'Open Link': 'Open Link'
+Yes/No: Yes/No
+'File Delete': 'File Delete'
+'Let me ponder your request': 'Let me ponder your request'
+Delete: 刪除
+'Refresh List': 'Refresh List'
+'Add Element to List': 'Add Element to List'
+'The list has been refreshed.': 'The list has been refreshed.'
+'All / None': 'All / None'
+'Organisation Settings': 數據庫設置
+'Organisation Name': 組織名稱
+'Organisation Initials': 組織縮寫
+'Organisation Email': 組織電郵
+'General email address for the school': '學校的總電郵'
+Logo: 徽標
+'Relative path to site logo (400 x 100px)': '到網頁徽標(400 x 100px)的路徑。'
+Background: 背景
+'Relative path to background image. Overrides theme background.': 背景圖片的相對路徑。將替代主题的背景。
+'System Administrator': 系統管理員
+'The staff member who receives notifications for system events.': 會收到系統事件通知的工作人員。
+'Database Administrator': 數據庫管理員
+'The staff member who receives notifications for data events.': 會收到資料事件通知的工作人員。
+'Admissions Administrator': 'Admissions Administrator'
+'The staff member who receives notifications for admissions events.': 會收到申請事件通知的工作人員。
+'Human Resources Administrator': 'Human Resources Administrator'
+'The staff member who receives notifications for staffing events.': 'The staff member who receives notifications for staffing events.'
+'Security Settings': 保障設置
+'Password Policy': 密碼策略
+'Password - Minimum Length': 'Password - Minimum Length'
+'Minimum acceptable password length.': 最短可接受的密碼長度
+'Password - Alpha Requirement': 'Password - Alpha Requirement'
+'Require both upper and lower case alpha characters?': '需要要求大楷和小楷的字母?'
+'Password - Numeric Requirement': 'Password - Numeric Requirement'
+'Require at least one numeric character?': '需要要求最少一個數字?'
+'Password - Non-Alphanumeric Requirement': 'Password - Non-Alphanumeric Requirement'
+'Require at least one non-alphanumeric character (e.g. punctuation mark or space)?': '需要要求一個非字母或數字 (例如標點符號或間隙)?'
+Miscellaneous: '雜項'
+'Session Duration': 會期時間
+'Time, in seconds, before system logs a user out. Should be less than PHP''s session.gc_maxlifetime option.': '系統幫用戶登出前的秒鐘。應該少過PHP的 session.gc_maxlifetime 選項。'
+Localisation: 本土化
+Country: 國家
+'The country the school is located in': '學校位於的國家'
+'First Day Of The Week': 'First Day Of The Week'
+'On which day should the week begin?': 'On which day should the week begin?'
+Monday: 星期一
+Sunday: 星期日
+Timezone: 時區
+'The timezone where the school is located': '學校地點的時區'
+Currency: 貨幣
+'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.': 'System-wide currency for financial transactions. Support for online payment in this currency depends on your credit card gateway: please consult their support documentation.'
+'Link To Email': 電郵的連結
+'The link that points to the school/''s email system': '這鏈接指向學校的電郵系統。'
+'Link To Web': 網站的連結
+'The link that points to the school/''s website': '這鏈接指向學校的網頁。'
+'Pagination Count': '頁數'
+'Must be numeric. Number of records shown per page.': '一定要是數字。一頁中的紀錄數目。'
+Analytics: 分析
+'Javascript code to integrate statistics, such as Google Analytics': 審問資料的Javascript代碼，例如谷歌分析。
+'Default Assessment Scale': 'Default Assessment Scale'
+'This is the scale used as a default where assessment scales need to be selected.': 'This is the scale used as a default where assessment scales need to be selected.'
+'Please Select...': 'Please Select...'
+System: System
+Organisation: Organisation
+Security: Security
+' ': ' '
+'': ''
+UserAdmin: UserAdmin
+Library: 圖書館
+single: single
+organisation_website: organisation_website
+'Your session expired, so you were automatically logged out of the system.': '你的會期已過期，所以你自動登出。'
+'Login with Google': '使用 Google 登錄'
+'Sign in with Google': 'Sign in with Google'
+'School Year': 學年
+'System Default': 'System Default'
+Options: 選擇
+Login: 登錄
+'Username or email': 'Username or email'
+Password: 密碼
+'Forgot Password': 'Forgot Password'
+Welcome: 歡迎
+'Student Applications': 'Student Applications'
+'Parents of students interested in study at %1$s may use our %2$s online form%3$s to initiate the application process.': '學生的家長在 %1$s 的學習有興趣, 可以使用我們的 %2$s 的電子表格%3$s來啟動應用程序的過程. '
+'Staff Applications': 'Staff Applications'
+'Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.': 'Individuals interested in working at %1$s may use our %2$s online form%3$s to view job openings and begin the recruitment process.'
+'Join our learning community.': 'Join our learning community.'
+'It''s free': 'It''s free'
+Register: 登記
+'Theme {name} by {person}': 'Theme {name} by {person}'
+licence: licence
+'Form Groups': 'Form Groups'
+Installed: 已安裝
+Return: Return
+return:
+    error:
+        0: '你的請求失敗因為你無權執行此操作。'
+        1: '你的請求失敗了因為你的輸入無效'
+        2: '由於數據庫錯誤，你的要求失敗了.'
+        8: 'Your request failed because some values are still in use within the data.'
+        9: '最高的組織行動不能堅決。'
+        csrf: 'Invalid Cross Site Request Forgery Token.'
+    warning:
+        3: 'The request failed as the record has a deletion lock.'
+    error1: '你的請求失敗了因為你的輸入無效'
+    error2: '由於數據庫錯誤，你的要求失敗了.'
+    success0: "你的請求成功了完成。\t"
+    success:
+        - "你的請求成功了完成。\t"
+Notifications: 通知
+'Planner Settings': 計劃表設置
+'Activity Settings': 'Activity Settings'
+'Module Menu': 程式組件選單
+'Please feel free to %1$sbrowse our departmental information%2$s, to learn more about %3$s.': '要學多一點%3$s的資料，請到%1$s我們部門的資料頁%2$s。'
+'Learn With Us': 和我們一起學習
+'We are sharing some of our units of study with members of the public, so you can learn with us. Feel free to %1$sbrowse our public units%2$s.': '我們正在和公眾分享我們的一些單元，所以你可以和我們學習。 如果你想，可以%1$sb觀看我們的公眾單元%2$s.'
+Name: 名稱
+'Must be unique': '必須由獨特'
+Abbreviation: Abbreviation
+'New Activity Registration': 'New Activity Registration'
