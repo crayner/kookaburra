@@ -16,7 +16,7 @@
 namespace App\Twig\Extension;
 
 
-use App\Entity\I18n;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use App\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Symfony\Component\Intl\Currencies;

@@ -16,6 +16,7 @@
 namespace App\Manager;
 
 use App\Entity\Hook;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\Setting;
@@ -280,8 +281,8 @@ class LegacyManager
          * Sets the i18n locale for jQuery UI DatePicker (if the file exists, otherwise
          * falls back to en-GB)
          */
-        $localeCode = str_replace('_', '-', $session->get('i18n')['code']);
-        $localeCodeShort = substr($session->get('i18n')['code'], 0, 2);
+        $localeCode = str_replace('_', '-', $session->get('i18n')->getCode());
+        $localeCodeShort = substr($session->get('i18n')->getCode(), 0, 2);
         $localePath = $session->get('absolutePath').'/gibbon/jquery-ui/i18n/jquery.ui.datepicker-{oneString}.js';
 
         $datepickerLocale = 'en-GB';
@@ -291,17 +292,12 @@ class LegacyManager
             $datepickerLocale = $localeCodeShort;
         }
 
-        // Allow the URL to override system default from the i18l param
+        // Allow the URL to override system default from the i18n param
         if ($request->query->has('i18n') && $gibbon->locale->getLocale() != $request->query->get('i18n')) {
-            $data = ['code' => $request->query->get('i18n')];
-            $sql = "SELECT * FROM gibboni18n WHERE code=:code LIMIT 1";
-
-            if ($result = $pdo->selectOne($sql, $data)) {
-                setLanguageSession($guid, $result, false);
-                $gibbon->locale->setLocale($request->query->get('i18n'));
-                $gibbon->locale->setTextDomain($pdo);
-                $cacheLoad = true;
-            }
+            ProviderFactory::create(I18n::class)->setLanguageSession($session, ['code' => $request->query->get('i18n')], false);
+            $gibbon->locale->setLocale($request->query->get('i18n'));
+            $gibbon->locale->setTextDomain($pdo);
+            $cacheLoad = true;
         }
 
         /**
@@ -385,7 +381,7 @@ class LegacyManager
         ], ['weight' => -1]);
 
         // Add right-to-left stylesheet
-        if ($session->get('i18n')['rtl'] == 'Y') {
+        if ($session->get('i18n')->getRtl() == 'Y') {
             $page->theme->stylesheets->add('theme-rtl', '/themes/'.$session->get('gibbonThemeName', 'Default').'/css/main_rtl.css', ['weight' => 1]);
         }
 
@@ -537,8 +533,8 @@ class LegacyManager
             'sidebar'           => $showSidebar,
             'version'           => $gibbon->getVersion(),
             'versionName'       => 'v'.$gibbon->getVersion().($session->get('cuttingEdgeCode') == 'Y'? 'dev' : ''),
-            'rightToLeft'       => $session->get('i18n')['rtl'] == 'Y',
-            'locale'            => $session->get('i18n')['code'],
+            'rightToLeft'       => $session->get('i18n')->isRtl(),
+            'locale'            => $session->get('i18n')->getCode(),
             'wrapVersion'       => $gibbon->wrapVersion,
         ]);
         if ($isLoggedIn) {

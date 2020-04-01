@@ -16,11 +16,15 @@
 namespace App\Controller;
 
 use App\Provider\ProviderFactory;
+use App\Util\StringHelper;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\SystemAdmin\Entity\NotificationEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\Loader\MoFileLoader;
+use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -133,5 +137,124 @@ class ModuleBuilderController extends AbstractController
         file_put_contents($publicDir . '/' . $module->getName() . '.yaml', Yaml::dump($result, 8));
 
         dd(Yaml::dump($result, 8));
+    }
+
+    /**
+     * Module Builder
+     * @Route("/translation/install/", name="translation_install")
+     * @param string $targetCode
+     */
+    public function translationBuild(string $targetCode = 'fr_FR')
+    {
+        $gitHubURL = 'https://github.com/GibbonEdu/i18n/blob/master/'.$targetCode.'/LC_MESSAGES/gibbon.mo?raw=true';
+        $content = file_get_contents($gitHubURL);
+
+        $path = realpath('../translations') . '/messages.'.$targetCode.'.mo';
+        file_put_contents($path, $content);
+
+        $messagesPath = realpath('../translations') . '/messages+intl-icu.'.$targetCode.'.yaml';
+        $en = Yaml::parse(file_get_contents('../translations/messages+intl-icu.en_GB.yaml'));
+        if (!file_exists($messagesPath)) {
+            file_put_contents($messagesPath, Yaml::dump($en, 8));
+        }
+
+        $messagesPath = realpath($messagesPath);
+
+        $source = new MoFileLoader();
+
+        $catalogue = $source->load($path, $targetCode, 'messages');
+
+        $targetCatalogue = Yaml::parse(file_get_contents($messagesPath));
+
+        $targetCatalogue = array_merge($en, $targetCatalogue); // Add new translation string
+
+        foreach($targetCatalogue as $id=>$value)
+        {
+            if (is_string($value))
+                $targetCatalogue[$id] = $this->translateString($id, $value, $catalogue);
+
+            if (is_array($value))
+                $targetCatalogue[$id] = $this->translateArray($value, $catalogue);
+
+        }
+
+        file_put_contents($messagesPath, Yaml::dump($targetCatalogue, 8, 4));
+
+        $finder = new Finder();
+
+        $bundles = $finder->files()->in('../vendor/kookaburra/*/src/Resources/translations/')->name('*+intl-icu.en_GB.yaml')->depth(0);
+        foreach($bundles as $bundle) {
+
+            $en = Yaml::parse(file_get_contents($bundle->getPathName()));
+            $target = str_replace('en_GB', $targetCode, $bundle->getPathName());
+
+            if (!file_exists($target)) {
+                file_put_contents($target, Yaml::dump($en, 8, 4));
+                $targetCatalogue = $en;
+            } else
+                $targetCatalogue = array_merge(Yaml::parse(file_get_contents($target)), $en);
+
+            foreach($targetCatalogue as $id=>$value)
+            {
+                if (is_string($value))
+                    $targetCatalogue[$id] = $this->translateString($id, $value, $catalogue);
+
+                if (is_array($value))
+                    $targetCatalogue[$id] = $this->translateArray($value, $catalogue);
+
+            }
+
+            file_put_contents($target, Yaml::dump($targetCatalogue, 8, 4));
+        }
+
+        $finder = new Finder();
+        $bundles = $finder->files()->in('../translations/')->name(['*.mo', '*.po'])->depth(0);
+        foreach($bundles as $bundle) {
+            unlink($bundle->getPathName());
+        }
+
+        dd($bundles);
+    }
+
+    /**
+     * translateArray
+     * @param array $group
+     * @param MessageCatalogue $catalogue
+     * @return array
+     */
+    private function translateArray(array $group, MessageCatalogue $catalogue): array
+    {
+        foreach($group as $q=>$w)
+        {
+            if (is_array($w)) {
+                $group[$q] = $this->translateArray($w, $catalogue);
+            } else {
+                $group[$q] = $this->translateString(null,$w,$catalogue);
+            }
+        }
+        return $group;
+    }
+
+    /**
+     * translateString
+     * @param string $id
+     * @param string $value
+     * @param MessageCatalogue $catalogue
+     * @return string
+     */
+    private function translateString(?string $id, string $value, MessageCatalogue $catalogue): string
+    {
+        if ($id !== null) {
+            $translated = $catalogue->get($id, 'messages');
+            if ($translated !== $value) {
+                return $translated;
+            }
+        }
+        $translated = $catalogue->get($value, 'messages');
+        if ($translated !== $value)
+        {
+            return $translated;
+        }
+        return $value;
     }
 }

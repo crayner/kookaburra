@@ -30,4 +30,13 @@ class StringHelper
     {
         return strtolower(preg_replace('/[A-Z]/', '_\\0', lcfirst(preg_replace('/[^A-Za-z0-9:]/', '', $value))));
     }
+    /**
+     * toSnakeCase
+     * @param string $value
+     * @return string
+     */
+    public static function toCamelCase(string $value): string
+    {
+        return  str_replace(' ', '', ucwords(str_replace(['_', '-'], ' ', $value)));
+    }
 }

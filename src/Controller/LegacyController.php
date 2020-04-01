@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Hook;
-use App\Entity\I18n;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use App\Entity\Setting;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;

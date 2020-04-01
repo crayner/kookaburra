@@ -26,7 +26,7 @@ use Gibbon\Database\MySqlConnector;
 use Gibbon\Domain\System\Module;
 use Gibbon\Domain\System\Theme;
 use Gibbon\Services\ErrorHandler;
-use Gibbon\Services\Format;
+use App\Util\Format;
 use Gibbon\sqlConnection;
 use Gibbon\View\Page;
 use Symfony\Component\DependencyInjection\Container;

@@ -14,7 +14,7 @@
  */
 namespace App\Session;
 
-use App\Entity\I18n;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
 use App\Entity\Setting;
@@ -86,6 +86,12 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
      */
     public function get($name, $default = null)
     {
+        if (is_array($name))
+        {
+            trigger_error(sprintf('The session get must use a string.', implode(', ', $name)), E_USER_DEPRECATED);
+            $name = $name[0];
+        }
+
         switch ($name)
         {
             case 'guid':
@@ -394,7 +400,7 @@ class GibbonSession extends \Gibbon\Session implements SessionInterface, \Iterat
         // Language settings from i18n
         $results = ProviderFactory::getRepository(I18n::class)->findOneBySystemDefault('Y');
 
-        $this->set('i18n', $results->__toArray());
+        $this->set('i18n', $results);
     }
 
     /**

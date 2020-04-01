@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon;
 
+use Kookaburra\SystemAdmin\Manager\LocaleManager as Locale;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -101,10 +102,11 @@ class Core
             ini_set('display_errors', 0);
         }
 
-        $this->locale->setLocale($this->session->get(array('i18n', 'code')));
-        $this->locale->setTimezone($this->session->get('timezone', 'UTC'));
-        $this->locale->setTextDomain($db);
-        $this->locale->setStringReplacementList($db);
+        $this->locale->setLocale($this->session->get('i18n')->getCode());
+
+//        $this->locale->setTimezone($this->session->get('timezone', 'UTC'));
+//        $this->locale->setTextDomain($db);
+//        $this->locale->setStringReplacementList($db);
 
         $this->initialized = true;
     }

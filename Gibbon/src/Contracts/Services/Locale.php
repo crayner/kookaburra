@@ -32,7 +32,7 @@ interface Locale
      *
      * @param string $i18nCode
      */
-    public function setLocale($i18nCode);
+    public function setLocale(string $i18nCode = null);
 
     /**
      * Gets the current locale code.

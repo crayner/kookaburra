@@ -15,7 +15,7 @@
 
 namespace App\Controller;
 
-use App\Entity\I18n;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use App\Form\Entity\MySQLSettings;
 use App\Form\Installation\LanguageType;
 use App\Form\Installation\MySQLType;

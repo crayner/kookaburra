@@ -19,9 +19,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 namespace Gibbon\UI\Components;
 
+use App\Provider\ProviderFactory;
 use App\Util\UrlGeneratorHelper;
 use Gibbon\Contracts\Services\Session;
 use Gibbon\Contracts\Database\Connection;
+use Kookaburra\SystemAdmin\Entity\I18n;
 
 /**
  * Header View Composer
@@ -250,11 +252,12 @@ class Header
 
         $return = '';
         // Add a link to go back to the system/personal default language, if we're not using it
-        if (isset($_SESSION[$guid]['i18n']['default']['code']) && isset($_SESSION[$guid]['i18n']['code'])) {
-            if ($_SESSION[$guid]['i18n']['code'] != $_SESSION[$guid]['i18n']['default']['code']) {
-                $systemDefaultShortName = trim(strstr($_SESSION[$guid]['i18n']['default']['name'], '-', true));
-                $languageLink = "<a class='link-white' href='".$_SESSION[$guid]['absoluteURL']."?i18n=".$_SESSION[$guid]['i18n']['default']['code']."'>".$systemDefaultShortName.'</a>';
-            }
+        if (!$_SESSION[$guid]['i18n']->isDefaultLanguage()) {
+            $default = ProviderFactory::getRepository(I18n::class)->findOneBySystemDefault('Y');
+            if ($default === null)
+                $default = ProviderFactory::getRepository(I18n::class)->findOneByCode('en_GB');
+            $systemDefaultShortName = trim(strstr($default->getName(), '-', true));
+            $languageLink = "<a class='link-white' href='".$_SESSION[$guid]['absoluteURL']."?i18n=".$default->getCode()."'>".$systemDefaultShortName.'</a>';
         }
 
         if (isset($_SESSION[$guid]['username']) == false) {

@@ -15,7 +15,7 @@
 
 namespace App\Twig\Extension;
 
-use App\Entity\I18n;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Exception\MissingClassException;
 use App\Manager\EntityInterface;

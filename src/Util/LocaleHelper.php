@@ -12,7 +12,7 @@
  */
 namespace App\Util;
 
-use App\Entity\I18n;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Provider\I18nProvider;
 use App\Provider\ProviderFactory;
@@ -27,6 +27,7 @@ class LocaleHelper
      * @var string
      */
     private static $locale;
+
     /**
      * @var I18n|null
      */

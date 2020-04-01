@@ -15,7 +15,7 @@
 
 namespace App\Provider;
 
-use App\Entity\I18n;
+use Kookaburra\SystemAdmin\Entity\I18n;
 use Doctrine\Common\Collections\Collection;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Entity\Setting;

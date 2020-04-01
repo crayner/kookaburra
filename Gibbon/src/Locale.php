@@ -61,7 +61,7 @@ class Locale implements LocaleInterface
      *
      * @param   string $i18ncode
      */
-    public function setLocale($i18ncode)
+    public function setLocale(string $i18ncode = null)
     {
         // Cancel if there's no code set
         if (empty($i18ncode)) return;

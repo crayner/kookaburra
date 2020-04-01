@@ -61,7 +61,8 @@ class Format
 
         $session = $session ?: GlobalHelper::getSession();
 
-        $settings = $session->get('i18n');
+        $settings = [];
+        $settings['i18n'] = $session->get('i18n');
 
         $settings['absolutePath'] = $session->get('absolutePath');
         $settings['absoluteURL'] = $session->get('absoluteURL');
@@ -74,9 +75,7 @@ class Format
         $settings['nameFormatStaffFormal'] = $session->get('nameFormatStaffFormal');
         $settings['nameFormatStaffFormalReversed'] = $session->get('nameFormatStaffFormalReversed');
 
-
         self::$setup = true;
-        static::setup($settings);
     }
 
     /**
