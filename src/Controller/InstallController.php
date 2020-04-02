@@ -24,7 +24,7 @@ use App\Manager\InstallationManager;
 use App\Provider\ProviderFactory;
 use App\Twig\Sidebar\MySQLSettingWarning;
 use App\Twig\SidebarContent;
-use App\Util\LocaleHelper;
+use Kookaburra\SystemAdmin\Util\LocaleHelper;
 use App\Util\TranslationsHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Kookaburra\SystemAdmin\Form\Entity\SystemSettings;

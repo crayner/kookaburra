@@ -27,7 +27,7 @@ use App\Twig\SidebarContent;
 use App\Util\Format;
 use App\Util\GlobalHelper;
 use App\Util\ImageHelper;
-use App\Util\LocaleHelper;
+use Kookaburra\SystemAdmin\Util\LocaleHelper;
 use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
 use Kookaburra\SystemAdmin\Entity\Action;

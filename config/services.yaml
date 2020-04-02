@@ -47,12 +47,6 @@ services:
     Gibbon\Core:
         alias: config
 
-    locale:
-        class: Gibbon\Locale
-        arguments:
-            $absolutePath: '%kernel.project_dir%/Gibbon'
-        public: true
-
     page:
         class: Gibbon\View\Page
         arguments:

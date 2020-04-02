@@ -20,8 +20,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 namespace Gibbon\Services;
 
 use Gibbon\Core;
-use Gibbon\Domain\System\SettingGateway;
-use Gibbon\Locale;
 use Gibbon\Session;
 use Gibbon\View\View;
 use Gibbon\View\Page;
@@ -33,6 +31,7 @@ use Gibbon\Contracts\Comms\Mailer as MailerInterface;
 use Gibbon\Contracts\Comms\SMS as SMSInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
+use Kookaburra\SystemAdmin\Maager\LocaleManager as Locale;
 
 
 /**
