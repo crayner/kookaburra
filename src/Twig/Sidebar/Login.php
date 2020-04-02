@@ -16,7 +16,7 @@
 namespace App\Twig\Sidebar;
 
 use Kookaburra\SystemAdmin\Entity\I18n;
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;

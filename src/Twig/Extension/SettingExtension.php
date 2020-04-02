@@ -15,7 +15,7 @@
 
 namespace App\Twig\Extension;
 
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Entity\Person;
 use Twig\Extension\AbstractExtension;

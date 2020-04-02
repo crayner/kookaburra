@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Hook;
 use Kookaburra\SystemAdmin\Entity\I18n;
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Manager\GibbonManager;
 use App\Manager\LegacyManager;
 use App\Manager\PageManager;

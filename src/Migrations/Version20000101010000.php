@@ -428,7 +428,6 @@ final class Version20000101010000 extends AbstractMigration
         $this->addSql('DROP TABLE gibbonRubricColumn');
         $this->addSql('DROP TABLE gibbonRubricEntry');
         $this->addSql('DROP TABLE gibbonRubricRow');
-        $this->addSql('DROP TABLE gibbonSetting');
         $this->addSql('DROP TABLE gibbonFacility');
         $this->addSql('DROP TABLE gibbonFacilityPerson');
         $this->addSql('DROP TABLE gibbonStaff');

@@ -17,7 +17,7 @@ namespace App\Session;
 use Kookaburra\SystemAdmin\Entity\I18n;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\SchoolAdmin\Entity\AcademicYear;
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Gibbon\Contracts\Database\Connection;
 use Gibbon\Contracts\Services\Session;

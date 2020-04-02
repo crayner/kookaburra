@@ -15,7 +15,7 @@
 
 namespace App\Manager;
 
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Manager\Entity\PaginationRow;
 use App\Provider\ProviderFactory;
 use App\Util\StringHelper;

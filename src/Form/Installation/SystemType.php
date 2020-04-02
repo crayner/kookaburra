@@ -16,7 +16,7 @@
 namespace App\Form\Installation;
 
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Form\Type\EnumType;
 use App\Form\Type\HeaderType;
 use App\Provider\ProviderFactory;

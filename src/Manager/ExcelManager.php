@@ -15,7 +15,7 @@
 
 namespace App\Manager;
 
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\GlobalHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;

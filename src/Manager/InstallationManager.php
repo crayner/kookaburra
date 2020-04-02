@@ -24,7 +24,7 @@ use Kookaburra\Departments\Entity\DepartmentStaff;
 use Kookaburra\SystemAdmin\Manager\UpgradeManager;
 use Kookaburra\UserAdmin\Entity\Person;
 use Kookaburra\SystemAdmin\Entity\Role;
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Entity\Staff;
 use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Manager\SecurityUser;

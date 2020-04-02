@@ -15,7 +15,7 @@
 
 namespace App\Twig;
 
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Provider\ProviderFactory;
 use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;

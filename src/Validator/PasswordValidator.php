@@ -15,7 +15,7 @@
 
 namespace App\Validator;
 
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Provider\ProviderFactory;
 use Kookaburra\UserAdmin\Manager\SecurityUser;
 use Kookaburra\UserAdmin\Util\UserHelper;

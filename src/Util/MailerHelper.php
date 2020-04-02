@@ -15,7 +15,7 @@
 
 namespace App\Util;
 
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Provider\ProviderFactory;
 
 /**

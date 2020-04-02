@@ -19,7 +19,7 @@ use App\Entity\Hook;
 use Kookaburra\SystemAdmin\Entity\I18n;
 use Kookaburra\SystemAdmin\Entity\Module;
 use Kookaburra\UserAdmin\Entity\Person;
-use App\Entity\Setting;
+use Kookaburra\SystemAdmin\Entity\Setting;
 use App\Entity\StudentEnrolment;
 use App\Provider\ProviderFactory;
 use App\Twig\MainMenu;
