@@ -11,19 +11,31 @@ export default function SideBarContent(props) {
         content,
         sidebarContentAttr,
         functions,
-        height,
-        sidebarOpen
     } = props
 
-    let result = []
-    Object.keys(content).map(name => {
-        let item = content[name]
 
+    let sortedContent = {}
+    for(let i=1; i<100; i++) {
+        Object.keys(content).map(name => {
+            let item = content[name]
+            if (item.priority === i)
+                sortedContent[name] = item
+        })
+    }
+
+    let result = []
+    let counter = 0
+    Object.keys(sortedContent).map(name => {
+        let item = content[name]
+        counter++
         if (item.name === 'Login') {
             result.push(<Login login={item.login} googleOAuth={item.googleOAuth} translations={item.translations}
                                key={'Login'}/>)
         } else if (item.name === 'Module Menu') {
             result.push(<ModuleMenu data={item.data} getContent={functions.getContent} key={'Module Menu'} />)
+        } else if (item.name === 'Photo') {
+            if (item.exists)
+                result.push(<img src={item.url} title={item.title} className={item.className} style={{width: item.width + 'px'}} key={name + counter} />)
         } else if (item.name !== 'Module Menu' && item.content !== '') {
             let x = Parser(item.content)
             if (typeof x._owner === 'object') {
@@ -47,6 +59,4 @@ SideBarContent.propTypes = {
     content: PropTypes.object.isRequired,
     sidebarContentAttr: PropTypes.object.isRequired,
     functions: PropTypes.object.isRequired,
-    height: PropTypes.number.isRequired,
-    sidebarOpen: PropTypes.bool.isRequired,
 }

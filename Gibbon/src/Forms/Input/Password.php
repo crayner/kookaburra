@@ -62,6 +62,8 @@ class Password extends TextField
     /**
      * Adds a button to the field that uses JS to generate and insert a password into the form.
      * @param Form $form
+     * @param string $sourceField
+     * @param string $confirmField
      * @return self
      */
     public function addGeneratePasswordButton($form, $sourceField = 'passwordNew', $confirmField = 'passwordConfirm')

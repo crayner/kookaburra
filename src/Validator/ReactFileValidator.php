@@ -38,6 +38,7 @@ class ReactFileValidator extends FileValidator
         }
 
         $value = realpath($value) ?: realpath(__DIR__ . '/../../public' . $value) ?: '';
+        dump($value);
         parent::validate($value, $constraint);
     }
 }

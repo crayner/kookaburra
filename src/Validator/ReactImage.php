@@ -18,6 +18,11 @@ namespace App\Validator;
 
 use Symfony\Component\Validator\Constraints\Image;
 
+/**
+ * Class ReactImage
+ * @package App\Validator
+ * @Annotation
+ */
 class ReactImage extends Image
 {
 

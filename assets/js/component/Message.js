@@ -40,6 +40,9 @@ export default function Message(props) {
         )
     }
 
+    if (typeof message.errors !== 'undefined')
+        return null
+
     console.log('message.message is a ' + typeof message.message)
     console.log(message)
     return null

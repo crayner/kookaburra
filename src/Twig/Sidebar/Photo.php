@@ -18,6 +18,7 @@ namespace App\Twig\Sidebar;
 use App\Twig\SidebarContentInterface;
 use App\Twig\SidebarContentTrait;
 use App\Util\ImageHelper;
+use App\Util\TranslationsHelper;
 
 class Photo implements SidebarContentInterface
 {
@@ -87,16 +88,17 @@ class Photo implements SidebarContentInterface
      * render
      * @param array $options
      * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function render(array $options): string
     {
         if (method_exists($this->getEntity(), $this->getMethod()))
-            return $this->getTwig()->render('components/photo.html.twig', [
-                'photo' => $this,
-            ]);
+            try {
+                return $this->getTwig()->render('components/photo.html.twig', [
+                    'photo' => $this,
+                ]);
+            } catch (\Twig\Error\LoaderError | \Twig\Error\RuntimeError | \Twig\Error\SyntaxError $e) {
+                return '';
+            }
         return '';
     }
 
@@ -133,9 +135,9 @@ class Photo implements SidebarContentInterface
     }
 
     /**
-     * @return string
+     * @return string|bool|null
      */
-    public function getTransDomain(): string
+    public function getTransDomain()
     {
         return $this->transDomain;
     }
@@ -143,10 +145,10 @@ class Photo implements SidebarContentInterface
     /**
      * TransDomain.
      *
-     * @param string $transDomain
+     * @param string|boolean|null $transDomain
      * @return Photo
      */
-    public function setTransDomain(string $transDomain): Photo
+    public function setTransDomain($transDomain): Photo
     {
         $this->transDomain = $transDomain;
         return $this;
@@ -266,7 +268,13 @@ class Photo implements SidebarContentInterface
      */
     public function toArray(): array
     {
-        dd($this);
-        return [];
+        $method = $this->getMethod();
+        return [
+            'width' => $this->getWidth(),
+            'className' => $this->getClass(),
+            'title' => $this->getTransDomain() === false ? $this->getTitle() : TranslationsHelper::translate($this->getTitle(), [], $this->getTransDomain()),
+            'url' => ImageHelper::getAbsoluteImageURL('File',$this->getEntity()->$method()),
+            'exists' => $this->fileExists(),
+        ];
     }
 }

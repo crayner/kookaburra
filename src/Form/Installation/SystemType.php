@@ -22,7 +22,7 @@ use App\Form\Type\HeaderType;
 use App\Provider\ProviderFactory;
 use App\Validator\Directory;
 use App\Validator\Enum;
-use App\Validator\Password;
+use Kookaburra\UserAdmin\Validator\Password;
 use Kookaburra\SystemAdmin\Form\Entity\SystemSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

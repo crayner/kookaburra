@@ -24,6 +24,7 @@ use App\Twig\MainMenu;
 use App\Twig\MinorLinks;
 use App\Twig\PageHeader;
 use App\Twig\SidebarContent;
+use App\Util\ErrorMessageHelper;
 use App\Util\Format;
 use App\Util\GlobalHelper;
 use App\Util\ImageHelper;
@@ -87,6 +88,11 @@ class PageManager
     private $route;
 
     /**
+     * @var string|null
+     */
+    private $url;
+
+    /**
      * @var SidebarContent
      */
     private $sidebar;
@@ -125,6 +131,11 @@ class PageManager
      * @var PageHeader|null
      */
     private $pageHeader;
+
+    /**
+     * @var array
+     */
+    private $messages;
 
     /**
      * PageManager constructor.
@@ -219,7 +230,7 @@ class PageManager
     public function writeProperties(): array
     {
         $this->addTranslation('Loading');
-        return [
+        $result =  [
             'pageHeader' => $this->getPageHeader(),
             'locale' => $this->getLocale(),
             'rtl' => LocaleHelper::getRtl($this->getLocale()),
@@ -232,7 +243,9 @@ class PageManager
             'url' => UrlGeneratorHelper::getUrl($this->getRoute(), $this->getRequest()->get('_route_params') ?: []),
             'footer' => $this->getFooter(),
             'translations' => $this->getTranslations(),
+            'messages' => $this->getMessages(),
         ];
+        return $result;
     }
 
     /**
@@ -274,6 +287,16 @@ class PageManager
     }
 
     /**
+     * @return string|null
+     */
+    public function getUrl(): ?string
+    {
+        if (null === $this->url)
+            $this->url = $this->getRequest()->server->get('REQUEST_URI');
+        return $this->url;
+    }
+
+    /**
      * getFooter
      * @return array
      */
@@ -310,10 +333,11 @@ class PageManager
                 'containers' => [],
                 'messages' => [],
                 'title' => $this->getRoute() !== 'home' ? TranslationsHelper::translate($this->getAction()['name'], [], str_replace(' ', '', $this->getModule()['name'])) : '',
-                'url' => null,
+                'url' => $this->getUrl(),
             ]
         );
-        return new JsonResponse(array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()]));
+
+        return new JsonResponse(array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' =>$this->getMessages()]));
     }
 
     /**
@@ -540,6 +564,50 @@ class PageManager
     public function setPageHeader(?PageHeader $pageHeader): PageManager
     {
         $this->pageHeader = $pageHeader;
+        return $this;
+    }
+
+    /**
+     * getFlashMessages
+     * @return array
+     */
+    private function getFlashMessages(): array
+    {
+        $flashBag = $this->getSession()->getFlashBag();
+        $messages = [];
+        foreach($flashBag->All() as $status => $list) { // Read and clear
+            foreach ($list as $content) {
+                if (is_array($content)) {
+                    $messages[] = ['class' => $status, 'message' => TranslationsHelper::translate($content[0], $content[1], $content[2])];
+                } else
+                    $messages[] = ['class' => $status, 'message' => TranslationsHelper::translate($content, [], 'messages')];
+            }
+        }
+
+        $this->setMessages(array_merge($this->getMessages(false), $messages));
+        return $messages;
+    }
+
+    /**
+     * @param bool $getFlash
+     * @return array
+     */
+    public function getMessages(bool $getFlash = true): array
+    {
+        if ($getFlash)
+            $this->getFlashMessages();
+        return $this->messages ?: [];
+    }
+
+    /**
+     * Messages.
+     *
+     * @param array $messages
+     * @return PageManager
+     */
+    public function setMessages(array $messages): PageManager
+    {
+        $this->messages = $messages;
         return $this;
     }
 }

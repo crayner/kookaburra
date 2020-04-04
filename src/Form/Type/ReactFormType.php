@@ -252,6 +252,8 @@ class ReactFormType extends AbstractType
         }
         if (in_array($vars['type'], ['file'])) {
             $vars['delete_security'] = isset($view->vars['delete_security']) ? $view->vars['delete_security'] : false;
+            if (key_exists('photo', $view->vars))
+                $vars['photo'] = $view->vars['photo'];
         }
         if (in_array($vars['type'], ['repeated'])) {
             $vars['row_style'] = 'transparent';

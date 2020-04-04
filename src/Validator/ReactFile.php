@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\File;
 /**
  * Class ReactFile
  * @package App\Validator
+ * @Annotation
  */
 class ReactFile extends File
 {

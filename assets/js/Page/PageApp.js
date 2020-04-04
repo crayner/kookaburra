@@ -47,7 +47,7 @@ export default class PageApp extends Component {
             contentHeight: 0,
             title: this.action.name,
             pageHeader: props.pageHeader,
-            messages: []
+            messages: props.messages,
         }
     }
 
@@ -138,8 +138,8 @@ export default class PageApp extends Component {
         if (e.target.classList.contains('react-tabs__tab'))
             return
 
-        console.log(e.target)
-        console.log(e.target.tagName)
+//        console.log(e.target)
+//        console.log(e.target.tagName)
         this.setState({
             sidebarOpen: 'closed',
         });

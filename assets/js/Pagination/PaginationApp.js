@@ -26,7 +26,9 @@ export default class PaginationApp extends Component {
         this.contentLoader = props.contentLoader
         this.defaultFilter = props.row.defaultFilter
         this.initialFilter = props.initialFilter
+
         this.initialSearch = props.initialSearch
+
         this.addElementRoute = props.addElementRoute
         this.returnRoute = props.returnRoute
         this.draggableSort = props.draggableSort
@@ -135,7 +137,8 @@ export default class PaginationApp extends Component {
                     let result = this.paginateContent(this.content,0, this.pageMax)
                     this.row.emptyContent = this.messages['There are no records to display.']
                     this.setState({
-                        results: result
+                        results: result,
+                        filteredContent: this.content
                     })
                 } else {
                     this.setState({
@@ -180,7 +183,6 @@ export default class PaginationApp extends Component {
     }
 
     deleteItem(path) {
-        console.log(path)
         this.setState({
             confirm: false
         })
@@ -330,17 +332,16 @@ export default class PaginationApp extends Component {
 
     buildPageSizeControls() {
         let control = []
-
         if (this.state.filteredContent.length > 10) {
-            control.push(<a key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>10</a>)
-            control.push(<a key={'25'} onClick={() => this.adjustPageSize(25)} className={(this.state.pageMax === 25 ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>,25</a>)
+            control.push(<a key={'10'} onClick={() => this.adjustPageSize(10)} className={(this.state.pageMax === 10 ? 'text-blue-600 pointer-hover font-bold' : 'text-gray-600 pointer-hover')}>10</a>)
+            control.push(<a key={'25'} onClick={() => this.adjustPageSize(25)} className={(this.state.pageMax === 25 ? 'text-blue-600 pointer-hover font-bold' : 'text-gray-600 pointer-hover')}>,25</a>)
         }
         if (this.state.filteredContent.length > 25)
-            control.push(<a key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>,50</a>)
+            control.push(<a key={'50'} onClick={() => this.adjustPageSize(50)} className={(this.state.pageMax === 50 ? 'text-blue-600 pointer-hover font-bold' : 'text-gray-600 pointer-hover')}>,50</a>)
         if (this.state.filteredContent.length > 50)
-            control.push(<a key={'100'} onClick={() => this.adjustPageSize(100)} className={(this.state.pageMax === 100 ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>,100</a>)
+            control.push(<a key={'100'} onClick={() => this.adjustPageSize(100)} className={(this.state.pageMax === 100 ? 'text-blue-600 pointer-hover font-bold' : 'text-gray-600 pointer-hover')}>,100</a>)
         if (this.state.filteredContent.length > 100)
-            control.push(<a key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600 pointer-hover' : 'text-gray-600 pointer-hover')}>,{this.messages['All']}</a>)
+            control.push(<a key={'All'} onClick={() => this.adjustPageSize('All')} className={(this.state.pageMax === this.state.filteredContent.length ? 'text-blue-600 pointer-hover font-bold' : 'text-gray-600 pointer-hover')}>,{this.messages['All']}</a>)
 
         return control
     }
@@ -356,15 +357,15 @@ export default class PaginationApp extends Component {
             if (this.state.offset > 0) {
                 control.push(<a key={'first'} onClick={() => this.firstPage()}
                                 title={this.row.firstPage}><span
-                    className={'text-gray-600 fas fa-angle-double-left fa-fw pointer-hover pt-1 pb-2 pl-1 hover:text-blue-600'}/></a>)
+                    className={'float-left text-gray-600 fas fa-angle-double-left fa-fw pointer-hover pt-1 pb-2 pr-1 hover:text-blue-600'}/></a>)
             }
 
             if (this.state.filteredContent.length > this.state.pageMax && this.state.offset > 0) {
                 control.push(<a key={'prev'} onClick={() => this.prevPage()} title={this.row.prevPage}><span
-                    className={'text-gray-600 fas fa-angle-left fa-fw pointer-hover pt-1 pb-2 pl-1 hover:text-blue-600'}/></a>)
+                    className={'float-left text-gray-600 fas fa-angle-left fa-fw pointer-hover pt-1 pb-2 pr-1 hover:text-blue-600'}/></a>)
             }
 
-            control.push(<div className={'float-left pt-1 pb-2 pr-2'} key={'content'}>{content}</div>)
+            control.push(<div className={'float-left pt-1 pb-2 pr-2 pl-2 font-bold'} key={'content'}>{content}</div>)
 
             if (this.state.filteredContent.length > this.state.pageMax && this.state.pageMax + this.state.offset < this.state.filteredContent.length) {
                 control.push(<a key={'next'} onClick={() => this.nextPage()} title={this.row.nextPage}><span
@@ -404,7 +405,11 @@ export default class PaginationApp extends Component {
                 this.row.columns.map(column => {
                     if (column.search) {
                         column.contentKey.map(key => {
-                            if (!selected && typeof value[key] !== 'undefined' && value[key].toLowerCase().includes(search)) {
+                            if (!selected && typeof value[key] === 'string' && value[key].toLowerCase().includes(search)) {
+                                selected = true
+                                filtered.push(value)
+                            }
+                            if (!selected && typeof value[key] === 'number' && ('' + value[key]).toLowerCase().includes(search)) {
                                 selected = true
                                 filtered.push(value)
                             }

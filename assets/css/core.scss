@@ -229,6 +229,9 @@ select {
     -webkit-border-radius: 0;
     border-radius: 0;
 }
+select[multiple] {
+    height: auto;
+}
 
 input[type="button"] {
     border: 1px solid #222222;

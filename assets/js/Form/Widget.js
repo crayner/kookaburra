@@ -135,13 +135,33 @@ export default function Widget(props) {
         if (isEmpty(form.value)) {
             button_attr.disabled = true
         }
+        if (typeof form.photo === 'object' && form.photo.exists) {
+            let item = form.photo
 
+            return (
+                <div className={'flex-1'}>
+                    <div className={'float-left text-center'}>
+                        <img src={item.url} title={item.title} className={item.className} key={'photo'} />
+                        <div className={'w-2/3 float-right'}>
+                            <input {...widget_attr} />
+                            <div className={'button-right'}>
+                                <button type={'button'} title={functions.translate('File Download')} className={'button'} {...button_attr} onClick={() => functions.downloadFile(form)}><span className={'fa-fw fas fa-file-download'}></span></button>
+                                <button type={'button'} title={functions.translate('File Delete')} className={'button'} {...button_attr} onClick={() => functions.deleteFile(form)}><span className={'fa-fw fas fa-trash'}></span></button>
+                            </div>
+                            {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
+                        </div>
+                    </div>
+                </div>
+
+            )
+
+        }
         return (
             <div {...wrapper_attr}>
                 <input {...widget_attr} />
                 <div className={'button-right'}>
-                <button type={'button'} title={functions.translate('File Download')} className={'button'} {...button_attr} onClick={() => functions.downloadFile(form)}><span className={'fa-fw fas fa-file-download'}></span></button>
-                <button type={'button'} title={functions.translate('File Delete')} className={'button'} {...button_attr} onClick={() => functions.deleteFile(form)}><span className={'fa-fw fas fa-trash'}></span></button>
+                    <button type={'button'} title={functions.translate('File Download')} className={'button'} {...button_attr} onClick={() => functions.downloadFile(form)}><span className={'fa-fw fas fa-file-download'}></span></button>
+                    <button type={'button'} title={functions.translate('File Delete')} className={'button'} {...button_attr} onClick={() => functions.deleteFile(form)}><span className={'fa-fw fas fa-trash'}></span></button>
                 </div>
                 {form.errors.length > 0 ? <ul>{errors}</ul> : ''}
             </div>

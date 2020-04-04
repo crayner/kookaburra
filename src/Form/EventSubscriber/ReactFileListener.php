@@ -165,11 +165,13 @@ class ReactFileListener implements EventSubscriberInterface
     /**
      * getValueFromContent
      * @param FormInterface $form
-     * @param array $content
+     * @param array|null $content
      * @return mixed
      */
-    public function getValueFromContent(FormInterface $form, array $content)
+    public function getValueFromContent(FormInterface $form, ?array $content)
     {
+        if (null === $content)
+            return $content;
         foreach($this->getParentNames($form) as $q=>$name) {
             if ($q === 0)
                 $content = $this->getContentValue($name, $content);
