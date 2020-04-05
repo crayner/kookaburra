@@ -71,7 +71,7 @@ class PaginationAction
      */
     public function __construct()
     {
-        $this->setAClass('');
+        $this->setAClass('thickbox p-3 sm:p-0');
     }
 
     /**
