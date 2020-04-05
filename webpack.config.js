@@ -27,7 +27,7 @@ Encore
 //    .addEntry('default', './assets/themes/default/default.js')
     .addEntry('container','./assets/js/container.js')
     .addEntry('pagination','./assets/js/pagination.js')
-//    .addEntry('photoLoader','./assets/js/photoLoader.js')
+    .addEntry('photoLoader','./assets/js/photoLoader.js')
     .addStyleEntry('css/core', './assets/css/core.scss')
     .addStyleEntry('css/fastFinder', './assets/css/fastFinder/fastFinder.css')
     .splitEntryChunks()

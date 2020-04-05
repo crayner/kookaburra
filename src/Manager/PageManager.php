@@ -329,15 +329,34 @@ class PageManager
                 'content' => '',
                 'pagination' => [],
                 'breadCrumbs' => [],
+                'special' => [],
                 'sidebar' => [],
                 'containers' => [],
                 'messages' => [],
-                'title' => $this->getRoute() !== 'home' ? TranslationsHelper::translate($this->getAction()['name'], [], str_replace(' ', '', $this->getModule()['name'])) : '',
+                'title' => $this->getTitle(),
                 'url' => $this->getUrl(),
             ]
         );
 
-        return new JsonResponse(array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' =>$this->getMessages()]));
+        return new JsonResponse(array_merge($resolver->resolve($options), $this->getSidebar()->toArray(), $this->getBreadCrumbs(), ['pageHeader' => $this->getPageHeader()], ['messages' => $this->getMessages()]));
+    }
+
+    /**
+     * getTitle
+     * @return string|null
+     */
+    private function getTitle()
+    {
+        if ($this->getRoute() === 'home')
+            return '';
+
+        $title = $this->getAction()['name'];
+        if (mb_strpos($title, '_'))
+        {
+            $title = mb_substr($title, 0, mb_strpos($title, '_') - 1);
+        }
+
+        return TranslationsHelper::translate($title, [], str_replace(' ', '', $this->getModule()['name']));
     }
 
     /**
