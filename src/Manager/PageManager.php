@@ -353,7 +353,7 @@ class PageManager
         $title = $this->getAction()['name'];
         if (mb_strpos($title, '_'))
         {
-            $title = mb_substr($title, 0, mb_strpos($title, '_') - 1);
+            $title = mb_substr($title, 0, mb_strpos($title, '_'));
         }
 
         return TranslationsHelper::translate($title, [], str_replace(' ', '', $this->getModule()['name']));

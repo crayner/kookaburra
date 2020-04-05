@@ -7,6 +7,7 @@ import PaginationApp from "../Pagination/PaginationApp"
 import ContainerApp from "../Container/ContainerApp"
 import Messages from "../component/Messages"
 import PageHeader from "./PageHeader"
+import SpecialApp from "../Special/SpecialApp"
 
 export default function Content(props) {
     const {
@@ -20,7 +21,8 @@ export default function Content(props) {
         containers,
         breadCrumbs,
         messages,
-        pageHeader
+        pageHeader,
+        special
     } = props
 
     const state = contentState({
@@ -71,6 +73,10 @@ export default function Content(props) {
 
         if (Object.keys(pagination).length > 0) {
             x.push(<PaginationApp {...pagination} functions={functions} key={pagination.name} />)
+        }
+
+        if (Object.keys(special).length > 0) {
+            x.push(<SpecialApp {...special} functions={functions} key={special.name} />)
         }
 
         if (Object.keys(containers).length > 0) {
@@ -163,6 +169,10 @@ Content.propTypes = {
         PropTypes.object,
         PropTypes.array,
     ]).isRequired,
+    special: PropTypes.oneOfType([
+        PropTypes.object,
+        PropTypes.array,
+    ]).isRequired,
     pageHeader: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.array,
@@ -172,6 +182,7 @@ Content.propTypes = {
 Content.defaultProps = {
     action: {},
     pagination: {},
+    special: {},
     containers: {},
     content: [],
     pageHeader: null,

@@ -55,8 +55,10 @@ export default function RenderPeople(props) {
                 remove()
             } else if (status === 'error_validation') {
                 let message = ''
-                if (meta.height > 480 || meta.width > 360)
+                if (meta.height > 480 || meta.width > 360 )
                     message = messages['error_height_width'].replace('{height}', meta.height).replace('{width}', meta.width)
+                if (meta.height < 320 || meta.width < 240)
+                    message = messages['error_height_width_minimum'].replace('{height}', meta.height).replace('{width}', meta.width)
                 const ratio = meta.width / meta.height
                 if ((ratio < 0.7 || ratio > 0.84) && message === '')
                     message = messages['error_ratio'].replace('{ratio}', ratio.toFixed(2))
@@ -67,7 +69,7 @@ export default function RenderPeople(props) {
 
         const dropFilesHere = (meta) => {
             return (<div style={{width: '100%', height: '100%', textAlign: 'center', verticalAlign: 'middle', position: 'relative'}}>
-                <span style={{position: 'absolute', margin: 0, top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.8rem'}}>{meta.extra.reject ? messages['Images [.jpg, .png, .jpeg] only'] : messages['Drop Image Here']}</span>
+                <span style={{position: 'absolute', margin: 0, top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.8rem'}}>{meta.extra.reject ? messages['Images [.jpg, .png, .jpeg, .gif] only'] : messages['Drop Image Here']}</span>
             </div>)
         }
 
@@ -80,7 +82,7 @@ export default function RenderPeople(props) {
                 canCancel={false}
                 maxSizeBytes={350000}
                 validate={validateImage}
-                accept="image/jpeg,image/png"
+                acceptedFiles="image/jpeg,image/png,image/jpg,image/gif"
                 InputComponent={dropFilesHere}
                 styles={{
                     dropzone: {height: 120, border: '1px solid gray'},
@@ -98,30 +100,30 @@ export default function RenderPeople(props) {
     return (
         <table className="noIntBorder fullWidth relative">
             <tbody>
-            <tr className="flex flex-col sm:flex-row justify-between content-center p-0">
-                <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0  px-2 border-b-0 sm:border-b border-t-0 ">
-                    <label htmlFor={'people_drop'} className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Target Person']}<br/><span className={'text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0'}>{messages['target_person_help']}</span></label>
-                </td>
-                <td className="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 ">
-                    <div className="flex-1 relative">
-                        <select className={'w-full left'} id={'people_drop'} value={chosen.id} onChange={(e) => selectPerson(e)}>{optGroups}</select>
-                    </div>
-                </td>
-            </tr>
-            {chosen.id > 0 ?
-            <tr id="" className=" flex flex-col sm:flex-row justify-between content-center p-0">
-                <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0  px-2 border-b-0 sm:border-b border-t-0 ">
-                    <label className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Replace this image']}<br/><span style={{fontWeight: 'normal'}}>{chosen.name}</span>
-                        <button type={'button'} className={'close-button grey'} title={messages['Remove Photo']} onClick={() => removePhoto(chosen)} style={{float: 'right', marginTop: '-19px'}} >
-                            <span className={'fas fa-eraser fa-fw'} />
-                        </button>
-                        <img src={chosen.photo} title={chosen.name} className={'user max100 right'} style={{float: 'right', marginTop: '-19px'}} />
-                    </label>
-                </td>
-                <td className="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 right">
-                     <SingleFileAutoSubmit />
-                </td>
-            </tr> : ''}
+                <tr className="flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0  px-2 border-b-0 sm:border-b border-t-0 ">
+                        <label htmlFor={'people_drop'} className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Target Person']}<br/><span className={'text-xxs text-gray-600 italic font-normal mt-1 sm:mt-0'}>{messages['target_person_help']}</span></label>
+                    </td>
+                    <td className="w-full max-w-full sm:max-w-xs flex justify-end items-center px-2 border-b-0 sm:border-b border-t-0 ">
+                        <div className="flex-1 relative">
+                            <select className={'w-full left'} id={'people_drop'} value={chosen.id} onChange={(e) => selectPerson(e)}>{optGroups}</select>
+                        </div>
+                    </td>
+                </tr>
+                {chosen.id > 0 ?
+                <tr className="flex flex-col sm:flex-row justify-between content-center p-0">
+                    <td className="flex flex-col flex-grow justify-center -mb-1 sm:mb-0  px-2 border-b-0 sm:border-b border-t-0 ">
+                        <label className={'inline-block mt-4 sm:my-1 sm:max-w-xs font-bold text-sm sm:text-xs'}>{messages['Replace this image']}<br/><span style={{fontWeight: 'normal'}}>{chosen.name}</span>
+                            <button type={'button'} className={'close-button grey'} title={messages['Remove Photo']} onClick={() => removePhoto(chosen)} style={{float: 'right', marginTop: '-19px'}} >
+                                <span className={'fas fa-eraser fa-fw'} />
+                            </button>
+                            <img src={chosen.photo} title={chosen.name} className={'user max100 right'} style={{float: 'right', marginTop: '-19px'}} />
+                        </label>
+                    </td>
+                    <td className="flex-grow justify-center px-2 border-b-0 sm:border-b border-t-0 right">
+                         <SingleFileAutoSubmit />
+                    </td>
+                </tr> : null}
             </tbody>
         </table>
     )

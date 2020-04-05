@@ -41,6 +41,7 @@ export default class PageApp extends Component {
         this.state = {
             contentWidth: 0,
             content: [],
+            special: {},
             sidebar: {},
             breadCrumbs: {},
             sidebarOpen: '',
@@ -174,6 +175,7 @@ export default class PageApp extends Component {
             content: content,
             pagination: {},
             containers: {},
+            special: {},
         })
         fetchJson(
             url,
@@ -186,6 +188,7 @@ export default class PageApp extends Component {
                 sidebar: data.sidebar,
                 breadCrumbs: data.breadCrumbs,
                 containers: data.containers,
+                special: data.special,
                 title: data.title,
                 messages: this.state.messages.concat(data.messages),
                 pageHeader: data.pageHeader

@@ -23,6 +23,7 @@ export default class PhotoLoaderApp extends Component {
             chosen: {},
             messages: [],
         }
+        console.log(this)
     }
 
     addMessage(message, status)
@@ -119,13 +120,25 @@ export default class PhotoLoaderApp extends Component {
         let x = 0
         const messages = this.state.messages.map(message => {
             x = x + 1
-            return <div className={message.status} key={x}>{message.message}</div>
+            return (<div className={message.status} key={x}>{message.message}</div>)
         })
 
         return (
             <div>
                 {messages}
                 <RenderPeople people={this.people} chosen={this.state.chosen} selectPerson={this.selectPerson} addMessage={this.addMessage} validateImage={this.validateImage} replacePerson={this.replacePerson} removePhoto={this.removePhoto} messages={this.messages} absolute_url={this.absolute_url} />
+                <h3>{this.messages['Import Images']}</h3>
+                <div className="info clear-both">
+                    <h4 className="info">{this.messages['Notes']}</h4>
+                    <p>{this.messages['drag_drop_page']}</p>
+                    <ol>
+                        <li>{this.messages['File Name - The system modifies the filename when linked to the correct person.']}</li>
+                        <li>{this.messages['File Type * - Images must be formatted as JPG or PNG.']}</li>
+                        <li>{this.messages['Image Size * - Displayed at 240px by 320px.']}</li>
+                        <li>{this.messages['Size Range * - Accepts images up to 360px by 480px.']}</li>
+                        <li>{this.messages['Aspect Ratio Range * - Accepts aspect ratio between 0.7:1 and 0.84:1.']}</li>
+                    </ol>
+                </div>
             </div>
         )
     }
