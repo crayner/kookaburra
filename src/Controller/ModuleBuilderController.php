@@ -193,6 +193,10 @@ class ModuleBuilderController extends AbstractController
 
         }
 
+        $diff = array_diff_key($targetCatalogue, $en);
+        foreach($diff as $key=>$value)
+            unset($targetCatalogue[$key]);
+
         file_put_contents($messagesPath, Yaml::dump($targetCatalogue, 8, 4));
 
         $finder = new Finder();
@@ -207,7 +211,7 @@ class ModuleBuilderController extends AbstractController
                 file_put_contents($target, Yaml::dump($en, 8, 4));
                 $targetCatalogue = $en;
             } else
-                $targetCatalogue = array_merge(Yaml::parse(file_get_contents($target)), $en);
+                $targetCatalogue = array_merge($en, Yaml::parse(file_get_contents($target)));
 
             foreach($targetCatalogue as $id=>$value)
             {
@@ -218,6 +222,10 @@ class ModuleBuilderController extends AbstractController
                     $targetCatalogue[$id] = $this->translateArray($value, $catalogue);
 
             }
+
+            $diff = array_diff_key($targetCatalogue, $en);
+            foreach($diff as $key=>$value)
+                unset($targetCatalogue[$key]);
 
             file_put_contents($target, Yaml::dump($targetCatalogue, 8, 4));
         }

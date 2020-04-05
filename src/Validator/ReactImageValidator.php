@@ -34,7 +34,6 @@ class ReactImageValidator extends ImageValidator
             return;
 
         $value = realpath($value) ?: realpath(__DIR__ . '/../../public' . $value) ?: '';
-        dump($value);
         parent::validate($value, $constraint);
     }
 }
