@@ -533,7 +533,7 @@ abstract class AbstractPaginationManager implements PaginationInterface
      * @param bool $draggableSort
      * @return AbstractPaginationManager
      */
-    public function setDraggableSort(bool $draggableSort): AbstractPaginationManager
+    public function setDraggableSort(bool $draggableSort = true): AbstractPaginationManager
     {
         $this->draggableSort = $draggableSort;
         return $this;

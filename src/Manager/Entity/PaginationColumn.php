@@ -265,7 +265,7 @@ class PaginationColumn
      * @param bool $dataOnly
      * @return PaginationColumn
      */
-    public function setDataOnly(bool $dataOnly): PaginationColumn
+    public function setDataOnly(bool $dataOnly = true): PaginationColumn
     {
         $this->dataOnly = $dataOnly;
         return $this;

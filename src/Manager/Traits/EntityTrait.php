@@ -495,18 +495,18 @@ trait EntityTrait
         try {
             $this->getEntityManager()->persist($entity);
             if ($flush) $this->getEntityManager()->flush();
-            $data['errors'][] = ['class' => 'success', 'message' => TranslationsHelper::translate('return.success.0', [], 'messages')];
-        } catch (\PDOException | PDOException $e) {
-            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
-            $data['status'] = 'error';
+            $data = ErrorMessageHelper::getSuccessMessage($data, true);
         } catch (NotNullConstraintViolationException $e) {
-            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
-            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
-            $data['status'] = 'error';
+            $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
         } catch (UniqueConstraintViolationException $e) {
-            $data['errors'][] = ['class' => 'error', 'message' => TranslationsHelper::translate('return.error.2', [], 'messages')];
-            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage()];
-            $data['status'] = 'error';
+            $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
+        } catch (\PDOException | PDOException $e) {
+            $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+        } catch (\Exception $e) {
+            $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
+            $data['errors'][] = ['class' => 'error', 'message' => $e->getMessage() . ' ' . get_class($e)];
         }
         return $data;
     }
