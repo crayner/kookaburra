@@ -409,8 +409,9 @@ export default class ContainerApp extends Component {
         )
     }
 
-    addElementToChoice(form) {
-        openUrl(form.add_url)
+    addElementToChoice(e,url) {
+        e.preventDefault()
+        openUrl(url)
     }
 
     removeSimpleArrayValue(form,parent)

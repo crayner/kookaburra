@@ -138,6 +138,11 @@ class PageManager
     private $messages;
 
     /**
+     * @var bool
+     */
+    private $popup = false;
+
+    /**
      * PageManager constructor.
      * @param RequestStack $stack
      * @param MinorLinks $minorLinks
@@ -230,8 +235,10 @@ class PageManager
     public function writeProperties(): array
     {
         $this->addTranslation('Loading');
+        $this->addTranslation('Close');
         $result =  [
             'pageHeader' => $this->getPageHeader(),
+            'popup' => $this->isPopup(),
             'locale' => $this->getLocale(),
             'rtl' => LocaleHelper::getRtl($this->getLocale()),
             'bodyImage' => ImageHelper::getBackgroundImage(),
@@ -335,6 +342,7 @@ class PageManager
                 'messages' => [],
                 'title' => $this->getTitle(),
                 'url' => $this->getUrl(),
+                'popup' => $this->isPopup(),
             ]
         );
 
@@ -539,7 +547,7 @@ class PageManager
                 ]
             );
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
-            $content = '<h1>Failed!</h1>';
+            $content = '<h1>Failed!</h1><p>'.$e->getMessage().'</p>';
         }
         return new Response($content);
     }
@@ -627,6 +635,26 @@ class PageManager
     public function setMessages(array $messages): PageManager
     {
         $this->messages = $messages;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPopup(): bool
+    {
+        return $this->popup;
+    }
+
+    /**
+     * Popup.
+     *
+     * @param bool $popup
+     * @return PageManager
+     */
+    public function setPopup(bool $popup): PageManager
+    {
+        $this->popup = $popup;
         return $this;
     }
 }

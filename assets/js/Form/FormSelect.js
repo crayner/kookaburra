@@ -37,7 +37,7 @@ export default function FormSelect(props) {
         buttons.push(<button type="button" title={functions.translate('Refresh List')} key={'refresh'}
                              className="button" onClick={() => functions.refreshChoiceList(form)}><span className={'fas fa-sync fa-fw'} /></button>)
         if (form.add_url !== null)
-            buttons.push(<button title={functions.translate('Add Element to List')} key={'add'} onClick={() => functions.addElementToChoice(form)}
+            buttons.push(<button title={functions.translate('Add Element to List')} key={'add'} onClick={(e) => functions.addElementToChoice(e,form.add_url)}
                                  className="button" style={{marginRight: '20px'}}><span className={'fas fa-plus fa-fw'} /></button>)
     }
 

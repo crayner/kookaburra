@@ -41,7 +41,9 @@
                 window.PAGE_PROPS = {{ page.writeProperties()|json_encode|raw }}
                 {% if app.user %}
                     window.IDLETIMEOUT_PROPS = {{ page.writeIdleTimeout()|json_encode|raw }}
-                    window.FASTFINDER_PROPS = {{ page.writeFastFinder()|json_encode|raw }}
+                    {% if page.popup is same as(false) %}
+                        window.FASTFINDER_PROPS = {{ page.writeFastFinder()|json_encode|raw }}
+                    {% endif %}
                 {% endif %}
             </script>
 
@@ -49,8 +51,10 @@
             {{ encore_entry_script_tags('page') }}
             {% if app.user %}
                 {{ encore_entry_script_tags('idleTimeout') }}
-                {{ encore_entry_script_tags('fastFinder') }}
-                {{ encore_entry_script_tags('notificationTray') }}
+                {% if page.popup is same as(false) %}
+                    {{ encore_entry_script_tags('fastFinder') }}
+                    {{ encore_entry_script_tags('notificationTray') }}
+                {% endif %}
             {% endif %}
         </body>
     </html>

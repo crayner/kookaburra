@@ -26,6 +26,7 @@ export default class PageApp extends Component {
         this.height = -3
         this.width = -3
         this.translations = props.translations
+        this.popup = props.popup
 
         this.functions = {
             getContent: this.getContentFromServer.bind(this),
@@ -148,20 +149,29 @@ export default class PageApp extends Component {
 
     getContent() {
         let content = []
+        let loop = 0
+        let bodyStyle = "background: olivedrab!important"
+        if (!this.popup)
+            bodyStyle = "background: url('" + this.bodyImage + "') repeat fixed center top olivedrab!important"
         content.push(<Helmet key={'helmet'}>
             <title>{this.getTitle()}</title>
             <meta http-equiv="content-language" content={this.locale} />
             {this.rtl ? <head dir={'rtl'}></head> : <head/>}
-            <body style={"background: url('" + this.bodyImage + "') repeat fixed center top olivedrab!important"}></body>
+            <body style={bodyStyle}></body>
         </Helmet>)
-        content.push(<MinorLinks links={this.minorLinks} key={'minorLinks'} />)
-        content.push(<div id={'wrap'} className={'max-w-6xl mx-auto m-2 shadow rounded'} key={'wrap'}>
-            <Header details={this.headerDetails} />
-            <div id={'content-wrap'} ref={e => (this.contentRef = e)} className={'relative w-full block content-start flex-wrap lg:flex-no-wrap lg:flex-row-reverse bg-transparent-100 clearfix'}>
-                <Content {...this.state} action={this.action} url={this.url} functions={this.functions} messages={this.state.messages} />
-            </div>
-            <Footer details={this.footer} />
-        </div>)
+        if (!this.popup)
+            content.push(<MinorLinks links={this.minorLinks} key={'minorLinks'} />)
+        let subContent = []
+        if (!this.popup)
+            subContent.push(<Header details={this.headerDetails} key={'' + ++loop} />)
+        subContent.push(<div id={'content-wrap'} ref={e => (this.contentRef = e)} className={'relative w-full block content-start flex-wrap lg:flex-no-wrap lg:flex-row-reverse bg-transparent-100 clearfix'} key={'' + ++loop}>
+                    <Content {...this.state} action={this.action} url={this.url} functions={this.functions} messages={this.state.messages} popup={this.popup} />
+            </div>)
+        if (!this.popup)
+            subContent.push(<Footer details={this.footer} key={'' + ++loop} />)
+
+        content.push(<div id={'wrap'} className={'max-w-6xl mx-auto m-2 shadow rounded'} key={'wrap'}>{subContent}
+            </div>)
 
         return content
     }
@@ -230,6 +240,7 @@ PageApp.propTypes = {
     headerDetails: PropTypes.object.isRequired,
     url: PropTypes.string.isRequired,
     minimised: PropTypes.bool.isRequired,
+    popup: PropTypes.bool.isRequired,
     sidebar: PropTypes.oneOfType([
         PropTypes.object,
         PropTypes.array,

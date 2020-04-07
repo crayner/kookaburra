@@ -22,7 +22,8 @@ export default function Content(props) {
         breadCrumbs,
         messages,
         pageHeader,
-        special
+        special,
+        popup
     } = props
 
     const state = contentState({
@@ -38,33 +39,43 @@ export default function Content(props) {
         let result = []
         let x = []
         let loop = 0
-        let crumbs = Object.keys(breadCrumbs).map(name => {
-            let crumb = breadCrumbs[name]
+        if (!popup) {
+            let crumbs = Object.keys(breadCrumbs).map(name => {
+                let crumb = breadCrumbs[name]
 
-            if (loop + 1 === Object.keys(breadCrumbs).length) {
-                loop++
-                return (<span key={name} className="trailEnd">{crumb.name}</span>)
-            } else if (loop > 4) {
-                loop++
-                return (<span key={name}><a href={'#'} onClick={() => functions.getContent(crumb.url)} className="text-blue-700 underline">...</a> . </span>)
-            } else {
-                loop++
-                return (<span key={name}><a href={'#'} onClick={() => functions.getContent(crumb.url)} className="text-blue-700 underline">{crumb.name}</a> . </span>)
-            }
-        })
-        if (crumbs.length > 0)
-            x.push(
-                <div id="breadCrumbs" className="sm:pt-10 lg:pt-0" key={'breadcrumbs'}>
-                    <div className="absolute lg:static top-0 my-6 text-xs text-blue-700">
-                        {crumbs}
+                if (loop + 1 === Object.keys(breadCrumbs).length) {
+                    loop++
+                    return (<span key={name} className="trailEnd">{crumb.name}</span>)
+                } else if (loop > 4) {
+                    loop++
+                    return (<span key={name}><a href={'#'} onClick={() => functions.getContent(crumb.url)}
+                                                className="text-blue-700 underline">...</a> . </span>)
+                } else {
+                    loop++
+                    return (<span key={name}><a href={'#'} onClick={() => functions.getContent(crumb.url)}
+                                                className="text-blue-700 underline">{crumb.name}</a> . </span>)
+                }
+            })
+            if (crumbs.length > 0)
+                x.push(
+                    <div id="breadCrumbs" className="sm:pt-10 lg:pt-0" key={'breadcrumbs'}>
+                        <div className="absolute lg:static top-0 my-6 text-xs text-blue-700">
+                            {crumbs}
+                        </div>
                     </div>
-                </div>
-            )
+                )
 
-        x.push(<PageHeader details={pageHeader} key={pageHeader} functions={functions} />)
-
+            x.push(<PageHeader details={pageHeader} key={pageHeader} functions={functions}/>)
+        }
         if (messages.length > 0) {
             x.push(<Messages messages={messages} translate={functions.translate} key={'messages'} />)
+        }
+
+        if (popup) {
+            x.push(<a className={'close-button gray ml-3'} onClick={() => window.close()}
+                      title={functions.translate('Close')} key={'' + ++loop}>
+                <span className={'fas fa-times-circle fa-fw text-gray-800 hover:text-green-500'}></span>
+            </a>)
         }
 
         content.map(stuff => {
@@ -87,7 +98,8 @@ export default function Content(props) {
             })
         }
 
-        result.push(<Sidebar key={'sidebar'} functions={functions} {...state} />)
+        if (!popup)
+            result.push(<Sidebar key={'sidebar'} functions={functions} {...state} />)
         result.push(<div {...state.contentAttr} key={'content'}>
             {x}
             </div>)
@@ -108,6 +120,7 @@ export default function Content(props) {
         if (state.sidebarOpen === 'open') showSidebar = true
 
         if (state.minimised && state.sidebarOpen === '') showSidebar = false
+        if (popup) showSidebar = false
 
         if (typeof state.content !== 'undefined') {
             state.contentAttr.style = {
@@ -177,6 +190,7 @@ Content.propTypes = {
         PropTypes.object,
         PropTypes.array,
     ]),
+    popup: PropTypes.bool.isRequired,
 }
 
 Content.defaultProps = {
