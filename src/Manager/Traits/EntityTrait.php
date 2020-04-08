@@ -472,15 +472,18 @@ trait EntityTrait
     /**
      * refresh
      * @param EntityInterface|null $entity
+     * @return EntityInterface
      */
-    public function refresh(?EntityInterface $entity = null)
+    public function refresh(?EntityInterface $entity = null): EntityInterface
     {
         if (null !== $entity && $this->entityName === get_class($entity)) {
             $this->setEntity($entity);
+            return $this->getEntity();
         }
         if ($entity === null)
             $entity = $this->getEntity();
         $this->getEntityManager()->refresh($entity);
+        return $entity;
     }
 
     /**
