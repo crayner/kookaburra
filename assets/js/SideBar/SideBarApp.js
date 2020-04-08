@@ -27,7 +27,7 @@ export default function SideBar(props) {
         state.sidebarAttr = {
             id: 'sidebar',
             style: {width: '250px'},
-            className: 'absolute top-0 right-0 float-right px-6 pb-6 pt-0',
+            className: 'absolute top-0 right-0 float-right px-6 pb-6 pt-0 min-h-full',
         }
         if (sidebarOpen)
             state.sidebarAttr.className += ' lg:border-l'
