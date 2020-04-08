@@ -69,7 +69,9 @@ export default class PermissionApp extends Component {
                             <div className="flex-1 relative">
                                 <select id="filter_select" className="w-full" value={this.state.module} onChange={(e) => this.changeFilter(e)}>
                                     <option value="">{this.translations['Filter']}</option>
-                                    {this.getFilterOptions()}
+                                    <optgroup label={this.translations['Module']}>
+                                        {this.getFilterOptions()}
+                                    </optgroup>
                                 </select>
                             </div>
                         </td>
@@ -135,8 +137,11 @@ export default class PermissionApp extends Component {
                     }
 
                     row.push(<td key={'action'}>{content.actionName}</td>)
-                    Object.keys(content.roles).map(roleId => {
-                        let role = content.roles[roleId]
+                    Object.keys(this.roles).map(x => {
+                        let w = this.roles[x]
+                        let role = content.roles[w['id']]
+                        let roleId = role['id']
+
                         let attr = []
                         let span_attr = []
                         span_attr['className'] = 'fa-fw far fa-thumbs-down'
@@ -183,14 +188,21 @@ export default class PermissionApp extends Component {
             this.setState({
                 content: data.content
             })
+            if (data.status !== 'success') {
+                alert(data.errors[0]['message'])
+            }
         })
     }
 
     render () {
         return (
-            <table className={'w-full relative striped'}>
-                {this.getContent()}
-            </table>
+            <section>
+                <h3>{this.translations['Manage Permissions']}</h3>
+                <p>{this.translations['permission_help']}</p>
+                <table className={'w-full relative striped'}>
+                    {this.getContent()}
+                </table>
+            </section>
         )
     }
 }
