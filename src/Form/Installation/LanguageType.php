@@ -15,6 +15,8 @@
 
 namespace App\Form\Installation;
 
+use App\Form\Type\HeaderType;
+use App\Form\Type\ReactFormType;
 use Kookaburra\SystemAdmin\Entity\I18n;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -50,29 +52,24 @@ class LanguageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code', ChoiceType::class,
-            [
-                'choices' => array_flip($options['data']::getLanguages()),
-                'choice_translation_domain' => false,
-                'label' => 'System Language',
-                'required' => true,
-                'attr' => [
-                    'class' => 'w-64',
-                ],
-                'widget_colspan' => '2',
-                'widget_class' => 'x-2 border-b-0 sm:border-b border-t-0 right',
-                'label_class' => 'px-2 border-b-0 sm:border-b border-t-0',
-                'row_class' => false,
-            ]
-        )->add('submit', SubmitType::class,
-            [
-                'label' => 'Submit',
-                'widget_colspan' => '2',
-                'widget_class' => 'x-2 border-b-0 sm:border-b border-t-0 right',
-                'label_class' => 'px-2 border-b-0 sm:border-b border-t-0',
-                'row_class' => false,
-            ]
-        )->setAction($this->router->generate('install__installation_check'));
+        $builder
+            ->add('titleBar', HeaderType::class,
+                [
+                    'label' => 'Language Setting'
+                ]
+            )
+            ->add('code', ChoiceType::class,
+                [
+                    'choices' => $options['data']::getLanguages(),
+                    'choice_translation_domain' => false,
+                    'label' => 'System Language',
+                    'required' => true,
+                ]
+            )->add('submit', SubmitType::class,
+                [
+                    'label' => 'Submit',
+                ]
+            )->setAction($this->router->generate('install__installation_check'));
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -83,5 +80,14 @@ class LanguageType extends AbstractType
                 'translation_domain' => 'messages',
             ]
         );
+    }
+
+    /**
+     * getParent
+     * @return string|null
+     */
+    public function getParent()
+    {
+        return ReactFormType::class;
     }
 }

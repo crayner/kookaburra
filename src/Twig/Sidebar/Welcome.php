@@ -53,7 +53,8 @@ class Welcome implements SidebarContentInterface
      */
     public function toArray(): array
     {
-        dd($this);
-        return [];
+        return [
+            'content' => $this->render([]),
+        ];
     }
 }

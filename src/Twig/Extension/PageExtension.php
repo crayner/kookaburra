@@ -15,6 +15,7 @@
 
 namespace App\Twig\Extension;
 
+use Doctrine\DBAL\Exception\DriverException;
 use Kookaburra\SystemAdmin\Entity\I18n;
 use Kookaburra\UserAdmin\Entity\Person;
 use App\Exception\MissingClassException;
@@ -181,9 +182,7 @@ class PageExtension extends AbstractExtension
     {
         try {
             return $this->i18nProvider->getRepository()->findLocaleRightToLeft();
-        } catch (ConnectionException $e) {
-            return false;
-        } catch (TableNotFoundException $e) {
+        } catch (ConnectionException | TableNotFoundException | DriverException $e) {
             return false;
         }
     }
@@ -340,7 +339,7 @@ class PageExtension extends AbstractExtension
      */
     public function getBackgroundImage(string $default = '/build/static/backgroundPage.jpg'): string
     {
-        return ImageHelper::getBackgroundImage();
+        return ImageHelper::getBackgroundImage($default);
     }
 
     /**

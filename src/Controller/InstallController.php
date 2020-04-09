@@ -15,6 +15,9 @@
 
 namespace App\Controller;
 
+use App\Container\ContainerManager;
+use App\Manager\PageManager;
+use App\Util\ErrorMessageHelper;
 use Kookaburra\SystemAdmin\Entity\I18n;
 use App\Form\Entity\MySQLSettings;
 use App\Form\Installation\LanguageType;
@@ -33,6 +36,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,31 +52,49 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
     /**
      * installationCheck
      *
-     * @param Request $request
+     * @param PageManager $pageManager
      * @param InstallationManager $manager
      * @param ValidatorInterface $validator
+     * @param ContainerManager $containerManager
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      * @Route("/installation/check/", name="installation_check")
      */
-    public function installationCheck(Request $request, InstallationManager $manager, ValidatorInterface $validator)
+    public function installationCheck(PageManager $pageManager, InstallationManager $manager, ValidatorInterface $validator, ContainerManager $containerManager)
     {
+        if ($pageManager->isNotReadyForJSON()) return $pageManager->getBaseResponse();
+        $request = $pageManager->getRequest();
+
         $i18n = new I18n();
         $i18n->setCode(LocaleHelper::getDefaultLocale('en_GB'));
         $form = $this->createForm(LanguageType::class, $i18n, ['action' => $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/check/']);
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            $errors = $validator->validate($form->get('code')->getData(), new \App\Validator\I18n());
-            if (0 === count($errors)) {
+        if ($request->getContent() !== '') {
+            $form->submit(json_decode($request->getContent(), true));
+            if ($form->isValid()) {
                 $manager->setLocale($form->get('code')->getData());
                 $manager->setInstallationStatus('mysql');
-                return $this->redirect($request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/mysql/');
+                $data = ErrorMessageHelper::getSuccessMessage([], true);
+                $data['status'] = 'redirect';
+                $data['redirect'] = $this->generateUrl('install__installation_mysql');
+                return new JsonResponse($data);
+            } else {
+                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+                $containerManager->singlePanel($form->createView());
+                $data['form'] = $containerManager->getFormFromContainer();
+                return new JsonResponse($data);
             }
         }
 
-        return $manager->check($this->getParameter('systemRequirements'), $form);
+        $containerManager->singlePanel($form->createView());
+
+        return $pageManager->render(
+            [
+                'content' => $manager->check($this->getParameter('systemRequirements')),
+                'containers' => $containerManager->getBuiltContainers(),
+            ]
+        );
     }
 
     /**

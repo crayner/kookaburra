@@ -1,15 +1,6 @@
 {% trans_default_domain 'messages' %}
-
-{% extends 'kookaburra.html.twig' %}
-
-{% form_theme form
-    'form/kookaburra_form.html.twig'
-%}
-
-{% block content %}
     <h2>{{ 'Installation - Step {step}'|trans({'{step}': '1'}) }}</h2>
     <div class="{{ message.class }}">{{ message.text|trans({}, 'kookaburra') }}</div>
-    {{ form_start(form) }}
     <table class="smallIntBorder w-full relative" cellspacing="0">
         <tbody>
             <tr class="break">
@@ -28,28 +19,12 @@
                 </td>
                 <td class=" px-2 border-b-0 sm:border-b border-t-0 ">
                     {% if details.result %}
-                        <span style="color: green"><i class="fas fa-check fa-2x fw"></i></span>
+                        <span class="fas fa-check fa-2x fa-fw text-green-500 bg-transparent" />
                     {% else %}
-                        <span style="color: red"><i class="fas fa-times fa-2x fw"></i></span>
+                        <span class="fas fa-times fa-2x fa-fw text-red-500 bg-transparent" />
                     {% endif %}
                 </td>
             </tr>
         {% endfor %}
-            <tr class="break">
-                <td class=" px-2 border-b-0 sm:border-b border-t-0 " colspan="3">
-                    <h3>{{ 'Language Settings'|trans }}</h3>
-                </td>
-            </tr>
-            {{ form_row(form.code) }}
-            {% if ready %}
-                {{ form_row(form.submit) }}
-            {% else %}
-                {% set attr = form.submit.vars.attr|merge({'disabled': 'disabled'}) %}
-                {{ form_row(form.submit, {'attr': attr}) }}
-            {% endif %}
-            {{ form_row(form._token) }}
         </tbody>
     </table>
-    {{ form_end(form) }}
-{% endblock content %}
-

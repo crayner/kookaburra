@@ -28,6 +28,7 @@ use App\Util\ErrorMessageHelper;
 use App\Util\Format;
 use App\Util\GlobalHelper;
 use App\Util\ImageHelper;
+use Doctrine\DBAL\Exception\DriverException;
 use Kookaburra\SystemAdmin\Util\LocaleHelper;
 use App\Util\TranslationsHelper;
 use App\Util\UrlGeneratorHelper;
@@ -358,6 +359,11 @@ class PageManager
         if ($this->getRoute() === 'home')
             return '';
 
+        if (strpos($this->getRoute(), 'install__') === 0)
+        {
+            return 'Installation';
+        }
+
         $title = $this->getAction()['name'];
         if (mb_strpos($title, '_'))
         {
@@ -504,7 +510,11 @@ class PageManager
             $moduleName = explode('__', $address)[0];
             $moduleName = ucwords(str_replace('_', ' ', $moduleName));
         }
-        $module = ProviderFactory::getRepository(Module::class)->findOneByName($moduleName);
+        try {
+            $module = ProviderFactory::getRepository(Module::class)->findOneByName($moduleName);
+        } catch (DriverException $e) {
+            $module = null;
+        }
         $this->getRequest()->attributes->set('module', $module ?: false);
         $this->getSession()->set('module', $module ? $module->getName() : '');
         if (null !== $module)
@@ -547,6 +557,7 @@ class PageManager
                 ]
             );
         } catch (LoaderError | RuntimeError | SyntaxError $e) {
+            throw $e;
             $content = '<h1>Failed!</h1><p>'.$e->getMessage().'</p>';
         }
         return new Response($content);

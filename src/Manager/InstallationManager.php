@@ -109,7 +109,7 @@ class InstallationManager
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function check(array $systemRequirements, FormInterface $form)
+    public function check(array $systemRequirements)
     {
         $configFile = __DIR__ . '/../../config/packages/kookaburra.yaml';
         if (false === realpath($configFile) && false !== realpath($configFile.'.dist'))
@@ -195,15 +195,16 @@ class InstallationManager
         if ($message['class'] === 'success')
             $this->getLogger()->notice(TranslationsHelper::translate($message['text'] ));
 
-        return new Response($this->twig->render('installation/check.html.twig',
-            [
-                'systemRequirements' => $systemRequirements,
-                'systemDisplay' => $systemDisplay,
-                'ready' => $ready,
-                'message' => $message,
-                'form' => $form->createView(),
-            ]
-        ));
+        return
+            $this->twig->render('installation/check.html.twig',
+                [
+                    'systemRequirements' => $systemRequirements,
+                    'systemDisplay' => $systemDisplay,
+                    'ready' => $ready,
+                    'message' => $message,
+                ]
+            )
+        ;
     }
 
     /**
