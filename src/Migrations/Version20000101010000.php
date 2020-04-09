@@ -43,7 +43,6 @@ final class Version20000101010000 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE gibbonPermission DROP FOREIGN KEY FK_BA9FFF1E3AFEA67');
         $this->addSql('ALTER TABLE gibbonActivityAttendance DROP FOREIGN KEY FK_2357A712C3BBAF6F');
         $this->addSql('ALTER TABLE gibbonActivitySlot DROP FOREIGN KEY FK_59227ABBC3BBAF6F');
         $this->addSql('ALTER TABLE gibbonActivityStaff DROP FOREIGN KEY FK_CDFE4137C3BBAF6F');
@@ -251,7 +250,6 @@ final class Version20000101010000 extends AbstractMigration
         $this->addSql('ALTER TABLE gibbonUnitClassBlock DROP FOREIGN KEY FK_829289F1FE417281');
         $this->addSql('ALTER TABLE gibbonPlannerEntryDiscuss DROP FOREIGN KEY FK_A2D5383E18B0DB2F');
         $this->addSql('ALTER TABLE gibbonCrowdAssessDiscuss DROP FOREIGN KEY FK_D17E708617B9ED44');
-        $this->addSql('ALTER TABLE gibbonPermission DROP FOREIGN KEY FK_BA9FFF14C816A40');
         $this->addSql('ALTER TABLE gibbonPerson DROP FOREIGN KEY FK_FBF1667668D8F4F8');
         $this->addSql('ALTER TABLE gibbonApplicationForm DROP FOREIGN KEY FK_A309B59CA85AE4EC');
         $this->addSql('ALTER TABLE gibbonAttendanceLogRollGroup DROP FOREIGN KEY FK_A6F88BEDA85AE4EC');
@@ -401,7 +399,6 @@ final class Version20000101010000 extends AbstractMigration
         $this->addSql('DROP TABLE gibbonNotificationListener');
         $this->addSql('DROP TABLE gibbonOutcome');
         $this->addSql('DROP TABLE gibbonPayment');
-        $this->addSql('DROP TABLE gibbonPermission');
         $this->addSql('DROP TABLE gibbonPerson');
         $this->addSql('DROP TABLE gibbonPersonField');
         $this->addSql('DROP TABLE gibbonPersonMedical');

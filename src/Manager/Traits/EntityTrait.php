@@ -379,17 +379,18 @@ trait EntityTrait
 
     /**
      * flush
-     * @return $this
+     * @param array $data
+     * @return array
      */
-    public function flush()
+    public function flush(array $data = []): array
     {
         try {
             $this->getEntityManager()->flush();
         } catch (\Exception $e)
         {
-            $this->getMessageManager()->add('error', 'return.error.2', [], 'messages');
+            $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
         }
-        return $this;
+        return $data;
     }
 
     /**
@@ -497,7 +498,7 @@ trait EntityTrait
         $data['status'] = isset($data['status']) ? $data['status'] : 'success';
         try {
             $this->getEntityManager()->persist($entity);
-            if ($flush) $this->getEntityManager()->flush();
+            if ($flush) $data = $this->flush($data);
             $data = ErrorMessageHelper::getSuccessMessage($data, true);
         } catch (NotNullConstraintViolationException $e) {
             $data = ErrorMessageHelper::getDatabaseErrorMessage($data, true);
