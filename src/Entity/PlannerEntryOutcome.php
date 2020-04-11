@@ -25,7 +25,7 @@ class PlannerEntryOutcome
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="bigint", name="gibbonPlannerEntryOutcomeID", columnDefinition="INT(16) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="bigint", name="gibbonPlannerEntryOutcomeID", columnDefinition="INT(16) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

@@ -30,7 +30,7 @@ class InternalAssessmentColumn
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonInternalAssessmentColumnID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="integer", name="gibbonInternalAssessmentColumnID", columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
@@ -44,7 +44,7 @@ class InternalAssessmentColumn
 
     /**
      * @var integer|null
-     * @ORM\Column(nullable=true, columnDefinition="INT(8) UNSIGNED ZEROFILL", options={"comment": "A value used to group multiple columns."}, name="groupingID", type="integer")
+     * @ORM\Column(nullable=true, columnDefinition="INT(8) UNSIGNED", options={"comment": "A value used to group multiple columns."}, name="groupingID", type="integer")
      */
     private $groupingID;
 

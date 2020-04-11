@@ -36,7 +36,7 @@ class MarkbookColumn
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="integer", name="gibbonMarkbookColumnID", columnDefinition="INT(10) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="integer", name="gibbonMarkbookColumnID", columnDefinition="INT(10) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
@@ -78,7 +78,7 @@ class MarkbookColumn
 
     /**
      * @var integer|null
-     * @ORM\Column(nullable=true, type="integer", columnDefinition="INT(8) UNSIGNED ZEROFILL", options={"comment": "A value used to group multiple markbook columns."}, name="groupingID")
+     * @ORM\Column(nullable=true, type="integer", columnDefinition="INT(8) UNSIGNED", options={"comment": "A value used to group multiple markbook columns."}, name="groupingID")
      */
     private $groupingID;
 

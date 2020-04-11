@@ -29,7 +29,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Invoicees':
             name: 'Manage Invoicees'
@@ -49,7 +49,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Fees':
             name: 'Manage Fees'
@@ -69,7 +69,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Billing Schedule':
             name: 'Manage Billing Schedule'
@@ -89,7 +89,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Invoices':
             name: 'Manage Invoices'
@@ -109,7 +109,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Budgets':
             name: 'Manage Budgets'
@@ -129,7 +129,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Expense Approvers':
             name: 'Manage Expense Approvers'
@@ -149,7 +149,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Budget Cycles':
             name: 'Manage Budget Cycles'
@@ -169,7 +169,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'My Expense Requests':
             name: 'My Expense Requests'
@@ -189,11 +189,10 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
                 - 'Support Staff'
-                - Librarian
         'Manage Expenses_all':
             name: 'Manage Expenses_all'
             precedence: 0
@@ -212,7 +211,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Expenses_myBudgets':
             name: 'Manage Expenses_myBudgets'
@@ -232,7 +231,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Teacher
                 - 'Support Staff'
         'View Invoices_myChildren':
@@ -253,7 +252,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Parent
         'View Invoices_mine':
             name: 'View Invoices_mine'

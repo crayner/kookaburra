@@ -16,11 +16,13 @@
 namespace App\Form\Installation;
 
 use App\Form\Entity\MySQLSettings;
+use App\Form\Type\ReactFormType;
 use App\Form\Type\ToggleType;
 use App\Validator\MySqlConnection;
 use Doctrine\DBAL\Driver\PDOMySql\Driver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -130,6 +132,23 @@ class MySQLType extends AbstractType
                     ],
                 ]
             )
+        ;
+        if ($options['proceed'] === '1') {
+            $builder
+                ->add('proceed', SubmitType::class,
+                    [
+                        'label' => 'Proceed',
+                    ]
+                )
+                ->add('proceedFlag', HiddenType::class,
+                    [
+                        'data' => 'Ready to Go',
+                        'mapped' => false,
+                    ]
+                )
+            ;
+        }
+        $builder
             ->add('submit', SubmitType::class,
                 [
                     'label' => 'Submit',
@@ -150,8 +169,19 @@ class MySQLType extends AbstractType
                 'translation_domain' => 'messages',
                 'constraints' => [
                     new MySqlConnection(),
-                ]
+                ],
+                'proceed' => '0',
+                'allow_extra_fields' => true,
             ]
         );
+    }
+
+    /**
+     * getParent
+     * @return string|null
+     */
+    public function getParent()
+    {
+        return ReactFormType::class;
     }
 }

@@ -29,7 +29,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_classes_any':
@@ -50,7 +50,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_classes_parents':
             name: 'New Message_classes_parents'
@@ -70,7 +70,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_courses_my':
@@ -91,7 +91,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_courses_any':
@@ -112,7 +112,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_courses_parents':
             name: 'New Message_courses_parents'
@@ -132,7 +132,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_rollGroups_my':
@@ -153,7 +153,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_rollGroups_any':
@@ -174,7 +174,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_rollGroups_parents':
             name: 'New Message_rollGroups_parents'
@@ -194,7 +194,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_activities_my':
@@ -215,7 +215,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_activities_any':
@@ -236,7 +236,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_activities_parents':
             name: 'New Message_activities_parents'
@@ -256,7 +256,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_yearGroups_any':
@@ -277,7 +277,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_yearGroups_parents':
@@ -298,7 +298,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_role':
             name: 'New Message_role'
@@ -318,7 +318,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Messages_my':
             name: 'Manage Messages_my'
@@ -338,7 +338,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Teacher
         'Manage Messages_all':
             name: 'Manage Messages_all'
@@ -358,7 +358,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_fromSchool':
             name: 'New Message_fromSchool'
@@ -378,7 +378,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_applicants':
             name: 'New Message_applicants'
@@ -398,7 +398,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_individuals':
             name: 'New Message_individuals'
@@ -418,7 +418,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_houses_my':
@@ -457,7 +457,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_byEmail':
@@ -478,7 +478,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_byMessageWall':
@@ -499,7 +499,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'New Message_bySMS':
@@ -520,7 +520,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'View Message Wall':
             name: 'View Message Wall'
@@ -540,13 +540,12 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Parent
                 - Student
                 - Teacher
                 - 'Support Staff'
-                - Librarian
         'New Quick Wall Message':
             name: 'New Quick Wall Message'
             precedence: 0
@@ -565,11 +564,10 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
                 - 'Support Staff'
-                - Librarian
         'New Message_transport_any':
             name: 'New Message_transport_any'
             precedence: 0
@@ -588,7 +586,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_transport_parents':
             name: 'New Message_transport_parents'
@@ -608,7 +606,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Canned Response':
             name: 'Canned Response'
@@ -628,7 +626,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_attendance':
             name: 'New Message_attendance'
@@ -648,7 +646,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_cannedResponse':
             name: 'New Message_cannedResponse'
@@ -668,7 +666,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'New Message_readReceipts':
             name: 'New Message_readReceipts'
@@ -688,7 +686,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Groups_all':
             name: 'Manage Groups_all'
@@ -708,7 +706,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
         'Manage Groups_my':
             name: 'Manage Groups_my'
@@ -728,7 +726,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Teacher
         'New Message_groups_any':
             name: 'New Message_groups_any'
@@ -748,7 +746,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
         'New Message_groups_my':
             name: 'New Message_groups_my'
@@ -768,7 +766,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Teacher
         'New Message_groups_parents':
             name: 'New Message_groups_parents'
@@ -788,5 +786,5 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator

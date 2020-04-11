@@ -29,7 +29,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
@@ -51,11 +51,10 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
-                - Librarian
         'Set Future Absence':
             name: 'Set Future Absence'
             precedence: 0
@@ -74,7 +73,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
@@ -96,7 +95,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
@@ -118,7 +117,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
@@ -140,7 +139,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
@@ -162,7 +161,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
@@ -184,7 +183,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Parent
         'Attendance By Class':
             name: 'Attendance By Class'
@@ -204,10 +203,9 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
-                - Librarian
         'View Daily Attendance':
             name: 'View Daily Attendance'
             precedence: 0
@@ -226,7 +224,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'Classes Not Registered':
@@ -247,7 +245,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
                 - 'Support Staff'
@@ -269,7 +267,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Attendance Summary by Date':
             name: 'Attendance Summary by Date'
@@ -289,7 +287,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
         'Attendance Trends':
@@ -310,7 +308,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
         'Student Self Registration':
             name: 'Student Self Registration'
@@ -348,8 +346,8 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
-                - Librarian
+            roles:
+                - Teacher
         'Student History_my':
             name: 'Student History_my'
             precedence: 1

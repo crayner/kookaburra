@@ -201,3 +201,39 @@ Name: Name
 Must be unique: Must be unique
 Abbreviation: Abbreviation
 New Activity Registration: New Activity Registration
+A prefix added to all table names.  Up to 6 characters in length: A prefix added to all table names.  Up to 6 characters in length
+Apache Module {name}: Apache Module {name}
+Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.: Created by teachers, Kookaburra is the school platform which solves real problems faced by educators every day.
+Database Name: Database Name
+Database Password: Database Password
+Building the Database: Building the Database
+database_build_warning: 'Once the correct settings for your database are verified, the database will be built when you click the "Proceed" button below. This is a process that can take minutes to complete.  Your patience is appreciated.'
+Database Port: Database Port
+Database Server: Database Server
+Database Settings: Database Settings
+Database Table Prefix: Database Table Prefix
+Database Username: Database Username
+Proceed: Proceed
+The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.: 'The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.'
+The config file has been created.: The config file has been created.
+The config file was written.: The config file was written.
+The installation status was set to {status}.: 'The installation status was set to {status}.'
+The locale was set to {locale}: 'The locale was set to {locale}.'
+Enabled: Enabled
+'For support, please visit %1$scraigrayner.com%2$s.': 'For support, please visit %1$scraigrayner.com/support%2$s.'
+'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.': 'Free, open source and flexible, Kookaburra can morph to meet the needs of a huge range of schools.'
+Install Demo Data?: Install Demo Data?
+Installation - Step {step}: Installation - Step {step}
+Kookaburra Software is a fork of Gibbon.: Kookaburra Software is a fork of Gibbon.
+Kookaburra {version} requires PHP Version {php_version} or higher: Kookaburra {version} requires PHP Version {php_version} or higher
+Language Setting: Language Setting
+Localhost, IP address or domain.: Localhost, IP address or domain.
+MySQL PDO Support: MySQL PDO Support
+PHP Extension {name}: PHP Extension {name}
+PHP Version: PHP Version
+System Language: System Language
+System Requirements: System Requirements
+The directory containing the configuration files is writable, so the installation may proceed.: The directory containing the configuration files is writable, so the installation may proceed.
+The standard port for MySQL is 3306. Only change this if the MySQL Server is listening on a different port.: The standard port for MySQL is 3306. Only change this if the MySQL Server is listening on a different port.
+This database will be created if it does not already exist. Collation should be utf8_general_ci.: This database will be created if it does not already exist. Collation should be utf8_general_ci.
+Welcome To Kookaburra: Welcome To Kookaburra

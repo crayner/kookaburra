@@ -16,6 +16,7 @@
 namespace App\Controller;
 
 use App\Container\ContainerManager;
+use App\Manager\Entity\Language;
 use App\Manager\PageManager;
 use App\Util\ErrorMessageHelper;
 use Kookaburra\SystemAdmin\Entity\I18n;
@@ -25,9 +26,6 @@ use App\Form\Installation\MySQLType;
 use App\Form\Installation\SystemType;
 use App\Manager\InstallationManager;
 use App\Provider\ProviderFactory;
-use App\Twig\Sidebar\MySQLSettingWarning;
-use App\Twig\SidebarContent;
-use Kookaburra\SystemAdmin\Util\LocaleHelper;
 use App\Util\TranslationsHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Kookaburra\SystemAdmin\Form\Entity\SystemSettings;
@@ -36,10 +34,15 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -56,28 +59,41 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
      * @param InstallationManager $manager
      * @param ValidatorInterface $validator
      * @param ContainerManager $containerManager
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @param TranslationsHelper $helper
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      * @Route("/installation/check/", name="installation_check")
      */
-    public function installationCheck(PageManager $pageManager, InstallationManager $manager, ValidatorInterface $validator, ContainerManager $containerManager)
+    public function installationCheck(PageManager $pageManager, InstallationManager $manager, ValidatorInterface $validator, ContainerManager $containerManager, TranslationsHelper $helper)
     {
         if ($pageManager->isNotReadyForJSON()) return $pageManager->getBaseResponse();
         $request = $pageManager->getRequest();
+        $i18n = new Language();
 
-        $i18n = new I18n();
-        $i18n->setCode(LocaleHelper::getDefaultLocale('en_GB'));
-        $form = $this->createForm(LanguageType::class, $i18n, ['action' => $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/check/']);
+        $form = $this->createForm(LanguageType::class, $i18n, ['action' => $this->generateUrl('install__installation_check', [], UrlGeneratorInterface::ABSOLUTE_URL)]);
+
         if ($request->getContent() !== '') {
-            $form->submit(json_decode($request->getContent(), true));
-            if ($form->isValid()) {
+            $i18n = new Language();
+            $content = json_decode($request->getContent(), true);
+
+            $i18n->setCode($content['code']);
+            $form = $this->createForm(LanguageType::class, $i18n, ['action' => $this->generateUrl('install__installation_check', [], UrlGeneratorInterface::ABSOLUTE_URL)]);
+
+            $list = $validator->validate($content['code'], [
+                new NotBlank(),
+                new Choice(['choices' => I18n::getLanguages()]),
+            ]);
+
+            if ($list->count() === 0) {
                 $manager->setLocale($form->get('code')->getData());
                 $manager->setInstallationStatus('mysql');
                 $data = ErrorMessageHelper::getSuccessMessage([], true);
                 $data['status'] = 'redirect';
-                $data['redirect'] = $this->generateUrl('install__installation_mysql');
+                $data['redirect'] = $this->generateUrl('install__installation_mysql', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                $fs = new Filesystem();
+                $fs->remove(__DIR__. '/../../var/cache/*');
                 return new JsonResponse($data);
             } else {
                 $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
@@ -99,45 +115,60 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
 
     /**
      * installationMySQLSettings
-     * @param Request $request
+     * @param PageManager $pageManager
      * @param InstallationManager $manager
-     * @param SidebarContent $sidebar
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param ContainerManager $containerManager
+     * @param TranslationsHelper $helper
+     * @param string $proceed
+     * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
-     * @Route("/installation/mysql/", name="installation_mysql")
+     * @Route("/installation/mysql/{proceed}", name="installation_mysql")
      */
-    public function installationMySQLSettings(Request $request, InstallationManager $manager, SidebarContent $sidebar)
+    public function installationMySQLSettings(PageManager $pageManager, InstallationManager $manager, ContainerManager $containerManager, TranslationsHelper $helper,  string $proceed = '0')
     {
+        if ($pageManager->isNotReadyForJSON()) return $pageManager->getBaseResponse();
+        $request = $pageManager->getRequest();
+
         $mysql = new MySQLSettings();
-        $message = null;
-        $sidebar->addContent($x = new MySQLSettingWarning());
+        $manager->readCurrentMySQLSettings($mysql);
+        $data = null;
 
-        $form = $this->createForm(MySQLType::class, $mysql, ['action' => $request->server->get('REQUEST_SCHEME') . '://' . $request->server->get('SERVER_NAME') . '/install/installation/mysql/']);
+        $form = $this->createForm(MySQLType::class, $mysql, ['action' => $this->generateUrl('install__installation_mysql', ['proceed' => $proceed], UrlGeneratorInterface::ABSOLUTE_URL), 'proceed' => $proceed]);
 
-        $form->handleRequest($request);
+        if ($request->getContent() !== '') {
+            $content = json_decode($request->getContent(), true);
+            $form->submit($content);
 
-        if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $manager->setInstallationStatus('build');
-                return $manager->setMySQLSettings($form);
-            } else {
-                if (0 < count($form->getErrors()))
-                {
-                    $message['class'] = 'error';
-                    $message['text'] = $form->getErrors()[0]->getMessage();
+                $data = $manager->setMySQLSettings($form);
+                $data['status'] = 'redirect';
+                $data['redirect'] = $this->generateUrl('install__installation_mysql', ['proceed' => '1'], UrlGeneratorInterface::ABSOLUTE_URL);
+                if ($proceed === '1' && key_exists('proceedFlag', $content) && $content['proceedFlag'] === 'Ready to Go') {
+                    $data['redirect'] = $this->generateUrl('install__installation_build', [], UrlGeneratorInterface::ABSOLUTE_URL);
+                    $data['status'] = 'newPage';
                 }
+            } else {
+                $containerManager->singlePanel($form->createView());
+                $data = ErrorMessageHelper::getInvalidInputsMessage([],true);
+                $data['form'] = $containerManager->getFormFromContainer();
             }
+            file_put_contents(__DIR__ . '/../../var/log/data.txt', json_encode($data));
+            return new JsonResponse($data);
         }
 
-        return $this->render('installation/mysql_settings.html.twig',
+        $containerManager->singlePanel($form->createView());
+
+        return $pageManager->render(
             [
-                'form' => $form->createView(),
-                'message' => $message,
-                'sidebarOptions' => [
-                    'proceed' => false,
-                ]
+                'content' => $this->renderView('installation/mysql_settings.html.twig',
+                    [
+                        'message' => $data ? $data['errors'][0] : null,
+                    ]
+                ),
+                'containers' => $containerManager->getBuiltContainers(),
             ]
         );
     }
@@ -147,7 +178,7 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
      * @param InstallationManager $manager
      * @param KernelInterface $kernel
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Exception
      * @Route("/installation/build/", name="installation_build")
      */
@@ -162,7 +193,7 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
      * @param Request $request
      * @param InstallationManager $manager
      * @Route("/installation/system/", name="installation_system")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function installationSystem(Request $request, InstallationManager $manager)
     {
@@ -197,7 +228,7 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
      * @param InstallationManager $manager
      * @param LanguageManager $languageManager
      * @param KernelInterface $kernel
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Exception
      * @Route("/installation/complete/", name="installation_complete")
      */
@@ -213,7 +244,7 @@ class InstallController extends AbstractController implements LoggerAwareInterfa
     /**
      * installationComplete
      * @param InstallationManager $manager
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Route("/update/", name="update")
      * @IsGranted("ROLE_SYSTEM_ADMIN")
      */

@@ -96,7 +96,7 @@ class Kernel extends BaseKernel
         $container->setParameter('installation', []);
         $container->setParameter('messenger_transport_dsn', '');
         $container->setParameter('mailer_dns', 'smtp://null');
-        $container->setParameter('locale', 'en');
+        $container->setParameter('locale', 'en_GB');
         $container->setParameter('system_name', 'Kookaburra');
         $container->setParameter('organisation_name', 'Kookaburra');
         $container->setParameter('google_api_key', '');

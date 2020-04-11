@@ -17,6 +17,7 @@ namespace App\Form\Installation;
 
 use App\Form\Type\HeaderType;
 use App\Form\Type\ReactFormType;
+use App\Manager\Entity\Language;
 use Kookaburra\SystemAdmin\Entity\I18n;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,6 +25,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class LanguageType
@@ -60,8 +63,9 @@ class LanguageType extends AbstractType
             )
             ->add('code', ChoiceType::class,
                 [
-                    'choices' => $options['data']::getLanguages(),
+                    'choices' => I18n::getLanguages(),
                     'choice_translation_domain' => false,
+                    'placeholder' => 'Please Select...',
                     'label' => 'System Language',
                     'required' => true,
                 ]
@@ -72,11 +76,15 @@ class LanguageType extends AbstractType
             )->setAction($this->router->generate('install__installation_check'));
     }
 
+    /**
+     * configureOptions
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'data_class' => I18n::class,
+                'data_class' => Language::class,
                 'translation_domain' => 'messages',
             ]
         );

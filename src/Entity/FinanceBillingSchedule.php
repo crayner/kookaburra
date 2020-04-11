@@ -30,7 +30,7 @@ class FinanceBillingSchedule
     /**
      * @var integer|null
      * @ORM\Id()
-     * @ORM\Column(type="integer", name="gibbonFinanceBillingScheduleID", columnDefinition="INT(6) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="integer", name="gibbonFinanceBillingScheduleID", columnDefinition="INT(6) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;

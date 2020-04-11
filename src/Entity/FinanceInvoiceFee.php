@@ -28,7 +28,7 @@ class FinanceInvoiceFee
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonFinanceInvoiceFeeID", columnDefinition="INT(15) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="bigint", name="gibbonFinanceInvoiceFeeID", columnDefinition="INT(15) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
@@ -49,7 +49,7 @@ class FinanceInvoiceFee
     /**
      * @var FinanceFee|null
      * @ORM\ManyToOne(targetEntity="FinanceFee")
-     * @ORM\JoinColumn(name="gibbonFinanceFeeID", referencedColumnName="gibbonFinanceFeeID", nullable=true, columnDefinition="INT(6) UNSIGNED ZEROFILL")
+     * @ORM\JoinColumn(name="gibbonFinanceFeeID", referencedColumnName="gibbonFinanceFeeID", nullable=true, columnDefinition="INT(6) UNSIGNED")
      */
     private $financeFee;
 
@@ -74,7 +74,7 @@ class FinanceInvoiceFee
     /**
      * @var FinanceFeeCategory|null
      * @ORM\ManyToOne(targetEntity="FinanceFeeCategory")
-     * @ORM\JoinColumn(name="gibbonFinanceFeeCategoryID", referencedColumnName="gibbonFinanceFeeCategoryID", nullable=true, columnDefinition="INT(6) UNSIGNED ZEROFILL")
+     * @ORM\JoinColumn(name="gibbonFinanceFeeCategoryID", referencedColumnName="gibbonFinanceFeeCategoryID", nullable=true, columnDefinition="INT(6) UNSIGNED")
      */
     private $financeFeeCategory;
 

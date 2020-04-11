@@ -26,7 +26,7 @@ class RubricEntry
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonRubricEntry", columnDefinition="INT(14) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="bigint", name="gibbonRubricEntry", columnDefinition="INT(14) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
@@ -60,7 +60,7 @@ class RubricEntry
 
     /**
      * @var integer|null
-     * @ORM\Column(name="contextDBTableID", type="bigint", columnDefinition="INT(20) UNSIGNED ZEROFILL")
+     * @ORM\Column(name="contextDBTableID", type="bigint", columnDefinition="INT(20) UNSIGNED")
      */
     private $contextDBTableID;
 

@@ -93,7 +93,6 @@
         "auto-scripts": {
             "application:install --relative --symlink ": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "kookaburra:module:install": "symfony-cmd",
             "cache:clear": "symfony-cmd"
         },
         "post-install-cmd": [

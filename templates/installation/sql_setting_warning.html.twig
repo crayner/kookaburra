@@ -1,6 +1,5 @@
 {% trans_default_domain 'messages' %}
 <h2>{{ 'Building the Database'|trans }}</h2>
-<p>{{ 'database_build_warning'|trans }}</p>
 {% if proceed %}
     <p class="right"><button id="proceedButton" class="btn btn-success" type="button" onclick="return buildDatabase()">{{ 'Proceed'|trans }}</button></p>
     <script>

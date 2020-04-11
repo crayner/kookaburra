@@ -29,7 +29,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Parent
                 - 'Support Staff'
                 - Teacher
@@ -51,7 +51,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Update Medical Form_family':
             name: 'Update Medical Form_family'
@@ -71,7 +71,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Parent
         'Medical Form Updates':
             name: 'Medical Form Updates'
@@ -91,7 +91,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Student Data Updater History':
             name: 'Student Data Updater History'
@@ -111,7 +111,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
@@ -133,7 +133,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Update Medical Data_any':
             name: 'Update Medical Data_any'
@@ -153,7 +153,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Update Family Data_any':
             name: 'Update Family Data_any'
@@ -173,7 +173,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Update Family Data_family':
             name: 'Update Family Data_family'
@@ -193,7 +193,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Parent
                 - 'Support Staff'
@@ -216,7 +216,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Update Finance Data_any':
             name: 'Update Finance Data_any'
@@ -236,7 +236,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Update Finance Data_family':
             name: 'Update Finance Data_family'
@@ -256,7 +256,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - Parent
                 - 'Support Staff'
@@ -279,7 +279,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'My Data Updates':
             name: 'My Data Updates'
@@ -299,12 +299,11 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - Teacher
                 - Parent
                 - 'Support Staff'
-                - Librarian
         'Family Data Updater History':
             name: 'Family Data Updater History'
             precedence: 0
@@ -323,5 +322,5 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator

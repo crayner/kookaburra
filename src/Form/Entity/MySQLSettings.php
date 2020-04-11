@@ -14,6 +14,7 @@
  */
 
 namespace App\Form\Entity;
+
 use App\Manager\Traits\BooleanList;
 
 /**
@@ -73,9 +74,9 @@ class MySQLSettings
      * @param string $host
      * @return MySQLSettings
      */
-    public function setHost(string $host): MySQLSettings
+    public function setHost(?string $host): MySQLSettings
     {
-        $this->host = $host;
+        $this->host = $host ?: 'localhost';
         return $this;
     }
 
@@ -94,7 +95,7 @@ class MySQLSettings
      * @param string $dbname
      * @return MySQLSettings
      */
-    public function setDbname(string $dbname): MySQLSettings
+    public function setDbname(?string $dbname): MySQLSettings
     {
         $this->dbname = $dbname;
         return $this;
@@ -115,7 +116,7 @@ class MySQLSettings
      * @param string $user
      * @return MySQLSettings
      */
-    public function setUser(string $user): MySQLSettings
+    public function setUser(?string $user): MySQLSettings
     {
         $this->user = $user;
         return $this;
@@ -136,7 +137,7 @@ class MySQLSettings
      * @param string $password
      * @return MySQLSettings
      */
-    public function setPassword(string $password): MySQLSettings
+    public function setPassword(?string $password): MySQLSettings
     {
         $this->password = $password;
         return $this;
@@ -157,9 +158,9 @@ class MySQLSettings
      * @param string $port
      * @return MySQLSettings
      */
-    public function setPort(string $port): MySQLSettings
+    public function setPort(?string $port): MySQLSettings
     {
-        $this->port = $port;
+        $this->port = $port ?: '3306';
         return $this;
     }
 
@@ -186,7 +187,7 @@ class MySQLSettings
      * @param string $demo
      * @return MySQLSettings
      */
-    public function setDemo(string $demo): MySQLSettings
+    public function setDemo(?string $demo): MySQLSettings
     {
         $this->demo = self::checkBoolean($demo, 'N');
         return $this;
@@ -232,7 +233,7 @@ class MySQLSettings
      * @param string $prefix
      * @return MySQLSettings
      */
-    public function setPrefix(string $prefix): MySQLSettings
+    public function setPrefix(?string $prefix): MySQLSettings
     {
         $this->prefix = $prefix;
         return $this;

@@ -17,6 +17,7 @@ namespace App\Manager;
 
 use App\Entity\CourseClass;
 use App\Entity\CourseClassPerson;
+use App\Form\Entity\MySQLSettings;
 use App\Util\TranslationsHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Kookaburra\Departments\Entity\Department;
@@ -251,12 +252,9 @@ class InstallationManager
     /**
      * setMySQLSettings
      * @param FormInterface $form
-     * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @return array
      */
-    public function setMySQLSettings(FormInterface $form)
+    public function setMySQLSettings(FormInterface $form): array
     {
         $setting = $form->getData();
         $config = $this->readKookaburraYaml();
@@ -271,21 +269,39 @@ class InstallationManager
 
         $this->writeKookaburraYaml($config);
 
-        $message['class'] = 'success';
-        $message['text'] = 'The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.';
 
-        $this->getLogger()->notice($message['text']);
+        $this->getLogger()->notice('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.');
 
-        return new Response($this->twig->render('installation/mysql_settings.html.twig',
-            [
-                'form' => $form->createView(),
-                'message' => $message,
-                'sidebarOptions' => [
-                    'proceed' => true,
-                ],
+        return [
+            'status' => 'success',
+            'errors' => [
+                [
+                    'class' => 'success',
+                    'message' => TranslationsHelper::translate('The MySQL Database settings have been successfully tested and saved. You can now proceed to build the database.')
+                ]
             ]
-        ));
+        ];
     }
+
+    /**
+     * readCurrentMySQLSettings
+     * @param MySQLSettings $setting
+     */
+    public function readCurrentMySQLSettings(MySQLSettings $setting)
+    {
+        $config = $this->readKookaburraYaml();
+
+        $setting->setHost($config['parameters']['databaseServer'])
+            ->setDbname($config['parameters']['databaseName'])
+            ->setPort($config['parameters']['databasePort'])
+            ->setUser($config['parameters']['databaseUsername'])
+            ->setPassword($config['parameters']['databasePassword'])
+            ->setPrefix($config['parameters']['databasePrefix']);
+        if (key_exists('demo',$config['parameters']['installation']))
+            $setting->setDemo($config['parameters']['installation']['demo'] ? 'Y' : 'N');
+
+    }
+
 
     /**
      * buildDatabase

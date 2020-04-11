@@ -28,7 +28,7 @@ class TTSpaceBooking  implements EntityInterface
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonTTSpaceBookingID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="bigint", name="gibbonTTSpaceBookingID", columnDefinition="INT(12) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
@@ -46,7 +46,7 @@ class TTSpaceBooking  implements EntityInterface
 
     /**
      * @var integer|null
-     * @ORM\Column(type="integer", name="foreignKeyID", columnDefinition="INT(10) UNSIGNED ZEROFILL")
+     * @ORM\Column(type="integer", name="foreignKeyID", columnDefinition="INT(10) UNSIGNED")
      */
     private $foreignKeyID;
 

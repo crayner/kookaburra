@@ -29,13 +29,12 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
                 - Parent
                 - Student
                 - 'Support Staff'
                 - Teacher
-                - Librarian
         'View Timetable by Facility':
             name: 'View Timetable by Facility'
             precedence: 0
@@ -54,7 +53,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
                 - 'Support Staff'
                 - Teacher
@@ -76,7 +75,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
         'View Available Teachers':
             name: 'View Available Teachers'
@@ -96,7 +95,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Administrator
         'Manage Facility Changes_allClasses':
             name: 'Manage Facility Changes_allClasses'
@@ -116,7 +115,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Facility Changes_myClasses':
             name: 'Manage Facility Changes_myClasses'
@@ -136,7 +135,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Teacher
         'Manage Facility Bookings_allBookings':
             name: 'Manage Facility Bookings_allBookings'
@@ -156,7 +155,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Facility Bookings_myBookings':
             name: 'Manage Facility Bookings_myBookings'
@@ -176,7 +175,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Teacher
         'View Timetable by Person_allYears':
             name: 'View Timetable by Person_allYears'
@@ -196,9 +195,8 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
-                - Librarian
         'View Master Timetable':
             name: 'View Master Timetable'
             precedence: 0
@@ -217,7 +215,7 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Administrator
         'Manage Student Enrolment':
             name: 'Manage Student Enrolment'
@@ -273,7 +271,7 @@ module:
             categoryPermissionStudent: 'Y'
             categoryPermissionParent: 'N'
             categoryPermissionOther: 'Y'
-            permissions:
+            roles:
                 - Student
         'View Timetable by Person_myChildren':
             name: 'View Timetable by Person_myChildren'
@@ -293,5 +291,5 @@ module:
             categoryPermissionStudent: 'N'
             categoryPermissionParent: 'Y'
             categoryPermissionOther: 'N'
-            permissions:
+            roles:
                 - Parent

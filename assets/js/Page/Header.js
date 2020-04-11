@@ -36,7 +36,7 @@ export default function Header(props) {
         <div id="headerWrapper">
             <div id="header" className="relative bg-white flex justify-between items-center rounded-t h-24 sm:h-32">
                 <a id="header-logo" href={details.homeURL}>
-                    <img alt={details.organisationName}
+                    <img title={details.organisationName !== false ? details.organisationName : 'Kookaburra'}
                          src={details.organisationLogo}
                          style={{width: '400px'}} />
                 </a>

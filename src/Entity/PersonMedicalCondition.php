@@ -28,7 +28,7 @@ class PersonMedicalCondition
     /**
      * @var integer|null
      * @ORM\Id
-     * @ORM\Column(type="bigint", name="gibbonPersonMedicalConditionID", columnDefinition="INT(12) UNSIGNED ZEROFILL AUTO_INCREMENT")
+     * @ORM\Column(type="bigint", name="gibbonPersonMedicalConditionID", columnDefinition="INT(12) UNSIGNED AUTO_INCREMENT")
      * @ORM\GeneratedValue
      */
     private $id;
